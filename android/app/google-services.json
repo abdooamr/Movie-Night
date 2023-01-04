@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "560599498850",
+    "firebase_url": "https://movie-night-4279a-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "movie-night-4279a",
+    "storage_bucket": "movie-night-4279a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:560599498850:android:2a9a57fd123149719fd13b",
+        "android_client_info": {
+          "package_name": "eg.edu.miuegypt.csc422.movienight"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "560599498850-7b4ti4f03q6d77nuuc3gn4trsoss9r69.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD305BcsOqm81pKTwv3bIfmuZEg-DKCaGE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "560599498850-7b4ti4f03q6d77nuuc3gn4trsoss9r69.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
