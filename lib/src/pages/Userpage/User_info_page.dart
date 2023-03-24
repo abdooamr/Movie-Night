@@ -9,7 +9,7 @@ class userinfowid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SimpleSettingsTile(
-      colorxz: Theme.of(context).listTileTheme.tileColor,
+      //colorxz: Theme.of(context).listTileTheme.tileColor,
       title: 'Account Info',
       subtitle: '',
       leading: Iconwidget(icon: Icons.person, color: Colors.green),
