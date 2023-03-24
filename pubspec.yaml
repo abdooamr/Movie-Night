@@ -1,5 +1,5 @@
-name: movietest1
-description: A new Flutter project.
+name: Movie_Night
+description: Flutter app that helps the user to have fun while he is eating his popcorn
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -17,7 +17,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.1.0+1
+version: 1.2.7+9
 
 environment:
   sdk: ">=2.18.1 <3.0.0"
@@ -29,21 +29,29 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  awesome_snackbar_content: ^0.1.0
   carousel_slider: ^4.1.1
   cloud_firestore: ^4.3.0
   cupertino_icons: ^1.0.2
   firebase_auth: ^4.1.4
   firebase_core: ^2.3.0
+  firebase_messaging: ^14.2.1
+  firebase_storage: ^11.0.10
   flutter:
     sdk: flutter
-  flutter_svg: ^1.1.6
+  flutter_email_sender: ^5.2.0
+  flutter_settings_screens: ^0.3.3-null-safety+2
+  flutter_slidable: ^2.0.0
+  go_router: ^6.0.1
   google_fonts: ^3.0.1
   google_sign_in: ^5.4.2
   hive: ^2.2.3
   hive_flutter: ^1.1.0
-  hive_generator: ^1.1.3
   http: ^0.13.5
+  image_picker: ^0.8.6
+  provider: ^6.0.5
   tmdb_api: ^2.1.4
+  url_launcher: ^6.0.18
 
 dev_dependencies:
   flutter_launcher_icons: "^0.10.0"
