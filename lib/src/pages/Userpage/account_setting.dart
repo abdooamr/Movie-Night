@@ -10,7 +10,7 @@ class Accountpage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SimpleSettingsTile(
-      colorxz: Theme.of(context).listTileTheme.tileColor,
+      //colorxz: Theme.of(context).listTileTheme.tileColor,
       title: 'account settings',
       subtitle: 'Edit account, Privacy',
       leading: Iconwidget(icon: Icons.person, color: Colors.green),
@@ -26,7 +26,7 @@ class Accountpage extends StatelessWidget {
   }
 
   Widget accountinfo(BuildContext context) => SimpleSettingsTile(
-        colorxz: Theme.of(context).listTileTheme.tileColor,
+        //colorxz: Theme.of(context).listTileTheme.tileColor,
         title: "Account Info",
         subtitle: "",
         onTap: () {
