@@ -21,7 +21,7 @@ class _ChangepasswordState extends State<Changepassword> {
   @override
   Widget build(BuildContext context) {
     return SimpleSettingsTile(
-      colorxz: Theme.of(context).listTileTheme.tileColor,
+      //colorxz: Theme.of(context).listTileTheme.tileColor,
       title: 'Privacy',
       leading: Iconwidget(icon: Icons.security, color: Colors.red),
       child: SettingsScreen(
@@ -32,7 +32,7 @@ class _ChangepasswordState extends State<Changepassword> {
   }
 
   Widget Change_password(BuildContext context) => SimpleSettingsTile(
-        colorxz: Theme.of(context).listTileTheme.tileColor,
+        //colorxz: Theme.of(context).listTileTheme.tileColor,
         title: "Change Password",
         subtitle: "",
         onTap: () {
