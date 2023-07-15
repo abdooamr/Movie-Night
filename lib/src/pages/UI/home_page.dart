@@ -1,4 +1,5 @@
 import 'package:Movie_Night/src/models/tvshow_model.dart';
+import 'package:Movie_Night/src/widgets/Home_page_listview.dart';
 import 'package:Movie_Night/src/widgets/switch.dart';
 import 'package:Movie_Night/src/widgets/tvshow_listview.dart';
 import 'package:flutter/material.dart';
@@ -16,41 +17,64 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late Future<Model> upcomingFuture,
       trendingFuture,
+      trendingtvshowFuture,
       popularMoviesFuture,
-      topRatedFuture;
-  late Future<Tvshows> popularTvFuture;
-  //late Future<Credit> creditsFuture;
+      topRatedFuture,
+      EgyptionMovies,
+      airingTodayFuture,
+      Egyptionseries,
+      popularTvFuture;
+  bool movie = true;
+  bool tvshow = false;
 
   @override
   void initState() {
     upcomingFuture = getUpcomingMovies();
-    trendingFuture = getTrendingMovies();
-    popularMoviesFuture = getPopularMovies();
-    popularTvFuture = getPopularTvShows();
+    trendingFuture = getTrending(false);
+    trendingtvshowFuture = getTrending(true);
+    EgyptionMovies = getEgyptionmovies(false);
+    Egyptionseries = getEgyptionmovies(true);
+    popularMoviesFuture = getPopular(false);
+    popularTvFuture = getPopular(true);
     topRatedFuture = getTopRatedMovies();
+    airingTodayFuture = getAiringToday();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return Column(
       children: [
-        //Typeswitch(),
-        const SizedBox(
-          height: 20,
+        SizedBox(
+          height: 40,
         ),
-        UpcomingMovies(
-          future: upcomingFuture,
+        Typeswitch(
+          movie: movie,
+          tvshow: tvshow,
+          onMovieSelected: () {
+            setState(() {
+              movie = true;
+              tvshow = false;
+            });
+          },
+          onTvShowSelected: () {
+            setState(() {
+              movie = false;
+              tvshow = true;
+            });
+          },
         ),
-        const SizedBox(
-          height: 20,
-        ),
-        MoviesListView(future: trendingFuture, headlineText: 'Trending'),
-        MoviesListView(
-            future: popularMoviesFuture, headlineText: 'Popular Movies'),
-        //TvShowListView(headlineText: 'Popular TV Shows'),
-        MoviesListView(
-            future: topRatedFuture, headlineText: 'Top Rated Movies'),
+        Home_page_listview(
+            movie: movie,
+            upcomingFuture: upcomingFuture,
+            trendingFuture: trendingFuture,
+            popularMoviesFuture: popularMoviesFuture,
+            EgyptionMovies: EgyptionMovies,
+            tvshow: tvshow,
+            airingTodayFuture: airingTodayFuture,
+            trendingtvshowFuture: trendingtvshowFuture,
+            Egyptionseries: Egyptionseries,
+            popularTvFuture: popularTvFuture),
       ],
     );
   }

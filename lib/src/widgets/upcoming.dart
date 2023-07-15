@@ -6,8 +6,11 @@ import 'package:Movie_Night/src/widgets/carousel_slider.dart';
 import '../models/movie_model.dart';
 
 class UpcomingMovies extends StatelessWidget {
-  const UpcomingMovies({required this.future, Key? key}) : super(key: key);
+  const UpcomingMovies(
+      {required this.future, required this.headlineText, Key? key})
+      : super(key: key);
   final Future<Model> future;
+  final String headlineText;
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Model>(
@@ -18,7 +21,7 @@ class UpcomingMovies extends StatelessWidget {
           return Column(
             children: [
               Text(
-                'Upcoming Movies',
+                headlineText,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(

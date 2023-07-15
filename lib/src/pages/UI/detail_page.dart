@@ -213,9 +213,10 @@ class _DetailPageState extends State<DetailPage> {
                     data: widget.data,
                     index: widget.index,
                     isTvShow: widget.isTvShow),
-                ReviewsWidget(
-                    isTvShow: widget.isTvShow,
-                    id: widget.data.results[widget.index].id!),
+
+                // ReviewsWidget(
+                //     isTvShow: widget.isTvShow,
+                //     id: widget.data.results[widget.index].id!),
               ],
             ),
           );

@@ -1,58 +1,56 @@
-import 'package:Movie_Night/src/pages/UI/Tvshow_page.dart';
-import 'package:Movie_Night/src/pages/allpages.dart';
 import 'package:flutter/material.dart';
 
-class Typeswitch extends StatefulWidget {
-  const Typeswitch({super.key});
+class Typeswitch extends StatelessWidget {
+  final bool movie;
+  final bool tvshow;
+  final VoidCallback onMovieSelected;
+  final VoidCallback onTvShowSelected;
 
-  @override
-  State<Typeswitch> createState() => _TypeswitchState();
-}
+  const Typeswitch({
+    required this.movie,
+    required this.tvshow,
+    required this.onMovieSelected,
+    required this.onTvShowSelected,
+  });
 
-class _TypeswitchState extends State<Typeswitch> {
-  bool movie = true;
-  bool tvshow = false;
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 20),
+      margin: EdgeInsets.only(top: 10, bottom: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           GestureDetector(
-            onTap: () {
-              setState(() {
-                tvshow = true;
-                movie = false;
-              });
-            },
+            onTap: onTvShowSelected,
             child: Text(
               "TV Shows",
               style: TextStyle(
-                  color: tvshow ? Colors.white : Colors.grey,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500),
+                color: tvshow ? Colors.white : Colors.grey,
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
-          Text("   |   ",
-              style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.bold)),
+          Text(
+            "   |   ",
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.grey,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           GestureDetector(
-            onTap: () {
-              setState(() {
-                movie = true;
-                tvshow = false;
-              });
-            },
-            child: Text("Movies",
-                style: TextStyle(
-                    fontSize: 18,
-                    color: movie ? Colors.white : Colors.grey,
-                    fontWeight: FontWeight.w500)),
+            onTap: onMovieSelected,
+            child: Text(
+              "Movies",
+              style: TextStyle(
+                fontSize: 18,
+                color: movie ? Colors.white : Colors.grey,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
           ),
         ],
       ),

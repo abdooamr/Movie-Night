@@ -11,6 +11,7 @@ class Videos_list extends StatelessWidget {
     Key? key,
     required this.headlineText,
   }) : super(key: key);
+
   final String headlineText;
   final Future<Video> future;
   @override
@@ -26,22 +27,53 @@ class Videos_list extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: MediaQuery.of(context).size.height,
+                  height: MediaQuery.of(context).size.height * 0.85,
                   child: ListView.builder(
-                    reverse: false,
-                    physics: ScrollPhysics(parent: BouncingScrollPhysics()),
+                    physics: BouncingScrollPhysics(
+                        parent: AlwaysScrollableScrollPhysics()),
                     scrollDirection: Axis.vertical,
                     itemCount: data!.length,
-                    shrinkWrap: true,
+                    shrinkWrap: false,
                     itemBuilder: (context, index) {
                       return Column(
                         children: [
                           Stack(
                             children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(50),
-                                child: Image.network(
-                                  "https://img.youtube.com/vi/${data[index].key}/0.jpg",
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 20),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      data[index].name,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium,
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: AspectRatio(
+                                        aspectRatio: 16 / 9,
+                                        child: Image.network(
+                                          "https://img.youtube.com/vi/${data[index].key}/0.jpg",
+                                          fit: BoxFit.cover,
+                                          errorBuilder:
+                                              (context, error, stackTrace) {
+                                            return Container(
+                                              color: Colors.grey,
+                                              child: const Center(
+                                                  child: Text(
+                                                'No Image',
+                                                style: TextStyle(fontSize: 50),
+                                              )),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                               GestureDetector(
@@ -51,7 +83,7 @@ class Videos_list extends StatelessWidget {
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 120, vertical: 70),
+                                      horizontal: 120, vertical: 65),
                                   child: const Icon(
                                     Icons.play_circle_outline,
                                     color: Colors.white54,
@@ -61,11 +93,6 @@ class Videos_list extends StatelessWidget {
                               ),
                             ],
                           ),
-                          Container(
-                              child: Text(
-                            data[index].name,
-                            style: Theme.of(context).textTheme.titleLarge,
-                          )),
                         ],
                       );
                     },

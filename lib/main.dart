@@ -18,8 +18,6 @@ void main() async {
   Hive.registerAdapter<LikedModel>(LikedModelAdapter());
   await Hive.openBox<LikedModel>('liked');
   await Settings.init(cacheProvider: SharePreferenceCache());
-  String? token = await getfcmtoken();
-  print(token);
   runApp(MyApp());
 }
 

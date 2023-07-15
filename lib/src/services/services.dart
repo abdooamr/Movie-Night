@@ -13,6 +13,8 @@ import '../models/review_model.dart';
 const baseUrl = 'https://api.themoviedb.org/3/';
 var key = '?api_key=cc18b713f1ab56cfab6306f06b6c1b9d';
 var video = "&append_to_response=videos";
+var lang = "&with_original_language=en";
+var arabiclang = "&with_origin_country=EG&language=ar-EG";
 late String endPoint;
 
 Future<Model> getUpcomingMovies() async {
@@ -27,8 +29,8 @@ Future<Model> getUpcomingMovies() async {
   }
 }
 
-Future<Model> getTrendingMovies() async {
-  endPoint = 'trending/all/day';
+Future<Model> getTrending(bool isTvShow) async {
+  endPoint = isTvShow ? 'trending/tv/day' : 'trending/movie/day';
   final url = '$baseUrl$endPoint$key';
 
   final response = await http.get(Uri.parse(url));
@@ -39,9 +41,9 @@ Future<Model> getTrendingMovies() async {
   }
 }
 
-Future<Model> getPopularMovies() async {
-  endPoint = 'movie/popular';
-  final url = '$baseUrl$endPoint$key';
+Future<Model> getPopular(bool isTvShow) async {
+  endPoint = isTvShow ? 'tv/popular' : 'movie/popular';
+  final url = '$baseUrl$endPoint$key$lang';
 
   final response = await http.get(Uri.parse(url));
   if (response.statusCode == 200) {
@@ -51,17 +53,17 @@ Future<Model> getPopularMovies() async {
   }
 }
 
-Future<Tvshows> getPopularTvShows() async {
-  endPoint = 'tv/popular';
-  final url = '$baseUrl$endPoint$key';
+// Future<Model> getPopularTvShows() async {
+//   endPoint = 'tv/popular';
+//   final url = '$baseUrl$endPoint$key';
 
-  final response = await http.get(Uri.parse(url));
-  if (response.statusCode == 200) {
-    return tvshowsFromJson(response.body);
-  } else {
-    throw Exception('failed to load popular');
-  }
-}
+//   final response = await http.get(Uri.parse(url));
+//   if (response.statusCode == 200) {
+//     return modelFromJson(response.body);
+//   } else {
+//     throw Exception('failed to load popular');
+//   }
+// }
 
 Future<Model> getTopRatedMovies() async {
   endPoint = 'movie/top_rated';
@@ -181,5 +183,29 @@ Future<Watchprovider?> getprovider(int id, bool isTvShow) async {
     return watchproviderFromJson(response.body);
   } else {
     throw Exception('failed to load Providers');
+  }
+}
+
+Future<Model> getEgyptionmovies(bool isTvShow) async {
+  endPoint = isTvShow ? 'discover/tv/' : 'discover/movie';
+  final url = '$baseUrl$endPoint$key$arabiclang';
+
+  final response = await http.get(Uri.parse(url));
+  if (response.statusCode == 200) {
+    return modelFromJson(response.body);
+  } else {
+    throw Exception('failed to load popular');
+  }
+}
+
+Future<Model> getAiringToday() async {
+  endPoint = 'tv/airing_today';
+  final url = '$baseUrl$endPoint$key$lang';
+
+  final response = await http.get(Uri.parse(url));
+  if (response.statusCode == 200) {
+    return modelFromJson(response.body);
+  } else {
+    throw Exception('failed to load trending');
   }
 }
