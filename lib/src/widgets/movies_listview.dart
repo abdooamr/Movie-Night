@@ -1,7 +1,5 @@
 import 'package:Movie_Night/src/pages/UI/detail_page2.dart';
-import 'package:Movie_Night/src/services/services.dart';
 import 'package:flutter/material.dart';
-import 'package:Movie_Night/src/pages/UI/detail_page.dart';
 import 'package:Movie_Night/src/utils/utils.dart';
 import '../models/movie_model.dart';
 

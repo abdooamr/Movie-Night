@@ -1,7 +1,6 @@
 import 'package:Movie_Night/src/components/Temp_text.dart';
 import 'package:Movie_Night/src/models/provider_model.dart';
 import 'package:flutter/material.dart';
-import 'package:Movie_Night/src/models/credit_model.dart';
 import 'package:Movie_Night/src/services/services.dart';
 import 'package:Movie_Night/src/utils/utils.dart';
 import 'package:url_launcher/url_launcher_string.dart';

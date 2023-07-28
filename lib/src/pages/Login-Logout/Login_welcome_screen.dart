@@ -1,9 +1,7 @@
 import 'package:ficonsax/ficonsax.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:Movie_Night/src/pages/allpages.dart';
-import 'package:ficonsax/ficonsax.dart';
 
 class loWelcomeScreen extends StatelessWidget {
   const loWelcomeScreen({super.key});

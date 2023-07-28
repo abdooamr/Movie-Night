@@ -1,27 +1,13 @@
 import 'package:Movie_Night/src/models/Knownfor_model.dart';
-import 'package:Movie_Night/src/models/MODELL.dart';
 import 'package:Movie_Night/src/models/cast_model.dart';
-import 'package:Movie_Night/src/models/liked_model.dart';
-import 'package:Movie_Night/src/models/moviedetails.dart';
-import 'package:Movie_Night/src/models/tvshow_model.dart';
-import 'package:Movie_Night/src/widgets/Buy_provider.dart';
 import 'package:Movie_Night/src/widgets/cast_movies.dart';
-import 'package:Movie_Night/src/widgets/watch_provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
-import 'package:Movie_Night/src/models/credit_model.dart';
-import 'package:Movie_Night/src/repository/Getvideos.dart';
 import 'package:Movie_Night/src/services/services.dart';
 import 'package:Movie_Night/src/utils/utils.dart';
-import 'package:Movie_Night/src/widgets/allwidget.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-import '../../models/movie_model.dart';
 import 'package:intl/intl.dart';
-import 'package:ficonsax/ficonsax.dart';
 
 class Cast_DetailPage extends StatefulWidget {
   Cast_DetailPage({
@@ -50,7 +36,6 @@ class _DetailPageState extends State<Cast_DetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    var box = Hive.box<LikedModel>('liked');
     return Scaffold(
       body: FutureBuilder<CastModel>(
         future: details,

@@ -2,7 +2,6 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
-import 'package:Movie_Night/src/pages/allpages.dart';
 import 'package:Movie_Night/src/widgets/iconwidget.dart';
 
 class Changepassword extends StatefulWidget {

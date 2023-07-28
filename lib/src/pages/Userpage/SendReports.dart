@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:Movie_Night/src/Provider/Theme_provider.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 
 class SendReport extends StatefulWidget {
@@ -12,7 +10,6 @@ class SendReport extends StatefulWidget {
 }
 
 class _SendReportState extends State<SendReport> {
-  final _formKey = GlobalKey<FormState>();
   final _subjectController = TextEditingController();
   final _bodycontroller = TextEditingController();
   final recipient_email = "miu.team4.27@gmail,com";

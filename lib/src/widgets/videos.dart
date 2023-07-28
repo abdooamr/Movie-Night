@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/models/video_model.dart';
-import 'package:Movie_Night/src/pages/UI/detail_page.dart';
-import 'package:Movie_Night/src/utils/utils.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-import '../models/movie_model.dart';
 
 class Videos_list extends StatelessWidget {
   const Videos_list({

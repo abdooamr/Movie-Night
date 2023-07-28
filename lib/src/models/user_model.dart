@@ -2,8 +2,6 @@
 //
 //     final users = usersFromJson(jsonString);
 
-import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 Users usersFromJson(String str) => Users.fromJson(json.decode(str));

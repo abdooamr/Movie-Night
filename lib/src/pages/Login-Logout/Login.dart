@@ -1,3 +1,5 @@
+// ignore_for_file: body_might_complete_normally_catch_error
+
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -52,7 +54,6 @@ class _LoginNewState extends State<LoginNew> {
     super.dispose();
   }
 
-  bool _flag = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

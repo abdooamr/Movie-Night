@@ -1,4 +1,3 @@
-import 'package:Movie_Night/src/models/tvshow_model.dart';
 import 'package:hive/hive.dart';
 part 'liked_model.g.dart';
 

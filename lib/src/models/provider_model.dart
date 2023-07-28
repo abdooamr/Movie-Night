@@ -2,7 +2,6 @@
 //
 //     final watchprovider = watchproviderFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 Watchprovider? watchproviderFromJson(String str) =>

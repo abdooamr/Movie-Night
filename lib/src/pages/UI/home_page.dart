@@ -1,11 +1,8 @@
-import 'package:Movie_Night/src/models/tvshow_model.dart';
 import 'package:Movie_Night/src/widgets/Home_page_listview.dart';
 import 'package:Movie_Night/src/widgets/switch.dart';
-import 'package:Movie_Night/src/widgets/tvshow_listview.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/models/movie_model.dart';
 import 'package:Movie_Night/src/services/services.dart';
-import 'package:Movie_Night/src/widgets/allwidget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

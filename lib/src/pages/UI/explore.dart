@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/services/services.dart';
 import 'package:Movie_Night/src/widgets/allwidget.dart';
-import 'package:query/query.dart';
+
 import '../../models/movie_model.dart';
 
 class ExplorePage extends StatefulWidget {

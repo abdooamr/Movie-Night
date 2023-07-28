@@ -1,5 +1,4 @@
 import 'package:Movie_Night/src/models/liked_model.dart';
-import 'package:Movie_Night/src/services/push_notification.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
@@ -7,9 +6,6 @@ import 'package:Movie_Night/src/Auth/auth.dart';
 import 'package:Movie_Night/src/Provider/Theme_provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
-
-import 'src/pages/Adminpages/details category.dart';
-import 'src/pages/Adminpages/fulldetails.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

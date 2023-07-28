@@ -1,8 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:Movie_Night/src/pages/Adminpages/AdminPanelV&D.dart';
 import 'package:Movie_Night/src/pages/Userpage/Settings_screen.dart';
-import 'package:Movie_Night/src/pages/Userpage/Update_User_details.dart';
 import 'package:Movie_Night/src/pages/UI/explore.dart';
 import 'package:Movie_Night/src/pages/UI/home_page.dart';
 import 'package:Movie_Night/src/pages/UI/liked.dart';

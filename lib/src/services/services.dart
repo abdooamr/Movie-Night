@@ -1,16 +1,10 @@
-import 'dart:convert';
-
 import 'package:Movie_Night/src/models/Knownfor_model.dart';
-import 'package:Movie_Night/src/models/MODELL.dart';
 import 'package:Movie_Night/src/models/cast_model.dart';
 import 'package:Movie_Night/src/models/moviedetails.dart';
 import 'package:Movie_Night/src/models/provider_model.dart';
-import 'package:Movie_Night/src/models/tvshow_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:Movie_Night/src/models/movie_model.dart';
 import 'package:Movie_Night/src/models/video_model.dart';
-//import 'package:Movie_Night/secret.dart';
-
 import '../models/credit_model.dart';
 import '../models/review_model.dart';
 

@@ -1,3 +1,5 @@
+// ignore_for_file: body_might_complete_normally_catch_error
+
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';

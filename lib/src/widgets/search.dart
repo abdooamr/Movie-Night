@@ -4,7 +4,6 @@ import 'package:Movie_Night/src/pages/UI/detail_page.dart';
 import 'package:Movie_Night/src/services/services.dart';
 import 'package:Movie_Night/src/utils/utils.dart';
 import '../models/movie_model.dart';
-import 'package:query/query.dart';
 
 class Search extends SearchDelegate<Model> {
   @override

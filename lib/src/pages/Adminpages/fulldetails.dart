@@ -1,9 +1,5 @@
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/components/allcomp.dart';
-import 'package:Movie_Night/src/pages/allpages.dart';
 
 class Fulldetail extends StatelessWidget {
   final String? id;

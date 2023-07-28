@@ -1,10 +1,7 @@
-import 'package:Movie_Night/src/models/MODELL.dart';
 import 'package:Movie_Night/src/models/liked_model.dart';
 import 'package:Movie_Night/src/models/moviedetails.dart';
-import 'package:Movie_Night/src/models/tvshow_model.dart';
 import 'package:Movie_Night/src/widgets/Buy_provider.dart';
 import 'package:Movie_Night/src/widgets/watch_provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +11,6 @@ import 'package:Movie_Night/src/services/services.dart';
 import 'package:Movie_Night/src/utils/utils.dart';
 import 'package:Movie_Night/src/widgets/allwidget.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:ficonsax/ficonsax.dart';
 import 'package:photo_view/photo_view.dart';
 import '../../models/movie_model.dart';
 
@@ -73,7 +69,7 @@ class _DetailPageState extends State<DetailPage> {
             // Access the movie details using 'snapshot.data'
             var movieDetails = snapshot.data;
             var genress = movieDetails!.genres;
-            if (movieDetails == null) {
+            if (snapshot.data == null) {
               return Center(child: Text('No data found'));
             }
             return CustomScrollView(
