@@ -1,5 +1,9 @@
 import 'dart:convert';
 
+import 'package:Movie_Night/src/models/Knownfor_model.dart';
+import 'package:Movie_Night/src/models/MODELL.dart';
+import 'package:Movie_Night/src/models/cast_model.dart';
+import 'package:Movie_Night/src/models/moviedetails.dart';
 import 'package:Movie_Night/src/models/provider_model.dart';
 import 'package:Movie_Night/src/models/tvshow_model.dart';
 import 'package:http/http.dart' as http;
@@ -128,7 +132,7 @@ Future<Review> getReviews(int id, bool isTvShow) async {
 }
 
 Future<Model> movieSearch(String query) async {
-  endPoint = 'search/movie';
+  endPoint = 'search/tv';
   final url = '$baseUrl$endPoint$key&query=$query';
 
   final response = await http.get(Uri.parse(url));
@@ -207,5 +211,41 @@ Future<Model> getAiringToday() async {
     return modelFromJson(response.body);
   } else {
     throw Exception('failed to load trending');
+  }
+}
+
+Future<MovieModel> getdetails(int id, bool isTvShow) async {
+  endPoint = isTvShow ? 'tv/$id' : 'movie/$id';
+  final url = '$baseUrl$endPoint$key';
+
+  final response = await http.get(Uri.parse(url));
+  if (response.statusCode == 200) {
+    return movieModelFromJson(response.body);
+  } else {
+    throw Exception('failed to load Details');
+  }
+}
+
+Future<CastModel> getcastdetails(int id) async {
+  endPoint = 'person/$id';
+  final url = '$baseUrl$endPoint$key';
+
+  final response = await http.get(Uri.parse(url));
+  if (response.statusCode == 200) {
+    return castModelFromJson(response.body);
+  } else {
+    throw Exception('failed to load Details');
+  }
+}
+
+Future<KnownFor> getcastknownfor(int id, bool isTvShow) async {
+  endPoint = isTvShow ? 'person/$id/tv_credits' : 'person/$id/movie_credits';
+  final url = '$baseUrl$endPoint$key';
+
+  final response = await http.get(Uri.parse(url));
+  if (response.statusCode == 200) {
+    return knownForFromJson(response.body);
+  } else {
+    throw Exception('failed to load Details');
   }
 }

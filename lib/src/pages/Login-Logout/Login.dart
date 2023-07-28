@@ -130,11 +130,15 @@ class _LoginNewState extends State<LoginNew> {
                         SizedBox(
                           height: 60,
                           width: 160,
-                          child: ElevatedButton(
+                          child: ElevatedButton.icon(
                             onPressed: () {
                               SignIn();
                             },
-                            child: Text(
+                            icon: Icon(
+                              Icons.login_rounded,
+                              color: Colors.black,
+                            ),
+                            label: Text(
                               'Sign In',
                               style:
                                   TextStyle(color: Colors.black, fontSize: 20),

@@ -128,7 +128,7 @@ class Liked extends StatelessWidget {
                                       const Spacer(),
                                       Expanded(
                                           child: Text(
-                                        getGenres(liked.genres),
+                                        liked.genres,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         textAlign: TextAlign.center,

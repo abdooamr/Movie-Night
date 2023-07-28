@@ -1,0 +1,236 @@
+import 'package:Movie_Night/src/models/Knownfor_model.dart';
+import 'package:Movie_Night/src/models/MODELL.dart';
+import 'package:Movie_Night/src/models/cast_model.dart';
+import 'package:Movie_Night/src/models/liked_model.dart';
+import 'package:Movie_Night/src/models/moviedetails.dart';
+import 'package:Movie_Night/src/models/tvshow_model.dart';
+import 'package:Movie_Night/src/widgets/Buy_provider.dart';
+import 'package:Movie_Night/src/widgets/cast_movies.dart';
+import 'package:Movie_Night/src/widgets/watch_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ficonsax/ficonsax.dart';
+import 'package:flutter/material.dart';
+import 'package:Movie_Night/src/models/credit_model.dart';
+import 'package:Movie_Night/src/repository/Getvideos.dart';
+import 'package:Movie_Night/src/services/services.dart';
+import 'package:Movie_Night/src/utils/utils.dart';
+import 'package:Movie_Night/src/widgets/allwidget.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+import '../../models/movie_model.dart';
+import 'package:intl/intl.dart';
+import 'package:ficonsax/ficonsax.dart';
+
+class Cast_DetailPage extends StatefulWidget {
+  Cast_DetailPage({
+    Key? key,
+    this.id,
+  }) : super(key: key);
+
+  final int? id;
+
+  @override
+  State<Cast_DetailPage> createState() => _DetailPageState();
+}
+
+class _DetailPageState extends State<Cast_DetailPage> {
+  late Future<CastModel> details;
+  late Future<KnownFor> castmovies;
+  late Future<KnownFor> casttvshows;
+
+  @override
+  void initState() {
+    super.initState();
+    details = getcastdetails(widget.id!);
+    castmovies = getcastknownfor(widget.id!, false);
+    casttvshows = getcastknownfor(widget.id!, true);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var box = Hive.box<LikedModel>('liked');
+    return Scaffold(
+      body: FutureBuilder<CastModel>(
+        future: details,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else {
+            // Access the movie details using 'snapshot.data'
+            var castdetails = snapshot.data;
+            if (castdetails == null) {
+              return Center(child: Text('No data found'));
+            }
+            return CustomScrollView(
+              // sliver app bar
+              slivers: [
+                SliverAppBar(
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                  expandedHeight: MediaQuery.of(context).size.height / 2.1,
+                  flexibleSpace: FlexibleSpaceBar(
+                    stretchModes: [
+                      StretchMode.zoomBackground,
+                      StretchMode.blurBackground,
+                      StretchMode.fadeTitle,
+                    ],
+                    collapseMode: CollapseMode.parallax,
+                    background: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PhotoView(
+                              imageProvider: NetworkImage(
+                                  '$imageUrl${castdetails.profilePath}'),
+                            ),
+                          ),
+                        );
+                      },
+                      child: Image.network(
+                        '$imageUrl${castdetails.profilePath}',
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            color: Colors.grey,
+                            child: const Center(child: Text('No Image')),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (ctx, _) {
+                      return Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Wrap(
+                              children: [
+                                Text(
+                                  castdetails.name!,
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 6),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        const Icon(IconsaxBold.calendar),
+                                        Text(
+                                          castdetails.birthday == null
+                                              ? 'No birthday found'
+                                              : DateFormat.yMMMd().format(
+                                                  castdetails.birthday!),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium,
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 6),
+                                    Row(
+                                      children: [
+                                        castdetails.deathday == null
+                                            ? SizedBox(height: 0, width: 0)
+                                            : Icon(IconsaxBold.danger),
+                                        Text(
+                                          castdetails.deathday == null
+                                              ? ''
+                                              : DateFormat.yMMMd().format(
+                                                  castdetails.deathday!),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(width: 10),
+                                ElevatedButton.icon(
+                                  onPressed: () {
+                                    launchUrlString(
+                                        'https://www.imdb.com/name/${castdetails.imdbId}/');
+                                  },
+                                  label: Text("IMDB Profile"),
+                                  icon: const Icon(Icons.link),
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(
+                                      Color.fromARGB(255, 49, 39, 112),
+                                    ),
+                                    shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            const SizedBox(height: 12),
+                            Text(
+                              'biography',
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
+
+                            Text(
+                              castdetails.biography == null ||
+                                      castdetails.biography!.isEmpty
+                                  ? 'No biography found'
+                                  : castdetails.biography!,
+                              style: Theme.of(context).textTheme.titleSmall,
+                            ),
+                            Cast_knownfor(
+                                future: castmovies,
+                                headlineText: "Movies Known For"),
+                            Cast_knownfor(
+                                future: casttvshows,
+                                headlineText: "Tv Shows Known For"),
+
+                            // Visibility(
+                            //   visible: widget.isTvShow,
+                            //   child: buy_provider_widget(
+                            //     id: movieDetails.id,
+                            //     isTvShow: widget.isTvShow,
+                            //   ),
+                            // ),
+                            // CastWidget(
+                            //   id: movieDetails.id,
+                            //   isTvShow: widget.isTvShow,
+                            // ),
+                            // SimilarWidget(
+                            //   data: widget.data,
+                            //   index: widget.index,
+                            //   isTvShow: widget.isTvShow,
+                            // ),
+                            // ReviewsWidget(
+                            //     isTvShow: widget.isTvShow,
+                            //     id: movieDetails.id!),
+                          ],
+                        ),
+                      );
+                    },
+                    childCount: 1,
+                  ),
+                ),
+              ],
+            );
+          }
+        },
+      ),
+    );
+  }
+}

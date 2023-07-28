@@ -92,7 +92,9 @@ class Results {
   Ar? ve;
 
   factory Results.fromJson(Map<String, dynamic> json) => Results(
-        ar: Ar.fromJson(json["AR"]),
+        ar: Ar.fromJson(json["AR"]) == Null
+            ? Ar(link: '', buy: [], rent: [], flatrate: [])
+            : Ar.fromJson(json["AR"]),
         au: Ar.fromJson(json["AU"]),
         bo: Ar.fromJson(json["BO"]),
         br: Ar.fromJson(json["BR"]),

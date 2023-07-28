@@ -1,7 +1,9 @@
+import 'package:ficonsax/ficonsax.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:Movie_Night/src/pages/allpages.dart';
+import 'package:ficonsax/ficonsax.dart';
 
 class loWelcomeScreen extends StatelessWidget {
   const loWelcomeScreen({super.key});
@@ -61,7 +63,7 @@ class loWelcomeScreen extends StatelessWidget {
                   height: 80,
                   width: double.infinity,
                   padding: const EdgeInsets.only(top: 25, left: 24, right: 24),
-                  child: ElevatedButton(
+                  child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)),
@@ -74,7 +76,8 @@ class loWelcomeScreen extends StatelessWidget {
                         }),
                       );
                     },
-                    child: Text(
+                    icon: Icon(IconsaxBold.login),
+                    label: Text(
                       'Log In',
                       style: TextStyle(
                         fontSize: 20,
@@ -88,7 +91,7 @@ class loWelcomeScreen extends StatelessWidget {
                   height: 80,
                   width: double.infinity,
                   padding: const EdgeInsets.only(top: 25, left: 24, right: 24),
-                  child: ElevatedButton(
+                  child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)),
@@ -101,7 +104,8 @@ class loWelcomeScreen extends StatelessWidget {
                         }),
                       );
                     },
-                    child: Text(
+                    icon: Icon(IconsaxBold.user),
+                    label: Text(
                       'Sign Up',
                       style: TextStyle(
                         fontSize: 20,

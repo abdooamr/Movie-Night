@@ -18,8 +18,8 @@ import 'package:ficonsax/ficonsax.dart';
 import 'package:photo_view/photo_view.dart';
 import '../../models/movie_model.dart';
 
-class DetailPage extends StatefulWidget {
-  const DetailPage({
+class DetailPage2 extends StatefulWidget {
+  const DetailPage2({
     Key? key,
     required this.data,
     required this.index,
@@ -35,10 +35,10 @@ class DetailPage extends StatefulWidget {
   final bool isTvShow;
 
   @override
-  State<DetailPage> createState() => _DetailPageState();
+  State<DetailPage2> createState() => _DetailPage2State();
 }
 
-class _DetailPageState extends State<DetailPage> {
+class _DetailPage2State extends State<DetailPage2> {
   bool isloggedin = false;
   late Future<MovieModel> details;
   Future<bool> isLoggedIn() async {
@@ -81,37 +81,7 @@ class _DetailPageState extends State<DetailPage> {
               slivers: [
                 SliverAppBar(
                   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  expandedHeight: MediaQuery.of(context).size.height / 2.1,
-                  actions: [
-                    isloggedin == true
-                        ? Padding(
-                            padding: const EdgeInsets.only(right: 5),
-                            child: IconButton(
-                              onPressed: () {
-                                box.put(
-                                  movieDetails.id,
-                                  LikedModel(
-                                    title: widget.isTvShow
-                                        ? movieDetails.name!
-                                        : movieDetails.title!,
-                                    voteAverage: movieDetails.voteAverage,
-                                    posterPath: movieDetails.posterPath!,
-                                    isLiked:
-                                        !(box.get(movieDetails.id)?.isLiked ??
-                                            false),
-                                    genres:
-                                        genress.map((e) => e.name).toString(),
-                                  ),
-                                );
-                                setState(() {});
-                              },
-                              icon: box.get(movieDetails.id)?.isLiked ?? false
-                                  ? const Icon(IconsaxBold.heart)
-                                  : const Icon(IconsaxOutline.heart),
-                            ),
-                          )
-                        : const SizedBox(width: 0)
-                  ],
+                  actions: [],
                   flexibleSpace: FlexibleSpaceBar(
                     stretchModes: [
                       StretchMode.zoomBackground,
@@ -131,15 +101,6 @@ class _DetailPageState extends State<DetailPage> {
                           ),
                         );
                       },
-                      child: Image.network(
-                        '$imageUrl${movieDetails.posterPath!}',
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            color: Colors.grey,
-                            child: const Center(child: Text('No Image')),
-                          );
-                        },
-                      ),
                     ),
                   ),
                 ),
@@ -151,90 +112,158 @@ class _DetailPageState extends State<DetailPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Wrap(
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text(
-                                  widget.isTvShow
-                                      ? movieDetails.name!
-                                      : movieDetails.title!,
-                                  style: Theme.of(context).textTheme.titleLarge,
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => PhotoView(
+                                          imageProvider: NetworkImage(
+                                              '$imageUrl${movieDetails.posterPath!}'),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    width:
+                                        120, // Adjust the width as per your requirement
+                                    height:
+                                        180, // Adjust the height as per your requirement
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.2),
+                                          blurRadius: 5,
+                                          spreadRadius: 2,
+                                          offset: Offset(0, 3),
+                                        ),
+                                      ],
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.network(
+                                        scale: 4,
+                                        '$imageUrl${movieDetails.posterPath!}',
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return Container(
+                                            color: Colors.grey,
+                                            child: Center(
+                                              child: Text('No Image'),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Column(
+                                  children: [
+                                    Wrap(
+                                      children: [
+                                        Text(
+                                          widget.isTvShow
+                                              ? movieDetails.name!
+                                              : movieDetails.title!,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleLarge,
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          widget.isTvShow
+                                              ? movieDetails.firstAirDate
+                                                  .toString()
+                                                  .substring(0, 4)
+                                              : movieDetails.releaseDate
+                                                  .toString()
+                                                  .substring(0, 4),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium,
+                                        ),
+                                        Text(" . "
+                                            " Duration: ${movieDetails.runtime}"),
+                                      ],
+                                    ),
+                                    Container(
+                                      width:
+                                          220, // Adjust the width as per your requirement
+                                      child: Wrap(
+                                        alignment: WrapAlignment.center,
+                                        crossAxisAlignment:
+                                            WrapCrossAlignment.start,
+                                        children: [
+                                          Text(
+                                            genress
+                                                .map((genre) => genre.name)
+                                                .join(' , '),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium!,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(height: 5),
+                                    Row(
+                                      children: [
+                                        Image.asset(
+                                          'images/imdb-icon.png',
+                                          scale: 17,
+                                        ),
+                                        Text(
+                                          "  ${movieDetails.voteAverage.toStringAsFixed(1)} / 10",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                            Wrap(
-                              children: List.generate(
-                                genress.length,
-                                (genreIndex) => Padding(
-                                  padding:
-                                      const EdgeInsets.only(right: 10, top: 4),
-                                  child: Chip(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
+                            SizedBox(height: 10),
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 40,
+                              child: ElevatedButton.icon(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Videos_page(
+                                        movieid: movieDetails.id,
+                                        isTvShow: widget.isTvShow,
+                                      ),
                                     ),
-                                    side: const BorderSide(width: 0),
-                                    backgroundColor:
-                                        kBackgoundColor.withOpacity(.9),
-                                    label: Text(
-                                      "${genress[genreIndex].name}",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(color: Colors.white70),
+                                  );
+                                },
+                                label: Text("Watch Videos"),
+                                icon: const Icon(IconsaxOutline.play_circle),
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                    Color.fromARGB(255, 49, 39, 112),
+                                  ),
+                                  shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 6),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Icon(IconsaxBold.calendar),
-                                Text(
-                                  widget.isTvShow
-                                      ? movieDetails.firstAirDate
-                                          .toString()
-                                          .substring(0, 4)
-                                      : movieDetails.releaseDate
-                                          .toString()
-                                          .substring(0, 4),
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium,
-                                ),
-                                const SizedBox(width: 10),
-                                const Icon(IconsaxBold.star),
-                                Text(
-                                  "IMDB: ${movieDetails.voteAverage.toStringAsFixed(1)}",
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium,
-                                ),
-                                ElevatedButton.icon(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => Videos_page(
-                                          movieid: movieDetails.id,
-                                          isTvShow: widget.isTvShow,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  label: Text("Watch Videos"),
-                                  icon: const Icon(IconsaxOutline.play_circle),
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(
-                                      Color.fromARGB(255, 49, 39, 112),
-                                    ),
-                                    shape: MaterialStateProperty.all(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                            SizedBox(height: 5),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -276,7 +305,7 @@ class _DetailPageState extends State<DetailPage> {
                                     : SizedBox(height: 15),
                               ],
                             ),
-                            const SizedBox(height: 12),
+                            SizedBox(height: 5),
                             Text(
                               'Story Line',
                               style: Theme.of(context).textTheme.titleLarge,

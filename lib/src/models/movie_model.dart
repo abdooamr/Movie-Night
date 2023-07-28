@@ -53,6 +53,7 @@ class Result {
     this.originalName,
     this.firstAirDate,
     this.originCountry,
+    this.profilePath,
   });
 
   bool? adult;
@@ -73,6 +74,7 @@ class Result {
   String? originalName;
   DateTime? firstAirDate;
   List<String>? originCountry;
+  String? profilePath;
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
         adult: json["adult"],
@@ -82,13 +84,17 @@ class Result {
         originalTitle: json["original_title"],
         overview: json["overview"],
         posterPath: json["poster_path"],
-        genreIds: List<int>.from(json["genre_ids"].map((x) => x)),
+        genreIds: json["genre_ids"] != null
+            ? List<int>.from(json["genre_ids"].map((x) => x))
+            : null,
         popularity: json["popularity"].toDouble(),
         releaseDate: json["release_date"] == null
             ? null
             : DateTime.parse(json["release_date"]),
         video: json["video"],
-        voteAverage: json["vote_average"].toDouble(),
+        voteAverage: json["vote_average"] != null
+            ? json["vote_average"].toDouble()
+            : null,
         voteCount: json["vote_count"],
         name: json["name"],
         originalName: json["original_name"],
@@ -99,10 +105,11 @@ class Result {
             ? null
             : List<String>.from(json["origin_country"].map((x) => x)),
         mediaType: mediaTypeValues.map[json["media_type"]],
+        profilePath: json["profile_path"],
       );
 
   Map<String, dynamic> toJson() => {
-        "adult": adult,
+        "adult": adult == null ? null : adult,
         "backdrop_path": backdropPath,
         "id": id,
         "title": title,
@@ -125,13 +132,14 @@ class Result {
         "origin_country": originCountry == null
             ? null
             : List<dynamic>.from(originCountry!.map((x) => x)),
+        "profile_path": profilePath,
       };
 }
 
-enum MediaType { movie, tv }
+enum MediaType { movie, tv, person }
 
-final mediaTypeValues =
-    EnumValues({"movie": MediaType.movie, "tv": MediaType.tv});
+final mediaTypeValues = EnumValues(
+    {"movie": MediaType.movie, "tv": MediaType.tv, "person": MediaType.person});
 
 class EnumValues<T> {
   Map<String, T> map;

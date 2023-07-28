@@ -15,7 +15,7 @@ class LikedModelAdapter extends TypeAdapter<LikedModel> {
     return LikedModel(
       isLiked: fields[0] as bool,
       title: fields[1] as String,
-      genres: (fields[2] as List).cast<int>(),
+      genres: (fields[2] as String).split(',').join(' | '),
       voteAverage: fields[3] as double,
       posterPath: fields[4] as String,
     );

@@ -1,3 +1,4 @@
+import 'package:Movie_Night/src/pages/UI/castdetails.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/models/credit_model.dart';
 import 'package:Movie_Night/src/services/services.dart';
@@ -48,29 +49,39 @@ class _CastWidgetState extends State<CastWidget> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          CircleAvatar(
-                            backgroundColor: Colors.grey,
-                            radius: 40,
-                            child: ClipOval(
-                              child: FadeInImage(
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                    '$imageUrl${data[index].profilePath}'),
-                                placeholder: const NetworkImage(
-                                    'http://www.familylore.org/images/2/25/UnknownPerson.png'),
-                                imageErrorBuilder:
-                                    (context, error, stackTrace) {
-                                  return Image.network(
-                                      'http://www.familylore.org/images/2/25/UnknownPerson.png');
-                                },
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        Cast_DetailPage(id: data[index].id),
+                                  ));
+                            },
+                            child: CircleAvatar(
+                              backgroundColor: Colors.grey,
+                              radius: 40,
+                              child: ClipOval(
+                                child: FadeInImage(
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(
+                                      '$imageUrl${data[index].profilePath}'),
+                                  placeholder: const NetworkImage(
+                                      'http://www.familylore.org/images/2/25/UnknownPerson.png'),
+                                  imageErrorBuilder:
+                                      (context, error, stackTrace) {
+                                    return Image.network(
+                                        'http://www.familylore.org/images/2/25/UnknownPerson.png');
+                                  },
+                                ),
                               ),
                             ),
                           ),
                           SizedBox(
                             width: 100,
                             child: Text(
-                              data[index].name!,
+                              data[index].name.toString(),
                               textAlign: TextAlign.center,
                             ),
                           )

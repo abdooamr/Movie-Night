@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/services/services.dart';
 import 'package:Movie_Night/src/widgets/allwidget.dart';
+import 'package:query/query.dart';
 import '../../models/movie_model.dart';
 
 class ExplorePage extends StatefulWidget {
@@ -34,7 +35,10 @@ class _ExplorePageState extends State<ExplorePage> {
       children: [
         GestureDetector(
           onTap: () {
-            showSearch(context: context, delegate: Search());
+            showSearch(
+              context: context,
+              delegate: Search(),
+            );
           },
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),

@@ -39,9 +39,14 @@ class UpcomingMovies extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => DetailPage(
-                                    isTvShow: false,
+                                    isTvShow: headlineText.contains('Movies') ||
+                                            data[index].mediaType ==
+                                                MediaType.movie
+                                        ? false
+                                        : true,
                                     data: snapshot.data!,
-                                    index: index),
+                                    index: index,
+                                    id: data[index].id),
                               ));
                         },
                         child: ClipRRect(

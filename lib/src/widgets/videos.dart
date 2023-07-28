@@ -19,8 +19,8 @@ class Videos_list extends StatelessWidget {
     return FutureBuilder<Video>(
       future: future,
       builder: (context, snapshot) {
+        var data = snapshot.data?.results;
         if (snapshot.hasData) {
-          var data = snapshot.data?.results;
           return Padding(
             padding: const EdgeInsets.all(13.0),
             child: Column(
@@ -29,8 +29,7 @@ class Videos_list extends StatelessWidget {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.85,
                   child: ListView.builder(
-                    physics: BouncingScrollPhysics(
-                        parent: AlwaysScrollableScrollPhysics()),
+                    physics: BouncingScrollPhysics(),
                     scrollDirection: Axis.vertical,
                     itemCount: data!.length,
                     shrinkWrap: false,
@@ -102,7 +101,9 @@ class Videos_list extends StatelessWidget {
             ),
           );
         } else if (snapshot.hasError) {
-          throw snapshot.error.toString();
+          return const Center(
+            child: Text('No Videos'),
+          );
         } else {
           return Padding(
             padding:

@@ -25,19 +25,20 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
+    return ChangeNotifierProvider<ThemeProvider>(
       create: (context) => ThemeProvider(),
-      builder: (context, child) {
-        final themeProvider = Provider.of<ThemeProvider>(context);
-        return MaterialApp(
-          title: 'Movie app',
-          theme: MyThemes.lightTheme,
-          darkTheme: MyThemes.darkTheme,
-          themeMode: themeProvider.themeMode,
-          debugShowCheckedModeBanner: false,
-          home: AuthPage(),
-        );
-      },
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, child) {
+          return MaterialApp(
+            title: 'Movie app',
+            theme: MyThemes.lightTheme,
+            darkTheme: MyThemes.darkTheme,
+            themeMode: themeProvider.themeMode,
+            debugShowCheckedModeBanner: false,
+            home: AuthPage(),
+          );
+        },
+      ),
     );
   }
 }

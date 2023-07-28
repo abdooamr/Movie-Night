@@ -6,6 +6,7 @@ import 'package:Movie_Night/src/pages/Userpage/Update_User_details.dart';
 import 'package:Movie_Night/src/pages/UI/explore.dart';
 import 'package:Movie_Night/src/pages/UI/home_page.dart';
 import 'package:Movie_Night/src/pages/UI/liked.dart';
+import 'package:ficonsax/ficonsax.dart';
 
 class loggedmainpage extends StatefulWidget {
   const loggedmainpage({Key? key}) : super(key: key);
@@ -50,20 +51,20 @@ class _loggedmainpageState extends State<loggedmainpage> {
               selectedFontSize: 0,
               items: const [
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.home_outlined),
-                    activeIcon: Icon(Icons.home),
+                    icon: Icon(IconsaxOutline.home),
+                    activeIcon: Icon(IconsaxBold.home),
                     label: 'Home'),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.search),
-                    activeIcon: Icon(Icons.explore_rounded),
+                    icon: Icon(IconsaxOutline.search_normal),
+                    activeIcon: Icon(IconsaxBold.search_normal),
                     label: 'Explore'),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.favorite_border),
-                    activeIcon: Icon(Icons.favorite),
+                    icon: Icon(IconsaxOutline.heart),
+                    activeIcon: Icon(IconsaxBold.heart),
                     label: 'Liked'),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.person),
-                    activeIcon: Icon(Icons.person),
+                    icon: Icon(IconsaxOutline.user),
+                    activeIcon: Icon(IconsaxBold.user),
                     label: 'Login'),
               ]),
         ),

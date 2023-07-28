@@ -24,14 +24,20 @@ class Typeswitch extends StatelessWidget {
         children: <Widget>[
           GestureDetector(
             onTap: onTvShowSelected,
-            child: Text(
-              "TV Shows",
-              style: TextStyle(
-                color: tvshow ? Colors.white : Colors.grey,
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
+            child: Text("TV Shows",
+                style: tvshow
+                    ? Theme.of(context).textTheme.titleLarge
+                    : TextStyle(
+                        fontSize: 18,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                      )
+                // TextStyle(
+                //   color: tvshow ? Colors.white : Colors.grey,
+                //   fontSize: 18,
+                //   fontWeight: FontWeight.w500,
+                // ),
+                ),
           ),
           Text(
             "   |   ",
@@ -43,14 +49,14 @@ class Typeswitch extends StatelessWidget {
           ),
           GestureDetector(
             onTap: onMovieSelected,
-            child: Text(
-              "Movies",
-              style: TextStyle(
-                fontSize: 18,
-                color: movie ? Colors.white : Colors.grey,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
+            child: Text("Movies",
+                style: movie
+                    ? Theme.of(context).textTheme.titleLarge
+                    : TextStyle(
+                        fontSize: 18,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                      )),
           ),
         ],
       ),

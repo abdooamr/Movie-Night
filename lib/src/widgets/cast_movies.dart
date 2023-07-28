@@ -1,25 +1,25 @@
-import 'package:Movie_Night/src/pages/UI/detail_page2.dart';
+import 'package:Movie_Night/src/models/Knownfor_model.dart';
 import 'package:Movie_Night/src/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/pages/UI/detail_page.dart';
 import 'package:Movie_Night/src/utils/utils.dart';
 import '../models/movie_model.dart';
 
-class MoviesListView extends StatelessWidget {
-  const MoviesListView({
+class Cast_knownfor extends StatelessWidget {
+  const Cast_knownfor({
     required this.future,
     Key? key,
     required this.headlineText,
   }) : super(key: key);
   final String headlineText;
-  final Future<Model> future;
+  final Future<KnownFor> future;
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Model>(
+    return FutureBuilder<KnownFor>(
       future: future,
       builder: (context, snapshot) {
-        if (snapshot.hasData && snapshot.data!.results.isNotEmpty) {
-          var data = snapshot.data?.results;
+        if (snapshot.hasData) {
+          var data = snapshot.data?.cast;
           return Padding(
             padding: const EdgeInsets.all(15.0),
             child: Column(
@@ -44,23 +44,7 @@ class MoviesListView extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => DetailPage2(
-                                        isTvShow:
-                                            headlineText.contains('Movies') ||
-                                                    data[index].mediaType ==
-                                                        MediaType.movie
-                                                ? false
-                                                : true,
-                                        data: snapshot.data!,
-                                        index: index,
-                                        id: data[index].id,
-                                      ),
-                                    ));
-                              },
+                              onTap: () {},
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
                                 child: Image.network(
@@ -90,20 +74,19 @@ class MoviesListView extends StatelessWidget {
                                     MainAxisAlignment.spaceEvenly,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(data[index].title ?? data[index].name!,
+                                  Text(
+                                      data[index].title == null
+                                          ? data[index].name.toString()
+                                          : data[index].title.toString(),
                                       overflow: TextOverflow.ellipsis,
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyLarge),
-                                  Text(
-                                    data[index].genreIds!.isNotEmpty
-                                        ? getGenres(data[index].genreIds!)
-                                        : '',
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        color: Colors.grey.shade400,
-                                        fontSize: 13),
-                                  )
+                                  Text(data[index].character.toString(),
+                                      overflow: TextOverflow.ellipsis,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge),
                                 ],
                               ),
                             ),

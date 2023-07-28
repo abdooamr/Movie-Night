@@ -1,3 +1,4 @@
+import 'package:Movie_Night/src/models/tvshow_model.dart';
 import 'package:hive/hive.dart';
 part 'liked_model.g.dart';
 
@@ -8,7 +9,7 @@ class LikedModel extends HiveObject {
   @HiveField(1)
   String title;
   @HiveField(2)
-  List<int> genres;
+  String genres;
   @HiveField(3)
   double voteAverage;
   @HiveField(4)

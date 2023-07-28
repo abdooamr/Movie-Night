@@ -1,3 +1,4 @@
+import 'package:Movie_Night/src/components/Temp_text.dart';
 import 'package:Movie_Night/src/models/provider_model.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/models/credit_model.dart';
@@ -95,9 +96,8 @@ class _watch_provider_widgetState extends State<watch_provider_widget> {
             ],
           );
         } else if (snapshot.hasError) {
-          return Text(
-            "No platform offering to watch the movie on yet",
-            style: Theme.of(context).textTheme.titleLarge,
+          return TemporaryText(
+            text: 'No platform offering to watch the movie on yet',
           );
         } else {
           return const SizedBox.shrink();

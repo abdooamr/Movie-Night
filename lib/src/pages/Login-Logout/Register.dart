@@ -181,7 +181,7 @@ class _RegisterNewState extends State<RegisterNew> {
                         SizedBox(
                           height: 60,
                           width: 160,
-                          child: ElevatedButton(
+                          child: ElevatedButton.icon(
                             onPressed: () {
                               if (formkey.currentState!.validate()) {
                                 final user = Users(
@@ -201,7 +201,11 @@ class _RegisterNewState extends State<RegisterNew> {
                                 _uidcontroller.clear();
                               }
                             },
-                            child: Text(
+                            icon: Icon(
+                              Icons.app_registration_rounded,
+                              color: Colors.black,
+                            ),
+                            label: Text(
                               'Sign Up',
                               style:
                                   TextStyle(color: Colors.black, fontSize: 20),

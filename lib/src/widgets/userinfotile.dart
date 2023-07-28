@@ -38,7 +38,7 @@ class userinfotile extends StatelessWidget {
                 return buildUser(user, context);
               }).toList());
         } else {
-          return const Center(child: Text('Something went wrong.'));
+          return const Center(child: CircularProgressIndicator());
         }
       },
     );

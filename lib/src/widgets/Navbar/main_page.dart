@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/pages/UI/explore.dart';
 import 'package:Movie_Night/src/pages/UI/home_page.dart';
@@ -47,16 +48,16 @@ class _MainPageState extends State<MainPage> {
               selectedFontSize: 0,
               items: const [
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.home_outlined),
-                    activeIcon: Icon(Icons.home),
+                    icon: Icon(IconsaxOutline.home),
+                    activeIcon: Icon(IconsaxBold.home),
                     label: 'Home'),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.search),
-                    activeIcon: Icon(Icons.explore_rounded),
+                    icon: Icon(IconsaxOutline.search_normal),
+                    activeIcon: Icon(IconsaxBold.search_normal),
                     label: 'Explore'),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.person_outline),
-                    activeIcon: Icon(Icons.person),
+                    icon: Icon(IconsaxOutline.user),
+                    activeIcon: Icon(IconsaxBold.user),
                     label: 'Login'),
               ]),
         ),

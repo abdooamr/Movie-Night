@@ -1,3 +1,4 @@
+import 'package:Movie_Night/src/components/Temp_text.dart';
 import 'package:Movie_Night/src/components/allcomp.dart';
 import 'package:Movie_Night/src/models/provider_model.dart';
 import 'package:flutter/material.dart';
@@ -97,9 +98,8 @@ class _buy_provider_widgetState extends State<buy_provider_widget> {
             ],
           );
         } else if (snapshot.hasError) {
-          return Text(
-            "No platform offering to buy the movie yet",
-            style: Theme.of(context).textTheme.titleLarge,
+          return TemporaryText(
+            text: "No platform offering to buy the movie yet",
           );
         } else {
           return const SizedBox.shrink();

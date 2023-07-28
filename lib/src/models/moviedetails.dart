@@ -1,117 +1,145 @@
+// To parse this JSON data, do
+//
+//     final movieModel = movieModelFromJson(jsonString);
+
 import 'dart:convert';
 
-Result modelFromJson(String str) => Result.fromJson(json.decode(str));
+MovieModel movieModelFromJson(String str) =>
+    MovieModel.fromJson(json.decode(str));
 
-String modelToJson(Result data) => json.encode(data.toJson());
+String movieModelToJson(MovieModel data) => json.encode(data.toJson());
 
-class Result {
-  Result({
-    this.adult,
-    this.backdropPath,
-    this.id,
-    this.title,
-    this.originalTitle,
-    this.overview,
-    this.posterPath,
-    this.genreIds,
-    this.popularity,
-    this.releaseDate,
-    this.mediaType,
-    this.video,
-    this.voteAverage,
-    this.voteCount,
-    this.name,
-    this.originalName,
-    this.firstAirDate,
-    this.originCountry,
-  });
-
-  bool? adult;
+class MovieModel {
+  bool adult;
   String? backdropPath;
-  int? id;
-  String? title;
+  int? budget;
+  List<Genre> genres;
+  String homepage;
+  int id;
+  String? imdbId;
   String? originalTitle;
-  String? overview;
+  String overview;
+  double popularity;
   String? posterPath;
-  List<int>? genreIds;
-  double? popularity;
   DateTime? releaseDate;
-  MediaType? mediaType;
+  int? revenue;
+  int? runtime;
+  String? status;
+  String? tagline;
+  String? title;
   bool? video;
-  double? voteAverage;
-  int? voteCount;
+  double voteAverage;
+  int voteCount;
   String? name;
-  String? originalName;
+  int? numberOfEpisodes;
+  int? numberOfSeasons;
   DateTime? firstAirDate;
-  List<String>? originCountry;
 
-  factory Result.fromJson(Map<String, dynamic> json) => Result(
+  MovieModel(
+      {required this.adult,
+      required this.backdropPath,
+      required this.budget,
+      required this.genres,
+      required this.homepage,
+      required this.id,
+      required this.imdbId,
+      required this.originalTitle,
+      required this.overview,
+      required this.popularity,
+      required this.posterPath,
+      required this.releaseDate,
+      required this.revenue,
+      required this.runtime,
+      required this.status,
+      required this.tagline,
+      required this.title,
+      required this.video,
+      required this.voteAverage,
+      required this.voteCount,
+      required this.name,
+      required this.numberOfEpisodes,
+      required this.numberOfSeasons,
+      required this.firstAirDate});
+
+  factory MovieModel.fromJson(Map<String, dynamic> json) => MovieModel(
         adult: json["adult"],
         backdropPath: json["backdrop_path"],
+        budget: json["budget"],
+        genres: List<Genre>.from(json["genres"].map((x) => Genre.fromJson(x))),
+        homepage: json["homepage"],
         id: json["id"],
-        title: json["title"],
+        imdbId: json["imdb_id"],
         originalTitle: json["original_title"],
         overview: json["overview"],
+        popularity: json["popularity"]?.toDouble(),
         posterPath: json["poster_path"],
-        genreIds: List<int>.from(json["genre_ids"].map((x) => x)),
-        popularity: json["popularity"].toDouble(),
         releaseDate: json["release_date"] == null
             ? null
             : DateTime.parse(json["release_date"]),
+        revenue: json["revenue"],
+        runtime: json["runtime"],
+        status: json["status"],
+        tagline: json["tagline"],
+        title: json["title"],
         video: json["video"],
-        voteAverage: json["vote_average"].toDouble(),
+        voteAverage: json["vote_average"]?.toDouble(),
         voteCount: json["vote_count"],
-        name: json["name"],
-        originalName: json["original_name"],
+        name: json["name"].toString(),
         firstAirDate: json["first_air_date"] == null
             ? null
             : DateTime.parse(json["first_air_date"]),
-        originCountry: json["origin_country"] == null
-            ? null
-            : List<String>.from(json["origin_country"].map((x) => x)),
-        mediaType: mediaTypeValues.map[json["media_type"]],
+        numberOfEpisodes: json["number_of_episodes"],
+        numberOfSeasons: json["number_of_seasons"],
       );
 
   Map<String, dynamic> toJson() => {
         "adult": adult,
         "backdrop_path": backdropPath,
+        "budget": budget,
+        "genres": List<dynamic>.from(genres.map((x) => x.toJson())),
+        "homepage": homepage,
         "id": id,
-        "title": title,
+        "imdb_id": imdbId,
         "original_title": originalTitle,
         "overview": overview,
-        "poster_path": posterPath,
-        "genre_ids": List<dynamic>.from(genreIds!.map((x) => x)),
         "popularity": popularity,
+        "poster_path": posterPath,
         "release_date": releaseDate == null
             ? null
             : "${releaseDate?.year.toString().padLeft(4, '0')}-${releaseDate?.month.toString().padLeft(2, '0')}-${releaseDate?.day.toString().padLeft(2, '0')}",
+        "revenue": revenue,
+        "runtime": runtime,
+        "status": status,
+        "tagline": tagline,
+        "title": title,
         "video": video,
         "vote_average": voteAverage,
         "vote_count": voteCount,
         "name": name,
-        "original_name": originalName,
         "first_air_date": firstAirDate == null
             ? null
             : "${firstAirDate?.year.toString().padLeft(4, '0')}-${firstAirDate?.month.toString().padLeft(2, '0')}-${firstAirDate?.day.toString().padLeft(2, '0')}",
-        "origin_country": originCountry == null
-            ? null
-            : List<dynamic>.from(originCountry!.map((x) => x)),
+        "number_of_episodes": numberOfEpisodes,
+        "number_of_seasons": numberOfSeasons,
       };
 }
 
-enum MediaType { movie, tv }
+class Genre {
+  int id;
+  String name;
 
-final mediaTypeValues =
-    EnumValues({"movie": MediaType.movie, "tv": MediaType.tv});
+  Genre({
+    required this.id,
+    required this.name,
+  });
 
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
+  factory Genre.fromJson(Map<String, dynamic> json) => Genre(
+        id: json["id"],
+        name: json["name"],
+      );
 
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap;
-    return reverseMap;
-  }
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+      };
 }
