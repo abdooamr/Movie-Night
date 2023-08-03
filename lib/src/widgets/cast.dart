@@ -1,3 +1,4 @@
+import 'package:Movie_Night/src/components/Cached_image.dart';
 import 'package:Movie_Night/src/pages/UI/castdetails.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/models/credit_model.dart';
@@ -27,7 +28,7 @@ class _CastWidgetState extends State<CastWidget> {
     return FutureBuilder<Credit>(
       future: creditsFuture,
       builder: (context, snapshot) {
-        if (snapshot.data != null) {
+        if (snapshot.data != null && snapshot.hasData) {
           var data = snapshot.data?.cast;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,7 +38,7 @@ class _CastWidgetState extends State<CastWidget> {
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               AspectRatio(
-                aspectRatio: 2.1,
+                aspectRatio: 1.9,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,
@@ -71,7 +72,7 @@ class _CastWidgetState extends State<CastWidget> {
                                       'http://www.familylore.org/images/2/25/UnknownPerson.png'),
                                   imageErrorBuilder:
                                       (context, error, stackTrace) {
-                                    return Image.network(
+                                    return CachedImageCustom(
                                         'http://www.familylore.org/images/2/25/UnknownPerson.png');
                                   },
                                 ),
@@ -82,6 +83,17 @@ class _CastWidgetState extends State<CastWidget> {
                             width: 100,
                             child: Text(
                               data[index].name.toString(),
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.labelLarge,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 100,
+                            child: Text(
+                              "As ${data[index].character}",
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.labelMedium,
                               textAlign: TextAlign.center,
                             ),
                           )

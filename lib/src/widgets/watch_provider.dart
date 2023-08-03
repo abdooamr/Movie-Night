@@ -1,3 +1,4 @@
+import 'package:Movie_Night/src/components/Cached_image.dart';
 import 'package:Movie_Night/src/components/Temp_text.dart';
 import 'package:Movie_Night/src/models/provider_model.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +73,7 @@ class _watch_provider_widgetState extends State<watch_provider_widget> {
                                       'http://www.familylore.org/images/2/25/UnknownPerson.png'),
                                   imageErrorBuilder:
                                       (context, error, stackTrace) {
-                                    return Image.network(
+                                    return CachedImageCustom(
                                         'http://www.familylore.org/images/2/25/UnknownPerson.png');
                                   },
                                 ),

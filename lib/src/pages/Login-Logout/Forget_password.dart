@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class ForgetNew extends StatefulWidget {
   @override
@@ -58,7 +57,8 @@ class _ForgetNewState extends State<ForgetNew> {
                       padding: const EdgeInsets.only(left: 10),
                       child: Text(
                         "Forget Password ?",
-                        style: GoogleFonts.pacifico(
+                        style: TextStyle(
+                            fontFamily: 'Pacifico',
                             color: Colors.white,
                             fontSize: 35,
                             fontWeight: FontWeight.bold),
@@ -68,7 +68,8 @@ class _ForgetNewState extends State<ForgetNew> {
                       padding: const EdgeInsets.only(left: 10),
                       child: Text(
                         "Enter the email associated with your account",
-                        style: GoogleFonts.pacifico(
+                        style: TextStyle(
+                            fontFamily: 'Pacifico',
                             color: Colors.grey,
                             fontSize: 15,
                             fontWeight: FontWeight.bold),

@@ -1,6 +1,5 @@
 import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:Movie_Night/src/pages/allpages.dart';
 
 class loWelcomeScreen extends StatelessWidget {
@@ -22,9 +21,10 @@ class loWelcomeScreen extends StatelessWidget {
                         height: p1.maxHeight * 0.1,
                         child: Text(
                           'Hello',
-                          style: GoogleFonts.pacifico(
+                          style: TextStyle(
                               fontSize: 55,
-                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Pacifico',
+                              fontWeight: FontWeight.w700,
                               color: Colors.white),
                         ),
                       ),
@@ -32,8 +32,10 @@ class loWelcomeScreen extends StatelessWidget {
                         height: p1.maxHeight * 0.1,
                         child: Text(
                           'Welcome back ',
-                          style: GoogleFonts.pacifico(
-                              fontSize: 25, color: Colors.grey.shade100),
+                          style: TextStyle(
+                              fontFamily: 'Pacifico',
+                              fontSize: 25,
+                              color: Colors.grey.shade100),
                         ),
                       ),
                     ],
@@ -54,6 +56,19 @@ class loWelcomeScreen extends StatelessWidget {
                     ),
                   ]),
                 ),
+                // SingleChildScrollView(
+                //   scrollDirection: Axis.horizontal,
+                //   child: Row(children: [
+                //     Container(
+                //       alignment: Alignment.center,
+                //       child: Image.asset(
+                //         "images/mov.jpg",
+                //         scale: 2.5,
+                //         height: p1.maxWidth * 0.5,
+                //       ),
+                //     ),
+                //   ]),
+                // ),
                 SizedBox(
                   height: p1.maxHeight * 0.1,
                 ),
@@ -65,16 +80,16 @@ class loWelcomeScreen extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)),
-                        backgroundColor: Color.fromARGB(255, 186, 0, 35)),
+                        backgroundColor: Color.fromARGB(255, 49, 39, 112)),
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) {
-                          return LoginNew();
+                          return Login();
                         }),
                       );
                     },
-                    icon: Icon(IconsaxBold.login),
+                    icon: Icon(IconsaxBold.login_1),
                     label: Text(
                       'Log In',
                       style: TextStyle(
@@ -93,12 +108,12 @@ class loWelcomeScreen extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)),
-                        backgroundColor: Color.fromARGB(255, 186, 0, 35)),
+                        backgroundColor: Color.fromARGB(255, 49, 39, 112)),
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) {
-                          return RegisterNew();
+                          return Register();
                         }),
                       );
                     },

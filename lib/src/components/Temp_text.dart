@@ -20,7 +20,7 @@ class _TemporaryTextState extends State<TemporaryText> {
   }
 
   void _startTimer() {
-    Timer(Duration(seconds: 3), () {
+    Timer(Duration(seconds: 2), () {
       setState(() {
         _isVisible = false;
       });

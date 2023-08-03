@@ -175,8 +175,15 @@ class Liked extends StatelessWidget {
             ],
           );
         }
-        return const Center(
-          child: Text('No Item'),
+        return Center(
+          child: Text(
+            "Your Liked Movies List is Empty\nStart adding some movies to your likes and discover your favorites!",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
         );
       },
     );

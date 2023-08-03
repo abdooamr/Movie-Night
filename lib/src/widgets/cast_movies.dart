@@ -1,4 +1,6 @@
+import 'package:Movie_Night/src/components/Cached_image.dart';
 import 'package:Movie_Night/src/models/Knownfor_model.dart';
+import 'package:Movie_Night/src/pages/UI/detail_page.dart';
 
 import 'package:flutter/material.dart';
 
@@ -7,10 +9,12 @@ import 'package:Movie_Night/src/utils/utils.dart';
 class Cast_knownfor extends StatelessWidget {
   const Cast_knownfor({
     required this.future,
+    required this.istvshow,
     Key? key,
     required this.headlineText,
   }) : super(key: key);
   final String headlineText;
+  final bool istvshow;
   final Future<KnownFor> future;
   @override
   Widget build(BuildContext context) {
@@ -43,22 +47,39 @@ class Cast_knownfor extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => DetailPage(
+                                        isTvShow: istvshow,
+                                        index: index,
+                                        id: data[index].id,
+                                      ),
+                                    ));
+                              },
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
-                                child: Image.network(
-                                  '$imageUrl${data[index].posterPath}',
-                                  height: 240,
-                                  width: 170,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Container(
-                                      height: 240,
-                                      width: 170,
-                                      color: Colors.grey,
-                                    );
-                                  },
-                                ),
+                                child: CachedImageCustom(
+                                    height: 240,
+                                    width: 170,
+                                    '$imageUrl${data[index].posterPath}'
+                                    // height: 240,
+                                    // width: 170,
+                                    ),
+                                // child: Image.network(
+                                //   '$imageUrl${data[index].posterPath}',
+                                //   height: 240,
+                                //   width: 170,
+                                //   fit: BoxFit.cover,
+                                //   errorBuilder: (context, error, stackTrace) {
+                                //     return Container(
+                                //       height: 240,
+                                //       width: 170,
+                                //       color: Colors.grey,
+                                //     );
+                                //   },
+                                // ),
                               ),
                             ),
                             const SizedBox(

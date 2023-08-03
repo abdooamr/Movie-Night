@@ -1,6 +1,5 @@
 import 'package:Movie_Night/src/pages/Adminpages/add_admin.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:Movie_Night/src/pages/Adminpages/fulldetails.dart';
 import 'package:Movie_Night/src/pages/Adminpages/report_page.dart';
 
@@ -33,11 +32,12 @@ class Detailscategory extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('Details category', style: GoogleFonts.pacifico(fontSize: 40)),
+          Text('Details category',
+              style: TextStyle(fontFamily: 'Pacifico', fontSize: 40)),
           Center(
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.red,
+                    backgroundColor: Colors.red,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(32.0),
                     ),

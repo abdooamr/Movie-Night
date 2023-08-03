@@ -1,5 +1,7 @@
+import 'package:Movie_Night/src/pages/Userpage/Watchlist.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ficonsax/ficonsax.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
@@ -102,6 +104,7 @@ class _settings_screenState extends State<settings_screen> {
               : Container(),
           //SettingsGroup(title: "", children: <Widget>[]),
           SettingsGroup(title: "General", children: <Widget>[
+            watchlist(),
             Accountpage(),
             reportmeth(),
             feedbackmeth(),
@@ -114,6 +117,17 @@ class _settings_screenState extends State<settings_screen> {
       )),
     );
   }
+
+  Widget watchlist() => SimpleSettingsTile(
+        //colorxz: Theme.of(context).listTileTheme.tileColor,
+        title: "Watchlist",
+        subtitle: "",
+        leading: Iconwidget(icon: IconsaxBold.bookmark, color: Colors.purple),
+        onTap: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => userwatchlist()));
+        },
+      );
 
   Widget reportmeth() => SimpleSettingsTile(
         //colorxz: Theme.of(context).listTileTheme.tileColor,

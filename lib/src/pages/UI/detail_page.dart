@@ -1,6 +1,10 @@
+import 'package:Movie_Night/src/components/Cached_image.dart';
+import 'package:Movie_Night/src/components/squaretile.dart';
+import 'package:Movie_Night/src/components/stars.dart';
 import 'package:Movie_Night/src/models/liked_model.dart';
 import 'package:Movie_Night/src/models/moviedetails.dart';
 import 'package:Movie_Night/src/widgets/Buy_provider.dart';
+import 'package:Movie_Night/src/widgets/addtowatchlist.dart';
 import 'package:Movie_Night/src/widgets/watch_provider.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,21 +16,24 @@ import 'package:Movie_Night/src/utils/utils.dart';
 import 'package:Movie_Night/src/widgets/allwidget.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:simple_icons/simple_icons.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import '../../models/movie_model.dart';
 
 class DetailPage extends StatefulWidget {
   const DetailPage({
     Key? key,
-    required this.data,
-    required this.index,
+    this.data,
+    this.index,
     this.creditData,
     this.id,
     required this.isTvShow,
   }) : super(key: key);
 
-  final int index;
+  final int? index;
   final int? id;
-  final Model data;
+  final Model? data;
   final Credit? creditData;
   final bool isTvShow;
 
@@ -77,37 +84,7 @@ class _DetailPageState extends State<DetailPage> {
               slivers: [
                 SliverAppBar(
                   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  expandedHeight: MediaQuery.of(context).size.height / 2.1,
-                  actions: [
-                    isloggedin == true
-                        ? Padding(
-                            padding: const EdgeInsets.only(right: 5),
-                            child: IconButton(
-                              onPressed: () {
-                                box.put(
-                                  movieDetails.id,
-                                  LikedModel(
-                                    title: widget.isTvShow
-                                        ? movieDetails.name!
-                                        : movieDetails.title!,
-                                    voteAverage: movieDetails.voteAverage,
-                                    posterPath: movieDetails.posterPath!,
-                                    isLiked:
-                                        !(box.get(movieDetails.id)?.isLiked ??
-                                            false),
-                                    genres:
-                                        genress.map((e) => e.name).toString(),
-                                  ),
-                                );
-                                setState(() {});
-                              },
-                              icon: box.get(movieDetails.id)?.isLiked ?? false
-                                  ? const Icon(IconsaxBold.heart)
-                                  : const Icon(IconsaxOutline.heart),
-                            ),
-                          )
-                        : const SizedBox(width: 0)
-                  ],
+                  actions: [],
                   flexibleSpace: FlexibleSpaceBar(
                     stretchModes: [
                       StretchMode.zoomBackground,
@@ -115,28 +92,6 @@ class _DetailPageState extends State<DetailPage> {
                       StretchMode.fadeTitle,
                     ],
                     collapseMode: CollapseMode.parallax,
-                    background: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PhotoView(
-                              imageProvider: NetworkImage(
-                                  '$imageUrl${movieDetails.posterPath!}'),
-                            ),
-                          ),
-                        );
-                      },
-                      child: Image.network(
-                        '$imageUrl${movieDetails.posterPath!}',
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            color: Colors.grey,
-                            child: const Center(child: Text('No Image')),
-                          );
-                        },
-                      ),
-                    ),
                   ),
                 ),
                 SliverList(
@@ -147,90 +102,204 @@ class _DetailPageState extends State<DetailPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Wrap(
-                              children: [
-                                Text(
-                                  widget.isTvShow
-                                      ? movieDetails.name!
-                                      : movieDetails.title!,
-                                  style: Theme.of(context).textTheme.titleLarge,
-                                ),
-                              ],
-                            ),
-                            Wrap(
-                              children: List.generate(
-                                genress.length,
-                                (genreIndex) => Padding(
-                                  padding:
-                                      const EdgeInsets.only(right: 10, top: 4),
-                                  child: Chip(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    side: const BorderSide(width: 0),
-                                    backgroundColor:
-                                        kBackgoundColor.withOpacity(.9),
-                                    label: Text(
-                                      "${genress[genreIndex].name}",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(color: Colors.white70),
-                                    ),
-                                  ),
-                                ),
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                        '$imageUrl${movieDetails.backdropPath ?? movieDetails.posterPath}'),
+                                    fit: BoxFit.cover,
+                                    opacity: 0.3),
                               ),
-                            ),
-                            const SizedBox(height: 6),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Icon(IconsaxBold.calendar),
-                                Text(
-                                  widget.isTvShow
-                                      ? movieDetails.firstAirDate
-                                          .toString()
-                                          .substring(0, 4)
-                                      : movieDetails.releaseDate
-                                          .toString()
-                                          .substring(0, 4),
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium,
-                                ),
-                                const SizedBox(width: 10),
-                                const Icon(IconsaxBold.star),
-                                Text(
-                                  "IMDB: ${movieDetails.voteAverage.toStringAsFixed(1)}",
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium,
-                                ),
-                                ElevatedButton.icon(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => Videos_page(
-                                          movieid: movieDetails.id,
-                                          isTvShow: widget.isTvShow,
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => PhotoView(
+                                                imageProvider: NetworkImage(
+                                                    '$imageUrl${movieDetails.posterPath!}'),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          width:
+                                              120, // Adjust the width as per your requirement
+                                          height:
+                                              180, // Adjust the height as per your requirement
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black
+                                                    .withOpacity(0.2),
+                                                blurRadius: 5,
+                                                spreadRadius: 2,
+                                                offset: Offset(0, 3),
+                                              ),
+                                            ],
+                                          ),
+
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: CachedImageCustom(
+                                              movieDetails.posterPath == null
+                                                  ? 'images/placeholder.png'
+                                                  : '$imageUrl${movieDetails.posterPath!}',
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                    );
-                                  },
-                                  label: Text("Watch Videos"),
-                                  icon: const Icon(IconsaxOutline.play_circle),
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(
-                                      Color.fromARGB(255, 49, 39, 112),
-                                    ),
-                                    shape: MaterialStateProperty.all(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
+                                      Container(
+                                        width: 200,
+                                        child: Column(
+                                          // mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Wrap(
+                                              children: [
+                                                Text(
+                                                  widget.isTvShow
+                                                      ? movieDetails.name!
+                                                      : movieDetails.title!,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleLarge,
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  widget.isTvShow
+                                                      ? movieDetails
+                                                          .firstAirDate
+                                                          .toString()
+                                                          .substring(0, 4)
+                                                      : movieDetails.releaseDate
+                                                          .toString()
+                                                          .substring(0, 4),
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleSmall,
+                                                ),
+                                                SizedBox(width: 4),
+                                                widget.isTvShow == true
+                                                    ? Row(
+                                                        children: [
+                                                          Text(
+                                                            " ${movieDetails.status}",
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .titleSmall!
+                                                                .copyWith(
+                                                                    fontSize:
+                                                                        13),
+                                                          ),
+                                                        ],
+                                                      )
+                                                    : Row(
+                                                        children: [
+                                                          Text(" . "),
+                                                          Text(
+                                                            " ${movieDetails.runtime}" +
+                                                                " min",
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .titleSmall,
+                                                          ),
+                                                        ],
+                                                      )
+                                              ],
+                                            ),
+                                            // Adjust the width as per your requirement
+                                            Wrap(
+                                              children: [
+                                                Text(
+                                                  genress
+                                                      .map(
+                                                          (genre) => genre.name)
+                                                      .join(' , '),
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyMedium!,
+                                                ),
+                                              ],
+                                            ),
+
+                                            SizedBox(height: 5),
+                                            Row(
+                                              children: [
+                                                Image.asset(
+                                                  'images/imdb-icon.png',
+                                                  scale: 20,
+                                                ),
+                                                Text(
+                                                  "  ${movieDetails.voteAverage.toStringAsFixed(1)} / 10",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleMedium,
+                                                ),
+                                              ],
+                                            ),
+                                            StarRating(
+                                                movieDetails.voteAverage),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 10),
+                                  Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 40,
+                                    child: ElevatedButton.icon(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => Videos_page(
+                                              movieid: movieDetails.id,
+                                              isTvShow: widget.isTvShow,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      label: Text("Watch Videos"),
+                                      icon: const Icon(
+                                          IconsaxOutline.play_circle),
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                          Color.fromARGB(255, 49, 39, 112),
+                                        ),
+                                        shape: MaterialStateProperty.all(
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
+                            SizedBox(height: 5),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -272,17 +341,89 @@ class _DetailPageState extends State<DetailPage> {
                                     : SizedBox(height: 15),
                               ],
                             ),
-                            const SizedBox(height: 12),
-                            Text(
-                              'Story Line',
-                              style: Theme.of(context).textTheme.titleLarge,
-                            ),
-
-                            Text(
-                              movieDetails.overview,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                            isloggedin == false
+                                ? SizedBox.shrink()
+                                : Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      movieDetails.imdbId == null
+                                          ? SizedBox.shrink()
+                                          : SquareTile(
+                                              icon: SimpleIcons.imdb,
+                                              label: "IMDb",
+                                              onTap: () {
+                                                launchUrlString(
+                                                    'https://www.imdb.com/title/${movieDetails.imdbId}/');
+                                              }),
+                                      SquareTile(
+                                        icon:
+                                            box.get(movieDetails.id)?.isLiked ==
+                                                    true
+                                                ? IconsaxBold.heart
+                                                : IconsaxOutline.heart,
+                                        label: "Like",
+                                        onTap: () {
+                                          box.put(
+                                            movieDetails.id,
+                                            LikedModel(
+                                              title: widget.isTvShow
+                                                  ? movieDetails.name!
+                                                  : movieDetails.title!,
+                                              voteAverage:
+                                                  movieDetails.voteAverage,
+                                              posterPath:
+                                                  movieDetails.posterPath!,
+                                              isLiked: !(box
+                                                      .get(movieDetails.id)
+                                                      ?.isLiked ??
+                                                  false),
+                                              genres: genress
+                                                  .map((e) => e.name)
+                                                  .toString(),
+                                            ),
+                                          );
+                                          setState(() {});
+                                        },
+                                      ),
+                                      Watchlistwidget(
+                                          movieid: movieDetails.id,
+                                          istvshow: widget.isTvShow),
+                                      // SquareTile(
+                                      //     icon: IconsaxBold.bookmark,
+                                      //     label: "Add to Watchlist",
+                                      //     onTap: () {}),
+                                      SquareTile(
+                                          icon: Icons.share_rounded,
+                                          label: "Share",
+                                          onTap: () {
+                                            Share.share(
+                                              "Check out this movie ${movieDetails.title} on Movie Night App\n\nhttps://www.themoviedb.org/movie/${movieDetails.id}",
+                                            );
+                                          })
+                                    ],
+                                  ),
+                            SizedBox(height: 5),
+                            movieDetails.overview.isEmpty
+                                ? SizedBox.shrink()
+                                : Text(
+                                    'Story Line',
+                                    style:
+                                        Theme.of(context).textTheme.titleLarge,
+                                  ),
+                            movieDetails.overview.isEmpty
+                                ? SizedBox.shrink()
+                                : Text(
+                                    movieDetails.overview,
+                                    style:
+                                        Theme.of(context).textTheme.titleMedium,
+                                  ),
                             const SizedBox(height: 25),
+
+                            CastWidget(
+                              id: movieDetails.id,
+                              isTvShow: widget.isTvShow,
+                            ),
                             watch_provider_widget(
                               id: movieDetails.id,
                               isTvShow: widget.isTvShow,
@@ -294,13 +435,9 @@ class _DetailPageState extends State<DetailPage> {
                                 isTvShow: widget.isTvShow,
                               ),
                             ),
-                            CastWidget(
-                              id: movieDetails.id,
-                              isTvShow: widget.isTvShow,
-                            ),
+
                             SimilarWidget(
-                              data: widget.data,
-                              index: widget.index,
+                              id: movieDetails.id,
                               isTvShow: widget.isTvShow,
                             ),
                             // ReviewsWidget(

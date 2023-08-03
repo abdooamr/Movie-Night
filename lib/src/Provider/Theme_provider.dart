@@ -13,11 +13,15 @@ class ThemeProvider extends ChangeNotifier {
 class MyThemes {
   //-------------DARK THEME SETTINGS----
   static final darkTheme = ThemeData(
-      scaffoldBackgroundColor: Color(0xFF191a2c),
+      scaffoldBackgroundColor: Color(0xFF171823),
       brightness: Brightness.dark,
       fontFamily: 'poppins',
-      listTileTheme: const ListTileThemeData(tileColor: Color(0xFF191a2c)),
+      listTileTheme: const ListTileThemeData(tileColor: Color(0xFF171823)),
       iconTheme: const IconThemeData(color: Colors.white),
+      cardColor: Color.fromARGB(255, 28, 28, 30),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.grey.shade500),
       textTheme: const TextTheme(
           bodyMedium: TextStyle(
             color: Colors.white,
@@ -39,7 +43,12 @@ class MyThemes {
       brightness: Brightness.light,
       fontFamily: 'poppins',
       listTileTheme: const ListTileThemeData(tileColor: Colors.white),
-      iconTheme: const IconThemeData(color: Colors.white),
+      iconTheme: const IconThemeData(color: Colors.black),
+      cardColor: Color.fromARGB(255, 86, 60, 133),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: Colors.white,
+          selectedItemColor: Colors.black,
+          unselectedItemColor: Colors.grey.shade500),
       textTheme: const TextTheme(
           bodyMedium: TextStyle(
             color: Colors.white,

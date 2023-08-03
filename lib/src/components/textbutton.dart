@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class customtextbutton extends StatelessWidget {
   final String Texts;
@@ -21,7 +20,8 @@ class customtextbutton extends StatelessWidget {
         },
         child: Text(
           Texts,
-          style: GoogleFonts.pacifico(
+          style: TextStyle(
+            fontFamily: 'Pacifico',
             color: Colors.red,
             fontSize: textsize,
           ),

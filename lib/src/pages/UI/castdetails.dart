@@ -1,3 +1,4 @@
+import 'package:Movie_Night/src/components/Cached_image.dart';
 import 'package:Movie_Night/src/models/Knownfor_model.dart';
 import 'package:Movie_Night/src/models/cast_model.dart';
 import 'package:Movie_Night/src/widgets/cast_movies.dart';
@@ -75,15 +76,17 @@ class _DetailPageState extends State<Cast_DetailPage> {
                           ),
                         );
                       },
-                      child: Image.network(
-                        '$imageUrl${castdetails.profilePath}',
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            color: Colors.grey,
-                            child: const Center(child: Text('No Image')),
-                          );
-                        },
-                      ),
+                      child: CachedImageCustom(
+                          '$imageUrl${castdetails.profilePath}'),
+                      // child: Image.network(
+                      //   '$imageUrl${castdetails.profilePath}',
+                      //   errorBuilder: (context, error, stackTrace) {
+                      //     return Container(
+                      //       color: Colors.grey,
+                      //       child: const Center(child: Text('No Image')),
+                      //     );
+                      //   },
+                      // ),
                     ),
                   ),
                 ),
@@ -179,9 +182,11 @@ class _DetailPageState extends State<Cast_DetailPage> {
                               style: Theme.of(context).textTheme.titleSmall,
                             ),
                             Cast_knownfor(
+                                istvshow: false,
                                 future: castmovies,
                                 headlineText: "Movies Known For"),
                             Cast_knownfor(
+                                istvshow: true,
                                 future: casttvshows,
                                 headlineText: "Tv Shows Known For"),
 

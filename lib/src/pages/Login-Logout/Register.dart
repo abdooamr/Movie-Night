@@ -4,18 +4,18 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/pages/allpages.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:Movie_Night/src/models/user_model.dart';
 import 'package:Movie_Night/src/services/googleauth.dart';
 import 'package:Movie_Night/src/components/allcomp.dart';
 
-class RegisterNew extends StatefulWidget {
+class Register extends StatefulWidget {
   @override
-  _RegisterNewState createState() => _RegisterNewState();
+  _RegisterState createState() => _RegisterState();
 }
 
-class _RegisterNewState extends State<RegisterNew> {
+class _RegisterState extends State<Register> {
   final prrfilepicture = "";
   final formkey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
@@ -233,13 +233,14 @@ class _RegisterNewState extends State<RegisterNew> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(builder: (context) {
-                                      return LoginNew();
+                                      return Login();
                                     }),
                                   );
                                 },
                                 child: Text(
                                   'Log In',
-                                  style: GoogleFonts.pacifico(
+                                  style: TextStyle(
+                                    fontFamily: 'Pacifico',
                                     color: Colors.red,
                                     fontSize: 20,
                                   ),
@@ -253,7 +254,7 @@ class _RegisterNewState extends State<RegisterNew> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               // google button
-                              SquareTile(
+                              Square_Tile(
                                   onTap: () {
                                     googleauth().signInWithGoogle();
                                     Navigator.pop(context);

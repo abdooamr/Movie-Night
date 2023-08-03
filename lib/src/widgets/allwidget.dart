@@ -1,5 +1,5 @@
 export 'Navbar/loggedinmainpage.dart';
-export 'Navbar/main_page.dart';
+export 'Navbar/Navbar.dart';
 export 'carousel_slider.dart';
 export 'cast.dart';
 export 'iconWidget.dart';

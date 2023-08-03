@@ -1,4 +1,6 @@
-import 'package:Movie_Night/src/pages/UI/detail_page2.dart';
+import 'package:Movie_Night/src/components/Cached_image.dart';
+import 'package:Movie_Night/src/pages/UI/detail_page.dart';
+
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/utils/utils.dart';
 import '../models/movie_model.dart';
@@ -46,7 +48,7 @@ class MoviesListView extends StatelessWidget {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => DetailPage2(
+                                      builder: (context) => DetailPage(
                                         isTvShow:
                                             headlineText.contains('Movies') ||
                                                     data[index].mediaType ==
@@ -61,19 +63,26 @@ class MoviesListView extends StatelessWidget {
                               },
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
-                                child: Image.network(
-                                  '$imageUrl${data[index].posterPath}',
-                                  height: 240,
-                                  width: 170,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Container(
-                                      height: 240,
-                                      width: 170,
-                                      color: Colors.grey,
-                                    );
-                                  },
-                                ),
+                                child: CachedImageCustom(
+                                    height: 240,
+                                    width: 170,
+                                    '$imageUrl${data[index].posterPath}'
+                                    // height: 240,
+                                    // width: 170,
+                                    ),
+                                // child: Image.network(
+                                //   '$imageUrl${data[index].posterPath}',
+                                //   height: 240,
+                                //   width: 170,
+                                //   fit: BoxFit.cover,
+                                //   errorBuilder: (context, error, stackTrace) {
+                                //     return Container(
+                                //       height: 240,
+                                //       width: 170,
+                                //       color: Colors.grey,
+                                //     );
+                                //   },
+                                // ),
                               ),
                             ),
                             const SizedBox(

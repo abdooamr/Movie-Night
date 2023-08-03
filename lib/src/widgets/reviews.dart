@@ -1,3 +1,4 @@
+import 'package:Movie_Night/src/components/Cached_image.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/models/review_model.dart';
 import 'package:Movie_Night/src/services/services.dart';
@@ -53,7 +54,7 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                               placeholder: const NetworkImage(
                                   'http://www.familylore.org/images/2/25/UnknownPerson.png'),
                               imageErrorBuilder: (context, error, stackTrace) {
-                                return Image.network(
+                                return CachedImageCustom(
                                     'http://www.familylore.org/images/2/25/UnknownPerson.png');
                               },
                             ),

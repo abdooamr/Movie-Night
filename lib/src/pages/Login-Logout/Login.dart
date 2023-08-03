@@ -1,19 +1,20 @@
 // ignore_for_file: body_might_complete_normally_catch_error
 
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:Movie_Night/src/components/allcomp.dart';
 import 'package:Movie_Night/src/pages/allpages.dart';
 import 'package:Movie_Night/src/services/googleauth.dart';
 
-class LoginNew extends StatefulWidget {
+class Login extends StatefulWidget {
   @override
-  _LoginNewState createState() => _LoginNewState();
+  _LoginState createState() => _LoginState();
 }
 
-class _LoginNewState extends State<LoginNew> {
+class _LoginState extends State<Login> {
   final formkey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -82,7 +83,8 @@ class _LoginNewState extends State<LoginNew> {
                   padding: const EdgeInsets.only(left: 10),
                   child: Text(
                     "Login",
-                    style: GoogleFonts.pacifico(
+                    style: TextStyle(
+                        fontFamily: 'Pacifico',
                         color: Colors.white,
                         fontSize: 35,
                         fontWeight: FontWeight.bold),
@@ -92,7 +94,8 @@ class _LoginNewState extends State<LoginNew> {
                   padding: const EdgeInsets.only(left: 10),
                   child: Text(
                     "Please sign in to continue",
-                    style: GoogleFonts.pacifico(
+                    style: TextStyle(
+                        fontFamily: 'Pacifico',
                         color: Colors.grey,
                         fontSize: 15,
                         fontWeight: FontWeight.bold),
@@ -136,15 +139,16 @@ class _LoginNewState extends State<LoginNew> {
                               SignIn();
                             },
                             icon: Icon(
-                              Icons.login_rounded,
-                              color: Colors.black,
+                              IconsaxBold.login_1,
+                              color: Colors.white,
                             ),
                             label: Text(
                               'Sign In',
                               style:
-                                  TextStyle(color: Colors.black, fontSize: 20),
+                                  TextStyle(color: Colors.white, fontSize: 20),
                             ),
                             style: ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromARGB(255, 49, 39, 112),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
                                       40)), // This is what you need!
@@ -162,8 +166,9 @@ class _LoginNewState extends State<LoginNew> {
                             },
                             child: Text(
                               'Forget Password?',
-                              style: GoogleFonts.pacifico(
-                                color: Colors.red,
+                              style: TextStyle(
+                                fontFamily: 'Pacifico',
+                                color: Colors.deepPurpleAccent,
                                 fontSize: 15,
                               ),
                             )),
@@ -178,7 +183,7 @@ class _LoginNewState extends State<LoginNew> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 // google button
-                                SquareTile(
+                                Square_Tile(
                                     onTap: () {
                                       googleauth().signInWithGoogle();
                                       Navigator.pop(context);
@@ -190,7 +195,8 @@ class _LoginNewState extends State<LoginNew> {
                           children: [
                             Text(
                               "Not a member? ",
-                              style: GoogleFonts.pacifico(
+                              style: TextStyle(
+                                  fontFamily: 'Pacifico',
                                   color: Colors.white,
                                   //fontWeight: FontWeight.bold,
                                   fontSize: 20),
@@ -200,14 +206,15 @@ class _LoginNewState extends State<LoginNew> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(builder: (context) {
-                                      return RegisterNew();
+                                      return Register();
                                     }),
                                   );
                                 },
                                 child: Text(
                                   'Register now',
-                                  style: GoogleFonts.pacifico(
-                                    color: Colors.red,
+                                  style: TextStyle(
+                                    fontFamily: 'Pacifico',
+                                    color: Colors.deepPurpleAccent,
                                     fontSize: 20,
                                   ),
                                 )),
