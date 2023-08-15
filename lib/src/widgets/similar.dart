@@ -1,6 +1,9 @@
+import 'package:Movie_Night/generated/l10n.dart';
+import 'package:Movie_Night/src/Provider/langprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/services/services.dart';
 import 'package:Movie_Night/src/widgets/movies_listview.dart';
+import 'package:provider/provider.dart';
 import '../models/movie_model.dart';
 
 class SimilarWidget extends StatefulWidget {
@@ -15,9 +18,13 @@ class SimilarWidget extends StatefulWidget {
 
 class _SimilarWidgetState extends State<SimilarWidget> {
   late Future<Model> _future;
+  late DropdownProvider dropdownProvider;
+
   @override
   void initState() {
-    _future = getrecommendations(widget.id, widget.isTvShow);
+    dropdownProvider = Provider.of<DropdownProvider>(context, listen: false);
+    _future = getrecommendations(
+        widget.id, widget.isTvShow, dropdownProvider.selectedValue);
     super.initState();
   }
 
@@ -25,7 +32,7 @@ class _SimilarWidgetState extends State<SimilarWidget> {
   Widget build(BuildContext context) {
     return MoviesListView(
       future: _future,
-      headlineText: 'Recommendation',
+      headlineText: S.of(context).Recommendation,
     );
   }
 }

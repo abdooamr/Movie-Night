@@ -1,9 +1,12 @@
+import 'package:Movie_Night/generated/l10n.dart';
+import 'package:Movie_Night/src/Provider/langprovider.dart';
 import 'package:Movie_Night/src/components/Cached_image.dart';
 import 'package:Movie_Night/src/components/Temp_text.dart';
-import 'package:Movie_Night/src/models/provider_model.dart';
+import 'package:Movie_Night/src/models/video_prov_model.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/services/services.dart';
 import 'package:Movie_Night/src/utils/utils.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class watch_provider_widget extends StatefulWidget {
@@ -19,9 +22,13 @@ class watch_provider_widget extends StatefulWidget {
 
 class _watch_provider_widgetState extends State<watch_provider_widget> {
   late Future<Watchprovider?> watchfuture;
+  late DropdownProvider dropdownProvider;
+
   @override
   void initState() {
-    watchfuture = getprovider(widget.id, widget.isTvShow);
+    dropdownProvider = Provider.of<DropdownProvider>(context, listen: false);
+    watchfuture =
+        getprovider(widget.id, widget.isTvShow, dropdownProvider.selectedValue);
     super.initState();
   }
 
@@ -37,7 +44,7 @@ class _watch_provider_widgetState extends State<watch_provider_widget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Watch movie on:',
+                S.of(context).watchon,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               AspectRatio(
@@ -84,6 +91,7 @@ class _watch_provider_widgetState extends State<watch_provider_widget> {
                             width: 100,
                             child: Text(
                               data[index]!.providerName!,
+                              overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.center,
                             ),
                           )
@@ -97,7 +105,7 @@ class _watch_provider_widgetState extends State<watch_provider_widget> {
           );
         } else if (snapshot.hasError) {
           return TemporaryText(
-            text: 'No platform offering to watch the movie on yet',
+            text: S.of(context).nowatchmovieon,
           );
         } else {
           return const SizedBox.shrink();

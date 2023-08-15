@@ -4,7 +4,7 @@ class Customvalformfield extends StatefulWidget {
   final TextEditingController controller;
   final String labelText;
   final bool obscureText;
-  final String validation;
+  final String? validation;
   final IconData iconshape;
   final String? valitext;
 
@@ -13,7 +13,7 @@ class Customvalformfield extends StatefulWidget {
     required this.labelText,
     required this.controller,
     required this.obscureText,
-    required this.validation,
+    this.validation,
     this.valitext,
     required this.iconshape,
   }) : super(key: key);
@@ -55,7 +55,7 @@ class _CustomvalformfieldState extends State<Customvalformfield> {
         controller: widget.controller,
         obscureText: widget.obscureText,
         validator: (value) {
-          if (value!.isEmpty || !RegExp(widget.validation).hasMatch(value)) {
+          if (value!.isEmpty || !RegExp(widget.validation!).hasMatch(value)) {
             return widget.valitext;
           } else
             return null;

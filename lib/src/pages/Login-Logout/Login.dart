@@ -1,13 +1,13 @@
 // ignore_for_file: body_might_complete_normally_catch_error
-
+import 'package:Movie_Night/generated/l10n.dart';
+import 'package:Movie_Night/src/Provider/allproviders.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:Movie_Night/src/components/allcomp.dart';
 import 'package:Movie_Night/src/pages/allpages.dart';
-import 'package:Movie_Night/src/services/googleauth.dart';
+import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -57,6 +57,7 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    var user_Provider = Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -82,7 +83,7 @@ class _LoginState extends State<Login> {
                 Padding(
                   padding: const EdgeInsets.only(left: 10),
                   child: Text(
-                    "Login",
+                    S.of(context).loginbuttonlabel,
                     style: TextStyle(
                         fontFamily: 'Pacifico',
                         color: Colors.white,
@@ -93,7 +94,7 @@ class _LoginState extends State<Login> {
                 Padding(
                   padding: const EdgeInsets.only(left: 10),
                   child: Text(
-                    "Please sign in to continue",
+                    S.of(context).logintocontinue,
                     style: TextStyle(
                         fontFamily: 'Pacifico',
                         color: Colors.grey,
@@ -112,7 +113,7 @@ class _LoginState extends State<Login> {
                     child: Column(
                       children: [
                         Customvalformfield(
-                          labelText: "Email",
+                          labelText: S.of(context).emailaddresslabel,
                           controller: _emailController,
                           obscureText: false,
                           validation: emailvalidation,
@@ -122,7 +123,7 @@ class _LoginState extends State<Login> {
                           height: 20,
                         ),
                         Customvalformfield(
-                          labelText: "Password",
+                          labelText: S.of(context).passwordlabel,
                           controller: _passwordController,
                           obscureText: true,
                           validation: passwordvalidation,
@@ -143,7 +144,7 @@ class _LoginState extends State<Login> {
                               color: Colors.white,
                             ),
                             label: Text(
-                              'Sign In',
+                              S.of(context).loginbuttonlabel,
                               style:
                                   TextStyle(color: Colors.white, fontSize: 20),
                             ),
@@ -165,7 +166,7 @@ class _LoginState extends State<Login> {
                               );
                             },
                             child: Text(
-                              'Forget Password?',
+                              S.of(context).forgotpasswordlabel,
                               style: TextStyle(
                                 fontFamily: 'Pacifico',
                                 color: Colors.deepPurpleAccent,
@@ -185,7 +186,7 @@ class _LoginState extends State<Login> {
                                 // google button
                                 Square_Tile(
                                     onTap: () {
-                                      googleauth().signInWithGoogle();
+                                      user_Provider.signInWithGoogle();
                                       Navigator.pop(context);
                                     },
                                     imagePath: 'images/google.png'),
@@ -194,7 +195,7 @@ class _LoginState extends State<Login> {
                         Row(
                           children: [
                             Text(
-                              "Not a member? ",
+                              S.of(context).notamemberlabel,
                               style: TextStyle(
                                   fontFamily: 'Pacifico',
                                   color: Colors.white,
@@ -211,7 +212,7 @@ class _LoginState extends State<Login> {
                                   );
                                 },
                                 child: Text(
-                                  'Register now',
+                                  S.of(context).registarnowlabel,
                                   style: TextStyle(
                                     fontFamily: 'Pacifico',
                                     color: Colors.deepPurpleAccent,

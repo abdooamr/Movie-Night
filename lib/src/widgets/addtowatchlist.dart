@@ -1,3 +1,4 @@
+import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/components/squaretile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -77,7 +78,9 @@ class _WatchlistwidgetState extends State<Watchlistwidget> {
   Widget build(BuildContext context) {
     return SquareTile(
       icon: isInWatchlist ? IconsaxBold.trash : IconsaxBold.bookmark,
-      label: isInWatchlist ? "Remove from Watchlist" : "Add to Watchlist",
+      label: isInWatchlist
+          ? S.of(context).removefromwatchlist
+          : S.of(context).addtowatchlist,
       onTap: () {
         _addMovieToWatchlist(widget.movieid);
       },

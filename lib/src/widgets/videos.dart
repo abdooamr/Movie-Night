@@ -106,7 +106,10 @@ class Videos_list extends StatelessWidget {
             padding:
                 EdgeInsets.only(top: MediaQuery.of(context).size.height / 2.5),
             child: const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                color: Colors.deepPurpleAccent,
+                strokeWidth: 3,
+              ),
             ),
           );
         }

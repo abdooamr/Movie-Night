@@ -1,3 +1,5 @@
+import 'package:Movie_Night/generated/l10n.dart';
+import 'package:Movie_Night/src/Provider/langprovider.dart';
 import 'package:Movie_Night/src/components/Cached_image.dart';
 import 'package:Movie_Night/src/components/squaretile.dart';
 import 'package:Movie_Night/src/components/stars.dart';
@@ -16,6 +18,7 @@ import 'package:Movie_Night/src/utils/utils.dart';
 import 'package:Movie_Night/src/widgets/allwidget.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:simple_icons/simple_icons.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -54,11 +57,15 @@ class _DetailPageState extends State<DetailPage> {
     }
   }
 
+  late DropdownProvider dropdownProvider;
+
   @override
   void initState() {
+    dropdownProvider = Provider.of<DropdownProvider>(context, listen: false);
     super.initState();
     isLoggedIn();
-    details = getdetails(widget.id!, widget.isTvShow);
+    details =
+        getdetails(widget.id!, widget.isTvShow, dropdownProvider.selectedValue);
   }
 
   @override
@@ -69,7 +76,11 @@ class _DetailPageState extends State<DetailPage> {
         future: details,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+                child: CircularProgressIndicator(
+              color: Colors.deepPurpleAccent,
+              strokeWidth: 3,
+            ));
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
@@ -216,7 +227,9 @@ class _DetailPageState extends State<DetailPage> {
                                                           Text(" . "),
                                                           Text(
                                                             " ${movieDetails.runtime}" +
-                                                                " min",
+                                                                S
+                                                                    .of(context)
+                                                                    .minute,
                                                             style: Theme.of(
                                                                     context)
                                                                 .textTheme
@@ -279,7 +292,8 @@ class _DetailPageState extends State<DetailPage> {
                                           ),
                                         );
                                       },
-                                      label: Text("Watch Videos"),
+                                      label: Text(
+                                          S.of(context).watchvideosbuttonlabel),
                                       icon: const Icon(
                                           IconsaxOutline.play_circle),
                                       style: ButtonStyle(
@@ -311,7 +325,8 @@ class _DetailPageState extends State<DetailPage> {
                                             color: Colors.white,
                                           ),
                                           Text(
-                                            "  Number of Seasons: " +
+                                            S.of(context).numberofseasons +
+                                                ": " +
                                                 movieDetails.numberOfSeasons
                                                     .toString(),
                                             style: Theme.of(context)
@@ -329,7 +344,8 @@ class _DetailPageState extends State<DetailPage> {
                                             color: Colors.red,
                                           ),
                                           Text(
-                                            "  Number of Episodes: " +
+                                            S.of(context).numberofepisodes +
+                                                ": " +
                                                 movieDetails.numberOfEpisodes
                                                     .toString(),
                                             style: Theme.of(context)
@@ -362,7 +378,7 @@ class _DetailPageState extends State<DetailPage> {
                                                     true
                                                 ? IconsaxBold.heart
                                                 : IconsaxOutline.heart,
-                                        label: "Like",
+                                        label: S.of(context).like,
                                         onTap: () {
                                           box.put(
                                             movieDetails.id,
@@ -381,6 +397,7 @@ class _DetailPageState extends State<DetailPage> {
                                               genres: genress
                                                   .map((e) => e.name)
                                                   .toString(),
+                                              id: movieDetails.id,
                                             ),
                                           );
                                           setState(() {});
@@ -395,7 +412,7 @@ class _DetailPageState extends State<DetailPage> {
                                       //     onTap: () {}),
                                       SquareTile(
                                           icon: Icons.share_rounded,
-                                          label: "Share",
+                                          label: S.of(context).share,
                                           onTap: () {
                                             Share.share(
                                               "Check out this movie ${movieDetails.title} on Movie Night App\n\nhttps://www.themoviedb.org/movie/${movieDetails.id}",
@@ -407,7 +424,7 @@ class _DetailPageState extends State<DetailPage> {
                             movieDetails.overview.isEmpty
                                 ? SizedBox.shrink()
                                 : Text(
-                                    'Story Line',
+                                    S.of(context).storyline,
                                     style:
                                         Theme.of(context).textTheme.titleLarge,
                                   ),

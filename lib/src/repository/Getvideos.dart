@@ -1,7 +1,9 @@
+import 'package:Movie_Night/src/Provider/langprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/models/video_model.dart';
 import 'package:Movie_Night/src/services/services.dart';
 import 'package:Movie_Night/src/widgets/videos.dart';
+import 'package:provider/provider.dart';
 
 class Videos_page extends StatefulWidget {
   final int? movieid;
@@ -14,8 +16,12 @@ class Videos_page extends StatefulWidget {
 
 class _Videos_pageState extends State<Videos_page> {
   late Future<Video> VideosFuture;
+  late DropdownProvider dropdownProvider;
+
   void initState() {
-    VideosFuture = getyoutubeid(widget.movieid!, widget.isTvShow);
+    dropdownProvider = Provider.of<DropdownProvider>(context, listen: false);
+    VideosFuture = getyoutubeid(
+        widget.movieid!, widget.isTvShow, dropdownProvider.selectedValue);
     super.initState();
   }
 

@@ -12,6 +12,7 @@ class TemporaryText extends StatefulWidget {
 
 class _TemporaryTextState extends State<TemporaryText> {
   bool _isVisible = true;
+  late Timer _timer; // Declare the Timer variable
 
   @override
   void initState() {
@@ -20,11 +21,19 @@ class _TemporaryTextState extends State<TemporaryText> {
   }
 
   void _startTimer() {
-    Timer(Duration(seconds: 2), () {
-      setState(() {
-        _isVisible = false;
-      });
+    _timer = Timer(Duration(seconds: 2), () {
+      if (mounted) {
+        setState(() {
+          _isVisible = false;
+        });
+      }
     });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel(); // Cancel the timer when the widget is disposed
+    super.dispose();
   }
 
   @override

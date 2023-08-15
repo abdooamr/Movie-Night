@@ -1,3 +1,4 @@
+import 'package:Movie_Night/src/Provider/langprovider.dart';
 import 'package:Movie_Night/src/components/Cached_image.dart';
 import 'package:Movie_Night/src/models/Knownfor_model.dart';
 import 'package:Movie_Night/src/models/cast_model.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/services/services.dart';
 import 'package:Movie_Night/src/utils/utils.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:intl/intl.dart';
 
@@ -26,13 +28,17 @@ class _DetailPageState extends State<Cast_DetailPage> {
   late Future<CastModel> details;
   late Future<KnownFor> castmovies;
   late Future<KnownFor> casttvshows;
+  late DropdownProvider dropdownProvider;
 
   @override
   void initState() {
+    dropdownProvider = Provider.of<DropdownProvider>(context, listen: false);
     super.initState();
-    details = getcastdetails(widget.id!);
-    castmovies = getcastknownfor(widget.id!, false);
-    casttvshows = getcastknownfor(widget.id!, true);
+    details = getcastdetails(widget.id!, dropdownProvider.selectedValue);
+    castmovies =
+        getcastknownfor(widget.id!, false, dropdownProvider.selectedValue);
+    casttvshows =
+        getcastknownfor(widget.id!, true, dropdownProvider.selectedValue);
   }
 
   @override
@@ -42,7 +48,11 @@ class _DetailPageState extends State<Cast_DetailPage> {
         future: details,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+                child: CircularProgressIndicator(
+              color: Colors.deepPurpleAccent,
+              strokeWidth: 3,
+            ));
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {

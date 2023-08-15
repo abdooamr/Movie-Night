@@ -1,3 +1,5 @@
+import 'package:Movie_Night/generated/l10n.dart';
+import 'package:Movie_Night/src/widgets/changelangwidget.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/pages/allpages.dart';
@@ -20,7 +22,7 @@ class loWelcomeScreen extends StatelessWidget {
                       Container(
                         height: p1.maxHeight * 0.1,
                         child: Text(
-                          'Hello',
+                          S.of(context).hello,
                           style: TextStyle(
                               fontSize: 55,
                               fontFamily: 'Pacifico',
@@ -31,7 +33,7 @@ class loWelcomeScreen extends StatelessWidget {
                       Container(
                         height: p1.maxHeight * 0.1,
                         child: Text(
-                          'Welcome back ',
+                          S.of(context).welcomemessage,
                           style: TextStyle(
                               fontFamily: 'Pacifico',
                               fontSize: 25,
@@ -85,13 +87,42 @@ class loWelcomeScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) {
+                          return Change_language_widget();
+                        }),
+                      );
+                    },
+                    icon: Icon(IconsaxBold.global),
+                    label: Text(
+                      S.of(context).changelanguagelabel,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+
+                Container(
+                  height: 80,
+                  width: double.infinity,
+                  padding: const EdgeInsets.only(top: 25, left: 24, right: 24),
+                  child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30)),
+                        backgroundColor: Color.fromARGB(255, 49, 39, 112)),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) {
                           return Login();
                         }),
                       );
                     },
                     icon: Icon(IconsaxBold.login_1),
                     label: Text(
-                      'Log In',
+                      S.of(context).loginbuttonlabel,
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
@@ -119,7 +150,7 @@ class loWelcomeScreen extends StatelessWidget {
                     },
                     icon: Icon(IconsaxBold.user),
                     label: Text(
-                      'Sign Up',
+                      S.of(context).signupbuttonlabel,
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,

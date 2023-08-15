@@ -1,9 +1,12 @@
+import 'package:Movie_Night/generated/l10n.dart';
+import 'package:Movie_Night/src/Provider/langprovider.dart';
 import 'package:Movie_Night/src/components/Cached_image.dart';
 import 'package:Movie_Night/src/pages/UI/castdetails.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/models/credit_model.dart';
 import 'package:Movie_Night/src/services/services.dart';
 import 'package:Movie_Night/src/utils/utils.dart';
+import 'package:provider/provider.dart';
 
 class CastWidget extends StatefulWidget {
   const CastWidget({Key? key, required this.id, required this.isTvShow})
@@ -17,9 +20,13 @@ class CastWidget extends StatefulWidget {
 
 class _CastWidgetState extends State<CastWidget> {
   late Future<Credit> creditsFuture;
+  late DropdownProvider dropdownProvider;
+
   @override
   void initState() {
-    creditsFuture = getCredits(widget.id, widget.isTvShow);
+    dropdownProvider = Provider.of<DropdownProvider>(context, listen: false);
+    creditsFuture =
+        getCredits(widget.id, widget.isTvShow, dropdownProvider.selectedValue);
     super.initState();
   }
 
@@ -34,8 +41,9 @@ class _CastWidgetState extends State<CastWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'The Cast',
+                S.of(context).thecast,
                 style: Theme.of(context).textTheme.titleLarge,
+                overflow: TextOverflow.ellipsis,
               ),
               AspectRatio(
                 aspectRatio: 1.9,
@@ -85,6 +93,7 @@ class _CastWidgetState extends State<CastWidget> {
                               data[index].name.toString(),
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.labelLarge,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           SizedBox(

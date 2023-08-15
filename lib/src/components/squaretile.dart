@@ -35,7 +35,8 @@ class SquareTile extends StatelessWidget {
               label,
               style: TextStyle(
                 color: Theme.of(context).textTheme.bodyLarge!.color,
-                fontSize: 12,
+                fontSize: 11,
+                overflow: TextOverflow.ellipsis,
                 fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,

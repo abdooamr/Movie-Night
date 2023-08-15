@@ -1,8 +1,10 @@
+import 'package:Movie_Night/src/Provider/langprovider.dart';
 import 'package:Movie_Night/src/components/Cached_image.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/models/review_model.dart';
 import 'package:Movie_Night/src/services/services.dart';
 import 'package:Movie_Night/src/utils/utils.dart';
+import 'package:provider/provider.dart';
 
 class ReviewsWidget extends StatefulWidget {
   const ReviewsWidget({Key? key, required this.isTvShow, required this.id})
@@ -15,9 +17,13 @@ class ReviewsWidget extends StatefulWidget {
 
 class _ReviewsWidgetState extends State<ReviewsWidget> {
   late Future<Review> _future;
+  late DropdownProvider dropdownProvider;
+
   @override
   void initState() {
-    _future = getReviews(widget.id, widget.isTvShow);
+    dropdownProvider = Provider.of<DropdownProvider>(context, listen: false);
+    _future =
+        getReviews(widget.id, widget.isTvShow, dropdownProvider.selectedValue);
     super.initState();
   }
 

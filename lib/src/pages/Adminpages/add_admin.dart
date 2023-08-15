@@ -1,12 +1,10 @@
 // ignore_for_file: must_be_immutable
-
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:Movie_Night/src/components/allcomp.dart';
 
-class Add_admin extends StatefulWidget {
-  Add_admin({
+class AddAdmin extends StatefulWidget {
+  AddAdmin({
     super.key,
     this.id,
     this.email,
@@ -25,16 +23,15 @@ class Add_admin extends StatefulWidget {
   final String? report;
 
   @override
-  State<Add_admin> createState() => _Add_adminState();
+  State<AddAdmin> createState() => _AddAdminState();
 }
 
-class _Add_adminState extends State<Add_admin> {
+class _AddAdminState extends State<AddAdmin> {
   final reportclear = "";
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final userx = FirebaseAuth.instance.currentUser;
 
-  Future addadmin() async {
-    // add the data to fire base
+  Future<void> addAdmin() async {
     setState(() {
       _firestore.collection("users").doc(widget.id).update({
         "role": "admin",
@@ -43,22 +40,11 @@ class _Add_adminState extends State<Add_admin> {
     });
   }
 
-  Future removeadmin() async {
-    // add the data to fire base
-    setState(() {
-      widget.role = "user";
-      _firestore.collection("users").doc(widget.id).update({
-        "role": "user",
-      });
-      widget.role = "User";
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Report Page"),
+        title: Text("User Profile"),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
@@ -70,18 +56,11 @@ class _Add_adminState extends State<Add_admin> {
         children: [
           SingleChildScrollView(
             child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Center(
-                    child: customtext(
-                        Texts: "User Profile",
-                        textsize: 35,
-                        weight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
+                  SizedBox(height: 20),
                   Center(
                     child: (widget.profilepic == "")
                         ? Icon(
@@ -93,34 +72,31 @@ class _Add_adminState extends State<Add_admin> {
                             backgroundImage: NetworkImage(widget.profilepic!),
                           ),
                   ),
-                  SizedBox(height: 60),
-                  textcustom(
-                    Texts:
-                        "Name: " + widget.firstname! + " " + widget.lastname!,
-                  ),
                   SizedBox(height: 20),
-                  textcustom(Texts: "Email: " + widget.email!),
-                  textcustom(Texts: "Role: " + widget.role!),
+                  Text(
+                    "Name: ${widget.firstname!} ${widget.lastname!}",
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "Email: ${widget.email!}",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "Role: ${widget.role!}",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  SizedBox(height: 30),
                   (widget.role == "admin")
-                      ? ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.red),
-                          ),
-                          onPressed: () {
-                            removeadmin();
-                          },
-                          child: Text(
-                            "Remove Admin",
-                          ),
-                        )
+                      ? SizedBox(height: 0)
                       : ElevatedButton(
                           style: ButtonStyle(
                             backgroundColor:
                                 MaterialStateProperty.all(Colors.green),
                           ),
                           onPressed: () {
-                            addadmin();
+                            addAdmin();
                           },
                           child: Text(
                             "Add Admin",

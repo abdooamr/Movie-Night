@@ -1,9 +1,9 @@
 import 'package:Movie_Night/src/models/Knownfor_model.dart';
 import 'package:Movie_Night/src/models/cast_model.dart';
 import 'package:Movie_Night/src/models/moviedetails.dart';
-import 'package:Movie_Night/src/models/provider_model.dart';
+import 'package:Movie_Night/src/models/video_prov_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:Movie_Night/src/models/movie_model.dart';
+import 'package:Movie_Night/src/models/movie_model.dart' as movie;
 import 'package:Movie_Night/src/models/video_model.dart';
 import '../models/credit_model.dart';
 import '../models/review_model.dart';
@@ -11,44 +11,83 @@ import '../models/review_model.dart';
 const baseUrl = 'https://api.themoviedb.org/3/';
 var key = '?api_key=cc18b713f1ab56cfab6306f06b6c1b9d';
 var video = "&append_to_response=videos";
-var lang = "&with_original_language=en";
-var arabiclang = "&with_origin_country=EG&language=ar-EG";
+var orginallangeng = "&with_original_language=en";
+var egyptregion = "&with_origin_country=EG";
 late String endPoint;
 
-Future<Model> getUpcomingMovies() async {
+Future<movie.Model> getUpcomingMovies(String lang) async {
   endPoint = 'movie/upcoming';
-  final url = '$baseUrl$endPoint$key';
+  List<movie.Result> allResults = []; // Store all results from multiple pages
 
-  final response = await http.get(Uri.parse(url));
-  if (response.statusCode == 200) {
-    return modelFromJson(response.body);
-  } else {
-    throw Exception('failed to load trending');
+  for (int page = 1; page <= 5; page++) {
+    final url = '$baseUrl$endPoint$key&page=$page&language=$lang';
+
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      movie.Model model = movie.modelFromJson(response.body);
+      allResults.addAll(model.results); // Append results from the current page
+    } else {
+      throw Exception('Failed to load genres');
+    }
   }
+
+  return movie.Model(
+    page: 1, // Set the page value as needed
+    results: allResults,
+    totalPages: 500, // Update this value based on your requirement
+    totalResults: allResults.length,
+  );
 }
 
-Future<Model> getTrending(bool isTvShow) async {
+Future<movie.Model> getTrending(bool isTvShow, String lang) async {
   endPoint = isTvShow ? 'trending/tv/day' : 'trending/movie/day';
-  final url = '$baseUrl$endPoint$key';
+  List<movie.Result> allResults = []; // Store all results from multiple pages
 
-  final response = await http.get(Uri.parse(url));
-  if (response.statusCode == 200) {
-    return modelFromJson(response.body);
-  } else {
-    throw Exception('failed to load trending');
+  for (int page = 1; page <= 5; page++) {
+    final url = '$baseUrl$endPoint$key&page=$page&language=$lang';
+
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      movie.Model model = movie.modelFromJson(response.body);
+      allResults.addAll(model.results); // Append results from the current page
+    } else {
+      throw Exception('Failed to load genres');
+    }
   }
+
+  return movie.Model(
+    page: 1, // Set the page value as needed
+    results: allResults,
+    totalPages: 500, // Update this value based on your requirement
+    totalResults: allResults.length,
+  );
 }
 
-Future<Model> getPopular(bool isTvShow) async {
+Future<movie.Model> getPopular(bool isTvShow, String lang) async {
   endPoint = isTvShow ? 'tv/popular' : 'movie/popular';
-  final url = '$baseUrl$endPoint$key$lang';
+  List<movie.Result> allResults = []; // Store all results from multiple pages
 
-  final response = await http.get(Uri.parse(url));
-  if (response.statusCode == 200) {
-    return modelFromJson(response.body);
-  } else {
-    throw Exception('failed to load popular');
+  for (int page = 1; page <= 5; page++) {
+    final url = '$baseUrl$endPoint$key&page=$page&language=$lang';
+
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      movie.Model model = movie.modelFromJson(response.body);
+      allResults.addAll(model.results); // Append results from the current page
+    } else {
+      throw Exception('Failed to load popular');
+    }
   }
+
+  return movie.Model(
+    page: 1, // Set the page value as needed
+    results: allResults,
+    totalPages: 5, // Update this value based on your requirement
+    totalResults: allResults.length,
+  );
 }
 
 // Future<Model> getPopularTvShows() async {
@@ -63,35 +102,49 @@ Future<Model> getPopular(bool isTvShow) async {
 //   }
 // }
 
-Future<Model> getTopRatedMovies() async {
-  endPoint = 'movie/top_rated';
-  final String url = '$baseUrl$endPoint$key';
-  final response = await http.get(Uri.parse(url));
+// Future<movie.Model> getTopRatedMovies() async {
+//   endPoint = 'movie/top_rated';
+//   final String url = '$baseUrl$endPoint$key';
+//   final response = await http.get(Uri.parse(url));
 
-  if (response.statusCode == 200) {
-    return modelFromJson(response.body);
-  } else {
-    throw Exception('failed to load top rated movies');
-  }
-}
+//   if (response.statusCode == 200) {
+//     return movie.modelFromJson(response.body);
+//   } else {
+//     throw Exception('failed to load top rated movies');
+//   }
+// }
 
-Future<Model> discoverMovies({int? genreId}) async {
+Future<movie.Model> discoverMovies(
+    {int? genreId, int? pageCount, String? lang}) async {
   endPoint = 'discover/movie';
-  final String url = genreId == null
-      ? '$baseUrl$endPoint$key'
-      : '$baseUrl$endPoint$key&with_genres=$genreId';
-  final response = await http.get(Uri.parse(url));
+  List<movie.Result> allResults = []; // Store all results from multiple pages
 
-  if (response.statusCode == 200) {
-    return modelFromJson(response.body);
-  } else {
-    throw Exception('failed to load genres');
+  for (int page = 1; page <= 5; page++) {
+    final String url = genreId == null
+        ? '$baseUrl$endPoint$key&page=$page'
+        : '$baseUrl$endPoint$key&with_genres=$genreId&page=$page&language=$lang';
+
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      movie.Model model = movie.modelFromJson(response.body);
+      allResults.addAll(model.results); // Append results from the current page
+    } else {
+      throw Exception('Failed to load genres');
+    }
   }
+
+  return movie.Model(
+    page: 1, // Set the page value as needed
+    results: allResults,
+    totalPages: 500, // Update this value based on your requirement
+    totalResults: allResults.length,
+  );
 }
 
-Future<Credit> getCredits(int id, bool isTvShow) async {
+Future<Credit> getCredits(int id, bool isTvShow, String lang) async {
   endPoint = isTvShow ? 'tv/$id/credits' : 'movie/$id/credits';
-  final String url = '$baseUrl$endPoint$key';
+  final String url = '$baseUrl$endPoint$key&language=$lang';
   final response = await http.get(Uri.parse(url));
 
   if (response.statusCode == 200) {
@@ -101,21 +154,22 @@ Future<Credit> getCredits(int id, bool isTvShow) async {
   }
 }
 
-Future<Model> getrecommendations(int id, bool isTvShow) async {
+Future<movie.Model> getrecommendations(
+    int id, bool isTvShow, String lang) async {
   endPoint = isTvShow ? 'tv/$id/recommendations' : 'movie/$id/recommendations';
-  final String url = '$baseUrl$endPoint$key';
+  final String url = '$baseUrl$endPoint$key&language=$lang';
   final response = await http.get(Uri.parse(url));
 
   if (response.statusCode == 200) {
-    return modelFromJson(response.body);
+    return movie.modelFromJson(response.body);
   } else {
     throw Exception('failed to load similar');
   }
 }
 
-Future<Review> getReviews(int id, bool isTvShow) async {
+Future<Review> getReviews(int id, bool isTvShow, String lang) async {
   endPoint = isTvShow ? 'tv/$id/reviews' : 'movie/$id/reviews';
-  final String url = '$baseUrl$endPoint$key';
+  final String url = '$baseUrl$endPoint$key&language=$lang';
   final response = await http.get(Uri.parse(url));
 
   if (response.statusCode == 200) {
@@ -125,46 +179,34 @@ Future<Review> getReviews(int id, bool isTvShow) async {
   }
 }
 
-Future<Model> movieSearch(String query) async {
+Future<movie.Model> movieSearch(String query, String lang) async {
   endPoint = 'search/tv';
-  final url = '$baseUrl$endPoint$key&query=$query';
+  final url = '$baseUrl$endPoint$key&query=$query&language=$lang';
 
   final response = await http.get(Uri.parse(url));
   if (response.statusCode == 200) {
-    return modelFromJson(response.body);
+    return movie.modelFromJson(response.body);
   } else {
     throw Exception('not found');
   }
 }
 
-Future<Model> searchData(String query) async {
+Future<movie.Model> searchData(String query, String lang) async {
   endPoint = 'search/multi';
-  final url = '$baseUrl$endPoint$key&query=$query';
+  final url = '$baseUrl$endPoint$key&query=$query&language=$lang';
 
   final response = await http.get(Uri.parse(url));
   if (response.statusCode == 200) {
-    return modelFromJson(response.body);
+    return movie.modelFromJson(response.body);
   } else {
     throw Exception('not found');
   }
 }
 
-Future<Model> getlanguages() async {
-  endPoint = 'configuration/languages';
-  final url = '$baseUrl$endPoint$key';
-
-  final response = await http.get(Uri.parse(url));
-  if (response.statusCode == 200) {
-    return modelFromJson(response.body);
-  } else {
-    throw Exception('failed to load popular');
-  }
-}
-
-Future<Video> getyoutubeid(int id, bool isTvShow) async {
+Future<Video> getyoutubeid(int id, bool isTvShow, String lang) async {
   //endPoint = 'movie/$id/videos';
   endPoint = isTvShow ? 'tv/$id/videos' : 'movie/$id/videos';
-  final url = '$baseUrl$endPoint$key$video';
+  final url = '$baseUrl$endPoint$key$video&language=$lang';
   final response = await http.get(Uri.parse(url));
   if (response.statusCode == 200) {
     return videoFromJson(response.body);
@@ -173,9 +215,9 @@ Future<Video> getyoutubeid(int id, bool isTvShow) async {
   }
 }
 
-Future<Watchprovider?> getprovider(int id, bool isTvShow) async {
+Future<Watchprovider?> getprovider(int id, bool isTvShow, String lang) async {
   endPoint = isTvShow ? 'tv/$id/watch/providers' : 'movie/$id/watch/providers';
-  final url = '$baseUrl$endPoint$key$video';
+  final url = '$baseUrl$endPoint$key$video&language=$lang';
   final response = await http.get(Uri.parse(url));
   if (response.statusCode == 200) {
     return watchproviderFromJson(response.body);
@@ -184,33 +226,46 @@ Future<Watchprovider?> getprovider(int id, bool isTvShow) async {
   }
 }
 
-Future<Model> getEgyptionmovies(bool isTvShow) async {
+Future<movie.Model> getEgyptionmovies(bool isTvShow, String lang) async {
   endPoint = isTvShow ? 'discover/tv/' : 'discover/movie';
-  final url = '$baseUrl$endPoint$key$arabiclang';
+  List<movie.Result> allResults = []; // Store all results from multiple pages
 
-  final response = await http.get(Uri.parse(url));
-  if (response.statusCode == 200) {
-    return modelFromJson(response.body);
-  } else {
-    throw Exception('failed to load popular');
+  for (int page = 1; page <= 5; page++) {
+    final url = '$baseUrl$endPoint$key$egyptregion&page=$page&language=$lang';
+
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      movie.Model model = movie.modelFromJson(response.body);
+      allResults.addAll(model.results); // Append results from the current page
+    } else {
+      throw Exception('Failed to load genres');
+    }
   }
+
+  return movie.Model(
+    page: 1, // Set the page value as needed
+    results: allResults,
+    totalPages: 500, // Update this value based on your requirement
+    totalResults: allResults.length,
+  );
 }
 
-Future<Model> getAiringToday() async {
+Future<movie.Model> getAiringToday(String lang) async {
   endPoint = 'tv/airing_today';
-  final url = '$baseUrl$endPoint$key$lang';
+  final url = '$baseUrl$endPoint$key$orginallangeng&language=$lang';
 
   final response = await http.get(Uri.parse(url));
   if (response.statusCode == 200) {
-    return modelFromJson(response.body);
+    return movie.modelFromJson(response.body);
   } else {
     throw Exception('failed to load trending');
   }
 }
 
-Future<MovieModel> getdetails(int id, bool isTvShow) async {
+Future<MovieModel> getdetails(int id, bool isTvShow, String lang) async {
   endPoint = isTvShow ? 'tv/$id' : 'movie/$id';
-  final url = '$baseUrl$endPoint$key';
+  final url = '$baseUrl$endPoint$key&language=$lang';
 
   final response = await http.get(Uri.parse(url));
   if (response.statusCode == 200) {
@@ -220,9 +275,9 @@ Future<MovieModel> getdetails(int id, bool isTvShow) async {
   }
 }
 
-Future<CastModel> getcastdetails(int id) async {
+Future<CastModel> getcastdetails(int id, String lang) async {
   endPoint = 'person/$id';
-  final url = '$baseUrl$endPoint$key';
+  final url = '$baseUrl$endPoint$key&language=$lang';
 
   final response = await http.get(Uri.parse(url));
   if (response.statusCode == 200) {
@@ -232,9 +287,9 @@ Future<CastModel> getcastdetails(int id) async {
   }
 }
 
-Future<KnownFor> getcastknownfor(int id, bool isTvShow) async {
+Future<KnownFor> getcastknownfor(int id, bool isTvShow, String lang) async {
   endPoint = isTvShow ? 'person/$id/tv_credits' : 'person/$id/movie_credits';
-  final url = '$baseUrl$endPoint$key';
+  final url = '$baseUrl$endPoint$key&language=$lang';
 
   final response = await http.get(Uri.parse(url));
   if (response.statusCode == 200) {

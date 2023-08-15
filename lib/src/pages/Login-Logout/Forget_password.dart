@@ -121,6 +121,8 @@ class _ForgetNewState extends State<ForgetNew> {
                                     color: Colors.black, fontSize: 20),
                               ),
                               style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 49, 39, 112),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(
                                         40)), // This is what you need!

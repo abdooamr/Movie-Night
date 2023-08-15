@@ -18,13 +18,14 @@ class LikedModelAdapter extends TypeAdapter<LikedModel> {
       genres: (fields[2] as String).split(',').join(' | '),
       voteAverage: fields[3] as double,
       posterPath: fields[4] as String,
+      id: fields[5] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, LikedModel obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.isLiked)
       ..writeByte(1)
@@ -34,7 +35,9 @@ class LikedModelAdapter extends TypeAdapter<LikedModel> {
       ..writeByte(3)
       ..write(obj.voteAverage)
       ..writeByte(4)
-      ..write(obj.posterPath);
+      ..write(obj.posterPath)
+      ..writeByte(5)
+      ..write(obj.id);
   }
 
   @override

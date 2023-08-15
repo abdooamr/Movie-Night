@@ -70,6 +70,11 @@ android {
    buildTypes {
        release {
            signingConfig signingConfigs.release
+            ndk {
+            // replace with 'FULL' if you need more info,
+            // but note that it will increase the file size of your appbundle dramatically.
+            debugSymbolLevel 'SYMBOL_TABLE'
+        }
        }
    }
 

@@ -13,11 +13,14 @@ class LikedModel extends HiveObject {
   double voteAverage;
   @HiveField(4)
   String posterPath;
+  @HiveField(5)
+  int id;
 
   LikedModel(
       {this.isLiked = false,
       required this.title,
       required this.genres,
       required this.voteAverage,
-      required this.posterPath});
+      required this.posterPath,
+      required this.id});
 }

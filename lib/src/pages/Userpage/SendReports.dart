@@ -1,3 +1,4 @@
+import 'package:Movie_Night/generated/l10n.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -58,8 +59,8 @@ class _SendReportState extends State<SendReport> {
                         SizedBox(
                           width: 5,
                         ),
-                        const Text(
-                          'Hey there',
+                        Text(
+                          S.of(context).Heytherelabel,
                           style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.w600,
@@ -67,8 +68,8 @@ class _SendReportState extends State<SendReport> {
                         ),
                       ],
                     ),
-                    const Text(
-                      'Please send us a report if you find any bugs or have any suggestions for the app.',
+                    Text(
+                      S.of(context).reportpagelabel,
                       style: TextStyle(color: Colors.white, fontSize: 15),
                     ),
                   ],
@@ -76,29 +77,29 @@ class _SendReportState extends State<SendReport> {
               ),
               ListTile(
                 leading: const Icon(Icons.text_fields),
-                title: const Text('Summary  (Required)'),
+                title: Text(S.of(context).summarylabel),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   controller: _subjectController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      hintText: "Explain the problem briefly"),
+                      hintText: S.of(context).summaryhint),
                   maxLines: 1,
                 ),
               ),
               ListTile(
                 leading: const Icon(Icons.description),
-                title: const Text('Description in details  (Required)'),
+                title: Text(S.of(context).descriptionlabel),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   controller: _bodycontroller,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      hintText: "What's the problem?"),
+                      hintText: S.of(context).descriptionhint),
                   maxLines: 10,
                 ),
               ),
@@ -108,7 +109,7 @@ class _SendReportState extends State<SendReport> {
                         _bodycontroller.text.trim());
                     SendReport();
                   },
-                  child: const Text('Send Report'),
+                  child: Text(S.of(context).sendreportlabel),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color.fromARGB(255, 58, 58, 137),
                     shape: RoundedRectangleBorder(

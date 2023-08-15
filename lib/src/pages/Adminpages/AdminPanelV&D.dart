@@ -27,7 +27,10 @@ class adminpanel extends StatelessWidget {
         builder: (_, snapshot) {
           if (snapshot.hasError) {
             return const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                color: Colors.deepPurpleAccent,
+                strokeWidth: 3,
+              ),
             );
           } else if (snapshot.hasData) {
             final docs = snapshot.data!;
@@ -36,8 +39,8 @@ class adminpanel extends StatelessWidget {
               final user = Users(
                   id: doc.data()['id'],
                   role: doc.data()['role'],
-                  firstName: doc.data()["first name"],
-                  lastName: doc.data()["last name"],
+                  firstName: doc.data()["firstName"],
+                  lastName: doc.data()["lastName"],
                   ProfilePic: doc.data()["ProfilePic"],
                   report: doc.data()["report"],
                   email: doc.data()["email"]);

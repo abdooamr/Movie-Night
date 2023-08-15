@@ -1,3 +1,4 @@
+import 'package:Movie_Night/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/models/movie_model.dart';
 import 'package:Movie_Night/src/widgets/allwidget.dart';
@@ -35,43 +36,44 @@ class Home_page_listview extends StatelessWidget {
         children: [
           if (movie)
             UpcomingMovies(
-              headlineText: 'Upcoming Movies',
+              headlineText: S.of(context).upcomingwidget_title,
               future: upcomingFuture,
             ),
           if (movie)
-            MoviesListView(future: trendingFuture, headlineText: 'Trending'),
+            MoviesListView(
+                future: trendingFuture,
+                headlineText: S.of(context).trendingmovieswidget_title),
           if (movie)
             MoviesListView(
               future: popularMoviesFuture,
-              headlineText: 'Popular Movies',
+              headlineText: S.of(context).popularmovieswidget_title,
             ),
           if (movie)
             MoviesListView(
-              future: EgyptionMovies,
-              headlineText: 'Egyption Movies',
-            ),
+                future: EgyptionMovies,
+                headlineText: S.of(context).egyptmovieswidget_title),
           if (tvshow)
             UpcomingMovies(
               future: airingTodayFuture,
-              headlineText: 'Airing Today',
+              headlineText: S.of(context).airingtodaywidget_title,
             ),
           if (tvshow)
             MoviesListView(
               future: trendingtvshowFuture,
-              headlineText: 'Trending TV',
+              headlineText: S.of(context).trendingtvwidget_title,
+            ),
+          if (tvshow)
+            MoviesListView(
+              future: popularTvFuture,
+              headlineText: S.of(context).populartvwidget_title,
             ),
           if (tvshow)
             MoviesListView(
               future: Egyptionseries,
-              headlineText: 'Egyption Tv Series',
+              headlineText: S.of(context).egypttvwidget_title,
             ),
           // MoviesListView(
           //     future: topRatedFuture, headlineText: 'Top Rated Movies'),
-          if (tvshow)
-            MoviesListView(
-              future: popularTvFuture,
-              headlineText: 'Popular TV',
-            ),
         ],
       ),
     );

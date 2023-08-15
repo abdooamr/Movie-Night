@@ -1,3 +1,4 @@
+import 'package:Movie_Night/src/Provider/langprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:Movie_Night/src/pages/UI/castdetails.dart';
@@ -8,6 +9,7 @@ import '../models/movie_model.dart';
 
 class Search extends SearchDelegate<Model> {
   SharedPreferences? _prefs;
+  DropdownProvider dropdownProvider = DropdownProvider();
 
   Search() {
     SharedPreferences.getInstance().then((prefs) {
@@ -45,17 +47,23 @@ class Search extends SearchDelegate<Model> {
   Widget _buildSearchResults(BuildContext context,
       {bool showSuggestions = false}) {
     if (_prefs == null) {
-      return const Center(child: CircularProgressIndicator());
+      return const Center(
+          child: CircularProgressIndicator(
+        color: Colors.deepPurpleAccent,
+        strokeWidth: 3,
+      ));
     }
-
     final savedQueries = _prefs!.getStringList('search_queries') ?? [];
 
     return FutureBuilder<Model>(
-      future: searchData(query),
+      future: searchData(query, dropdownProvider.selectedValue),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(
+              color: Colors.deepPurpleAccent,
+              strokeWidth: 3,
+            ),
           );
         } else if (snapshot.hasData && query.isNotEmpty) {
           final data = snapshot.data?.results;

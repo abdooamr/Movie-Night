@@ -25,7 +25,10 @@ class CachedImageCustom extends StatelessWidget {
       },
       placeholder: (context, url) {
         return Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(
+            color: Colors.deepPurpleAccent,
+            strokeWidth: 3,
+          ),
         );
       },
     );

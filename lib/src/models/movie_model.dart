@@ -65,14 +65,14 @@ class Result {
   String? posterPath;
   List<int>? genreIds;
   double? popularity;
-  DateTime? releaseDate;
+  String? releaseDate;
   MediaType? mediaType;
   bool? video;
   double? voteAverage;
   int? voteCount;
   String? name;
   String? originalName;
-  DateTime? firstAirDate;
+  String? firstAirDate;
   List<String>? originCountry;
   String? profilePath;
 
@@ -88,9 +88,8 @@ class Result {
             ? List<int>.from(json["genre_ids"].map((x) => x))
             : null,
         popularity: json["popularity"].toDouble(),
-        releaseDate: json["release_date"] == null
-            ? null
-            : DateTime.parse(json["release_date"]),
+        releaseDate:
+            json["release_date"] == null ? null : (json["release_date"]),
         video: json["video"],
         voteAverage: json["vote_average"] != null
             ? json["vote_average"].toDouble()
@@ -98,9 +97,8 @@ class Result {
         voteCount: json["vote_count"],
         name: json["name"],
         originalName: json["original_name"],
-        firstAirDate: json["first_air_date"] == null
-            ? null
-            : DateTime.parse(json["first_air_date"]),
+        firstAirDate:
+            json["first_air_date"] == null ? null : (json["first_air_date"]),
         originCountry: json["origin_country"] == null
             ? null
             : List<String>.from(json["origin_country"].map((x) => x)),
@@ -118,17 +116,13 @@ class Result {
         "poster_path": posterPath,
         "genre_ids": List<dynamic>.from(genreIds!.map((x) => x)),
         "popularity": popularity,
-        "release_date": releaseDate == null
-            ? null
-            : "${releaseDate?.year.toString().padLeft(4, '0')}-${releaseDate?.month.toString().padLeft(2, '0')}-${releaseDate?.day.toString().padLeft(2, '0')}",
+        "release_date": releaseDate == null ? null : releaseDate,
         "video": video,
         "vote_average": voteAverage,
         "vote_count": voteCount,
         "name": name,
         "original_name": originalName,
-        "first_air_date": firstAirDate == null
-            ? null
-            : "${firstAirDate?.year.toString().padLeft(4, '0')}-${firstAirDate?.month.toString().padLeft(2, '0')}-${firstAirDate?.day.toString().padLeft(2, '0')}",
+        "first_air_date": firstAirDate == null ? null : firstAirDate,
         "origin_country": originCountry == null
             ? null
             : List<dynamic>.from(originCountry!.map((x) => x)),

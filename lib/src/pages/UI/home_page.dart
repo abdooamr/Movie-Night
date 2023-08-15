@@ -1,8 +1,10 @@
+import 'package:Movie_Night/src/Provider/langprovider.dart';
 import 'package:Movie_Night/src/widgets/Home_page_listview.dart';
 import 'package:Movie_Night/src/widgets/switch.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/models/movie_model.dart';
 import 'package:Movie_Night/src/services/services.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -16,25 +18,25 @@ class _HomePageState extends State<HomePage> {
       trendingFuture,
       trendingtvshowFuture,
       popularMoviesFuture,
-      topRatedFuture,
       EgyptionMovies,
       airingTodayFuture,
       Egyptionseries,
       popularTvFuture;
   bool movie = true;
   bool tvshow = false;
+  late DropdownProvider dropdownProvider;
 
   @override
   void initState() {
-    upcomingFuture = getUpcomingMovies();
-    trendingFuture = getTrending(false);
-    trendingtvshowFuture = getTrending(true);
-    EgyptionMovies = getEgyptionmovies(false);
-    Egyptionseries = getEgyptionmovies(true);
-    popularMoviesFuture = getPopular(false);
-    popularTvFuture = getPopular(true);
-    topRatedFuture = getTopRatedMovies();
-    airingTodayFuture = getAiringToday();
+    dropdownProvider = Provider.of<DropdownProvider>(context, listen: false);
+    upcomingFuture = getUpcomingMovies(dropdownProvider.selectedValue);
+    trendingFuture = getTrending(false, dropdownProvider.selectedValue);
+    trendingtvshowFuture = getTrending(true, dropdownProvider.selectedValue);
+    EgyptionMovies = getEgyptionmovies(false, dropdownProvider.selectedValue);
+    Egyptionseries = getEgyptionmovies(true, dropdownProvider.selectedValue);
+    popularMoviesFuture = getPopular(false, dropdownProvider.selectedValue);
+    popularTvFuture = getPopular(true, dropdownProvider.selectedValue);
+    airingTodayFuture = getAiringToday(dropdownProvider.selectedValue);
     super.initState();
   }
 

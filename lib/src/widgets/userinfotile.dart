@@ -1,43 +1,30 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:Movie_Night/src/Provider/allproviders.dart';
+import 'package:Movie_Night/src/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import '../models/user_model.dart';
+import 'package:provider/provider.dart';
 
 class userinfotile extends StatelessWidget {
   final userx = FirebaseAuth.instance.currentUser!;
-  Stream<List<QueryDocumentSnapshot<Map<String, dynamic>>>> _readsomeUsers() =>
-      FirebaseFirestore.instance
-          .collection('users')
-          .where("id", isEqualTo: userx.uid)
-          .snapshots()
-          .map((snapshot) => snapshot.docs);
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<QueryDocumentSnapshot<Map<String, dynamic>>>>(
-      stream: _readsomeUsers(),
-      builder: (_, snapshot) {
-        if (snapshot.hasError) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (snapshot.hasData) {
-          final docs = snapshot.data!;
-          return ListView(
-              shrinkWrap: true,
-              children: docs.map((doc) {
-                final user = Users(
-                    id: doc.data()['id'],
-                    role: doc.data()['role'],
-                    firstName: doc.data()["first name"],
-                    lastName: doc.data()["last name"],
-                    ProfilePic: doc.data()["ProfilePic"],
-                    email: doc.data()["email"]);
-                return buildUser(user, context);
-              }).toList());
+    return StreamBuilder<Users?>(
+      stream: Provider.of<UserData>(context, listen: false)
+          .getUserDataStream(userx.uid),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+              child: CircularProgressIndicator(
+            color: Colors.deepPurpleAccent,
+            strokeWidth: 3,
+          ));
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData || snapshot.data == null) {
+          return Center(child: Text('No user data available.'));
         } else {
-          return const Center(child: CircularProgressIndicator());
+          return buildUser(snapshot.data!, context);
         }
       },
     );
@@ -47,10 +34,15 @@ class userinfotile extends StatelessWidget {
     return ListTile(
       tileColor: Theme.of(context).listTileTheme.tileColor,
 
-      title: Text(
-        'Hey ' + user.firstName + ' ' + user.lastName,
-        style: TextStyle(fontSize: 20),
-      ),
+      title: user.lastName == ""
+          ? Text(
+              'Hey ' + user.firstName,
+              style: TextStyle(fontSize: 20),
+            )
+          : Text(
+              'Hey ' + user.firstName + ' ' + user.lastName,
+              style: TextStyle(fontSize: 20),
+            ),
 
       subtitle: Text(user.email, style: TextStyle(fontSize: 15)),
       //leading: Image.network(user.ProfilePic!),

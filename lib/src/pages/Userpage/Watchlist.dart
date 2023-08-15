@@ -1,10 +1,13 @@
+import 'package:Movie_Night/generated/l10n.dart';
+import 'package:Movie_Night/src/Provider/langprovider.dart';
 import 'package:Movie_Night/src/models/moviedetails.dart';
 import 'package:Movie_Night/src/services/services.dart';
-import 'package:Movie_Night/src/widgets/bookmarkwidget.dart';
+import 'package:Movie_Night/src/widgets/watchlistwidget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
 class userwatchlist extends StatefulWidget {
   @override
@@ -14,22 +17,27 @@ class userwatchlist extends StatefulWidget {
 class _userwatchlistState extends State<userwatchlist>
     with TickerProviderStateMixin {
   late TabController _tabController;
+  late Future<MovieModel> moviedetails;
+  late Future<MovieModel> tvshowdetails;
+  late DropdownProvider dropdownProvider;
 
-  late Future<MovieModel> details;
   final CollectionReference<Map<String, dynamic>> _usersCollection =
       FirebaseFirestore.instance.collection('users');
   bool? isTvShow;
   int? id;
   @override
   void initState() {
+    dropdownProvider = Provider.of<DropdownProvider>(context, listen: false);
     super.initState();
-
+    // moviedetails = getdetails(id!, false, dropdownProvider.selectedValue);
+    // tvshowdetails = getdetails(id!, true, dropdownProvider.selectedValue);
     _tabController = TabController(length: 2, initialIndex: 0, vsync: this);
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+
     super.dispose();
   }
 
@@ -37,13 +45,13 @@ class _userwatchlistState extends State<userwatchlist>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Watchlist'),
+        title: Text(S.of(context).watchlistlabel),
         bottom: TabBar(
           indicatorColor: Colors.deepPurpleAccent,
           controller: _tabController,
           tabs: [
-            Tab(text: 'Movies'),
-            Tab(text: 'TV Shows'),
+            Tab(text: S.of(context).movieswitch),
+            Tab(text: S.of(context).tvswitch),
           ],
         ),
       ),
@@ -66,14 +74,19 @@ class _userwatchlistState extends State<userwatchlist>
                   return ListView(
                     children: movieWatchlist.map((movieId) {
                       return FutureBuilder<MovieModel>(
-                        future: getdetails(movieId, false),
+                        future: getdetails(
+                            movieId, false, dropdownProvider.selectedValue),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             final movieDetails = snapshot.data!;
                             return bookmarkwidget(
                                 movieDetails: movieDetails, isTvShow: false);
                           } else {
-                            return Center(child: CircularProgressIndicator());
+                            return Center(
+                                child: CircularProgressIndicator(
+                              color: Colors.deepPurpleAccent,
+                              strokeWidth: 3,
+                            ));
                           }
                         },
                       );
@@ -87,10 +100,14 @@ class _userwatchlistState extends State<userwatchlist>
                     }).toList(),
                   );
                 } else {
-                  return Center(child: Text('No movies in watchlist'));
+                  return Center(child: Text(S.of(context).nomoviesinwatchlist));
                 }
               } else {
-                return Center(child: CircularProgressIndicator());
+                return Center(
+                    child: CircularProgressIndicator(
+                  color: Colors.deepPurpleAccent,
+                  strokeWidth: 3,
+                ));
               }
             },
           ),
@@ -109,14 +126,19 @@ class _userwatchlistState extends State<userwatchlist>
                   return ListView(
                     children: tvShowWatchlist.map((movieId) {
                       return FutureBuilder<MovieModel>(
-                        future: getdetails(movieId, true),
+                        future: getdetails(
+                            movieId, true, dropdownProvider.selectedValue),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             final movieDetails = snapshot.data!;
                             return bookmarkwidget(
                                 movieDetails: movieDetails, isTvShow: true);
                           } else {
-                            return Center(child: CircularProgressIndicator());
+                            return Center(
+                                child: CircularProgressIndicator(
+                              color: Colors.deepPurpleAccent,
+                              strokeWidth: 3,
+                            ));
                           }
                         },
                       );
@@ -130,10 +152,15 @@ class _userwatchlistState extends State<userwatchlist>
                     }).toList(),
                   );
                 } else {
-                  return Center(child: Text('No TV shows in watchlist'));
+                  return Center(
+                      child: Text(S.of(context).notvshowsinwatchlist));
                 }
               } else {
-                return Center(child: CircularProgressIndicator());
+                return Center(
+                    child: CircularProgressIndicator(
+                  color: Colors.deepPurpleAccent,
+                  strokeWidth: 3,
+                ));
               }
             },
           ),

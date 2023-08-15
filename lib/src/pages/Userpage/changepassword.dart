@@ -1,3 +1,4 @@
+import 'package:Movie_Night/generated/l10n.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -21,10 +22,10 @@ class _ChangepasswordState extends State<Changepassword> {
   Widget build(BuildContext context) {
     return SimpleSettingsTile(
       //colorxz: Theme.of(context).listTileTheme.tileColor,
-      title: 'Privacy',
+      title: S.of(context).privacylabel,
       leading: Iconwidget(icon: Icons.security, color: Colors.red),
       child: SettingsScreen(
-        title: "Change Password",
+        title: S.of(context).changepasswordlabel,
         children: <Widget>[Change_password(context)],
       ),
     );
@@ -32,7 +33,7 @@ class _ChangepasswordState extends State<Changepassword> {
 
   Widget Change_password(BuildContext context) => SimpleSettingsTile(
         //colorxz: Theme.of(context).listTileTheme.tileColor,
-        title: "Change Password",
+        title: S.of(context).changepasswordlabel,
         subtitle: "",
         onTap: () {
           try {
@@ -42,8 +43,8 @@ class _ChangepasswordState extends State<Changepassword> {
               behavior: SnackBarBehavior.floating,
               backgroundColor: Colors.transparent,
               content: AwesomeSnackbarContent(
-                title: "Success",
-                message: 'Password reset link sent to your email',
+                title: S.of(context).success,
+                message: S.of(context).changepasswordsuccess,
                 contentType: ContentType.success,
               ),
             );
@@ -56,8 +57,8 @@ class _ChangepasswordState extends State<Changepassword> {
               behavior: SnackBarBehavior.floating,
               backgroundColor: Colors.transparent,
               content: AwesomeSnackbarContent(
-                title: 'Error',
-                message: 'Error please log in again and try again',
+                title: S.of(context).error,
+                message: S.of(context).changepassworderror,
                 contentType: ContentType.failure,
               ),
             );

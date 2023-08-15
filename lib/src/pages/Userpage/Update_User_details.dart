@@ -1,9 +1,11 @@
+import 'package:Movie_Night/generated/l10n.dart';
+import 'package:Movie_Night/src/Provider/allproviders.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/components/allcomp.dart';
 import 'package:Movie_Night/src/pages/allpages.dart';
+import 'package:provider/provider.dart';
 
 class User_update_info_page extends StatefulWidget {
   @override
@@ -17,20 +19,6 @@ class _User_update_info_pageState extends State<User_update_info_page> {
   final _displaynamecontroller = TextEditingController();
   final Userrr = FirebaseAuth.instance.currentUser!;
 
-  Future updateuser() async {
-    await Userrr.updateDisplayName(
-      _displaynamecontroller.text,
-    );
-    await FirebaseFirestore.instance
-        .collection("users")
-        .doc(Userrr.uid)
-        .update({
-      "first name": _FirstNameController.text,
-      "last name": _LastNameController.text,
-    });
-    await Userrr.reload();
-  }
-
   @override
   void dispose() {
     _FirstNameController.dispose();
@@ -41,9 +29,10 @@ class _User_update_info_pageState extends State<User_update_info_page> {
 
   @override
   Widget build(BuildContext context) {
+    var updateuserdata = Provider.of<UserData>(context, listen: true);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Update Profile"),
+        title: Text(S.of(context).updateprofilelabel),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
@@ -60,7 +49,7 @@ class _User_update_info_pageState extends State<User_update_info_page> {
                 children: [
                   Center(
                     child: customtext(
-                        Texts: "Update Account",
+                        Texts: S.of(context).updateaccountlabel,
                         textsize: 35,
                         weight: FontWeight.bold),
                   ),
@@ -76,7 +65,7 @@ class _User_update_info_pageState extends State<User_update_info_page> {
                     child: Column(
                       children: [
                         MyTextField(
-                          labelText: "Username",
+                          labelText: S.of(context).Usernamelabel,
                           controller: _displaynamecontroller,
                           obscureText: false,
                           iconshape: Icons.person,
@@ -87,14 +76,14 @@ class _User_update_info_pageState extends State<User_update_info_page> {
                         MyTextField(
                           controller: _FirstNameController,
                           iconshape: Icons.person,
-                          labelText: "First name",
+                          labelText: S.of(context).firstnamelabel,
                           obscureText: false,
                         ),
                         SizedBox(height: 10),
                         MyTextField(
                           controller: _LastNameController,
                           iconshape: Icons.person,
-                          labelText: "Last name",
+                          labelText: S.of(context).lastnamelabel,
                           obscureText: false,
                         ),
                         SizedBox(
@@ -103,34 +92,48 @@ class _User_update_info_pageState extends State<User_update_info_page> {
                         SizedBox(
                           height: 60,
                           width: 160,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              updateuser();
-                              final snackBarx = SnackBar(
-                                elevation: 0,
-                                behavior: SnackBarBehavior.floating,
-                                backgroundColor: Colors.transparent,
-                                content: AwesomeSnackbarContent(
-                                  title: "Success",
-                                  message:
-                                      'The User data has been updated successfully',
-                                  contentType: ContentType.success,
+                          child: Consumer<UserData>(
+                            builder: (context, UserData, child) {
+                              return ElevatedButton(
+                                onPressed: () {
+                                  updateuserdata.updateuser(
+                                      Userrr,
+                                      _displaynamecontroller.text,
+                                      _FirstNameController.text,
+                                      _LastNameController.text);
+                                  final snackBarx = SnackBar(
+                                    elevation: 0,
+                                    behavior: SnackBarBehavior.floating,
+                                    backgroundColor: Colors.transparent,
+                                    content: AwesomeSnackbarContent(
+                                      title: S.of(context).success,
+                                      message:
+                                          S.of(context).updateprofilesuccess,
+                                      contentType: ContentType.success,
+                                    ),
+                                  );
+                                  ScaffoldMessenger.of(context)
+                                    ..hideCurrentSnackBar()
+                                    ..showSnackBar(snackBarx);
+                                },
+                                child: Text(
+                                  S.of(context).editprofilelabel,
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .color,
+                                      fontSize: 20),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 49, 39, 112),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          40)), // This is what you need!
                                 ),
                               );
-                              ScaffoldMessenger.of(context)
-                                ..hideCurrentSnackBar()
-                                ..showSnackBar(snackBarx);
                             },
-                            child: Text(
-                              'Edit Profile',
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 20),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      40)), // This is what you need!
-                            ),
                           ),
                         ),
                       ],

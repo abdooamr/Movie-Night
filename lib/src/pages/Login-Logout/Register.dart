@@ -1,14 +1,10 @@
-// ignore_for_file: body_might_complete_normally_catch_error
-
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:Movie_Night/generated/l10n.dart';
+import 'package:Movie_Night/src/Provider/register_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/pages/allpages.dart';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:Movie_Night/src/models/user_model.dart';
-import 'package:Movie_Night/src/services/googleauth.dart';
 import 'package:Movie_Night/src/components/allcomp.dart';
+import 'package:provider/provider.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -16,7 +12,7 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  final prrfilepicture = "";
+  final prrfilepicture = "https://ui-avatars.com/api/?name=";
   final formkey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -43,39 +39,6 @@ class _RegisterState extends State<Register> {
     super.dispose();
   }
 
-  Future _createUser(Users user, String name, x) async {
-    UserCredential result = await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(
-            email: _emailController.text.trim(),
-            password: _passwordController.text.trim())
-        .catchError((e) {
-      final snackBarx = SnackBar(
-        elevation: 0,
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.transparent,
-        content: AwesomeSnackbarContent(
-          title: 'Error',
-          message: 'Sorry this email already exist',
-          contentType: ContentType.warning,
-        ),
-      );
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(snackBarx); // code, message, details
-    });
-    Navigator.pop(context);
-    User? userx = result.user;
-    userx!.updateDisplayName(name);
-    final userDoc =
-        FirebaseFirestore.instance.collection('users').doc(userx.uid);
-    user.id = userDoc.id;
-    user.role = userrole;
-    userx.updatePhotoURL(user.ProfilePic);
-    final json = user.toJson();
-
-    await userDoc.set(json);
-  }
-
   bool passwordconfiremed() {
     if (_passwordController.text.trim() ==
         _confirmpasswordcontroller.text.trim()) {
@@ -87,6 +50,7 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+    var user_Provider = Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -107,14 +71,14 @@ class _RegisterState extends State<Register> {
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
                     child: customtext(
-                        Texts: "Create Account",
+                        Texts: S.of(context).createaccountlabel,
                         textsize: 35,
                         weight: FontWeight.bold),
                   ),
                   Padding(
                       padding: const EdgeInsets.only(left: 10),
                       child: customtext(
-                          Texts: "Please fill the input below here",
+                          Texts: S.of(context).pleasefillallfields,
                           textsize: 15,
                           weight: FontWeight.bold)),
                   SizedBox(height: 10),
@@ -122,8 +86,8 @@ class _RegisterState extends State<Register> {
                     key: formkey,
                     child: Column(
                       children: [
-                        MyTextField(
-                          labelText: "Username",
+                        Customvalformfield(
+                          labelText: S.of(context).Usernamelabel,
                           controller: _displaynamecontroller,
                           obscureText: false,
                           iconshape: Icons.person,
@@ -131,8 +95,8 @@ class _RegisterState extends State<Register> {
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.02,
                         ),
-                        MyTextField(
-                          labelText: "First name",
+                        Customvalformfield(
+                          labelText: S.of(context).firstnamelabel,
                           controller: _FirstNameController,
                           obscureText: false,
                           iconshape: Icons.person,
@@ -140,8 +104,8 @@ class _RegisterState extends State<Register> {
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.02,
                         ),
-                        MyTextField(
-                          labelText: "Last name",
+                        Customvalformfield(
+                          labelText: S.of(context).lastnamelabel,
                           controller: _LastNameController,
                           obscureText: false,
                           iconshape: Icons.person,
@@ -150,7 +114,7 @@ class _RegisterState extends State<Register> {
                           height: MediaQuery.of(context).size.height * 0.02,
                         ),
                         Customvalformfield(
-                            labelText: "Email",
+                            labelText: S.of(context).emailaddresslabel,
                             controller: _emailController,
                             obscureText: false,
                             validation: emailvalidation,
@@ -160,19 +124,17 @@ class _RegisterState extends State<Register> {
                           height: MediaQuery.of(context).size.height * 0.02,
                         ),
                         Customvalformfield(
-                          labelText: "Password",
-                          controller: _passwordController,
-                          validation: passwordvalidation,
-                          obscureText: true,
-                          iconshape: Icons.lock,
-                          valitext:
-                              "•Password must be: \n •8 characters long \n •Contain at least one uppercase letter \n •One lowercase letter \n •One special character",
-                        ),
+                            labelText: S.of(context).passwordlabel,
+                            controller: _passwordController,
+                            validation: passwordvalidation,
+                            obscureText: true,
+                            iconshape: Icons.lock,
+                            valitext: S.of(context).passwordvalidationtext),
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.02,
                         ),
-                        MyTextField(
-                          labelText: "Confirm password",
+                        Customvalformfield(
+                          labelText: S.of(context).passwordconfirmlabel,
                           controller: _confirmpasswordcontroller,
                           obscureText: true,
                           iconshape: Icons.lock,
@@ -183,41 +145,45 @@ class _RegisterState extends State<Register> {
                         SizedBox(
                           height: 60,
                           width: 160,
-                          child: ElevatedButton.icon(
-                            onPressed: () {
-                              if (formkey.currentState!.validate()) {
-                                final user = Users(
-                                  role: userrole,
-                                  ProfilePic: prrfilepicture,
-                                  firstName: _FirstNameController.text,
-                                  lastName: _LastNameController.text,
-                                  email: _emailController.text,
-                                );
-                                //print("the updated uid is.............." + x);
+                          child: Consumer<UserProvider>(
+                              builder: (context, userProvider, child) {
+                            return ElevatedButton.icon(
+                              onPressed: () {
+                                if (formkey.currentState!.validate()) {
+                                  final user = Users(
+                                    password: _passwordController.text,
+                                    role: userrole,
+                                    ProfilePic:
+                                        "https://ui-avatars.com/api/?name=${_FirstNameController.text}+${_LastNameController.text}",
+                                    firstName: _FirstNameController.text,
+                                    lastName: _LastNameController.text,
+                                    email: _emailController.text,
+                                  );
 
-                                _createUser(user,
-                                    _displaynamecontroller.text.trim(), x);
-                                _FirstNameController.clear();
-                                _LastNameController.clear();
-                                _emailController.clear();
-                                _uidcontroller.clear();
-                              }
-                            },
-                            icon: Icon(
-                              Icons.app_registration_rounded,
-                              color: Colors.black,
-                            ),
-                            label: Text(
-                              'Sign Up',
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 20),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      40)), // This is what you need!
-                            ),
-                          ),
+                                  user_Provider.createUser(user: user);
+
+                                  _FirstNameController.clear();
+                                  _LastNameController.clear();
+                                  _emailController.clear();
+                                  _uidcontroller.clear();
+                                }
+                              },
+                              icon: Icon(
+                                Icons.app_registration_rounded,
+                                color: Theme.of(context).iconTheme.color,
+                              ),
+                              label: Text(S.of(context).signupbuttonlabel,
+                                  style:
+                                      Theme.of(context).textTheme.titleLarge),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 49, 39, 112),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        40)), // This is what you need!
+                              ),
+                            );
+                          }),
                         ),
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.02,
@@ -226,7 +192,7 @@ class _RegisterState extends State<Register> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             customtext(
-                                Texts: "Already have an account? ",
+                                Texts: S.of(context).alreadyhaveanaccountlabel,
                                 textsize: 20),
                             TextButton(
                                 onPressed: () {
@@ -238,10 +204,10 @@ class _RegisterState extends State<Register> {
                                   );
                                 },
                                 child: Text(
-                                  'Log In',
+                                  S.of(context).loginbuttonlabel,
                                   style: TextStyle(
                                     fontFamily: 'Pacifico',
-                                    color: Colors.red,
+                                    color: Colors.deepPurpleAccent,
                                     fontSize: 20,
                                   ),
                                 )),
@@ -256,7 +222,7 @@ class _RegisterState extends State<Register> {
                               // google button
                               Square_Tile(
                                   onTap: () {
-                                    googleauth().signInWithGoogle();
+                                    user_Provider.signInWithGoogle();
                                     Navigator.pop(context);
                                   },
                                   imagePath: 'images/google.png'),
