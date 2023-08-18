@@ -31,6 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "Dramagenre": MessageLookupByLibrary.simpleMessage("دراما"),
         "Familygenre": MessageLookupByLibrary.simpleMessage("عائلي"),
         "Fantasygenre": MessageLookupByLibrary.simpleMessage("خيال"),
+        "Frenchlabel": MessageLookupByLibrary.simpleMessage("الفرنسية"),
         "Heytherelabel": MessageLookupByLibrary.simpleMessage("مرحبًا هناك"),
         "Historygenre": MessageLookupByLibrary.simpleMessage("تاريخ"),
         "Horrorgenre": MessageLookupByLibrary.simpleMessage("رعب"),
@@ -113,8 +114,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "firstnamelabel": MessageLookupByLibrary.simpleMessage("الاسم الأول"),
         "forgotpasswordlabel":
             MessageLookupByLibrary.simpleMessage("نسيت كلمة المرور؟"),
-        "franchlabel": MessageLookupByLibrary.simpleMessage("الفرنسية"),
         "generalsettingslabel": MessageLookupByLibrary.simpleMessage("عام"),
+        "globalreviewswitch":
+            MessageLookupByLibrary.simpleMessage("مراجعة عامة"),
         "hello": MessageLookupByLibrary.simpleMessage("مرحبًا"),
         "hindilabel": MessageLookupByLibrary.simpleMessage("الهندية"),
         "historymovielabel":
@@ -126,6 +128,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "lastnamelabel": MessageLookupByLibrary.simpleMessage("الاسم الأخير"),
         "like": MessageLookupByLibrary.simpleMessage("إعجاب"),
         "likednavbar": MessageLookupByLibrary.simpleMessage("المفضلة"),
+        "localreviewswitch":
+            MessageLookupByLibrary.simpleMessage("مراجعة محلية"),
         "loginbuttonlabel":
             MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
         "logintocontinue": MessageLookupByLibrary.simpleMessage(
@@ -162,6 +166,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "لا توجد خدمات بث متاحة حاليًا"),
         "numberofepisodes": MessageLookupByLibrary.simpleMessage("عدد الحلقات"),
         "numberofseasons": MessageLookupByLibrary.simpleMessage("عدد المواسم"),
+        "ohnolabel": MessageLookupByLibrary.simpleMessage("يا لا!"),
         "passwordconfirmlabel":
             MessageLookupByLibrary.simpleMessage("تأكيد كلمة المرور"),
         "passwordlabel": MessageLookupByLibrary.simpleMessage("كلمة المرور"),

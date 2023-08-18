@@ -33,12 +33,9 @@ class _User_update_info_pageState extends State<User_update_info_page> {
     return Scaffold(
       appBar: AppBar(
         title: Text(S.of(context).updateprofilelabel),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
+        shadowColor: Colors.transparent,
       ),
       body: Stack(
         children: [

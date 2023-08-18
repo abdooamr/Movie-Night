@@ -28,6 +28,7 @@ class UserProvider extends ChangeNotifier {
       if (firebaseUser != null) {
         // Update display name
         await firebaseUser.updateDisplayName(user.firstName + user.lastName);
+        await firebaseUser.updatePhotoURL(user.ProfilePic);
 
         // Create user document in FirebaseFirestore
         await _firestore.collection('users').doc(firebaseUser.uid).set({

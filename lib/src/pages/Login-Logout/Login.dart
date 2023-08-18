@@ -138,6 +138,7 @@ class _LoginState extends State<Login> {
                           child: ElevatedButton.icon(
                             onPressed: () {
                               SignIn();
+                              Navigator.pop(context);
                             },
                             icon: Icon(
                               IconsaxBold.login_1,

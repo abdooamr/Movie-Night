@@ -36,9 +36,10 @@ class SquareTile extends StatelessWidget {
               style: TextStyle(
                 color: Theme.of(context).textTheme.bodyLarge!.color,
                 fontSize: 11,
-                overflow: TextOverflow.ellipsis,
                 fontWeight: FontWeight.bold,
               ),
+              maxLines: 2, // This is where you should set maxLines
+              overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
             ),
           ],

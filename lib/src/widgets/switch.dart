@@ -1,4 +1,3 @@
-import 'package:Movie_Night/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 class Typeswitch extends StatelessWidget {
@@ -6,8 +5,12 @@ class Typeswitch extends StatelessWidget {
   final bool tvshow;
   final VoidCallback onMovieSelected;
   final VoidCallback onTvShowSelected;
+  final String title1;
+  final String title2;
 
   const Typeswitch({
+    required this.title1,
+    required this.title2,
     required this.movie,
     required this.tvshow,
     required this.onMovieSelected,
@@ -25,7 +28,7 @@ class Typeswitch extends StatelessWidget {
         children: <Widget>[
           GestureDetector(
             onTap: onTvShowSelected,
-            child: Text(S.of(context).tvswitch,
+            child: Text(title1,
                 style: tvshow
                     ? Theme.of(context).textTheme.titleLarge
                     : TextStyle(
@@ -50,7 +53,7 @@ class Typeswitch extends StatelessWidget {
           ),
           GestureDetector(
             onTap: onMovieSelected,
-            child: Text(S.of(context).movieswitch,
+            child: Text(title2,
                 style: movie
                     ? Theme.of(context).textTheme.titleLarge
                     : TextStyle(

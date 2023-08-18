@@ -115,7 +115,7 @@
     "changelanguagelabel" : "भाषा बदलें",
     "englishlabel": "अंग्रेज़ी",
     "arabiclabel": "अरबी",
-    "franchlabel": "फ्रेंच",
+    "Frenchlabel": "फ्रेंच",
     "spanishlabel": "स्पैनिश",
     "deutschlabel": "जर्मन",
     "italianlabel": "इतालवी",
@@ -154,6 +154,9 @@
     "registarnowlabel": "अभी पंजीकरण करें",
     "nointernetconnection" : "कोई इंटरनेट कनेक्शन नहीं",
     "pleasecheckinternetconnection" : "अपने इंटरनेट कनेक्शन की जाँच करें और पुन: प्रयास करें",
-    "mediatypemoviess": "फ़िल्में"
+    "mediatypemoviess": "फ़िल्में",
+    "globalreviewswitch": "वैश्विक समीक्षा",
+    "localreviewswitch": "स्थानीय समीक्षा",
+    "ohnolabel": "ओह नो!"
 }
 

@@ -4,7 +4,7 @@ export 'carousel_slider.dart';
 export 'cast.dart';
 export 'iconWidget.dart';
 export 'movies_listview.dart';
-export 'reviews.dart';
+export 'global_Reviews.dart';
 export 'search.dart';
 export 'similar.dart';
 export 'upcoming.dart';

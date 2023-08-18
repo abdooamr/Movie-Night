@@ -167,6 +167,7 @@ class _RegisterState extends State<Register> {
                                   _emailController.clear();
                                   _uidcontroller.clear();
                                 }
+                                Navigator.pop(context);
                               },
                               icon: Icon(
                                 Icons.app_registration_rounded,

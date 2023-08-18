@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:Movie_Night/src/utils/utils.dart';
 
 class AddAdmin extends StatefulWidget {
   AddAdmin({
@@ -49,7 +50,8 @@ class _AddAdminState extends State<AddAdmin> {
           icon: Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        backgroundColor: Colors.transparent,
+        backgroundColor: kBackgoundColor,
+        shadowColor: Colors.transparent,
         elevation: 0,
       ),
       body: Stack(

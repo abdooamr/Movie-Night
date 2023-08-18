@@ -219,7 +219,7 @@ class _LikedState extends State<Liked> {
                   ),
                   const SizedBox(width: 10),
                   Text(
-                    "Oh No!",
+                    S.of(context).ohnolabel,
                     style: Theme.of(context)
                         .textTheme
                         .titleLarge!

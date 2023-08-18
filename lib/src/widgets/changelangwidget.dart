@@ -1,4 +1,5 @@
 import 'package:Movie_Night/src/Provider/langprovider.dart';
+import 'package:Movie_Night/src/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../generated/l10n.dart';
@@ -10,9 +11,11 @@ class Change_language_widget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF191a2c),
+      backgroundColor: kBackgoundColor,
       appBar: AppBar(
         title: Text(S.of(context).changelanguagelabel),
+        backgroundColor: kBackgoundColor,
+        shadowColor: Colors.transparent,
       ),
       body: Consumer<DropdownProvider>(
         builder: (context, dropdownProvider, _) {
@@ -46,7 +49,7 @@ class Change_language_widget extends StatelessWidget {
                 dropdownProvider.setSelectedValue(newValue!);
               },
               title: Text(
-                S.of(context).franchlabel,
+                S.of(context).Frenchlabel,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),

@@ -55,10 +55,11 @@ class _CustomvalformfieldState extends State<Customvalformfield> {
         controller: widget.controller,
         obscureText: widget.obscureText,
         validator: (value) {
-          if (value!.isEmpty || !RegExp(widget.validation!).hasMatch(value)) {
-            return widget.valitext;
-          } else
-            return null;
+          return widget.validation == null
+              ? null
+              : (value!.isEmpty || !RegExp(widget.validation!).hasMatch(value))
+                  ? widget.valitext
+                  : null;
         },
         style: TextStyle(color: Colors.white),
         focusNode: _focusNode,

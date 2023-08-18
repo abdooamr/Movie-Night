@@ -5,6 +5,7 @@ import 'package:Movie_Night/src/components/squaretile.dart';
 import 'package:Movie_Night/src/components/stars.dart';
 import 'package:Movie_Night/src/models/liked_model.dart';
 import 'package:Movie_Night/src/models/moviedetails.dart';
+import 'package:Movie_Night/src/pages/UI/Reviews_page.dart';
 import 'package:Movie_Night/src/widgets/Buy_provider.dart';
 import 'package:Movie_Night/src/widgets/addtowatchlist.dart';
 import 'package:Movie_Night/src/widgets/watch_provider.dart';
@@ -436,30 +437,33 @@ class _DetailPageState extends State<DetailPage> {
                                         Theme.of(context).textTheme.titleMedium,
                                   ),
                             const SizedBox(height: 25),
-
                             CastWidget(
                               id: movieDetails.id,
                               isTvShow: widget.isTvShow,
                             ),
-                            watch_provider_widget(
+                            WatchProviderWidget(
                               id: movieDetails.id,
                               isTvShow: widget.isTvShow,
                             ),
                             Visibility(
                               visible: widget.isTvShow,
-                              child: buy_provider_widget(
+                              child: BuyProviderWidget(
                                 id: movieDetails.id,
                                 isTvShow: widget.isTvShow,
                               ),
                             ),
-
                             SimilarWidget(
                               id: movieDetails.id,
                               isTvShow: widget.isTvShow,
                             ),
-                            // ReviewsWidget(
-                            //     isTvShow: widget.isTvShow,
-                            //     id: movieDetails.id!),
+                            isloggedin == false
+                                ? SizedBox.shrink()
+                                : ReviewsPage(
+                                    id: movieDetails.id,
+                                    isTvShow: widget.isTvShow,
+                                  ),
+                            // GlobalReviewsWidget(
+                            //     isTvShow: widget.isTvShow, id: movieDetails.id),
                           ],
                         ),
                       );

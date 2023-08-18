@@ -115,7 +115,7 @@
     "changelanguagelabel" : "Cambiar Idioma",
     "englishlabel": "Inglés",
     "arabiclabel": "Árabe",
-    "franchlabel": "Francés",
+    "Frenchlabel": "Francés",
     "spanishlabel": "Español",
     "deutschlabel": "Alemán",
     "italianlabel": "Italiano",
@@ -154,5 +154,8 @@
     "registarnowlabel": "¡Regístrate Ahora!",
     "nointernetconnection" : "Sin conexión a Internet",
     "pleasecheckinternetconnection" : "Comprueba tu conexión a Internet e inténtalo de nuevo",
-    "mediatypemoviess": "Películas"
+    "mediatypemoviess": "Películas",
+    "globalreviewswitch": "Revisión Global",
+    "localreviewswitch": "Revisión Local",
+    "ohnolabel": "¡Oh No!"
 }

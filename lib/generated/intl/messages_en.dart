@@ -31,6 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "Dramagenre": MessageLookupByLibrary.simpleMessage("Drama"),
         "Familygenre": MessageLookupByLibrary.simpleMessage("Family"),
         "Fantasygenre": MessageLookupByLibrary.simpleMessage("Fantasy"),
+        "Frenchlabel": MessageLookupByLibrary.simpleMessage("French"),
         "Heytherelabel": MessageLookupByLibrary.simpleMessage("Hey there"),
         "Historygenre": MessageLookupByLibrary.simpleMessage("History"),
         "Horrorgenre": MessageLookupByLibrary.simpleMessage("Horror"),
@@ -116,8 +117,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "firstnamelabel": MessageLookupByLibrary.simpleMessage("First Name"),
         "forgotpasswordlabel":
             MessageLookupByLibrary.simpleMessage("Forgot Password?"),
-        "franchlabel": MessageLookupByLibrary.simpleMessage("Franch"),
         "generalsettingslabel": MessageLookupByLibrary.simpleMessage("General"),
+        "globalreviewswitch":
+            MessageLookupByLibrary.simpleMessage("Global Review"),
         "hello": MessageLookupByLibrary.simpleMessage("Hello"),
         "hindilabel": MessageLookupByLibrary.simpleMessage("Hindi"),
         "historymovielabel":
@@ -130,6 +132,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "lastnamelabel": MessageLookupByLibrary.simpleMessage("Last Name"),
         "like": MessageLookupByLibrary.simpleMessage("Like"),
         "likednavbar": MessageLookupByLibrary.simpleMessage("Liked"),
+        "localreviewswitch":
+            MessageLookupByLibrary.simpleMessage("Local Review"),
         "loginbuttonlabel": MessageLookupByLibrary.simpleMessage("Login"),
         "logintocontinue":
             MessageLookupByLibrary.simpleMessage("Please login to continue"),
@@ -167,6 +171,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Number of Episodes"),
         "numberofseasons":
             MessageLookupByLibrary.simpleMessage("Number of Seasons"),
+        "ohnolabel": MessageLookupByLibrary.simpleMessage("Oh No!"),
         "passwordconfirmlabel":
             MessageLookupByLibrary.simpleMessage("Confirm Password"),
         "passwordlabel": MessageLookupByLibrary.simpleMessage("Password"),

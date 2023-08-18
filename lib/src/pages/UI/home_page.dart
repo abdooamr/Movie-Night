@@ -1,3 +1,4 @@
+import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/langprovider.dart';
 import 'package:Movie_Night/src/widgets/Home_page_listview.dart';
 import 'package:Movie_Night/src/widgets/switch.dart';
@@ -48,6 +49,8 @@ class _HomePageState extends State<HomePage> {
           height: 40,
         ),
         Typeswitch(
+          title1: S.of(context).tvswitch,
+          title2: S.of(context).movieswitch,
           movie: movie,
           tvshow: tvshow,
           onMovieSelected: () {

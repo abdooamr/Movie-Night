@@ -32,6 +32,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "Dramagenre": MessageLookupByLibrary.simpleMessage("नाटक"),
         "Familygenre": MessageLookupByLibrary.simpleMessage("परिवार"),
         "Fantasygenre": MessageLookupByLibrary.simpleMessage("काल्पनिक"),
+        "Frenchlabel": MessageLookupByLibrary.simpleMessage("फ्रेंच"),
         "Heytherelabel": MessageLookupByLibrary.simpleMessage("हेलो"),
         "Historygenre": MessageLookupByLibrary.simpleMessage("इतिहास"),
         "Horrorgenre": MessageLookupByLibrary.simpleMessage("भूतपूर्व"),
@@ -118,8 +119,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "firstnamelabel": MessageLookupByLibrary.simpleMessage("पहला नाम"),
         "forgotpasswordlabel":
             MessageLookupByLibrary.simpleMessage("पासवर्ड भूल गए?"),
-        "franchlabel": MessageLookupByLibrary.simpleMessage("फ्रेंच"),
         "generalsettingslabel": MessageLookupByLibrary.simpleMessage("सामान्य"),
+        "globalreviewswitch":
+            MessageLookupByLibrary.simpleMessage("वैश्विक समीक्षा"),
         "hello": MessageLookupByLibrary.simpleMessage("नमस्ते"),
         "hindilabel": MessageLookupByLibrary.simpleMessage("हिंदी"),
         "historymovielabel":
@@ -133,6 +135,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "lastnamelabel": MessageLookupByLibrary.simpleMessage("अंतिम नाम"),
         "like": MessageLookupByLibrary.simpleMessage("पसंद"),
         "likednavbar": MessageLookupByLibrary.simpleMessage("पसंदीदा"),
+        "localreviewswitch":
+            MessageLookupByLibrary.simpleMessage("स्थानीय समीक्षा"),
         "loginbuttonlabel": MessageLookupByLibrary.simpleMessage("लॉगिन"),
         "logintocontinue": MessageLookupByLibrary.simpleMessage(
             "कृपया जारी रखने के लिए लॉगिन करें"),
@@ -171,6 +175,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("एपिसोडों की संख्या"),
         "numberofseasons":
             MessageLookupByLibrary.simpleMessage("सीजनों की संख्या"),
+        "ohnolabel": MessageLookupByLibrary.simpleMessage("ओह नो!"),
         "passwordconfirmlabel":
             MessageLookupByLibrary.simpleMessage("पासवर्ड की पुष्टि करें"),
         "passwordlabel": MessageLookupByLibrary.simpleMessage("पासवर्ड"),

@@ -87,7 +87,8 @@ class _DetailPageState extends State<Cast_DetailPage> {
                         );
                       },
                       child: CachedImageCustom(
-                          '$imageUrl${castdetails.profilePath}'),
+                        '$imageUrl${castdetails.profilePath}',
+                      ),
                       // child: Image.network(
                       //   '$imageUrl${castdetails.profilePath}',
                       //   errorBuilder: (context, error, stackTrace) {

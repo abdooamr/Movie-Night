@@ -6,28 +6,27 @@ import 'package:Movie_Night/src/models/video_prov_model.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/services/services.dart';
 import 'package:Movie_Night/src/utils/utils.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
-class buy_provider_widget extends StatefulWidget {
-  const buy_provider_widget(
-      {Key? key, required this.id, required this.isTvShow})
+class BuyProviderWidget extends StatefulWidget {
+  const BuyProviderWidget({Key? key, required this.id, required this.isTvShow})
       : super(key: key);
   final int id;
   final bool isTvShow;
 
   @override
-  State<buy_provider_widget> createState() => _buy_provider_widgetState();
+  State<BuyProviderWidget> createState() => _BuyProviderWidgetState();
 }
 
-class _buy_provider_widgetState extends State<buy_provider_widget> {
-  late Future<Watchprovider?> providerfuture;
+class _BuyProviderWidgetState extends State<BuyProviderWidget> {
+  late Future<Watchprovider?> providerFuture;
   late DropdownProvider dropdownProvider;
 
   @override
   void initState() {
     dropdownProvider = Provider.of<DropdownProvider>(context, listen: false);
-    providerfuture =
+    providerFuture =
         getprovider(widget.id, widget.isTvShow, dropdownProvider.selectedValue);
     super.initState();
   }
@@ -35,24 +34,47 @@ class _buy_provider_widgetState extends State<buy_provider_widget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Watchprovider?>(
-      future: providerfuture,
+      future: providerFuture,
       builder: (context, snapshot) {
-        if (snapshot.data != null) {
-          var link = snapshot.data?.results!.us;
-          var data = snapshot.data?.results!.us!.buy;
+        if (snapshot.hasData &&
+            snapshot.data?.results != null &&
+            snapshot.data!.results!.us != null &&
+            snapshot.data!.results!.us!.buy!.isNotEmpty) {
+          // var link = snapshot.data!.results!.us!.link ?? '';
+          var data = snapshot.data!.results!.us!.buy ?? [];
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                S.of(context).buyon,
-                style: Theme.of(context).textTheme.titleLarge,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    S.of(context).buyon,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        "Powered by",
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      SvgPicture.network(
+                          "https://widget.justwatch.com/assets/JW_logo_color_10px.svg",
+                          colorFilter:
+                              ColorFilter.mode(Colors.yellow, BlendMode.srcIn))
+                    ],
+                  )
+                ],
               ),
               AspectRatio(
                 aspectRatio: 2.1,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,
-                  itemCount: data!.length, //max length = 20
+                  itemCount: data.length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.all(5.0),
@@ -60,10 +82,12 @@ class _buy_provider_widgetState extends State<buy_provider_widget> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           GestureDetector(
-                            onTap: () {
-                              launchUrlString(link!.link.toString(),
-                                  mode: LaunchMode.externalApplication);
-                            },
+                            // onTap: () {
+                            //   launchUrlString(
+                            //     link,
+                            //     mode: LaunchMode.externalApplication,
+                            //   );
+                            // },
                             child: CircleAvatar(
                               backgroundColor: Colors.grey,
                               radius: 40,
@@ -71,10 +95,10 @@ class _buy_provider_widgetState extends State<buy_provider_widget> {
                                 child: FadeInImage(
                                   width: double.infinity,
                                   fit: BoxFit.cover,
-                                  image: (data[index] == null)
-                                      ? NetworkImage("")
-                                      : NetworkImage(
-                                          '$imageUrl${data[index]!.logoPath}'),
+                                  image: (data[index].logoPath != null)
+                                      ? NetworkImage(
+                                          '$imageUrl${data[index].logoPath}')
+                                      : NetworkImage(''),
                                   placeholder: const NetworkImage(
                                       'http://www.familylore.org/images/2/25/UnknownPerson.png'),
                                   imageErrorBuilder:
@@ -89,7 +113,7 @@ class _buy_provider_widgetState extends State<buy_provider_widget> {
                           SizedBox(
                             width: 100,
                             child: Text(
-                              data[index]!.providerName!,
+                              data[index].providerName ?? '',
                               textAlign: TextAlign.center,
                             ),
                           )
@@ -101,12 +125,10 @@ class _buy_provider_widgetState extends State<buy_provider_widget> {
               ),
             ],
           );
-        } else if (snapshot.hasError) {
+        } else {
           return TemporaryText(
             text: S.of(context).nobuyon,
           );
-        } else {
-          return const SizedBox.shrink();
         }
       },
     );

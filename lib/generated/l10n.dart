@@ -1186,11 +1186,11 @@ class S {
     );
   }
 
-  /// `Franch`
-  String get franchlabel {
+  /// `French`
+  String get Frenchlabel {
     return Intl.message(
-      'Franch',
-      name: 'franchlabel',
+      'French',
+      name: 'Frenchlabel',
       desc: '',
       args: [],
     );
@@ -1581,6 +1581,36 @@ class S {
     return Intl.message(
       'Movies',
       name: 'mediatypemoviess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Global Review`
+  String get globalreviewswitch {
+    return Intl.message(
+      'Global Review',
+      name: 'globalreviewswitch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Local Review`
+  String get localreviewswitch {
+    return Intl.message(
+      'Local Review',
+      name: 'localreviewswitch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Oh No!`
+  String get ohnolabel {
+    return Intl.message(
+      'Oh No!',
+      name: 'ohnolabel',
       desc: '',
       args: [],
     );

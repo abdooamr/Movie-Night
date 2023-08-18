@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:Movie_Night/src/models/movie_model.dart' as movie;
 import 'package:Movie_Night/src/models/video_model.dart';
 import '../models/credit_model.dart';
-import '../models/review_model.dart';
+import '../models/global_review_model.dart';
 
 const baseUrl = 'https://api.themoviedb.org/3/';
 var key = '?api_key=cc18b713f1ab56cfab6306f06b6c1b9d';

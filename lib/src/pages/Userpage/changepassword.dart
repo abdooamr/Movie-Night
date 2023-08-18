@@ -1,4 +1,5 @@
 import 'package:Movie_Night/generated/l10n.dart';
+import 'package:Movie_Night/src/widgets/customsettingscreen.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class _ChangepasswordState extends State<Changepassword> {
       //colorxz: Theme.of(context).listTileTheme.tileColor,
       title: S.of(context).privacylabel,
       leading: Iconwidget(icon: Icons.security, color: Colors.red),
-      child: SettingsScreen(
+      child: Settings_Screen(
         title: S.of(context).changepasswordlabel,
         children: <Widget>[Change_password(context)],
       ),

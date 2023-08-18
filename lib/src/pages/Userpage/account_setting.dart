@@ -2,6 +2,7 @@ import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/langprovider.dart';
 import 'package:Movie_Night/src/pages/Userpage/changepassword.dart';
 import 'package:Movie_Night/src/widgets/changelangwidget.dart';
+import 'package:Movie_Night/src/widgets/customsettingscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:Movie_Night/src/pages/allpages.dart';
@@ -20,7 +21,7 @@ class Accountpage extends StatelessWidget {
         leading: Iconwidget(icon: Icons.person, color: Colors.green),
         child:
             Consumer<DropdownProvider>(builder: (context, dropdownProvider, _) {
-          return SettingsScreen(
+          return Settings_Screen(
             title: S.of(context).accountsettingslabel,
             children: <Widget>[
               userinfowid(),

@@ -2,7 +2,7 @@ import 'package:Movie_Night/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 const imageUrl = 'https://image.tmdb.org/t/p/w500';
-const kBackgoundColor = Color(0xFF191a2c);
+const kBackgoundColor = Color(0xFF171823);
 
 String getGenres(List<int> genres) {
   Map<int, String> genreName = {

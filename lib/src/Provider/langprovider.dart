@@ -13,7 +13,6 @@ class DropdownProvider extends ChangeNotifier {
   Future<void> _initPrefs() async {
     final devicelocal = await Devicelocale.currentLocale;
     String firstTwoLetters = devicelocal!.substring(0, 2);
-    print(firstTwoLetters);
 
     // List of valid language codes
     List<String> validLanguages = ['ar', 'de', 'en', 'es', 'fr', 'hi', 'it'];

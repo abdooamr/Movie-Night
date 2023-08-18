@@ -1,5 +1,6 @@
 import 'package:Movie_Night/src/Provider/allproviders.dart';
 import 'package:Movie_Night/src/Provider/langprovider.dart';
+import 'package:Movie_Night/src/Provider/reviewsprovider.dart';
 import 'package:Movie_Night/src/models/liked_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ void main() async {
   await Hive.openBox<LikedModel>('liked');
 
   runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (context) => ReviewProvider()),
     ChangeNotifierProvider(create: (context) => ThemeProvider()),
     ChangeNotifierProvider(create: (context) => UserProvider()),
     ChangeNotifierProvider(create: (context) => UserData()),
