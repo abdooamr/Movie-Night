@@ -17,8 +17,10 @@ class Settings_Screen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
-        backgroundColor: kBackgoundColor,
+        title: Text(title,
+            style:
+                TextStyle(color: Theme.of(context).textTheme.bodyLarge!.color)),
+        backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
       ),
       body: ListView.builder(

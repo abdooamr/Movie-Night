@@ -35,10 +35,12 @@ class GenresListView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  headlineText,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
+                headlineText == ""
+                    ? SizedBox.shrink()
+                    : Text(
+                        headlineText,
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
                 const SizedBox(height: 20),
                 Expanded(
                   child: ListView.builder(

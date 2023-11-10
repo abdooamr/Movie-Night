@@ -3,6 +3,7 @@ import 'package:Movie_Night/src/widgets/changelangwidget.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/pages/allpages.dart';
+import 'package:lottie/lottie.dart';
 
 class loWelcomeScreen extends StatelessWidget {
   const loWelcomeScreen({super.key});
@@ -27,7 +28,8 @@ class loWelcomeScreen extends StatelessWidget {
                               fontSize: 55,
                               fontFamily: 'Pacifico',
                               fontWeight: FontWeight.w700,
-                              color: Colors.white),
+                              color:
+                                  Theme.of(context).textTheme.bodyLarge!.color),
                         ),
                       ),
                       Container(
@@ -37,7 +39,11 @@ class loWelcomeScreen extends StatelessWidget {
                           style: TextStyle(
                               fontFamily: 'Pacifico',
                               fontSize: 25,
-                              color: Colors.grey.shade100),
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .color!
+                                  .withOpacity(0.5)),
                         ),
                       ),
                     ],
@@ -46,14 +52,12 @@ class loWelcomeScreen extends StatelessWidget {
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(children: [
-                    Image.asset(
-                      "images/movie-countdown-venom.gif",
-                      scale: 2.5,
+                    Lottie.asset(
+                      "images/watchmovie.json",
                       height: p1.maxWidth * 0.5,
                     ),
-                    Image.asset(
-                      "images/its-movie-time-chatime.gif",
-                      scale: 2.5,
+                    Lottie.asset(
+                      "images/popcorn.json",
                       height: p1.maxWidth * 0.5,
                     ),
                   ]),

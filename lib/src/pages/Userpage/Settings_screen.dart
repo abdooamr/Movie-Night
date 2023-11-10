@@ -125,7 +125,6 @@ class _settings_screenState extends State<settings_screen> {
   }
 
   Widget watchlist() => SimpleSettingsTile(
-        //colorxz: Theme.of(context).listTileTheme.tileColor,
         title: S.of(context).watchlistlabel,
         subtitle: "",
         leading: Iconwidget(icon: IconsaxBold.bookmark, color: Colors.purple),
@@ -136,7 +135,6 @@ class _settings_screenState extends State<settings_screen> {
       );
 
   Widget reportmeth() => SimpleSettingsTile(
-        //colorxz: Theme.of(context).listTileTheme.tileColor,
         title: S.of(context).reportabuglabel,
         subtitle: "",
         onTap: () {
@@ -147,7 +145,6 @@ class _settings_screenState extends State<settings_screen> {
             icon: Icons.bug_report, color: Color.fromARGB(255, 57, 138, 99)),
       );
   Widget feedbackmeth() => SimpleSettingsTile(
-        //colorxz: Theme.of(context).listTileTheme.tileColor,
         title: S.of(context).sendfeedbacklabel,
         subtitle: "",
         leading: Iconwidget(icon: Icons.thumb_up, color: Colors.purple),
@@ -156,7 +153,6 @@ class _settings_screenState extends State<settings_screen> {
         },
       );
   Widget Logoutmeth() => SimpleSettingsTile(
-        //colorxz: Theme.of(context).listTileTheme.tileColor,
         title: S.of(context).logoutlabel,
         subtitle: "",
         leading: Iconwidget(icon: Icons.logout, color: Colors.blue),
@@ -165,7 +161,6 @@ class _settings_screenState extends State<settings_screen> {
         },
       );
   Widget Deletemeth() => SimpleSettingsTile(
-        //colorxz: Theme.of(context).listTileTheme.tileColor,
         title: S.of(context).deleteaccountlabel,
         titleTextStyle: TextStyle(
             color: Colors.red, fontSize: 20, fontWeight: FontWeight.bold),
@@ -191,7 +186,6 @@ class _settings_screenState extends State<settings_screen> {
         },
       );
   Widget admin_panel() => SimpleSettingsTile(
-        //colorxz: Theme.of(context).listTileTheme.tileColor,
         title: S.of(context).adminpanellabel,
         subtitle: "",
         leading:

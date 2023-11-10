@@ -13,6 +13,7 @@ class ThemeProvider extends ChangeNotifier {
 class MyThemes {
   //-------------DARK THEME SETTINGS----
   static final darkTheme = ThemeData(
+      useMaterial3: true,
       scaffoldBackgroundColor: Color(0xFF171823),
       brightness: Brightness.dark,
       fontFamily: 'poppins',
@@ -39,6 +40,7 @@ class MyThemes {
 
   //-------------light THEME SETTINGS----
   static final lightTheme = ThemeData(
+      useMaterial3: true,
       scaffoldBackgroundColor: Colors.white,
       brightness: Brightness.light,
       fontFamily: 'poppins',

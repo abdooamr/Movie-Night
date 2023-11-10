@@ -13,19 +13,24 @@ class See_All extends StatelessWidget {
   }) : super(key: key);
   final String headlineText;
   final Future<Model> future;
+  final String emptytitle = "";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: kBackgoundColor,
+          title: Text(
+            headlineText,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
         ),
         body:
             Consumer<DropdownProvider>(builder: (context, dropdownProvider, _) {
           return GenresListView(
             future: future,
-            headlineText: headlineText,
+            headlineText: emptytitle,
           );
         }));
   }

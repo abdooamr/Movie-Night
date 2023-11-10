@@ -109,7 +109,10 @@ class _SendReportState extends State<SendReport> {
                         _bodycontroller.text.trim());
                     SendReport();
                   },
-                  child: Text(S.of(context).sendreportlabel),
+                  child: Text(S.of(context).sendreportlabel,
+                      style: TextStyle(
+                          color:
+                              Theme.of(context).textTheme.bodyMedium!.color)),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color.fromARGB(255, 58, 58, 137),
                     shape: RoundedRectangleBorder(
