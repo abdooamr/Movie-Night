@@ -13,9 +13,11 @@ Movie Night is a Flutter app that allows users to explore and discover the lates
 
 ## Screenshots
 
-![Screenshot 1](screenshots/screenshot1.png)
-![Screenshot 2](screenshots/screenshot2.png)
-![Screenshot 3](screenshots/screenshot3.png)
+![Screenshot 1](screenshots/Screenshot1.jpg)
+![Screenshot 2](screenshots/Screenshot2.jpg)
+![Screenshot 3](screenshots/Screenshot3.jpg)
+![Screenshot 4](screenshots/Screenshot4.jpg)
+![Screenshot 5](screenshots/Screenshot5.jpg)
 
 ## Getting Started
 
