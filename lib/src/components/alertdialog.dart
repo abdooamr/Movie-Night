@@ -45,8 +45,8 @@ class CustomDialog extends StatelessWidget {
           SizedBox(height: 24),
           ElevatedButton.icon(
             style: ElevatedButton.styleFrom(
-              primary: Colors.red,
-              onPrimary: Colors.white,
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
               minimumSize: Size(100, 50),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30),

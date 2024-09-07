@@ -1,4 +1,3 @@
-import 'package:Movie_Night/src/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class Settings_Screen extends StatelessWidget {

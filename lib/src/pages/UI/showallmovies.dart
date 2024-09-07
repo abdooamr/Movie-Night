@@ -3,7 +3,6 @@ import 'package:Movie_Night/src/models/movie_model.dart';
 import 'package:Movie_Night/src/widgets/genreslistview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:Movie_Night/src/utils/utils.dart';
 
 class See_All extends StatelessWidget {
   const See_All({

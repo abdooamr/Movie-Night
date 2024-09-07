@@ -43,7 +43,7 @@ class Detailscategory extends StatelessWidget {
             SizedBox(height: 20),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: Color.fromARGB(255, 49, 39, 112),
+                backgroundColor: Color.fromARGB(255, 49, 39, 112),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(32.0),
                 ),
@@ -69,7 +69,7 @@ class Detailscategory extends StatelessWidget {
             SizedBox(height: 20),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: Color.fromARGB(255, 49, 39, 112),
+                backgroundColor: Color.fromARGB(255, 49, 39, 112),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(32.0),
                 ),
@@ -95,7 +95,7 @@ class Detailscategory extends StatelessWidget {
             SizedBox(height: 20),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: Color.fromARGB(255, 49, 39, 112),
+                backgroundColor: Color.fromARGB(255, 49, 39, 112),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(32.0),
                 ),

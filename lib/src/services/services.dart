@@ -227,7 +227,7 @@ Future<Watchprovider?> getprovider(int id, bool isTvShow, String lang) async {
 }
 
 Future<movie.Model> getEgyptionmovies(bool isTvShow, String lang) async {
-  endPoint = isTvShow ? 'discover/tv/' : 'discover/movie';
+  endPoint = isTvShow ? 'discover/tv' : 'discover/movie';
   List<movie.Result> allResults = []; // Store all results from multiple pages
 
   for (int page = 1; page <= 5; page++) {
