@@ -2,6 +2,7 @@ import 'package:Movie_Night/src/Provider/langprovider.dart';
 import 'package:Movie_Night/src/components/Cached_image.dart';
 import 'package:Movie_Night/src/models/Knownfor_model.dart';
 import 'package:Movie_Night/src/models/cast_model.dart';
+import 'package:Movie_Night/src/Animation/CustomNavigationAnimation.dart';
 import 'package:Movie_Night/src/widgets/cast_movies.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,7 @@ class _DetailPageState extends State<Cast_DetailPage> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
                 child: CircularProgressIndicator(
-              color: Colors.deepPurpleAccent,
+              color: Theme.of(context).splashColor,
               strokeWidth: 3,
             ));
           } else if (snapshot.hasError) {
@@ -76,15 +77,22 @@ class _DetailPageState extends State<Cast_DetailPage> {
                     collapseMode: CollapseMode.parallax,
                     background: GestureDetector(
                       onTap: () {
-                        Navigator.push(
+                        PageTransitionBuilder.navigateWithCustomTransition(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => PhotoView(
-                              imageProvider: NetworkImage(
-                                  '$imageUrl${castdetails.profilePath}'),
-                            ),
+                          PhotoView(
+                            imageProvider: NetworkImage(
+                                '$imageUrl${castdetails.profilePath}'),
                           ),
                         );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => PhotoView(
+                        //       imageProvider: NetworkImage(
+                        //           '$imageUrl${castdetails.profilePath}'),
+                        //     ),
+                        //   ),
+                        // );
                       },
                       child: CachedImageCustom(
                         '$imageUrl${castdetails.profilePath}',
@@ -167,7 +175,7 @@ class _DetailPageState extends State<Cast_DetailPage> {
                                   icon: const Icon(Icons.link),
                                   style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty.all(
-                                      Color.fromARGB(255, 49, 39, 112),
+                                      Theme.of(context).splashColor,
                                     ),
                                     shape: MaterialStateProperty.all(
                                       RoundedRectangleBorder(

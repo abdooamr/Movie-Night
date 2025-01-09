@@ -105,9 +105,9 @@ class Videos_list extends StatelessWidget {
           return Padding(
             padding:
                 EdgeInsets.only(top: MediaQuery.of(context).size.height / 2.5),
-            child: const Center(
+            child: Center(
               child: CircularProgressIndicator(
-                color: Colors.deepPurpleAccent,
+                color: Theme.of(context).splashColor,
                 strokeWidth: 3,
               ),
             ),

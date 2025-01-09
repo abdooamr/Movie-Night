@@ -2,6 +2,7 @@ import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/langprovider.dart';
 import 'package:Movie_Night/src/components/Cached_image.dart';
 import 'package:Movie_Night/src/pages/UI/castdetails.dart';
+import 'package:Movie_Night/src/Animation/CustomNavigationAnimation.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/models/credit_model.dart';
 import 'package:Movie_Night/src/services/services.dart';
@@ -60,12 +61,19 @@ class _CastWidgetState extends State<CastWidget> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        Cast_DetailPage(id: data[index].id),
-                                  ));
+                              PageTransitionBuilder
+                                  .navigateWithCustomTransition(
+                                context,
+                                Cast_DetailPage(
+                                  id: data[index].id,
+                                ),
+                              );
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //       builder: (context) =>
+                              //           Cast_DetailPage(id: data[index].id),
+                              //     ));
                             },
                             child: CircleAvatar(
                               backgroundColor: Colors.grey,

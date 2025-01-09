@@ -1,3 +1,4 @@
+import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/allproviders.dart';
 import 'package:Movie_Night/src/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,7 +17,7 @@ class userinfotile extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
               child: CircularProgressIndicator(
-            color: Colors.deepPurpleAccent,
+            color: Theme.of(context).splashColor,
             strokeWidth: 3,
           ));
         } else if (snapshot.hasError) {
@@ -32,15 +33,19 @@ class userinfotile extends StatelessWidget {
 
   Widget buildUser(Users user, BuildContext context) {
     return ListTile(
-      tileColor: Theme.of(context).listTileTheme.tileColor,
+      tileColor: Colors.transparent,
 
       title: user.lastName == ""
           ? Text(
-              'Hey ' + user.firstName,
+              S.of(context).heylabel + " " + user.firstName,
               style: TextStyle(fontSize: 20),
             )
           : Text(
-              'Hey ' + user.firstName + ' ' + user.lastName,
+              S.of(context).heylabel +
+                  " " +
+                  user.firstName +
+                  ' ' +
+                  user.lastName,
               style: TextStyle(fontSize: 20),
             ),
 

@@ -1,10 +1,10 @@
 import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/langprovider.dart';
 import 'package:Movie_Night/src/pages/Userpage/changepassword.dart';
+import 'package:Movie_Night/src/Animation/CustomNavigationAnimation.dart';
 import 'package:Movie_Night/src/widgets/changelangwidget.dart';
-import 'package:Movie_Night/src/widgets/customsettingscreen.dart';
+import 'package:Movie_Night/src/widgets/settingsscreenwidget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:Movie_Night/src/pages/allpages.dart';
 import 'package:Movie_Night/src/widgets/iconwidget.dart';
 import 'package:provider/provider.dart';
@@ -14,47 +14,65 @@ class Accountpage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SimpleSettingsTile(
-        //colorxz: Theme.of(context).listTileTheme.tileColor,
-        title: S.of(context).accountsettingslabel,
-        subtitle: S.of(context).accountsettingssubtitle,
-        leading: Iconwidget(icon: Icons.person, color: Colors.green),
-        child:
-            Consumer<DropdownProvider>(builder: (context, dropdownProvider, _) {
-          return Settings_Screen(
-            title: S.of(context).accountsettingslabel,
-            children: <Widget>[
-              userinfowid(),
-              Changepassword(),
-              changelanguage(context), // Pass dropdownProvider here
+    return Consumer<DropdownProvider>(builder: (context, dropdownProvider, _) {
+      return Scaffold(
+        appBar: AppBar(
+          titleTextStyle: Theme.of(context).textTheme.titleLarge!,
+          iconTheme: IconThemeData(
+              color: Theme.of(context).textTheme.bodyLarge!.color),
+          title: Text(S.of(context).accountsettingslabel),
+        ),
+        body: Column(
+          children: <Widget>[
+            accountinfo(context),
+            privacysettings(context),
+            changelanguage(context), // Pass dropdownProvider here
 
-              //Privacyset(context),
-            ],
-          );
-        }));
+            //Privacyset(context),
+          ],
+        ),
+      );
+    });
   }
 
-  Widget accountinfo(BuildContext context) => SimpleSettingsTile(
-        //colorxz: Theme.of(context).listTileTheme.tileColor,
+  Widget accountinfo(BuildContext context) => CustomSettingsTile(
         title: S.of(context).accountinfolabel,
         subtitle: "",
         onTap: () {
-          User_update_info_page();
+          PageTransitionBuilder.navigateWithCustomTransition(
+              context, User_update_info_page());
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => User_update_info_page()),
+          // );
         },
         leading: Iconwidget(icon: Icons.info, color: Colors.green),
+      );
+  Widget privacysettings(BuildContext context) => CustomSettingsTile(
+        title: S.of(context).privacylabel,
+        leading: Iconwidget(icon: Icons.security, color: Colors.red),
+        onTap: () {
+          PageTransitionBuilder.navigateWithCustomTransition(
+              context, Changepassword());
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => Changepassword()),
+          // );
+        },
       );
 
   Widget changelanguage(BuildContext context) =>
       Consumer<DropdownProvider>(builder: (context, dropdownProvider, _) {
-        return SimpleSettingsTile(
-          //colorxz: Theme.of(context).listTileTheme.tileColor,
+        return CustomSettingsTile(
           title: S.of(context).changelanguagelabel,
           subtitle: "",
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Change_language_widget()),
-            );
+            PageTransitionBuilder.navigateWithCustomTransition(
+                context, Change_language_widget());
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => Change_language_widget()),
+            // );
           },
           leading: Iconwidget(icon: Icons.language, color: Colors.green),
         );

@@ -157,6 +157,19 @@
     "mediatypemoviess": "Filme",
     "globalreviewswitch": "Globale Bewertung",
     "localreviewswitch": "Lokale Bewertung",
-    "ohnolabel": "Oh Nein!"
+    "ohnolabel": "Oh Nein!",
+    "themelabel": "Thema",
+    "LightTheme": "Helles Thema",
+    "DarkTheme": "Dunkles Thema",
+    "OceanicWaves": "Ozeanwellen",
+    "ElegantNeutrals": "Elegante Neutralfarben",
+    "GoldenHour": "Goldene Stunde",
+    "CottonCandy": "Zuckerwatte",
+    "LuminousGalaxy": "Leuchtende Galaxie",
+    "CherryBlossom": "Kirschblüte",
+    "mysticMeadows": "Mystische Wiesen",
+    "heylabel": "Hallo",
+    "New": "Neu",
+    "oklabel": "OK"
 }
 

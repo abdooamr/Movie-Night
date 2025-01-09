@@ -2,6 +2,7 @@ import 'package:Movie_Night/src/components/Cached_image.dart';
 import 'package:Movie_Night/src/components/stars.dart';
 import 'package:Movie_Night/src/models/moviedetails.dart';
 import 'package:Movie_Night/src/pages/UI/detail_page.dart';
+import 'package:Movie_Night/src/Animation/CustomNavigationAnimation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:Movie_Night/src/utils/utils.dart';
@@ -20,14 +21,21 @@ class bookmarkwidget extends StatelessWidget {
     var genress = movieDetails.genres;
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => DetailPage(
-                id: movieDetails.id,
-                isTvShow: isTvShow,
-              ),
-            ));
+        PageTransitionBuilder.navigateWithCustomTransition(
+          context,
+          DetailPage(
+            id: movieDetails.id,
+            isTvShow: isTvShow,
+          ),
+        );
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //       builder: (context) => DetailPage(
+        //         id: movieDetails.id,
+        //         isTvShow: isTvShow,
+        //       ),
+        //     ));
       },
       child: Column(
         children: [

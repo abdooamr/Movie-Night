@@ -1,9 +1,7 @@
 import 'package:Movie_Night/src/Provider/langprovider.dart';
-import 'package:Movie_Night/src/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../generated/l10n.dart';
-import 'package:flutter/widgets.dart';
 
 class Change_language_widget extends StatelessWidget {
   const Change_language_widget({super.key});
@@ -11,16 +9,17 @@ class Change_language_widget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kBackgoundColor,
       appBar: AppBar(
+        titleTextStyle: Theme.of(context).textTheme.titleLarge!,
+        iconTheme:
+            IconThemeData(color: Theme.of(context).textTheme.bodyLarge!.color),
         title: Text(S.of(context).changelanguagelabel),
-        backgroundColor: kBackgoundColor,
-        shadowColor: Colors.transparent,
       ),
       body: Consumer<DropdownProvider>(
         builder: (context, dropdownProvider, _) {
           return ListView(itemExtent: 60, children: [
             RadioListTile(
+              tileColor: Colors.transparent,
               value: 'en',
               groupValue: dropdownProvider.selectedValue,
               onChanged: (newValue) {
@@ -32,6 +31,7 @@ class Change_language_widget extends StatelessWidget {
               ),
             ),
             RadioListTile(
+              tileColor: Colors.transparent,
               value: 'ar',
               groupValue: dropdownProvider.selectedValue,
               onChanged: (newValue) {
@@ -43,6 +43,7 @@ class Change_language_widget extends StatelessWidget {
               ),
             ),
             RadioListTile(
+              tileColor: Colors.transparent,
               value: 'fr',
               groupValue: dropdownProvider.selectedValue,
               onChanged: (newValue) {
@@ -54,6 +55,7 @@ class Change_language_widget extends StatelessWidget {
               ),
             ),
             RadioListTile(
+              tileColor: Colors.transparent,
               value: 'de',
               groupValue: dropdownProvider.selectedValue,
               onChanged: (newValue) {
@@ -65,6 +67,7 @@ class Change_language_widget extends StatelessWidget {
               ),
             ),
             RadioListTile(
+              tileColor: Colors.transparent,
               value: 'es',
               groupValue: dropdownProvider.selectedValue,
               onChanged: (newValue) {
@@ -76,6 +79,7 @@ class Change_language_widget extends StatelessWidget {
               ),
             ),
             RadioListTile(
+              tileColor: Colors.transparent,
               value: 'hi',
               groupValue: dropdownProvider.selectedValue,
               onChanged: (newValue) {
@@ -87,6 +91,7 @@ class Change_language_widget extends StatelessWidget {
               ),
             ),
             RadioListTile(
+              tileColor: Colors.transparent,
               value: 'it',
               groupValue: dropdownProvider.selectedValue,
               onChanged: (newValue) {

@@ -25,18 +25,28 @@ class MessageLookup extends MessageLookupByLibrary {
         "Actiongenre": MessageLookupByLibrary.simpleMessage("أكشن"),
         "Adventuregenre": MessageLookupByLibrary.simpleMessage("مغامرة"),
         "Animationgenre": MessageLookupByLibrary.simpleMessage("رسوم متحركة"),
+        "CherryBlossom": MessageLookupByLibrary.simpleMessage("زهرة الكرز"),
         "Comedygenre": MessageLookupByLibrary.simpleMessage("كوميديا"),
+        "CottonCandy": MessageLookupByLibrary.simpleMessage("حلوى القطن"),
         "Crimegenre": MessageLookupByLibrary.simpleMessage("جريمة"),
+        "DarkTheme": MessageLookupByLibrary.simpleMessage("المظهر الداكن"),
         "Documentarygenre": MessageLookupByLibrary.simpleMessage("وثائقي"),
         "Dramagenre": MessageLookupByLibrary.simpleMessage("دراما"),
+        "ElegantNeutrals":
+            MessageLookupByLibrary.simpleMessage("ألوان محايدة أنيقة"),
         "Familygenre": MessageLookupByLibrary.simpleMessage("عائلي"),
         "Fantasygenre": MessageLookupByLibrary.simpleMessage("خيال"),
         "Frenchlabel": MessageLookupByLibrary.simpleMessage("الفرنسية"),
+        "GoldenHour": MessageLookupByLibrary.simpleMessage("الساعة الذهبية"),
         "Heytherelabel": MessageLookupByLibrary.simpleMessage("مرحبًا هناك"),
         "Historygenre": MessageLookupByLibrary.simpleMessage("تاريخ"),
         "Horrorgenre": MessageLookupByLibrary.simpleMessage("رعب"),
+        "LightTheme": MessageLookupByLibrary.simpleMessage("المظهر الفاتح"),
+        "LuminousGalaxy": MessageLookupByLibrary.simpleMessage("مجرة مضيئة"),
         "Musicgenre": MessageLookupByLibrary.simpleMessage("موسيقى"),
         "Mysterygenre": MessageLookupByLibrary.simpleMessage("غموض"),
+        "New": MessageLookupByLibrary.simpleMessage("جديد"),
+        "OceanicWaves": MessageLookupByLibrary.simpleMessage("أمواج المحيط"),
         "OhNo": MessageLookupByLibrary.simpleMessage("يا لا!"),
         "Recommendation": MessageLookupByLibrary.simpleMessage("توصية"),
         "Romancegenre": MessageLookupByLibrary.simpleMessage("رومانسية"),
@@ -118,6 +128,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "globalreviewswitch":
             MessageLookupByLibrary.simpleMessage("مراجعة عامة"),
         "hello": MessageLookupByLibrary.simpleMessage("مرحبًا"),
+        "heylabel": MessageLookupByLibrary.simpleMessage("مرحبًا"),
         "hindilabel": MessageLookupByLibrary.simpleMessage("الهندية"),
         "historymovielabel":
             MessageLookupByLibrary.simpleMessage("أفلام تاريخية"),
@@ -142,6 +153,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "musicmovielabel":
             MessageLookupByLibrary.simpleMessage("أفلام موسيقية"),
         "mysterymovielabel": MessageLookupByLibrary.simpleMessage("أفلام غموض"),
+        "mysticMeadows": MessageLookupByLibrary.simpleMessage("مروج غامضة"),
         "newstvlabel": MessageLookupByLibrary.simpleMessage("برامج أخبار"),
         "noInternet":
             MessageLookupByLibrary.simpleMessage("لا يوجد اتصال بالإنترنت"),
@@ -167,6 +179,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "numberofepisodes": MessageLookupByLibrary.simpleMessage("عدد الحلقات"),
         "numberofseasons": MessageLookupByLibrary.simpleMessage("عدد المواسم"),
         "ohnolabel": MessageLookupByLibrary.simpleMessage("يا لا!"),
+        "oklabel": MessageLookupByLibrary.simpleMessage("حسنا"),
         "passwordconfirmlabel":
             MessageLookupByLibrary.simpleMessage("تأكيد كلمة المرور"),
         "passwordlabel": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
@@ -213,6 +226,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "summarylabel": MessageLookupByLibrary.simpleMessage("ملخص (مطلوب)"),
         "talktvlabel": MessageLookupByLibrary.simpleMessage("برامج حوارية"),
         "thecast": MessageLookupByLibrary.simpleMessage("أبطال العمل"),
+        "themelabel": MessageLookupByLibrary.simpleMessage("المظهر"),
         "thrillermovielabel":
             MessageLookupByLibrary.simpleMessage("أفلام إثارة"),
         "trendingmovieswidget_title":

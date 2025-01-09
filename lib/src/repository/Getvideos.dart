@@ -30,6 +30,9 @@ class _Videos_pageState extends State<Videos_page> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        titleTextStyle: Theme.of(context).textTheme.titleLarge!,
+        iconTheme:
+            IconThemeData(color: Theme.of(context).textTheme.bodyLarge!.color),
         title: const Text('Videos'),
         elevation: 0,
         backgroundColor: Colors.transparent,

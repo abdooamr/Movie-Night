@@ -48,11 +48,10 @@ class _Report_screenState extends State<Report_screen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        titleTextStyle: Theme.of(context).textTheme.titleLarge!,
         title: Text("Report Page"),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        iconTheme:
+            IconThemeData(color: Theme.of(context).textTheme.bodyLarge!.color),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -112,7 +111,7 @@ class _Report_screenState extends State<Report_screen> {
                       : ElevatedButton(
                           style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all(
-                                  Color.fromARGB(255, 49, 39, 112))),
+                                  Theme.of(context).splashColor)),
                           onPressed: () => remove_report(),
                           child: Text("Clear Report"))
                 ],

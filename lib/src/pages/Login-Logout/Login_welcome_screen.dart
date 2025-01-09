@@ -1,4 +1,5 @@
 import 'package:Movie_Night/generated/l10n.dart';
+import 'package:Movie_Night/src/Animation/CustomNavigationAnimation.dart';
 import 'package:Movie_Night/src/widgets/changelangwidget.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,8 @@ class loWelcomeScreen extends StatelessWidget {
                               fontSize: 55,
                               fontFamily: 'Pacifico',
                               fontWeight: FontWeight.w700,
-                              color: Colors.white),
+                              color:
+                                  Theme.of(context).textTheme.bodyLarge!.color),
                         ),
                       ),
                       Container(
@@ -37,7 +39,7 @@ class loWelcomeScreen extends StatelessWidget {
                           style: TextStyle(
                               fontFamily: 'Pacifico',
                               fontSize: 25,
-                              color: Colors.grey.shade100),
+                              color: Theme.of(context).hintColor),
                         ),
                       ),
                     ],
@@ -82,14 +84,16 @@ class loWelcomeScreen extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)),
-                        backgroundColor: Color.fromARGB(255, 49, 39, 112)),
+                        backgroundColor: Theme.of(context).splashColor),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) {
-                          return Change_language_widget();
-                        }),
-                      );
+                      PageTransitionBuilder.navigateWithCustomTransition(
+                          context, Change_language_widget());
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) {
+                      //     return Change_language_widget();
+                      //   }),
+                      // );
                     },
                     icon: Icon(IconsaxBold.global),
                     label: Text(
@@ -111,14 +115,16 @@ class loWelcomeScreen extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)),
-                        backgroundColor: Color.fromARGB(255, 49, 39, 112)),
+                        backgroundColor: Theme.of(context).splashColor),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) {
-                          return Login();
-                        }),
-                      );
+                      PageTransitionBuilder.navigateWithCustomTransition(
+                          context, Login());
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) {
+                      //     return Login();
+                      //   }),
+                      // );
                     },
                     icon: Icon(IconsaxBold.login_1),
                     label: Text(
@@ -139,14 +145,16 @@ class loWelcomeScreen extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)),
-                        backgroundColor: Color.fromARGB(255, 49, 39, 112)),
+                        backgroundColor: Theme.of(context).splashColor),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) {
-                          return Register();
-                        }),
-                      );
+                      PageTransitionBuilder.navigateWithCustomTransition(
+                          context, Register());
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) {
+                      //     return Register();
+                      //   }),
+                      // );
                     },
                     icon: Icon(IconsaxBold.user),
                     label: Text(

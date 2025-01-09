@@ -43,41 +43,47 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 40,
-        ),
-        Typeswitch(
-          title1: S.of(context).tvswitch,
-          title2: S.of(context).movieswitch,
-          movie: movie,
-          tvshow: tvshow,
-          onMovieSelected: () {
-            setState(() {
-              movie = true;
-              tvshow = false;
-            });
-          },
-          onTvShowSelected: () {
-            setState(() {
-              movie = false;
-              tvshow = true;
-            });
-          },
-        ),
-        Home_page_listview(
+    return Scaffold(
+      body: Column(
+        children: [
+          SizedBox(
+            height: 40,
+          ),
+          Typeswitch(
+            selectedcolor:
+                Theme.of(context).bottomNavigationBarTheme.selectedItemColor!,
+            unselectedcolor:
+                Theme.of(context).bottomNavigationBarTheme.unselectedItemColor!,
+            title1: S.of(context).tvswitch,
+            title2: S.of(context).movieswitch,
             movie: movie,
-            upcomingFuture: upcomingFuture,
-            trendingFuture: trendingFuture,
-            popularMoviesFuture: popularMoviesFuture,
-            EgyptionMovies: EgyptionMovies,
             tvshow: tvshow,
-            airingTodayFuture: airingTodayFuture,
-            trendingtvshowFuture: trendingtvshowFuture,
-            Egyptionseries: Egyptionseries,
-            popularTvFuture: popularTvFuture),
-      ],
+            onMovieSelected: () {
+              setState(() {
+                movie = true;
+                tvshow = false;
+              });
+            },
+            onTvShowSelected: () {
+              setState(() {
+                movie = false;
+                tvshow = true;
+              });
+            },
+          ),
+          Home_page_listview(
+              movie: movie,
+              upcomingFuture: upcomingFuture,
+              trendingFuture: trendingFuture,
+              popularMoviesFuture: popularMoviesFuture,
+              EgyptionMovies: EgyptionMovies,
+              tvshow: tvshow,
+              airingTodayFuture: airingTodayFuture,
+              trendingtvshowFuture: trendingtvshowFuture,
+              Egyptionseries: Egyptionseries,
+              popularTvFuture: popularTvFuture),
+        ],
+      ),
     );
   }
 }

@@ -6,6 +6,7 @@ import 'package:Movie_Night/src/components/stars.dart';
 import 'package:Movie_Night/src/models/liked_model.dart';
 import 'package:Movie_Night/src/models/moviedetails.dart';
 import 'package:Movie_Night/src/pages/UI/Reviews_page.dart';
+import 'package:Movie_Night/src/Animation/CustomNavigationAnimation.dart';
 import 'package:Movie_Night/src/widgets/Buy_provider.dart';
 import 'package:Movie_Night/src/widgets/addtowatchlist.dart';
 import 'package:Movie_Night/src/widgets/watch_provider.dart';
@@ -20,7 +21,6 @@ import 'package:Movie_Night/src/widgets/allwidget.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:simple_icons/simple_icons.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../../models/movie_model.dart';
@@ -79,7 +79,7 @@ class _DetailPageState extends State<DetailPage> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
                 child: CircularProgressIndicator(
-              color: Colors.deepPurpleAccent,
+              color: Theme.of(context).splashColor,
               strokeWidth: 3,
             ));
           } else if (snapshot.hasError) {
@@ -121,7 +121,7 @@ class _DetailPageState extends State<DetailPage> {
                                     image: NetworkImage(
                                         '$imageUrl${movieDetails.backdropPath ?? movieDetails.posterPath}'),
                                     fit: BoxFit.cover,
-                                    opacity: 0.3),
+                                    opacity: 0.6),
                               ),
                               child: Column(
                                 children: [
@@ -133,15 +133,23 @@ class _DetailPageState extends State<DetailPage> {
                                     children: [
                                       GestureDetector(
                                         onTap: () {
-                                          Navigator.push(
+                                          PageTransitionBuilder
+                                              .navigateWithCustomTransition(
                                             context,
-                                            MaterialPageRoute(
-                                              builder: (context) => PhotoView(
-                                                imageProvider: NetworkImage(
-                                                    '$imageUrl${movieDetails.posterPath!}'),
-                                              ),
+                                            PhotoView(
+                                              imageProvider: NetworkImage(
+                                                  '$imageUrl${movieDetails.posterPath!}'),
                                             ),
                                           );
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(
+                                          //     builder: (context) => PhotoView(
+                                          //       imageProvider: NetworkImage(
+                                          //           '$imageUrl${movieDetails.posterPath!}'),
+                                          //     ),
+                                          //   ),
+                                          // );
                                         },
                                         child: Container(
                                           width:
@@ -151,15 +159,6 @@ class _DetailPageState extends State<DetailPage> {
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(10),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.black
-                                                    .withOpacity(0.2),
-                                                blurRadius: 5,
-                                                spreadRadius: 2,
-                                                offset: Offset(0, 3),
-                                              ),
-                                            ],
                                           ),
 
                                           child: ClipRRect(
@@ -283,15 +282,23 @@ class _DetailPageState extends State<DetailPage> {
                                     height: 40,
                                     child: ElevatedButton.icon(
                                       onPressed: () {
-                                        Navigator.push(
+                                        PageTransitionBuilder
+                                            .navigateWithCustomTransition(
                                           context,
-                                          MaterialPageRoute(
-                                            builder: (context) => Videos_page(
-                                              movieid: movieDetails.id,
-                                              isTvShow: widget.isTvShow,
-                                            ),
+                                          Videos_page(
+                                            movieid: movieDetails.id,
+                                            isTvShow: widget.isTvShow,
                                           ),
                                         );
+                                        // Navigator.push(
+                                        //   context,
+                                        //   MaterialPageRoute(
+                                        //     builder: (context) => Videos_page(
+                                        //       movieid: movieDetails.id,
+                                        //       isTvShow: widget.isTvShow,
+                                        //     ),
+                                        //   ),
+                                        // );
                                       },
                                       label: Text(
                                           S.of(context).watchvideosbuttonlabel),
@@ -300,7 +307,7 @@ class _DetailPageState extends State<DetailPage> {
                                       style: ButtonStyle(
                                         backgroundColor:
                                             MaterialStateProperty.all(
-                                          Color.fromARGB(255, 49, 39, 112),
+                                          Theme.of(context).splashColor,
                                         ),
                                         shape: MaterialStateProperty.all(
                                           RoundedRectangleBorder(
@@ -415,9 +422,9 @@ class _DetailPageState extends State<DetailPage> {
                                           icon: Icons.share_rounded,
                                           label: S.of(context).share,
                                           onTap: () {
-                                            Share.share(
-                                              "Check out this movie ${movieDetails.title} on Movie Night App\n\nhttps://www.themoviedb.org/movie/${movieDetails.id}",
-                                            );
+                                            // Share.share(
+                                            //   "Check out this movie ${movieDetails.title} on Movie Night App\n\nhttps://www.themoviedb.org/movie/${movieDetails.id}",
+                                            // );
                                           })
                                     ],
                                   ),

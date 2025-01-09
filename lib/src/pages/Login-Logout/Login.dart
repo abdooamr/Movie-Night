@@ -1,6 +1,7 @@
 // ignore_for_file: body_might_complete_normally_catch_error
 import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/allproviders.dart';
+import 'package:Movie_Night/src/Animation/CustomNavigationAnimation.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
@@ -60,14 +61,12 @@ class _LoginState extends State<Login> {
     var user_Provider = Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
+        titleTextStyle: Theme.of(context).textTheme.titleLarge!,
         elevation: 0,
         backgroundColor: Colors.transparent,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        iconTheme:
+            IconThemeData(color: Theme.of(context).textTheme.bodyLarge!.color),
       ),
-      backgroundColor: Color.fromARGB(255, 32, 26, 48),
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -86,7 +85,7 @@ class _LoginState extends State<Login> {
                     S.of(context).loginbuttonlabel,
                     style: TextStyle(
                         fontFamily: 'Pacifico',
-                        color: Colors.white,
+                        color: Theme.of(context).textTheme.bodyLarge!.color,
                         fontSize: 35,
                         fontWeight: FontWeight.bold),
                   ),
@@ -150,7 +149,7 @@ class _LoginState extends State<Login> {
                                   TextStyle(color: Colors.white, fontSize: 20),
                             ),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromARGB(255, 49, 39, 112),
+                              backgroundColor: Theme.of(context).splashColor,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
                                       40)), // This is what you need!
@@ -159,18 +158,21 @@ class _LoginState extends State<Login> {
                         ),
                         TextButton(
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) {
-                                  return ForgetNew();
-                                }),
-                              );
+                              PageTransitionBuilder
+                                  .navigateWithCustomTransition(
+                                      context, ForgetNew());
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(builder: (context) {
+                              //     return ForgetNew();
+                              //   }),
+                              // );
                             },
                             child: Text(
                               S.of(context).forgotpasswordlabel,
                               style: TextStyle(
                                 fontFamily: 'Pacifico',
-                                color: Colors.deepPurpleAccent,
+                                color: Theme.of(context).splashColor,
                                 fontSize: 15,
                               ),
                             )),
@@ -199,24 +201,30 @@ class _LoginState extends State<Login> {
                               S.of(context).notamemberlabel,
                               style: TextStyle(
                                   fontFamily: 'Pacifico',
-                                  color: Colors.white,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .color,
                                   //fontWeight: FontWeight.bold,
                                   fontSize: 20),
                             ),
                             TextButton(
                                 onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) {
-                                      return Register();
-                                    }),
-                                  );
+                                  PageTransitionBuilder
+                                      .navigateWithCustomTransition(
+                                          context, Register());
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(builder: (context) {
+                                  //     return Register();
+                                  //   }),
+                                  // );
                                 },
                                 child: Text(
                                   S.of(context).registarnowlabel,
                                   style: TextStyle(
                                     fontFamily: 'Pacifico',
-                                    color: Colors.deepPurpleAccent,
+                                    color: Theme.of(context).splashColor,
                                     fontSize: 20,
                                   ),
                                 )),

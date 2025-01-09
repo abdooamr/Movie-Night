@@ -157,5 +157,18 @@
     "mediatypemoviess": "أفلام",
     "globalreviewswitch": "مراجعة عامة",
     "localreviewswitch": "مراجعة محلية",
-    "ohnolabel": "يا لا!"
+    "ohnolabel": "يا لا!",
+    "themelabel": "المظهر",
+    "LightTheme": "المظهر الفاتح",
+    "DarkTheme": "المظهر الداكن",
+    "OceanicWaves": "أمواج المحيط",
+    "ElegantNeutrals": "ألوان محايدة أنيقة",
+    "GoldenHour": "الساعة الذهبية",
+    "CottonCandy": "حلوى القطن",
+    "LuminousGalaxy": "مجرة مضيئة",
+    "CherryBlossom": "زهرة الكرز",
+    "mysticMeadows": "مروج غامضة",
+    "heylabel": "مرحبًا",
+    "New": "جديد",
+    "oklabel": "حسنا"
 }

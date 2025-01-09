@@ -1,10 +1,13 @@
 import 'dart:ui';
 import 'package:Movie_Night/src/pages/UI/showallmovies.dart';
+import 'package:Movie_Night/src/Animation/CustomNavigationAnimation.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/pages/UI/detail_page.dart';
 import 'package:Movie_Night/src/utils/utils.dart';
 import 'package:Movie_Night/src/widgets/carousel_slider.dart';
+import 'package:provider/provider.dart';
 import '../../generated/l10n.dart';
+import '../Provider/newthemeprovider.dart';
 import '../models/movie_model.dart';
 
 class UpcomingMovies extends StatelessWidget {
@@ -19,6 +22,7 @@ class UpcomingMovies extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorprovider = Provider.of<ColorProvider>(context);
     return FutureBuilder<Model>(
       future: future,
       builder: (context, snapshot) {
@@ -27,7 +31,7 @@ class UpcomingMovies extends StatelessWidget {
             children: [
               Center(
                 child: CircularProgressIndicator(
-                  color: Colors.deepPurpleAccent,
+                  color: Theme.of(context).splashColor,
                   strokeWidth: 3,
                 ),
               ),
@@ -58,23 +62,36 @@ class UpcomingMovies extends StatelessWidget {
                     // Render the "See All" button at index 21
                     return GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => See_All(
+                        PageTransitionBuilder.navigateWithCustomTransition(
+                            context,
+                            See_All(
                               future: future,
                               headlineText: headlineText,
-                            ), // Replace with your "See All" page widget
-                          ),
-                        );
+                            ));
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => See_All(
+                        //       future: future,
+                        //       headlineText: headlineText,
+                        //     ), // Replace with your "See All" page widget
+                        //   ),
+                        // );
                       },
                       child: Container(
                         width: 174.5,
                         height: 250,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          color: Colors
-                              .deepPurpleAccent, // Set your desired button color here
+                          // color: Theme.of(context)
+                          //     .splashColor,
+                          gradient: LinearGradient(
+                            colors: colorprovider.selectedColors.isEmpty
+                                ? [Color(0xFF171823), Color(0xFF171823)]
+                                : colorprovider.selectedColors,
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
                         ),
                         child: Center(
                           child: Column(
@@ -82,15 +99,15 @@ class UpcomingMovies extends StatelessWidget {
                             children: [
                               Icon(
                                 Icons.arrow_forward_ios_rounded,
-                                color: Colors.white, // Set the icon color
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .titleLarge!
+                                    .backgroundColor, // Set the icon color
                                 size: 48,
                               ),
                               Text(
                                 S.of(context).Seealloptions,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge
-                                    ?.copyWith(color: Colors.white),
+                                style: Theme.of(context).textTheme.titleLarge,
                               ),
                             ],
                           ),
@@ -104,18 +121,28 @@ class UpcomingMovies extends StatelessWidget {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
+                            PageTransitionBuilder.navigateWithCustomTransition(
                               context,
-                              MaterialPageRoute(
-                                builder: (context) => DetailPage(
-                                  isTvShow: headlineText.contains(
-                                          S.of(context).mediatypemoviess)
-                                      ? false
-                                      : true,
-                                  id: data[index].id,
-                                ),
+                              DetailPage(
+                                isTvShow: headlineText.contains(
+                                        S.of(context).mediatypemoviess)
+                                    ? false
+                                    : true,
+                                id: data[index].id,
                               ),
                             );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => DetailPage(
+                            //       isTvShow: headlineText.contains(
+                            //               S.of(context).mediatypemoviess)
+                            //           ? false
+                            //           : true,
+                            //       id: data[index].id,
+                            //     ),
+                            //   ),
+                            // );
                           },
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(20),
@@ -138,7 +165,7 @@ class UpcomingMovies extends StatelessWidget {
                             filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                             child: Container(
                               height: 70,
-                              width: 185,
+                              width: 174.5,
                               padding: const EdgeInsets.all(10),
                               color: Colors.black26,
                               child: Column(
@@ -149,11 +176,13 @@ class UpcomingMovies extends StatelessWidget {
                                   Text(
                                     data[index].title ?? data[index].name!,
                                     overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
                                     style: TextStyle(color: Colors.white),
                                   ),
                                   Text(
                                     getGenres(data[index].genreIds!),
                                     overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
                                     style: const TextStyle(fontSize: 12),
                                   ),
                                 ],
@@ -174,9 +203,9 @@ class UpcomingMovies extends StatelessWidget {
           return Padding(
             padding:
                 EdgeInsets.only(top: MediaQuery.of(context).size.height / 2.5),
-            child: const Center(
+            child: Center(
               child: CircularProgressIndicator(
-                color: Colors.deepPurpleAccent,
+                color: Theme.of(context).splashColor,
                 strokeWidth: 3,
               ),
             ),

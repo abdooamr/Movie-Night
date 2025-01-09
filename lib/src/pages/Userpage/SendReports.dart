@@ -37,6 +37,9 @@ class _SendReportState extends State<SendReport> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          titleTextStyle: Theme.of(context).textTheme.titleLarge!,
+          iconTheme: IconThemeData(
+              color: Theme.of(context).textTheme.bodyLarge!.color),
           elevation: 0,
           backgroundColor: Colors.transparent,
           title: Center(child: const Text('Send Report')),
@@ -48,7 +51,7 @@ class _SendReportState extends State<SendReport> {
               Container(
                 margin: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 58, 58, 137),
+                  color: Colors.transparent,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Column(
@@ -78,6 +81,7 @@ class _SendReportState extends State<SendReport> {
               ListTile(
                 leading: const Icon(Icons.text_fields),
                 title: Text(S.of(context).summarylabel),
+                tileColor: Colors.transparent,
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -92,6 +96,7 @@ class _SendReportState extends State<SendReport> {
               ListTile(
                 leading: const Icon(Icons.description),
                 title: Text(S.of(context).descriptionlabel),
+                tileColor: Colors.transparent,
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -111,7 +116,7 @@ class _SendReportState extends State<SendReport> {
                   },
                   child: Text(S.of(context).sendreportlabel),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 58, 58, 137),
+                    backgroundColor: Theme.of(context).splashColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(32.0),
                     ),

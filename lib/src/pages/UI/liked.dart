@@ -2,6 +2,7 @@ import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/langprovider.dart';
 import 'package:Movie_Night/src/models/liked_model.dart';
 import 'package:Movie_Night/src/pages/allpages.dart';
+import 'package:Movie_Night/src/Animation/CustomNavigationAnimation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:Movie_Night/src/models/movie_model.dart';
@@ -21,7 +22,6 @@ class _LikedState extends State<Liked> {
   late Future<Model> searchdetails;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -81,7 +81,7 @@ class _LikedState extends State<Liked> {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
                               return CircularProgressIndicator(
-                                color: Colors.deepPurpleAccent,
+                                color: Theme.of(context).splashColor,
                                 strokeWidth: 3,
                               );
                             } else if (snapshot.hasError) {
@@ -89,17 +89,27 @@ class _LikedState extends State<Liked> {
                             } else if (snapshot.hasData) {
                               return GestureDetector(
                                 onTap: () {
-                                  Navigator.push(
+                                  PageTransitionBuilder
+                                      .navigateWithCustomTransition(
                                     context,
-                                    MaterialPageRoute(
-                                      builder: (context) => DetailPage(
-                                        id: liked.id,
-                                        isTvShow: snapshot
-                                                .data!.results[0].mediaType ==
-                                            MediaType.tv,
-                                      ),
+                                    DetailPage(
+                                      id: liked.id,
+                                      isTvShow:
+                                          snapshot.data!.results[0].mediaType ==
+                                              MediaType.tv,
                                     ),
                                   );
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) => DetailPage(
+                                  //       id: liked.id,
+                                  //       isTvShow: snapshot
+                                  //               .data!.results[0].mediaType ==
+                                  //           MediaType.tv,
+                                  //     ),
+                                  //   ),
+                                  // );
                                 },
                                 child: Container(
                                   width: 250,

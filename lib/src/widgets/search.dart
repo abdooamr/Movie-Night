@@ -1,4 +1,5 @@
 import 'package:Movie_Night/src/Provider/langprovider.dart';
+import 'package:Movie_Night/src/Animation/CustomNavigationAnimation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:Movie_Night/src/pages/UI/castdetails.dart';
@@ -47,9 +48,9 @@ class Search extends SearchDelegate<Model> {
   Widget _buildSearchResults(BuildContext context,
       {bool showSuggestions = false}) {
     if (_prefs == null) {
-      return const Center(
+      return Center(
           child: CircularProgressIndicator(
-        color: Colors.deepPurpleAccent,
+        color: Theme.of(context).splashColor,
         strokeWidth: 3,
       ));
     }
@@ -59,9 +60,9 @@ class Search extends SearchDelegate<Model> {
       future: searchData(query, dropdownProvider.selectedValue),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
+          return Center(
             child: CircularProgressIndicator(
-              color: Colors.deepPurpleAccent,
+              color: Theme.of(context).splashColor,
               strokeWidth: 3,
             ),
           );
@@ -73,27 +74,44 @@ class Search extends SearchDelegate<Model> {
               return ListTile(
                 onTap: () {
                   if (data[index].mediaType == MediaType.person) {
-                    Navigator.push(
+                    PageTransitionBuilder.navigateWithCustomTransition(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            Cast_DetailPage(id: data[index].id),
+                      Cast_DetailPage(
+                        id: data[index].id,
                       ),
                     );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) =>
+                    //         Cast_DetailPage(id: data[index].id),
+                    //   ),
+                    // );
                   } else {
-                    Navigator.push(
+                    PageTransitionBuilder.navigateWithCustomTransition(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailPage(
-                          data: snapshot.data!,
-                          index: index,
-                          isTvShow: data[index].mediaType == MediaType.movie
-                              ? false
-                              : true,
-                          id: data[index].id,
-                        ),
+                      DetailPage(
+                        data: snapshot.data!,
+                        index: index,
+                        isTvShow: data[index].mediaType == MediaType.movie
+                            ? false
+                            : true,
+                        id: data[index].id,
                       ),
                     );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => DetailPage(
+                    //       data: snapshot.data!,
+                    //       index: index,
+                    //       isTvShow: data[index].mediaType == MediaType.movie
+                    //           ? false
+                    //           : true,
+                    //       id: data[index].id,
+                    //     ),
+                    //   ),
+                    // );
                   }
                 },
                 leading: CircleAvatar(

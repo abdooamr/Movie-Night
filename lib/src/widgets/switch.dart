@@ -7,6 +7,8 @@ class Typeswitch extends StatelessWidget {
   final VoidCallback onTvShowSelected;
   final String title1;
   final String title2;
+  final Color unselectedcolor;
+  final Color selectedcolor;
 
   const Typeswitch({
     required this.title1,
@@ -15,6 +17,8 @@ class Typeswitch extends StatelessWidget {
     required this.tvshow,
     required this.onMovieSelected,
     required this.onTvShowSelected,
+    required this.unselectedcolor,
+    required this.selectedcolor,
   });
 
   @override
@@ -30,10 +34,13 @@ class Typeswitch extends StatelessWidget {
             onTap: onTvShowSelected,
             child: Text(title1,
                 style: tvshow
-                    ? Theme.of(context).textTheme.titleLarge
+                    ? TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: selectedcolor)
                     : TextStyle(
                         fontSize: 18,
-                        color: Colors.grey,
+                        color: unselectedcolor,
                         fontWeight: FontWeight.bold,
                       )
                 // TextStyle(
@@ -55,10 +62,13 @@ class Typeswitch extends StatelessWidget {
             onTap: onMovieSelected,
             child: Text(title2,
                 style: movie
-                    ? Theme.of(context).textTheme.titleLarge
+                    ? TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: selectedcolor)
                     : TextStyle(
                         fontSize: 18,
-                        color: Colors.grey,
+                        color: unselectedcolor,
                         fontWeight: FontWeight.bold,
                       )),
           ),

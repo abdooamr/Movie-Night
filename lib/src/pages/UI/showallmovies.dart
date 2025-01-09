@@ -3,7 +3,6 @@ import 'package:Movie_Night/src/models/movie_model.dart';
 import 'package:Movie_Night/src/widgets/genreslistview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:Movie_Night/src/utils/utils.dart';
 
 class See_All extends StatelessWidget {
   const See_All({
@@ -18,7 +17,10 @@ class See_All extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: kBackgoundColor,
+          titleTextStyle: Theme.of(context).textTheme.titleLarge!,
+          iconTheme: IconThemeData(
+              color: Theme.of(context).textTheme.bodyLarge!.color),
+          backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
         ),
         body:

@@ -27,6 +27,11 @@ class _ReviewsPageState extends State<ReviewsPage> {
           height: 40,
         ),
         Typeswitch(
+          selectedcolor: Theme.of(context).textTheme.bodyLarge!.color!,
+          unselectedcolor:
+              Theme.of(context).textTheme.bodyLarge!.color! == Colors.white
+                  ? Colors.grey.shade400
+                  : Colors.grey.shade600,
           title1: S.of(context).globalreviewswitch,
           title2: S.of(context).localreviewswitch,
           movie: Local,

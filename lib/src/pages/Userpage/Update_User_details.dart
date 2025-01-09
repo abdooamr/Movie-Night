@@ -32,6 +32,9 @@ class _User_update_info_pageState extends State<User_update_info_page> {
     var updateuserdata = Provider.of<UserData>(context, listen: true);
     return Scaffold(
       appBar: AppBar(
+        titleTextStyle: Theme.of(context).textTheme.titleLarge!,
+        iconTheme:
+            IconThemeData(color: Theme.of(context).textTheme.bodyLarge!.color),
         title: Text(S.of(context).updateprofilelabel),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -124,7 +127,7 @@ class _User_update_info_pageState extends State<User_update_info_page> {
                                 ),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor:
-                                      Color.fromARGB(255, 49, 39, 112),
+                                      Theme.of(context).splashColor,
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(
                                           40)), // This is what you need!

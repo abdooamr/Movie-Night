@@ -157,6 +157,20 @@
     "mediatypemoviess": "फ़िल्में",
     "globalreviewswitch": "वैश्विक समीक्षा",
     "localreviewswitch": "स्थानीय समीक्षा",
-    "ohnolabel": "ओह नो!"
+    "ohnolabel": "ओह नो!",
+    "themelabel": "थीम",
+    "LightTheme": "प्रकाश थीम",
+    "DarkTheme": "डार्क थीम",
+    "OceanicWaves": "समुद्री लहरें थीम",
+    "ElegantNeutrals": "शालीन न्यूट्रल्स थीम",
+    "GoldenHour": "सोने की घड़ी थीम",
+    "CottonCandy": "कॉटन कैंडी थीम",
+    "LuminousGalaxy": "प्रकाशमय ब्रह्मांड थीम",
+    "CherryBlossom": "चेरी ब्लॉसम थीम",
+    "mysticMeadows": "रहस्यमय मैडोज़ थीम",
+    "heylabel": "हेलो",
+    "New": "नया",
+    "oklabel": "ठीक है"
 }
+
 

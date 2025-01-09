@@ -1,4 +1,5 @@
 import 'package:Movie_Night/generated/l10n.dart';
+import 'package:Movie_Night/src/Animation/CustomNavigationAnimation.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/components/Cached_image.dart';
 import 'package:Movie_Night/src/pages/UI/detail_page.dart';
@@ -23,7 +24,7 @@ class GenresListView extends StatelessWidget {
           // While data is being fetched, show a CircularProgressIndicator
           return Center(
             child: CircularProgressIndicator(
-              color: Colors.deepPurpleAccent,
+              color: Theme.of(context).splashColor,
               strokeWidth: 3,
             ),
           );
@@ -47,7 +48,6 @@ class GenresListView extends StatelessWidget {
                     itemBuilder: (context, rowIndex) {
                       final startIndex = rowIndex * 2;
                       final endIndex = startIndex + 1;
-
                       return Row(
                         children: [
                           for (int index = startIndex;
@@ -62,21 +62,20 @@ class GenresListView extends StatelessWidget {
                                   children: [
                                     GestureDetector(
                                       onTap: () {
-                                        Navigator.push(
+                                        PageTransitionBuilder
+                                            .navigateWithCustomTransition(
                                           context,
-                                          MaterialPageRoute(
-                                            builder: (context) => DetailPage(
-                                              isTvShow: headlineText.contains(S
-                                                          .of(context)
-                                                          .mediatypemoviess) ||
-                                                      data[index].mediaType ==
-                                                          MediaType.movie
-                                                  ? false
-                                                  : true,
-                                              data: snapshot.data!,
-                                              index: index,
-                                              id: data[index].id,
-                                            ),
+                                          DetailPage(
+                                            isTvShow: headlineText.contains(S
+                                                        .of(context)
+                                                        .mediatypemoviess) ||
+                                                    data[index].mediaType ==
+                                                        MediaType.movie
+                                                ? false
+                                                : true,
+                                            data: snapshot.data!,
+                                            index: index,
+                                            id: data[index].id,
                                           ),
                                         );
                                       },

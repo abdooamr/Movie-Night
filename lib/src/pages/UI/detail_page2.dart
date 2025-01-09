@@ -63,7 +63,7 @@
 //         builder: (context, snapshot) {
 //           if (snapshot.connectionState == ConnectionState.waiting) {
 //             return Center(child: CircularProgressIndicator(
-//              color: Colors.deepPurpleAccent,
+//              color: Theme.of(context).splashColor,
 //              strokeWidth: 3,
 //            ));
 //           } else if (snapshot.hasError) {
@@ -223,7 +223,7 @@
 //                                   icon: const Icon(IconsaxOutline.play_circle),
 //                                   style: ButtonStyle(
 //                                     backgroundColor: MaterialStateProperty.all(
-//                                       Color.fromARGB(255, 49, 39, 112),
+//                                       Theme.of(context).splashColor,
 //                                     ),
 //                                     shape: MaterialStateProperty.all(
 //                                       RoundedRectangleBorder(

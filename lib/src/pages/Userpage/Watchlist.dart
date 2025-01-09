@@ -45,9 +45,13 @@ class _userwatchlistState extends State<userwatchlist>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        titleTextStyle: Theme.of(context).textTheme.titleLarge!,
+        iconTheme:
+            IconThemeData(color: Theme.of(context).textTheme.bodyLarge!.color),
         title: Text(S.of(context).watchlistlabel),
+        backgroundColor: Colors.transparent,
         bottom: TabBar(
-          indicatorColor: Colors.deepPurpleAccent,
+          indicatorColor: Theme.of(context).splashColor,
           controller: _tabController,
           tabs: [
             Tab(text: S.of(context).movieswitch),
@@ -84,7 +88,7 @@ class _userwatchlistState extends State<userwatchlist>
                           } else {
                             return Center(
                                 child: CircularProgressIndicator(
-                              color: Colors.deepPurpleAccent,
+                              color: Theme.of(context).splashColor,
                               strokeWidth: 3,
                             ));
                           }
@@ -105,7 +109,7 @@ class _userwatchlistState extends State<userwatchlist>
               } else {
                 return Center(
                     child: CircularProgressIndicator(
-                  color: Colors.deepPurpleAccent,
+                  color: Theme.of(context).splashColor,
                   strokeWidth: 3,
                 ));
               }
@@ -136,7 +140,7 @@ class _userwatchlistState extends State<userwatchlist>
                           } else {
                             return Center(
                                 child: CircularProgressIndicator(
-                              color: Colors.deepPurpleAccent,
+                              color: Theme.of(context).splashColor,
                               strokeWidth: 3,
                             ));
                           }
@@ -158,7 +162,7 @@ class _userwatchlistState extends State<userwatchlist>
               } else {
                 return Center(
                     child: CircularProgressIndicator(
-                  color: Colors.deepPurpleAccent,
+                  color: Theme.of(context).splashColor,
                   strokeWidth: 3,
                 ));
               }

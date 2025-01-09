@@ -46,7 +46,6 @@ class UserProvider extends ChangeNotifier {
       }
     } catch (error) {
       // Handle error
-      print('Error creating user: $error');
       rethrow; // Rethrow the error to allow the UI to handle it
     }
   }

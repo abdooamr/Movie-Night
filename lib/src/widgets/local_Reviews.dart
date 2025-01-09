@@ -164,7 +164,7 @@ class _LocalReviewsWidgetState extends State<LocalReviewsWidget> {
               child: TextFormField(
                 controller: reviewController,
                 decoration: InputDecoration(
-                  focusColor: Colors.deepPurpleAccent,
+                  focusColor: Theme.of(context).splashColor,
                   hintText: 'Write a review',
                   hintStyle: Theme.of(context).textTheme.bodyMedium,
                   border: OutlineInputBorder(
@@ -191,10 +191,10 @@ class _LocalReviewsWidgetState extends State<LocalReviewsWidget> {
                   reviewController.clear();
                 }
               },
-              icon: const Icon(
+              icon: Icon(
                 IconsaxBold.send_square,
                 size: 40,
-                color: Colors.deepPurpleAccent,
+                color: Theme.of(context).splashColor,
               ),
             ),
           ],

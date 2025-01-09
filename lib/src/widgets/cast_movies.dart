@@ -1,6 +1,7 @@
 import 'package:Movie_Night/src/components/Cached_image.dart';
 import 'package:Movie_Night/src/models/Knownfor_model.dart';
 import 'package:Movie_Night/src/pages/UI/detail_page.dart';
+import 'package:Movie_Night/src/Animation/CustomNavigationAnimation.dart';
 
 import 'package:flutter/material.dart';
 
@@ -48,15 +49,24 @@ class Cast_knownfor extends StatelessWidget {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => DetailPage(
-                                        isTvShow: istvshow,
-                                        index: index,
-                                        id: data[index].id,
-                                      ),
-                                    ));
+                                PageTransitionBuilder
+                                    .navigateWithCustomTransition(
+                                  context,
+                                  DetailPage(
+                                    isTvShow: istvshow,
+                                    index: index,
+                                    id: data[index].id,
+                                  ),
+                                );
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //       builder: (context) => DetailPage(
+                                //         isTvShow: istvshow,
+                                //         index: index,
+                                //         id: data[index].id,
+                                //       ),
+                                //     ));
                               },
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20),

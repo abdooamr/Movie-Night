@@ -1615,6 +1615,136 @@ class S {
       args: [],
     );
   }
+
+  /// `Theme`
+  String get themelabel {
+    return Intl.message(
+      'Theme',
+      name: 'themelabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Light Theme`
+  String get LightTheme {
+    return Intl.message(
+      'Light Theme',
+      name: 'LightTheme',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dark Theme`
+  String get DarkTheme {
+    return Intl.message(
+      'Dark Theme',
+      name: 'DarkTheme',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Oceanic Waves`
+  String get OceanicWaves {
+    return Intl.message(
+      'Oceanic Waves',
+      name: 'OceanicWaves',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Elegant Neutrals`
+  String get ElegantNeutrals {
+    return Intl.message(
+      'Elegant Neutrals',
+      name: 'ElegantNeutrals',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Golden Hour`
+  String get GoldenHour {
+    return Intl.message(
+      'Golden Hour',
+      name: 'GoldenHour',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cotton Candy`
+  String get CottonCandy {
+    return Intl.message(
+      'Cotton Candy',
+      name: 'CottonCandy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Luminous Galaxy`
+  String get LuminousGalaxy {
+    return Intl.message(
+      'Luminous Galaxy',
+      name: 'LuminousGalaxy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cherry Blossom`
+  String get CherryBlossom {
+    return Intl.message(
+      'Cherry Blossom',
+      name: 'CherryBlossom',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mystic Meadows`
+  String get mysticMeadows {
+    return Intl.message(
+      'Mystic Meadows',
+      name: 'mysticMeadows',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hey`
+  String get heylabel {
+    return Intl.message(
+      'Hey',
+      name: 'heylabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New`
+  String get New {
+    return Intl.message(
+      'New',
+      name: 'New',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ok`
+  String get oklabel {
+    return Intl.message(
+      'Ok',
+      name: 'oklabel',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

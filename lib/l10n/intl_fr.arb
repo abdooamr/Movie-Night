@@ -157,6 +157,19 @@
     "mediatypemoviess": "Films",
     "globalreviewswitch": "Avis Global",
     "localreviewswitch": "Avis Local",
-    "ohnolabel": "Oh Non !"
+    "ohnolabel": "Oh Non !",
+    "themelabel": "Thème",
+    "LightTheme": "Thème clair",
+    "DarkTheme": "Thème sombre",
+    "OceanicWaves": "Vagues océaniques",
+    "ElegantNeutrals": "Neutres élégants",
+    "GoldenHour": "Heure dorée",
+    "CottonCandy": "Barbe à papa",
+    "LuminousGalaxy": "Galaxie lumineuse",
+    "CherryBlossom": "Fleur de cerisier",
+    "mysticMeadows": "Prairies mystiques",
+    "heylabel": "Salut",
+    "New": "Nouveau",
+    "oklabel": "OK"
 }
 

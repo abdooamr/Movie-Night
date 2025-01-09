@@ -16,7 +16,7 @@ class UserData extends ChangeNotifier {
     return _firestore.collection('users').doc(uid).snapshots().map((snapshot) {
       if (snapshot.exists) {
         Map<String, dynamic> userData = snapshot.data() as Map<String, dynamic>;
-        print(userData['firstName']);
+
         return Users(
           id: userData['id'],
           role: userData['role'],
@@ -49,7 +49,6 @@ class UserData extends ChangeNotifier {
       await FirebaseFirestore.instance.collection("users").doc(uid).update({
         "ProfilePic": profileimageUrl,
       });
-      //print(Userrr.photoURL);
       currentuser.updatePhotoURL(profileimageUrl);
       notifyListeners();
     } catch (error) {

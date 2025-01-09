@@ -1,3 +1,4 @@
+import 'package:Movie_Night/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 class CustomDialog extends StatelessWidget {
@@ -45,8 +46,7 @@ class CustomDialog extends StatelessWidget {
           SizedBox(height: 24),
           ElevatedButton.icon(
             style: ElevatedButton.styleFrom(
-              primary: Colors.red,
-              onPrimary: Colors.white,
+              backgroundColor: Colors.red,
               minimumSize: Size(100, 50),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30),
@@ -57,7 +57,7 @@ class CustomDialog extends StatelessWidget {
               onOkPressed();
             },
             icon: Icon(Icons.exit_to_app),
-            label: Text('OK'),
+            label: Text(S.of(context).oklabel),
           ),
         ],
       ),

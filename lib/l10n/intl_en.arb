@@ -157,5 +157,18 @@
     "mediatypemoviess": "Movies",
     "globalreviewswitch": "Global Review",
     "localreviewswitch": "Local Review",
-    "ohnolabel": "Oh No!"
+    "ohnolabel": "Oh No!",
+    "themelabel": "Theme",
+    "LightTheme": "Light Theme",
+    "DarkTheme": "Dark Theme",
+    "OceanicWaves": "Oceanic Waves",
+    "ElegantNeutrals": "Elegant Neutrals",
+    "GoldenHour": "Golden Hour",
+    "CottonCandy": "Cotton Candy",
+    "LuminousGalaxy": "Luminous Galaxy",
+    "CherryBlossom": "Cherry Blossom",
+    "mysticMeadows": "Mystic Meadows",
+    "heylabel": "Hey",
+    "New": "New",
+    "oklabel":"Ok"
 }

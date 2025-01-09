@@ -69,14 +69,15 @@ class _CustomvalformfieldState extends State<Customvalformfield> {
             color: Colors.grey,
           ),
           filled: true,
-          fillColor:
-              hasFocus ? Color.fromARGB(255, 56, 48, 76) : Colors.transparent,
+          fillColor: Colors.transparent,
           labelText: widget.labelText,
-          labelStyle: TextStyle(color: Colors.white),
+          labelStyle: TextStyle(color: Theme.of(context).hintColor),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
-            borderSide:
-                BorderSide(color: hasFocus ? Colors.grey : Colors.transparent),
+            borderSide: BorderSide(
+                color: hasFocus
+                    ? Theme.of(context).splashColor
+                    : Colors.transparent),
           ),
         ),
       ),

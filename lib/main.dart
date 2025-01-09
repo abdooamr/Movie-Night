@@ -1,7 +1,9 @@
 import 'package:Movie_Night/src/Provider/allproviders.dart';
 import 'package:Movie_Night/src/Provider/langprovider.dart';
+import 'package:Movie_Night/src/Provider/newthemeprovider.dart';
 import 'package:Movie_Night/src/Provider/reviewsprovider.dart';
 import 'package:Movie_Night/src/models/liked_model.dart';
+import 'package:Movie_Night/src/models/thememodel.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -21,16 +23,23 @@ void main() async {
   Hive.registerAdapter<LikedModel>(LikedModelAdapter());
   await Hive.openBox<LikedModel>('liked');
 
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (context) => ReviewProvider()),
-    ChangeNotifierProvider(create: (context) => ThemeProvider()),
-    ChangeNotifierProvider(create: (context) => UserProvider()),
-    ChangeNotifierProvider(create: (context) => UserData()),
-    ChangeNotifierProvider(
-      create: (context) => DropdownProvider(),
+  final colorProvider = ColorProvider();
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: colorProvider),
+        ChangeNotifierProvider(create: (context) => ReviewProvider()),
+        ChangeNotifierProvider(create: (context) => UserProvider()),
+        ChangeNotifierProvider(create: (context) => UserData()),
+        ChangeNotifierProvider(
+          create: (context) => DropdownProvider(),
+          child: MyApp(),
+        ),
+      ],
       child: MyApp(),
     ),
-  ], child: MyApp()));
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -43,49 +52,58 @@ class MyApp extends StatelessWidget {
     return connectivityResult != ConnectivityResult.none;
   }
 
+  ThemeData getThemeData(int index) {
+    return themeModels[index].themeData;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
-      builder: (context, child) {
-        final themeProvider = Provider.of<ThemeProvider>(context);
-        return Consumer<DropdownProvider>(
-            builder: (context, dropdownProvider, child) {
-          return MaterialApp(
-            title: 'Movie app',
-            theme: MyThemes.lightTheme,
-            darkTheme: MyThemes.darkTheme,
-            themeMode: themeProvider.themeMode,
-            debugShowCheckedModeBanner: false,
-            locale: Locale(dropdownProvider.selectedValue),
-            localizationsDelegates: [
-              S.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: S.delegate.supportedLocales,
-            home: FutureBuilder<bool>(
-              future: _checkInternetConnectivity(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator(
-                    color: Colors.deepPurpleAccent,
-                    strokeWidth: 3,
-                  );
-                } else if (snapshot.data == true) {
-                  return AuthPage();
-                } else {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    _showNoInternetDialog(context);
-                  });
-                  return SizedBox.shrink();
-                }
-              },
-            ),
-          );
-        });
-      },
+    final colorprovider = Provider.of<ColorProvider>(context);
+    final dropdownProvider = Provider.of<DropdownProvider>(context);
+    ThemeData selectedTheme = getThemeData(colorprovider.currentIndex);
+    print("INDEXX:{${colorprovider.currentIndex}}");
+    print("THEEEMEEE:{${selectedTheme}}");
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: colorprovider.selectedColors.isEmpty
+              ? themeModels[colorprovider.currentIndex].colors
+              : colorprovider.selectedColors,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: MaterialApp(
+        title: 'Movie Night',
+        theme: selectedTheme,
+        debugShowCheckedModeBanner: false,
+        locale: Locale(dropdownProvider.selectedValue),
+        localizationsDelegates: [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
+        home: FutureBuilder<bool>(
+          future: _checkInternetConnectivity(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator(
+                color: Theme.of(context).splashColor,
+                strokeWidth: 3,
+              );
+            } else if (snapshot.data == true) {
+              return AuthPage();
+            } else {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                _showNoInternetDialog(context);
+              });
+              return SizedBox.shrink();
+            }
+          },
+        ),
+      ),
     );
   }
 

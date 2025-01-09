@@ -1,3 +1,4 @@
+import 'package:Movie_Night/src/Animation/CustomNavigationAnimation.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/pages/Adminpages/add_admin.dart';
 import 'package:Movie_Night/src/pages/Adminpages/fulldetails.dart';
@@ -27,6 +28,9 @@ class Detailscategory extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        titleTextStyle: Theme.of(context).textTheme.titleLarge!,
+        iconTheme:
+            IconThemeData(color: Theme.of(context).textTheme.bodyLarge!.color),
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Center(child: Text('Details Category')),
@@ -43,78 +47,106 @@ class Detailscategory extends StatelessWidget {
             SizedBox(height: 20),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: Color.fromARGB(255, 49, 39, 112),
+                backgroundColor: Theme.of(context).splashColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(32.0),
                 ),
               ),
               onPressed: () {
-                Navigator.push(
+                PageTransitionBuilder.navigateWithCustomTransition(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => Report_screen(
-                      id: id,
-                      email: email,
-                      firstname: firstname,
-                      profilepic: profilepic,
-                      lastname: lastname,
-                      role: role,
-                      report: report,
-                    ),
+                  Report_screen(
+                    id: id,
+                    email: email,
+                    firstname: firstname,
+                    profilepic: profilepic,
+                    lastname: lastname,
+                    role: role,
+                    report: report,
                   ),
                 );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => Report_screen(
+                //       id: id,
+                //       email: email,
+                //       firstname: firstname,
+                //       profilepic: profilepic,
+                //       lastname: lastname,
+                //       role: role,
+                //       report: report,
+                //     ),
+                //   ),
+                // );
               },
               child: Text("View Reports"),
             ),
             SizedBox(height: 20),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: Color.fromARGB(255, 49, 39, 112),
+                backgroundColor: Theme.of(context).splashColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(32.0),
                 ),
               ),
               onPressed: () {
-                Navigator.push(
+                PageTransitionBuilder.navigateWithCustomTransition(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => Fulldetail(
-                      id: id,
-                      email: email,
-                      firstname: firstname,
-                      profilepic: profilepic,
-                      lastname: lastname,
-                      role: role,
-                      report: report,
-                    ),
+                  Fulldetail(
+                    id: id,
+                    email: email,
+                    firstname: firstname,
+                    profilepic: profilepic,
+                    lastname: lastname,
+                    role: role,
+                    report: report,
                   ),
                 );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) =>
+                //   ),
+                // );
               },
               child: Text("View Full Details"),
             ),
             SizedBox(height: 20),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: Color.fromARGB(255, 49, 39, 112),
+                backgroundColor: Theme.of(context).splashColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(32.0),
                 ),
               ),
               onPressed: () {
-                Navigator.push(
+                PageTransitionBuilder.navigateWithCustomTransition(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => AddAdmin(
-                      id: id,
-                      email: email,
-                      firstname: firstname,
-                      profilepic: profilepic,
-                      lastname: lastname,
-                      role: role,
-                      report: report,
-                    ),
+                  AddAdmin(
+                    id: id,
+                    email: email,
+                    firstname: firstname,
+                    profilepic: profilepic,
+                    lastname: lastname,
+                    role: role,
+                    report: report,
                   ),
                 );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => AddAdmin(
+                //       id: id,
+                //       email: email,
+                //       firstname: firstname,
+                //       profilepic: profilepic,
+                //       lastname: lastname,
+                //       role: role,
+                //       report: report,
+                //     ),
+                //   ),
+                // );
               },
               child: Text("Add Admin"),
             ),

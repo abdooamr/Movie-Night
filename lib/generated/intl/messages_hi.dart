@@ -25,19 +25,32 @@ class MessageLookup extends MessageLookupByLibrary {
         "Actiongenre": MessageLookupByLibrary.simpleMessage("क्रिया"),
         "Adventuregenre": MessageLookupByLibrary.simpleMessage("एडवेंचर"),
         "Animationgenre": MessageLookupByLibrary.simpleMessage("एनीमेशन"),
+        "CherryBlossom":
+            MessageLookupByLibrary.simpleMessage("चेरी ब्लॉसम थीम"),
         "Comedygenre": MessageLookupByLibrary.simpleMessage("कॉमेडी"),
+        "CottonCandy": MessageLookupByLibrary.simpleMessage("कॉटन कैंडी थीम"),
         "Crimegenre": MessageLookupByLibrary.simpleMessage("अपराध"),
+        "DarkTheme": MessageLookupByLibrary.simpleMessage("डार्क थीम"),
         "Documentarygenre":
             MessageLookupByLibrary.simpleMessage("डॉक्यूमेंटरी"),
         "Dramagenre": MessageLookupByLibrary.simpleMessage("नाटक"),
+        "ElegantNeutrals":
+            MessageLookupByLibrary.simpleMessage("शालीन न्यूट्रल्स थीम"),
         "Familygenre": MessageLookupByLibrary.simpleMessage("परिवार"),
         "Fantasygenre": MessageLookupByLibrary.simpleMessage("काल्पनिक"),
         "Frenchlabel": MessageLookupByLibrary.simpleMessage("फ्रेंच"),
+        "GoldenHour": MessageLookupByLibrary.simpleMessage("सोने की घड़ी थीम"),
         "Heytherelabel": MessageLookupByLibrary.simpleMessage("हेलो"),
         "Historygenre": MessageLookupByLibrary.simpleMessage("इतिहास"),
         "Horrorgenre": MessageLookupByLibrary.simpleMessage("भूतपूर्व"),
+        "LightTheme": MessageLookupByLibrary.simpleMessage("प्रकाश थीम"),
+        "LuminousGalaxy":
+            MessageLookupByLibrary.simpleMessage("प्रकाशमय ब्रह्मांड थीम"),
         "Musicgenre": MessageLookupByLibrary.simpleMessage("संगीत"),
         "Mysterygenre": MessageLookupByLibrary.simpleMessage("रहस्य"),
+        "New": MessageLookupByLibrary.simpleMessage("नया"),
+        "OceanicWaves":
+            MessageLookupByLibrary.simpleMessage("समुद्री लहरें थीम"),
         "OhNo": MessageLookupByLibrary.simpleMessage("ओह नो!"),
         "Recommendation": MessageLookupByLibrary.simpleMessage("सिफारिश"),
         "Romancegenre": MessageLookupByLibrary.simpleMessage("रोमांस"),
@@ -123,6 +136,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "globalreviewswitch":
             MessageLookupByLibrary.simpleMessage("वैश्विक समीक्षा"),
         "hello": MessageLookupByLibrary.simpleMessage("नमस्ते"),
+        "heylabel": MessageLookupByLibrary.simpleMessage("हेलो"),
         "hindilabel": MessageLookupByLibrary.simpleMessage("हिंदी"),
         "historymovielabel":
             MessageLookupByLibrary.simpleMessage("इतिहास फ़िल्में"),
@@ -149,6 +163,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("संगीत फ़िल्में"),
         "mysterymovielabel":
             MessageLookupByLibrary.simpleMessage("रहस्य फ़िल्में"),
+        "mysticMeadows":
+            MessageLookupByLibrary.simpleMessage("रहस्यमय मैडोज़ थीम"),
         "newstvlabel": MessageLookupByLibrary.simpleMessage("समाचार टीवी शो"),
         "noInternet":
             MessageLookupByLibrary.simpleMessage("कोई इंटरनेट कनेक्शन नहीं"),
@@ -176,6 +192,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "numberofseasons":
             MessageLookupByLibrary.simpleMessage("सीजनों की संख्या"),
         "ohnolabel": MessageLookupByLibrary.simpleMessage("ओह नो!"),
+        "oklabel": MessageLookupByLibrary.simpleMessage("ठीक है"),
         "passwordconfirmlabel":
             MessageLookupByLibrary.simpleMessage("पासवर्ड की पुष्टि करें"),
         "passwordlabel": MessageLookupByLibrary.simpleMessage("पासवर्ड"),
@@ -225,6 +242,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("सारांश  (आवश्यक)"),
         "talktvlabel": MessageLookupByLibrary.simpleMessage("बातचीत टीवी शो"),
         "thecast": MessageLookupByLibrary.simpleMessage("कास्ट"),
+        "themelabel": MessageLookupByLibrary.simpleMessage("थीम"),
         "thrillermovielabel":
             MessageLookupByLibrary.simpleMessage("थ्रिलर फ़िल्में"),
         "trendingmovieswidget_title":

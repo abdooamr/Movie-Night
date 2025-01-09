@@ -1,9 +1,9 @@
 import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/widgets/customsettingscreen.dart';
+import 'package:Movie_Night/src/widgets/settingsscreenwidget.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:Movie_Night/src/widgets/iconwidget.dart';
 
 class Changepassword extends StatefulWidget {
@@ -21,18 +21,13 @@ Future change_password() async {
 class _ChangepasswordState extends State<Changepassword> {
   @override
   Widget build(BuildContext context) {
-    return SimpleSettingsTile(
-      //colorxz: Theme.of(context).listTileTheme.tileColor,
+    return Settings_Screen(
       title: S.of(context).privacylabel,
-      leading: Iconwidget(icon: Icons.security, color: Colors.red),
-      child: Settings_Screen(
-        title: S.of(context).changepasswordlabel,
-        children: <Widget>[Change_password(context)],
-      ),
+      children: <Widget>[Change_password(context)],
     );
   }
 
-  Widget Change_password(BuildContext context) => SimpleSettingsTile(
+  Widget Change_password(BuildContext context) => CustomSettingsTile(
         //colorxz: Theme.of(context).listTileTheme.tileColor,
         title: S.of(context).changepasswordlabel,
         subtitle: "",

@@ -1,5 +1,6 @@
-import 'package:Movie_Night/src/utils/utils.dart';
+import 'package:Movie_Night/src/Provider/newthemeprovider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Settings_Screen extends StatelessWidget {
   /// Appbar title in Scaffold.
@@ -15,10 +16,14 @@ class Settings_Screen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorprovider = Provider.of<ColorProvider>(context);
     return Scaffold(
       appBar: AppBar(
+        titleTextStyle: Theme.of(context).textTheme.titleLarge!,
+        iconTheme:
+            IconThemeData(color: Theme.of(context).textTheme.bodyLarge!.color),
         title: Text(title),
-        backgroundColor: kBackgoundColor,
+        backgroundColor: colorprovider.selectedColors[1],
         shadowColor: Colors.transparent,
       ),
       body: ListView.builder(

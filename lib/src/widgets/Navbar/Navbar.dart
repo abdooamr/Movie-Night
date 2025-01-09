@@ -71,7 +71,9 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                 selectedItemColor: Theme.of(context)
                     .bottomNavigationBarTheme
                     .selectedItemColor,
-                unselectedItemColor: Colors.grey.shade500,
+                unselectedItemColor: Theme.of(context)
+                    .bottomNavigationBarTheme
+                    .unselectedItemColor,
                 elevation: 0,
                 showSelectedLabels: true,
                 showUnselectedLabels: true,

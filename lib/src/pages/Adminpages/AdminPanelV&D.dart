@@ -1,3 +1,4 @@
+import 'package:Movie_Night/src/Animation/CustomNavigationAnimation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,9 @@ class adminpanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        titleTextStyle: Theme.of(context).textTheme.titleLarge!,
+        iconTheme:
+            IconThemeData(color: Theme.of(context).textTheme.bodyLarge!.color),
         title: Center(child: const Text("Admin Panel")),
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -26,9 +30,9 @@ class adminpanel extends StatelessWidget {
         stream: _readUsers(),
         builder: (_, snapshot) {
           if (snapshot.hasError) {
-            return const Center(
+            return Center(
               child: CircularProgressIndicator(
-                color: Colors.deepPurpleAccent,
+                color: Theme.of(context).splashColor,
                 strokeWidth: 3,
               ),
             );
@@ -104,18 +108,29 @@ class adminpanel extends StatelessWidget {
                   children: <Widget>[
                     ListTile(
                       onTap: () {
-                        Navigator.push(
+                        PageTransitionBuilder.navigateWithCustomTransition(
                             context,
-                            MaterialPageRoute(
-                                builder: (context) => Detailscategory(
-                                      id: user.id,
-                                      firstname: user.firstName,
-                                      lastname: user.lastName,
-                                      email: user.email,
-                                      role: user.role,
-                                      profilepic: user.ProfilePic,
-                                      report: user.report,
-                                    )));
+                            Detailscategory(
+                              id: user.id,
+                              firstname: user.firstName,
+                              lastname: user.lastName,
+                              email: user.email,
+                              role: user.role,
+                              profilepic: user.ProfilePic,
+                              report: user.report,
+                            ));
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => Detailscategory(
+                        //               id: user.id,
+                        //               firstname: user.firstName,
+                        //               lastname: user.lastName,
+                        //               email: user.email,
+                        //               role: user.role,
+                        //               profilepic: user.ProfilePic,
+                        //               report: user.report,
+                        //             )));
                       },
                       leading: user.ProfilePic == ""
                           ? Icon(Icons.person, size: 50)

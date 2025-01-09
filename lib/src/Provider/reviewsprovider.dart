@@ -32,7 +32,6 @@ class ReviewProvider extends ChangeNotifier {
       notifyListeners();
     } catch (error) {
       // Handle the error here.
-      print('Error adding review: $error');
     }
   }
 
@@ -63,8 +62,6 @@ class ReviewProvider extends ChangeNotifier {
       final reviewDoc = _firestore.collection('reviews').doc(movieId);
       await reviewDoc.collection('users').doc(userId).delete();
       notifyListeners();
-    } catch (error) {
-      print('Error deleting review: $error');
-    }
+    } catch (error) {}
   }
 }

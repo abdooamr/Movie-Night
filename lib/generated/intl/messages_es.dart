@@ -25,18 +25,30 @@ class MessageLookup extends MessageLookupByLibrary {
         "Actiongenre": MessageLookupByLibrary.simpleMessage("Acción"),
         "Adventuregenre": MessageLookupByLibrary.simpleMessage("Aventura"),
         "Animationgenre": MessageLookupByLibrary.simpleMessage("Animación"),
+        "CherryBlossom": MessageLookupByLibrary.simpleMessage("Cerezo en Flor"),
         "Comedygenre": MessageLookupByLibrary.simpleMessage("Comedia"),
+        "CottonCandy":
+            MessageLookupByLibrary.simpleMessage("Algodón de Azúcar"),
         "Crimegenre": MessageLookupByLibrary.simpleMessage("Crimen"),
+        "DarkTheme": MessageLookupByLibrary.simpleMessage("Tema Oscuro"),
         "Documentarygenre": MessageLookupByLibrary.simpleMessage("Documental"),
         "Dramagenre": MessageLookupByLibrary.simpleMessage("Drama"),
+        "ElegantNeutrals":
+            MessageLookupByLibrary.simpleMessage("Neutrales Elegantes"),
         "Familygenre": MessageLookupByLibrary.simpleMessage("Familia"),
         "Fantasygenre": MessageLookupByLibrary.simpleMessage("Fantasía"),
         "Frenchlabel": MessageLookupByLibrary.simpleMessage("Francés"),
+        "GoldenHour": MessageLookupByLibrary.simpleMessage("Hora Dorada"),
         "Heytherelabel": MessageLookupByLibrary.simpleMessage("Hola"),
         "Historygenre": MessageLookupByLibrary.simpleMessage("Historia"),
         "Horrorgenre": MessageLookupByLibrary.simpleMessage("Terror"),
+        "LightTheme": MessageLookupByLibrary.simpleMessage("Tema Claro"),
+        "LuminousGalaxy":
+            MessageLookupByLibrary.simpleMessage("Galaxia Luminosa"),
         "Musicgenre": MessageLookupByLibrary.simpleMessage("Música"),
         "Mysterygenre": MessageLookupByLibrary.simpleMessage("Misterio"),
+        "New": MessageLookupByLibrary.simpleMessage("Nuevo"),
+        "OceanicWaves": MessageLookupByLibrary.simpleMessage("Ondas Oceánicas"),
         "OhNo": MessageLookupByLibrary.simpleMessage("¡Oh No!"),
         "Recommendation": MessageLookupByLibrary.simpleMessage("Recomendación"),
         "Romancegenre": MessageLookupByLibrary.simpleMessage("Romance"),
@@ -125,6 +137,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "globalreviewswitch":
             MessageLookupByLibrary.simpleMessage("Revisión Global"),
         "hello": MessageLookupByLibrary.simpleMessage("Hola"),
+        "heylabel": MessageLookupByLibrary.simpleMessage("Hola"),
         "hindilabel": MessageLookupByLibrary.simpleMessage("Hindi"),
         "historymovielabel":
             MessageLookupByLibrary.simpleMessage("Películas de Historia"),
@@ -153,6 +166,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Películas de Música"),
         "mysterymovielabel":
             MessageLookupByLibrary.simpleMessage("Películas de Misterio"),
+        "mysticMeadows":
+            MessageLookupByLibrary.simpleMessage("Prados Místicos"),
         "newstvlabel":
             MessageLookupByLibrary.simpleMessage("Programas de Noticias"),
         "noInternet":
@@ -181,6 +196,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "numberofseasons":
             MessageLookupByLibrary.simpleMessage("Número de Temporadas"),
         "ohnolabel": MessageLookupByLibrary.simpleMessage("¡Oh No!"),
+        "oklabel": MessageLookupByLibrary.simpleMessage("OK"),
         "passwordconfirmlabel":
             MessageLookupByLibrary.simpleMessage("Confirmar Contraseña"),
         "passwordlabel": MessageLookupByLibrary.simpleMessage("Contraseña"),
@@ -232,6 +248,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "talktvlabel":
             MessageLookupByLibrary.simpleMessage("Programas de Entrevistas"),
         "thecast": MessageLookupByLibrary.simpleMessage("Elenco"),
+        "themelabel": MessageLookupByLibrary.simpleMessage("Tema"),
         "thrillermovielabel":
             MessageLookupByLibrary.simpleMessage("Películas de Suspenso"),
         "trendingmovieswidget_title":

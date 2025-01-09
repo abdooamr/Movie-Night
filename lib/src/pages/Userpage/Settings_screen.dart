@@ -1,6 +1,8 @@
 import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/pages/Userpage/Watchlist.dart';
-import 'package:Movie_Night/src/widgets/themechanger.dart';
+import 'package:Movie_Night/src/pages/Userpage/themepicker.dart';
+import 'package:Movie_Night/src/Animation/CustomNavigationAnimation.dart';
+import 'package:Movie_Night/src/widgets/settingsscreenwidget.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ficonsax/ficonsax.dart';
@@ -31,10 +33,7 @@ class _settings_screenState extends State<settings_screen> {
     if (await _inAppReview.isAvailable()) {
       await _inAppReview.requestReview();
       await _inAppReview.openStoreListing();
-    } else {
-      // Handle the case where in-app reviews are not available
-      // You can provide an alternative way for users to leave feedback
-    }
+    } else {}
   }
 
   Future Delete_account() async {
@@ -67,6 +66,9 @@ class _settings_screenState extends State<settings_screen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        titleTextStyle: Theme.of(context).textTheme.titleLarge!,
+        iconTheme:
+            IconThemeData(color: Theme.of(context).textTheme.bodyLarge!.color),
         elevation: 0,
         backgroundColor: Colors.transparent,
       ),
@@ -82,13 +84,17 @@ class _settings_screenState extends State<settings_screen> {
           SizedBox(
             height: 10,
           ),
-          DarkModeSwitch(),
+          // DarkModeSwitch(),
+
+          SettingsGroup(title: S.of(context).themelabel, children: <Widget>[
+            themewidgetlist(),
+          ]),
 
           (isadmin == true)
               ? SettingsGroup(
                   title: S.of(context).adminsettingslabel,
                   children: <Widget>[
-                      SimpleSettingsTile(
+                      CustomSettingsTile(
                         //colorxz: Theme.of(context).listTileTheme.tileColor,
                         title: S.of(context).adminpanellabel,
                         subtitle: "",
@@ -96,10 +102,12 @@ class _settings_screenState extends State<settings_screen> {
                             icon: Icons.admin_panel_settings,
                             color: Color.fromARGB(255, 57, 138, 99)),
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => adminpanel()));
+                          PageTransitionBuilder.navigateWithCustomTransition(
+                              context, admin_panel());
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => adminpanel()));
                         },
                       ),
                     ])
@@ -109,7 +117,7 @@ class _settings_screenState extends State<settings_screen> {
               title: S.of(context).generalsettingslabel,
               children: <Widget>[
                 watchlist(),
-                Accountpage(),
+                accountsettings(),
                 reportmeth(),
                 feedbackmeth(),
               ]),
@@ -124,29 +132,56 @@ class _settings_screenState extends State<settings_screen> {
     );
   }
 
-  Widget watchlist() => SimpleSettingsTile(
+  Widget themewidgetlist() => CustomSettingsTile(
+        //colorxz: Theme.of(context).listTileTheme.tileColor,
+        title: S.of(context).themelabel,
+        subtitle: "",
+        leading: Iconwidget(icon: IconsaxBold.paintbucket, color: Colors.red),
+        onTap: () {
+          // Navigator.push(
+          //     context, MaterialPageRoute(builder: (context) => ThemeList()));
+          PageTransitionBuilder.navigateWithCustomTransition(
+              context, ThemeList());
+        },
+      );
+  Widget watchlist() => CustomSettingsTile(
         //colorxz: Theme.of(context).listTileTheme.tileColor,
         title: S.of(context).watchlistlabel,
         subtitle: "",
         leading: Iconwidget(icon: IconsaxBold.bookmark, color: Colors.purple),
         onTap: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => userwatchlist()));
+          PageTransitionBuilder.navigateWithCustomTransition(
+              context, userwatchlist());
+          // Navigator.push(context,
+          //     MaterialPageRoute(builder: (context) => userwatchlist()));
         },
       );
-
-  Widget reportmeth() => SimpleSettingsTile(
+  Widget accountsettings() => CustomSettingsTile(
+        //colorxz: Theme.of(context).listTileTheme.tileColor,
+        title: S.of(context).accountsettingslabel,
+        subtitle: S.of(context).accountsettingssubtitle,
+        leading: Iconwidget(icon: Icons.person, color: Colors.green),
+        onTap: () {
+          PageTransitionBuilder.navigateWithCustomTransition(
+              context, Accountpage());
+          // Navigator.push(
+          //     context, MaterialPageRoute(builder: (context) => Accountpage()));
+        },
+      );
+  Widget reportmeth() => CustomSettingsTile(
         //colorxz: Theme.of(context).listTileTheme.tileColor,
         title: S.of(context).reportabuglabel,
         subtitle: "",
         onTap: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => SendReport()));
+          PageTransitionBuilder.navigateWithCustomTransition(
+              context, SendReport());
+          // Navigator.push(
+          //     context, MaterialPageRoute(builder: (context) => SendReport()));
         },
         leading: Iconwidget(
             icon: Icons.bug_report, color: Color.fromARGB(255, 57, 138, 99)),
       );
-  Widget feedbackmeth() => SimpleSettingsTile(
+  Widget feedbackmeth() => CustomSettingsTile(
         //colorxz: Theme.of(context).listTileTheme.tileColor,
         title: S.of(context).sendfeedbacklabel,
         subtitle: "",
@@ -155,7 +190,7 @@ class _settings_screenState extends State<settings_screen> {
           _openStoreReview(context); // Call the review function here
         },
       );
-  Widget Logoutmeth() => SimpleSettingsTile(
+  Widget Logoutmeth() => CustomSettingsTile(
         //colorxz: Theme.of(context).listTileTheme.tileColor,
         title: S.of(context).logoutlabel,
         subtitle: "",
@@ -164,7 +199,7 @@ class _settings_screenState extends State<settings_screen> {
           FirebaseAuth.instance.signOut();
         },
       );
-  Widget Deletemeth() => SimpleSettingsTile(
+  Widget Deletemeth() => CustomSettingsTile(
         //colorxz: Theme.of(context).listTileTheme.tileColor,
         title: S.of(context).deleteaccountlabel,
         titleTextStyle: TextStyle(
@@ -190,15 +225,17 @@ class _settings_screenState extends State<settings_screen> {
           Delete_account();
         },
       );
-  Widget admin_panel() => SimpleSettingsTile(
+  Widget admin_panel() => CustomSettingsTile(
         //colorxz: Theme.of(context).listTileTheme.tileColor,
         title: S.of(context).adminpanellabel,
         subtitle: "",
         leading:
             Iconwidget(icon: Icons.admin_panel_settings, color: Colors.purple),
         onTap: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => adminpanel()));
+          PageTransitionBuilder.navigateWithCustomTransition(
+              context, adminpanel());
+          // Navigator.push(
+          //     context, MaterialPageRoute(builder: (context) => adminpanel()));
         },
       );
 }

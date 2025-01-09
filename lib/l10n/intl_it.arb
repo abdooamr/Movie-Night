@@ -157,6 +157,19 @@
     "mediatypemoviess": "Film",
     "globalreviewswitch": "Revisione Globale",
     "localreviewswitch": "Revisione Locale",
-    "ohnolabel": "Oh No!"
+    "ohnolabel": "Oh No!",
+    "themelabel": "Tema",
+    "LightTheme": "Tema Chiaro",
+    "DarkTheme": "Tema Scuro",
+    "OceanicWaves": "Onde Oceaniche",
+    "ElegantNeutrals": "Neutri Eleganti",
+    "GoldenHour": "Ora Dorata",
+    "CottonCandy": "Zucchero Filato",
+    "LuminousGalaxy": "Galassia Luminosa",
+    "CherryBlossom": "Fiori di Ciliegio",
+    "mysticMeadows": "Praterie Mistiche",
+    "heylabel": "Ciao",
+    "New": "Nuovo",
+    "oklabel": "Ok"
 }
 

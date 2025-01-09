@@ -23,7 +23,7 @@ class _ProfilePicState extends State<ProfilePic> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
               child: CircularProgressIndicator(
-            color: Colors.deepPurpleAccent,
+            color: Theme.of(context).splashColor,
             strokeWidth: 3,
           ));
         } else if (snapshot.hasError) {

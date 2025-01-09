@@ -119,7 +119,7 @@ class _ExplorePageState extends State<ExplorePage>
               controller: _tabController,
               labelColor: Theme.of(context).textTheme.bodyLarge!.color,
               unselectedLabelColor: Colors.grey,
-              indicatorColor: Colors.deepPurpleAccent,
+              indicatorColor: Theme.of(context).splashColor,
               isScrollable: true,
               tabs: [
                 Tab(text: S.of(context).Actiongenre),

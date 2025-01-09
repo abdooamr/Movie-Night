@@ -13,7 +13,7 @@ class AuthPage extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator(
-              color: Colors.deepPurpleAccent,
+              color: Theme.of(context).splashColor,
               strokeWidth: 3,
             );
           }

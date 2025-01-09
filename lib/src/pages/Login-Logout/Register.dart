@@ -1,5 +1,6 @@
 import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/register_provider.dart';
+import 'package:Movie_Night/src/Animation/CustomNavigationAnimation.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/pages/allpages.dart';
 import 'package:Movie_Night/src/models/user_model.dart';
@@ -53,14 +54,13 @@ class _RegisterState extends State<Register> {
     var user_Provider = Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        titleTextStyle: Theme.of(context).textTheme.titleLarge!,
+        iconTheme:
+            IconThemeData(color: Theme.of(context).textTheme.bodyLarge!.color),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      backgroundColor: Color.fromARGB(255, 32, 26, 48),
+
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -177,8 +177,7 @@ class _RegisterState extends State<Register> {
                                   style:
                                       Theme.of(context).textTheme.titleLarge),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Color.fromARGB(255, 49, 39, 112),
+                                backgroundColor: Theme.of(context).splashColor,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(
                                         40)), // This is what you need!
@@ -197,18 +196,21 @@ class _RegisterState extends State<Register> {
                                 textsize: 20),
                             TextButton(
                                 onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) {
-                                      return Login();
-                                    }),
-                                  );
+                                  PageTransitionBuilder
+                                      .navigateWithCustomTransition(
+                                          context, Login());
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(builder: (context) {
+                                  //     return Login();
+                                  //   }),
+                                  // );
                                 },
                                 child: Text(
                                   S.of(context).loginbuttonlabel,
                                   style: TextStyle(
                                     fontFamily: 'Pacifico',
-                                    color: Colors.deepPurpleAccent,
+                                    color: Theme.of(context).splashColor,
                                     fontSize: 20,
                                   ),
                                 )),

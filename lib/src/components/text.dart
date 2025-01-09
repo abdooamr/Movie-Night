@@ -14,7 +14,7 @@ class customtext extends StatelessWidget {
       Texts,
       style: TextStyle(
           fontFamily: 'Pacifico',
-          color: Colors.white,
+          color: Theme.of(context).textTheme.bodyLarge!.color,
           fontWeight: weight,
           //fontWeight: FontWeight.bold,
           fontSize: textsize),
