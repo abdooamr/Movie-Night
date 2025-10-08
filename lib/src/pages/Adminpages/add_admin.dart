@@ -95,7 +95,7 @@ class _AddAdminState extends State<AddAdmin> {
                       : ElevatedButton(
                           style: ButtonStyle(
                             backgroundColor:
-                                MaterialStateProperty.all(Colors.green),
+                                WidgetStateProperty.all<Color>(Colors.green),
                           ),
                           onPressed: () {
                             addAdmin();

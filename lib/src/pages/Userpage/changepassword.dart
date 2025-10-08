@@ -22,6 +22,7 @@ class _ChangepasswordState extends State<Changepassword> {
   @override
   Widget build(BuildContext context) {
     return SimpleSettingsTile(
+      showDivider: false,
       //colorxz: Theme.of(context).listTileTheme.tileColor,
       title: S.of(context).privacylabel,
       leading: Iconwidget(icon: Icons.security, color: Colors.red),
@@ -33,6 +34,7 @@ class _ChangepasswordState extends State<Changepassword> {
   }
 
   Widget Change_password(BuildContext context) => SimpleSettingsTile(
+        showDivider: false,
         //colorxz: Theme.of(context).listTileTheme.tileColor,
         title: S.of(context).changepasswordlabel,
         subtitle: "",

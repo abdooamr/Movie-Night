@@ -3,7 +3,6 @@ import 'package:Movie_Night/src/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../generated/l10n.dart';
-import 'package:flutter/widgets.dart';
 
 class Change_language_widget extends StatelessWidget {
   const Change_language_widget({super.key});

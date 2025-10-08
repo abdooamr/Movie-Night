@@ -17,6 +17,7 @@ class Feedback_Widget extends StatelessWidget {
   }
 
   Widget build(BuildContext context) => SimpleSettingsTile(
+        showDivider: false,
         //colorxz: Theme.of(context).listTileTheme.tileColor,
         title: "Send Feedback",
         subtitle: "",

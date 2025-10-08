@@ -111,7 +111,7 @@ class _Report_screenState extends State<Report_screen> {
                       ? SizedBox(height: 0)
                       : ElevatedButton(
                           style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
+                              backgroundColor: WidgetStateProperty.all(
                                   Color.fromARGB(255, 49, 39, 112))),
                           onPressed: () => remove_report(),
                           child: Text("Clear Report"))

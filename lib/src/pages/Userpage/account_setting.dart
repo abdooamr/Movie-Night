@@ -15,6 +15,7 @@ class Accountpage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SimpleSettingsTile(
+        showDivider: false,
         title: S.of(context).accountsettingslabel,
         subtitle: S.of(context).accountsettingssubtitle,
         leading: Iconwidget(icon: Icons.person, color: Colors.green),
@@ -34,6 +35,7 @@ class Accountpage extends StatelessWidget {
   }
 
   Widget accountinfo(BuildContext context) => SimpleSettingsTile(
+        showDivider: false,
         title: S.of(context).accountinfolabel,
         subtitle: "",
         onTap: () {
@@ -45,6 +47,7 @@ class Accountpage extends StatelessWidget {
   Widget changelanguage(BuildContext context) =>
       Consumer<DropdownProvider>(builder: (context, dropdownProvider, _) {
         return SimpleSettingsTile(
+          showDivider: false,
           //colorxz: Theme.of(context).listTileTheme.tileColor,
           title: S.of(context).changelanguagelabel,
           subtitle: "",

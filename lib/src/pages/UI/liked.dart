@@ -20,11 +20,6 @@ class Liked extends StatefulWidget {
 class _LikedState extends State<Liked> {
   late Future<Model> searchdetails;
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     final PageController controller = PageController();

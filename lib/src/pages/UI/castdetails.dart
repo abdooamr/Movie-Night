@@ -166,10 +166,10 @@ class _DetailPageState extends State<Cast_DetailPage> {
                                   label: Text("IMDB Profile"),
                                   icon: const Icon(Icons.link),
                                   style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(
+                                    backgroundColor: WidgetStateProperty.all(
                                       Color.fromARGB(255, 49, 39, 112),
                                     ),
-                                    shape: MaterialStateProperty.all(
+                                    shape: WidgetStateProperty.all(
                                       RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(10),
                                       ),

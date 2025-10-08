@@ -299,10 +299,10 @@ class _DetailPageState extends State<DetailPage> {
                                           IconsaxOutline.play_circle),
                                       style: ButtonStyle(
                                         backgroundColor:
-                                            MaterialStateProperty.all(
+                                            WidgetStateProperty.all(
                                           Color.fromARGB(255, 49, 39, 112),
                                         ),
-                                        shape: MaterialStateProperty.all(
+                                        shape: WidgetStateProperty.all(
                                           RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(10),
