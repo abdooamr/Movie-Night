@@ -29,3 +29,4 @@ app.*.map.json
 /android/app/release
 **/android/key.properties
 **/android/app/upload-keystore.jks
+ios/Runner/GoogleService-Info.plist
