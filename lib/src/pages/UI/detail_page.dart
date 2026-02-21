@@ -143,32 +143,36 @@ class _DetailPageState extends State<DetailPage> {
                                             ),
                                           );
                                         },
-                                        child: Container(
-                                          width:
-                                              120, // Adjust the width as per your requirement
-                                          height:
-                                              180, // Adjust the height as per your requirement
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.black
-                                                    .withOpacity(0.2),
-                                                blurRadius: 5,
-                                                spreadRadius: 2,
-                                                offset: Offset(0, 3),
-                                              ),
-                                            ],
-                                          ),
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 10.0),
+                                          child: Container(
+                                            width:
+                                                120, // Adjust the width as per your requirement
+                                            height:
+                                                180, // Adjust the height as per your requirement
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.black
+                                                      .withOpacity(0.2),
+                                                  blurRadius: 5,
+                                                  spreadRadius: 2,
+                                                  offset: Offset(0, 3),
+                                                ),
+                                              ],
+                                            ),
 
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            child: CachedImageCustom(
-                                              movieDetails.posterPath == null
-                                                  ? 'images/placeholder.png'
-                                                  : '$imageUrl${movieDetails.posterPath!}',
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: CachedImageCustom(
+                                                movieDetails.posterPath == null
+                                                    ? 'images/placeholder.png'
+                                                    : '$imageUrl${movieDetails.posterPath!}',
+                                              ),
                                             ),
                                           ),
                                         ),

@@ -87,8 +87,8 @@ class _User_update_info_pageState extends State<User_update_info_page> {
                           height: 20,
                         ),
                         SizedBox(
-                          height: 60,
-                          width: 160,
+                          height: MediaQuery.of(context).size.height * 0.08,
+                          width: MediaQuery.of(context).size.width * 0.4,
                           child: Consumer<UserData>(
                             builder: (context, UserData, child) {
                               return ElevatedButton(

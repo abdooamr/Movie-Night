@@ -77,8 +77,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "خطأ في تغيير كلمة المرور. يرجى المحاولة مرة أخرى"),
         "changepasswordlabel":
             MessageLookupByLibrary.simpleMessage("تغيير كلمة المرور"),
-        "changepasswordsuccess":
-            MessageLookupByLibrary.simpleMessage("تم تغيير كلمة المرور بنجاح"),
+        "changepasswordsuccess": MessageLookupByLibrary.simpleMessage(
+            "تم إرسال رسالة إعادة تعيين كلمة المرور بنجاح"),
         "comedymovielabel":
             MessageLookupByLibrary.simpleMessage("أفلام كوميدية"),
         "createaccountlabel":

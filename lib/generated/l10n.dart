@@ -976,10 +976,10 @@ class S {
     );
   }
 
-  /// `Password Changed Successfully`
+  /// `The password reset email has been sent successfully`
   String get changepasswordsuccess {
     return Intl.message(
-      'Password Changed Successfully',
+      'The password reset email has been sent successfully',
       name: 'changepasswordsuccess',
       desc: '',
       args: [],

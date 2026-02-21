@@ -80,7 +80,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "changepasswordlabel":
             MessageLookupByLibrary.simpleMessage("Change Password"),
         "changepasswordsuccess": MessageLookupByLibrary.simpleMessage(
-            "Password Changed Successfully"),
+            "The password reset email has been sent successfully"),
         "comedymovielabel":
             MessageLookupByLibrary.simpleMessage("Comedy Movies"),
         "createaccountlabel":

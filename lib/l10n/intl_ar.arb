@@ -93,7 +93,7 @@
     "accountsettingssubtitle": "تعديل الحساب، الخصوصية، تغيير اللغة",
     "privacylabel": "الخصوصية",
     "changepasswordlabel": "تغيير كلمة المرور",
-    "changepasswordsuccess": "تم تغيير كلمة المرور بنجاح",
+    "changepasswordsuccess": "تم إرسال رسالة إعادة تعيين كلمة المرور بنجاح",
     "changepassworderror": "خطأ في تغيير كلمة المرور. يرجى المحاولة مرة أخرى",
     "updateprofilelabel": "تحديث الملف الشخصي",
     "Usernamelabel": "اسم المستخدم",

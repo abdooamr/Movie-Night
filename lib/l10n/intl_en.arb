@@ -94,7 +94,7 @@
     "accountinfolabel": "Account Info",
     "privacylabel" : "Privacy",
     "changepasswordlabel" : "Change Password",
-    "changepasswordsuccess" : "Password Changed Successfully",
+    "changepasswordsuccess" : "The password reset email has been sent successfully",
     "changepassworderror" : "Error Changing Password. Please try again",
     "updateprofilelabel" : "Update Profile",
     "Usernamelabel" : "Username",
