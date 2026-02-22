@@ -33,6 +33,7 @@ class _SimilarWidgetState extends State<SimilarWidget> {
     return MoviesListView(
       future: _future,
       headlineText: S.of(context).Recommendation,
+      istvshow: widget.isTvShow,
     );
   }
 }

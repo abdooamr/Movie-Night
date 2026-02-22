@@ -38,39 +38,47 @@ class Home_page_listview extends StatelessWidget {
             UpcomingMovies(
               headlineText: S.of(context).upcomingwidget_title,
               future: upcomingFuture,
+              istvshow: false,
             ),
           if (movie)
             MoviesListView(
                 future: trendingFuture,
-                headlineText: S.of(context).trendingmovieswidget_title),
+                headlineText: S.of(context).trendingmovieswidget_title,
+                istvshow: false),
           if (movie)
             MoviesListView(
               future: popularMoviesFuture,
               headlineText: S.of(context).popularmovieswidget_title,
+              istvshow: false,
             ),
           if (movie)
             MoviesListView(
                 future: EgyptionMovies,
-                headlineText: S.of(context).egyptmovieswidget_title),
+                headlineText: S.of(context).egyptmovieswidget_title,
+                istvshow: false),
           if (tvshow)
             UpcomingMovies(
               future: airingTodayFuture,
               headlineText: S.of(context).airingtodaywidget_title,
+              istvshow: true,
             ),
           if (tvshow)
             MoviesListView(
               future: trendingtvshowFuture,
               headlineText: S.of(context).trendingtvwidget_title,
+              istvshow: true,
             ),
           if (tvshow)
             MoviesListView(
               future: popularTvFuture,
               headlineText: S.of(context).populartvwidget_title,
+              istvshow: true,
             ),
           if (tvshow)
             MoviesListView(
               future: Egyptionseries,
               headlineText: S.of(context).egypttvwidget_title,
+              istvshow: true,
             ),
           // MoviesListView(
           //     future: topRatedFuture, headlineText: 'Top Rated Movies'),

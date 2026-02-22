@@ -16,7 +16,6 @@ class UserData extends ChangeNotifier {
     return _firestore.collection('users').doc(uid).snapshots().map((snapshot) {
       if (snapshot.exists) {
         Map<String, dynamic> userData = snapshot.data() as Map<String, dynamic>;
-        print(userData['firstName']);
         return Users(
           id: userData['id'],
           role: userData['role'],

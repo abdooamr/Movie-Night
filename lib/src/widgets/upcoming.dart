@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:Movie_Night/src/pages/UI/showallmovies.dart';
+import 'package:Movie_Night/src/widgets/shimmerWidgets/upcomingShimmerWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/pages/UI/detail_page.dart';
 import 'package:Movie_Night/src/utils/utils.dart';
@@ -11,11 +12,13 @@ class UpcomingMovies extends StatelessWidget {
   const UpcomingMovies({
     required this.future,
     required this.headlineText,
+    required this.istvshow,
     Key? key,
   }) : super(key: key);
 
   final Future<Model> future;
   final String headlineText;
+  final bool istvshow;
 
   @override
   Widget build(BuildContext context) {
@@ -23,20 +26,15 @@ class UpcomingMovies extends StatelessWidget {
       future: future,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Column(
-            children: [
-              Center(
-                child: CircularProgressIndicator(
-                  color: Colors.deepPurpleAccent,
-                  strokeWidth: 3,
-                ),
-              ),
-              Center(
-                  child: SizedBox(
-                height: 40,
-              ))
-            ],
-          );
+          final isDark = Theme.of(context).brightness == Brightness.dark;
+
+          final baseColor =
+              isDark ? Colors.grey.shade800 : Colors.grey.shade300;
+          final highlightColor =
+              isDark ? Colors.grey.shade700 : Colors.grey.shade100;
+
+          return upcomingShimmerWidget(
+              baseColor: baseColor, highlightColor: highlightColor);
         } else if (snapshot.hasData) {
           final data = snapshot.data?.results;
 
@@ -64,6 +62,7 @@ class UpcomingMovies extends StatelessWidget {
                             builder: (context) => See_All(
                               future: future,
                               headlineText: headlineText,
+                              istvshow: istvshow,
                             ), // Replace with your "See All" page widget
                           ),
                         );

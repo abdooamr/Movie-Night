@@ -1,4 +1,3 @@
-import 'package:Movie_Night/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/components/Cached_image.dart';
 import 'package:Movie_Night/src/pages/UI/detail_page.dart';
@@ -10,9 +9,11 @@ class GenresListView extends StatelessWidget {
     required this.future,
     Key? key,
     required this.headlineText,
+    this.istvshow = true,
   }) : super(key: key);
   final String headlineText;
   final Future<Model> future;
+  final bool istvshow;
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +58,7 @@ class GenresListView extends StatelessWidget {
                               index++)
                             Expanded(
                               child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 3),
+                                padding: const EdgeInsets.all(6.0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -68,13 +68,7 @@ class GenresListView extends StatelessWidget {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => DetailPage(
-                                              isTvShow: headlineText.contains(S
-                                                          .of(context)
-                                                          .mediatypemoviess) ||
-                                                      data[index].mediaType ==
-                                                          MediaType.movie
-                                                  ? false
-                                                  : true,
+                                              isTvShow: istvshow,
                                               data: snapshot.data!,
                                               index: index,
                                               id: data[index].id,

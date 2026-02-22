@@ -96,7 +96,7 @@ class _ExplorePageState extends State<ExplorePage>
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                 height: 70,
                 child: Card(
-                  color: Colors.grey.withOpacity(.5),
+                  color: Colors.grey.withValues(alpha: 0.5),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -148,66 +148,82 @@ class _ExplorePageState extends State<ExplorePage>
                     GenresListView(
                       future: actionFuture,
                       headlineText: S.of(context).actionmovielabel,
+                      istvshow: false,
                     ),
                     GenresListView(
                       future: adventureFuture,
                       headlineText: S.of(context).adventuremovielabel,
+                      istvshow: false,
                     ),
                     GenresListView(
                       future: animationFuture,
                       headlineText: S.of(context).animationmovielabel,
+                      istvshow: false,
                     ),
                     GenresListView(
                       future: comedyFuture,
                       headlineText: S.of(context).comedymovielabel,
+                      istvshow: false,
                     ),
                     GenresListView(
                       future: crimeFuture,
                       headlineText: S.of(context).crimemovielabel,
+                      istvshow: false,
                     ),
                     GenresListView(
                       future: documentaryFuture,
                       headlineText: S.of(context).documentarymovielabel,
+                      istvshow: false,
                     ),
                     GenresListView(
                       future: dramaFuture,
                       headlineText: S.of(context).dramamovielabel,
+                      istvshow: false,
                     ),
                     GenresListView(
                       future: familyFuture,
                       headlineText: S.of(context).familymovielabel,
+                      istvshow: false,
                     ),
                     GenresListView(
                       future: fantasyFuture,
                       headlineText: S.of(context).fantasymovielabel,
+                      istvshow: false,
                     ),
                     GenresListView(
                       future: historyFuture,
                       headlineText: S.of(context).historymovielabel,
+                      istvshow: false,
                     ),
                     GenresListView(
                       future: horrorFuture,
                       headlineText: S.of(context).horrormovielabel,
+                      istvshow: false,
                     ),
                     GenresListView(
                       future: mysteryFuture,
                       headlineText: S.of(context).mysterymovielabel,
+                      istvshow: false,
                     ),
                     GenresListView(
                       future: romanceFuture,
                       headlineText: S.of(context).romancemovielabel,
+                      istvshow: false,
                     ),
                     GenresListView(
                       future: scifiFuture,
                       headlineText: S.of(context).sciencefictionmovielabel,
+                      istvshow: false,
                     ),
                     GenresListView(
                       future: thrillerFuture,
                       headlineText: S.of(context).thrillermovielabel,
+                      istvshow: false,
                     ),
                     GenresListView(
                       future: warFuture,
                       headlineText: S.of(context).warmovielabel,
+                      istvshow: false,
                     ),
                   ],
                 ),

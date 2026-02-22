@@ -65,7 +65,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                 builder: (context, dropdownProvider, _) {
               return BottomNavigationBar(
                 currentIndex: currentIndex,
-                backgroundColor: Colors.black.withOpacity(.1),
+                backgroundColor: Colors.black.withValues(alpha: 0.1),
                 type: BottomNavigationBarType.fixed,
                 onTap: onTap,
                 selectedItemColor: Theme.of(context)

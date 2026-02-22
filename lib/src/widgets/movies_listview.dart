@@ -2,6 +2,7 @@ import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/components/Cached_image.dart';
 import 'package:Movie_Night/src/pages/UI/detail_page.dart';
 import 'package:Movie_Night/src/pages/UI/showallmovies.dart';
+import 'package:Movie_Night/src/widgets/shimmerWidgets/movieListViewShimmerWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/utils/utils.dart';
 import '../models/movie_model.dart';
@@ -11,10 +12,12 @@ class MoviesListView extends StatelessWidget {
     required this.future,
     Key? key,
     required this.headlineText,
+    required this.istvshow,
   }) : super(key: key);
 
   final String headlineText;
   final Future<Model> future;
+  final bool istvshow;
 
   @override
   Widget build(BuildContext context) {
@@ -22,19 +25,17 @@ class MoviesListView extends StatelessWidget {
       future: future,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Column(
-            children: [
-              Center(
-                child: CircularProgressIndicator(
-                  color: Colors.deepPurpleAccent,
-                  strokeWidth: 3,
-                ),
-              ),
-              Center(
-                  child: SizedBox(
-                height: 40,
-              ))
-            ],
+          final isDark = Theme.of(context).brightness == Brightness.dark;
+
+          final baseColor =
+              isDark ? Colors.grey.shade800 : Colors.grey.shade300;
+          final highlightColor =
+              isDark ? Colors.grey.shade700 : Colors.grey.shade100;
+
+          return Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: movieListViewShimmerWidget(
+                baseColor: baseColor, highlightColor: highlightColor),
           );
         } else if (snapshot.hasData && snapshot.data!.results.isNotEmpty) {
           var data = snapshot.data?.results;
@@ -58,6 +59,7 @@ class MoviesListView extends StatelessWidget {
                             builder: (context) => See_All(
                               future: future,
                               headlineText: headlineText,
+                              istvshow: istvshow,
                             ),
                           ),
                         );

@@ -9,9 +9,11 @@ class See_All extends StatelessWidget {
     required this.future,
     Key? key,
     required this.headlineText,
+    required this.istvshow,
   }) : super(key: key);
   final String headlineText;
   final Future<Model> future;
+  final bool istvshow;
   final String emptytitle = "";
 
   @override
@@ -30,6 +32,7 @@ class See_All extends StatelessWidget {
           return GenresListView(
             future: future,
             headlineText: emptytitle,
+            istvshow: istvshow,
           );
         }));
   }
