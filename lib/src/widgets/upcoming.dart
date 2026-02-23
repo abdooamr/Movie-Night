@@ -45,7 +45,7 @@ class UpcomingMovies extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(
-                height: 10,
+                height: 3,
               ),
               MyCarouselSlider(
                 itemCount: data!.length > 20

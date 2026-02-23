@@ -1,3 +1,4 @@
+import 'package:Movie_Night/src/widgets/shimmerWidgets/genreListViewShimmerWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/components/Cached_image.dart';
 import 'package:Movie_Night/src/pages/UI/detail_page.dart';
@@ -21,28 +22,25 @@ class GenresListView extends StatelessWidget {
       future: future,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          // While data is being fetched, show a CircularProgressIndicator
-          return Center(
-            child: CircularProgressIndicator(
-              color: Colors.deepPurpleAccent,
-              strokeWidth: 3,
-            ),
-          );
+          final isDark = Theme.of(context).brightness == Brightness.dark;
+
+          final baseColor =
+              isDark ? Colors.grey.shade800 : Colors.grey.shade300;
+          final highlightColor =
+              isDark ? Colors.grey.shade700 : Colors.grey.shade100;
+
+          return genreListViewShimmerWidget(
+              headlineText: headlineText,
+              baseColor: baseColor,
+              highlightColor: highlightColor);
         } else if (snapshot.hasData && snapshot.data!.results.isNotEmpty) {
           var data = snapshot.data?.results;
 
           return Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: const EdgeInsets.all(8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                headlineText == ""
-                    ? SizedBox.shrink()
-                    : Text(
-                        headlineText,
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                const SizedBox(height: 20),
                 Expanded(
                   child: ListView.builder(
                     scrollDirection: Axis.vertical,
