@@ -1,3 +1,4 @@
+import 'package:Movie_Night/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/models/video_model.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -59,9 +60,9 @@ class Videos_list extends StatelessWidget {
                                               (context, error, stackTrace) {
                                             return Container(
                                               color: Colors.grey,
-                                              child: const Center(
+                                              child: Center(
                                                   child: Text(
-                                                'No Image',
+                                                S.of(context).noimage,
                                                 style: TextStyle(fontSize: 50),
                                               )),
                                             );
@@ -98,8 +99,8 @@ class Videos_list extends StatelessWidget {
             ),
           );
         } else if (snapshot.hasError) {
-          return const Center(
-            child: Text('No Videos'),
+          return Center(
+            child: Text(S.of(context).noVideos),
           );
         } else {
           return Padding(

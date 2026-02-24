@@ -1,3 +1,4 @@
+import 'package:Movie_Night/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 class CustomDialog extends StatelessWidget {
@@ -57,7 +58,7 @@ class CustomDialog extends StatelessWidget {
               onOkPressed();
             },
             icon: Icon(Icons.exit_to_app),
-            label: Text('OK'),
+            label: Text(S.of(context).okLabel),
           ),
         ],
       ),

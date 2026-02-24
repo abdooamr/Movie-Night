@@ -1,3 +1,4 @@
+import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/allproviders.dart';
 import 'package:Movie_Night/src/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,9 +21,10 @@ class userinfotile extends StatelessWidget {
             strokeWidth: 3,
           ));
         } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
+          return Center(
+              child: Text('${S.of(context).error}: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data == null) {
-          return Center(child: Text('No user data available.'));
+          return Center(child: Text(S.of(context).noUserDataAvailable));
         } else {
           return buildUser(snapshot.data!, context);
         }
@@ -36,11 +38,14 @@ class userinfotile extends StatelessWidget {
 
       title: user.lastName == ""
           ? Text(
-              'Hey ' + user.firstName,
+              '${S.of(context).Heylabel} ' + user.firstName,
               style: TextStyle(fontSize: 20),
             )
           : Text(
-              'Hey ' + user.firstName + ' ' + user.lastName,
+              '${S.of(context).Heylabel} ' +
+                  user.firstName +
+                  ' ' +
+                  user.lastName,
               style: TextStyle(fontSize: 20),
             ),
 

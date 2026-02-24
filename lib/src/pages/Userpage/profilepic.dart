@@ -1,3 +1,4 @@
+import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class _ProfilePicState extends State<ProfilePic> {
             strokeWidth: 3,
           ));
         } else if (snapshot.hasError) {
-          return Text('Something went wrong');
+          return Text(S.of(context).somethingwentwrong);
         } else {
           return Consumer<UserData>(
             builder: (context, userData, child) {

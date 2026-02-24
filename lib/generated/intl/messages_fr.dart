@@ -32,6 +32,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Familygenre": MessageLookupByLibrary.simpleMessage("Famille"),
     "Fantasygenre": MessageLookupByLibrary.simpleMessage("Fantaisie"),
     "Frenchlabel": MessageLookupByLibrary.simpleMessage("Français"),
+    "Heylabel": MessageLookupByLibrary.simpleMessage("Salut"),
     "Heytherelabel": MessageLookupByLibrary.simpleMessage("Salut"),
     "Historygenre": MessageLookupByLibrary.simpleMessage("Histoire"),
     "Horrorgenre": MessageLookupByLibrary.simpleMessage("Horreur"),
@@ -62,8 +63,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "actiontvlabel": MessageLookupByLibrary.simpleMessage(
       "Séries TV d\'Action et Aventure",
     ),
+    "addAdmin": MessageLookupByLibrary.simpleMessage("Ajouter un admin"),
     "addtowatchlist": MessageLookupByLibrary.simpleMessage(
       "Ajouter à la Liste de Surveillance",
+    ),
+    "adminPanel": MessageLookupByLibrary.simpleMessage(
+      "Panneau d’administration",
     ),
     "adminpanellabel": MessageLookupByLibrary.simpleMessage(
       "Panneau d\'Administration",
@@ -84,7 +89,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Films d\'Animation",
     ),
     "arabiclabel": MessageLookupByLibrary.simpleMessage("Arabe"),
+    "biography": MessageLookupByLibrary.simpleMessage("Biographie"),
     "buyon": MessageLookupByLibrary.simpleMessage("Acheter sur"),
+    "cancelLabel": MessageLookupByLibrary.simpleMessage("Annuler"),
     "changelanguagelabel": MessageLookupByLibrary.simpleMessage(
       "Changer de langue",
     ),
@@ -97,6 +104,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "changepasswordsuccess": MessageLookupByLibrary.simpleMessage(
       "Mot de Passe Modifié avec Succès",
     ),
+    "clearReport": MessageLookupByLibrary.simpleMessage(
+      "Supprimer le signalement",
+    ),
     "comedymovielabel": MessageLookupByLibrary.simpleMessage(
       "Films de Comédie",
     ),
@@ -105,6 +115,17 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "crimemovielabel": MessageLookupByLibrary.simpleMessage("Films de Crime"),
     "darkmodelabel": MessageLookupByLibrary.simpleMessage("Mode Sombre"),
+    "delete": MessageLookupByLibrary.simpleMessage("Supprimer"),
+    "deleteBookmark": MessageLookupByLibrary.simpleMessage(
+      "Supprimer le favori",
+    ),
+    "deleteBookmarkConfirmation": MessageLookupByLibrary.simpleMessage(
+      "Es-tu sûr de vouloir supprimer ce favori ? Cette action est irréversible.",
+    ),
+    "deleteUser": MessageLookupByLibrary.simpleMessage("Supprimer le compte"),
+    "deleteUserConfirmation": MessageLookupByLibrary.simpleMessage(
+      "Es-tu sûr de vouloir supprimer ton compte ? Cette action est irréversible.",
+    ),
     "deleteaccountlabel": MessageLookupByLibrary.simpleMessage(
       "Supprimer le Compte",
     ),
@@ -116,6 +137,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "descriptionlabel": MessageLookupByLibrary.simpleMessage(
       "Description  (Requise)",
+    ),
+    "detailCategory": MessageLookupByLibrary.simpleMessage(
+      "Catégorie de détail",
     ),
     "deutschlabel": MessageLookupByLibrary.simpleMessage("Allemand"),
     "documentarymovielabel": MessageLookupByLibrary.simpleMessage(
@@ -131,6 +155,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "egypttvwidget_title": MessageLookupByLibrary.simpleMessage(
       "Séries TV Égyptiennes",
     ),
+    "email": MessageLookupByLibrary.simpleMessage("E-mail"),
     "emailaddresslabel": MessageLookupByLibrary.simpleMessage("Adresse Email"),
     "englishlabel": MessageLookupByLibrary.simpleMessage("Anglais"),
     "error": MessageLookupByLibrary.simpleMessage("Erreur"),
@@ -140,8 +165,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "Films Fantastiques",
     ),
     "firstnamelabel": MessageLookupByLibrary.simpleMessage("Prénom"),
+    "forgetPasswordPageQuestion": MessageLookupByLibrary.simpleMessage(
+      "Entre l’adresse e-mail associée à ton compte",
+    ),
     "forgotpasswordlabel": MessageLookupByLibrary.simpleMessage(
       "Mot de Passe Oublié?",
+    ),
+    "fullUserProfile": MessageLookupByLibrary.simpleMessage(
+      "Profil utilisateur complet",
     ),
     "generalsettingslabel": MessageLookupByLibrary.simpleMessage("Général"),
     "globalreviewswitch": MessageLookupByLibrary.simpleMessage("Avis Global"),
@@ -154,6 +185,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "horrormovielabel": MessageLookupByLibrary.simpleMessage(
       "Films d\'Horreur",
     ),
+    "id": MessageLookupByLibrary.simpleMessage("ID"),
     "italianlabel": MessageLookupByLibrary.simpleMessage("Italien"),
     "kidstvlabel": MessageLookupByLibrary.simpleMessage(
       "Séries TV pour Enfants",
@@ -170,27 +202,47 @@ class MessageLookup extends MessageLookupByLibrary {
     "managesettingslabel": MessageLookupByLibrary.simpleMessage("Gérer"),
     "mediatypemoviess": MessageLookupByLibrary.simpleMessage("Films"),
     "minute": MessageLookupByLibrary.simpleMessage("min"),
+    "moviesKnownFor": MessageLookupByLibrary.simpleMessage(
+      "Connu pour ses films",
+    ),
     "movieswitch": MessageLookupByLibrary.simpleMessage("Films"),
     "musicmovielabel": MessageLookupByLibrary.simpleMessage("Films Musicaux"),
     "mysterymovielabel": MessageLookupByLibrary.simpleMessage(
       "Films de Mystère",
     ),
+    "name": MessageLookupByLibrary.simpleMessage("Nom"),
     "newstvlabel": MessageLookupByLibrary.simpleMessage(
       "Séries TV d\'Actualités",
     ),
+    "noBirthdayFound": MessageLookupByLibrary.simpleMessage(
+      "Aucune date de naissance trouvée",
+    ),
+    "noDataFound": MessageLookupByLibrary.simpleMessage(
+      "Aucune donnée trouvée",
+    ),
+    "noImage": MessageLookupByLibrary.simpleMessage("Aucune image"),
     "noInternet": MessageLookupByLibrary.simpleMessage(
       "Pas de Connexion Internet",
     ),
     "noInternetMessage": MessageLookupByLibrary.simpleMessage(
       "Veuillez vérifier votre connexion internet et réessayer",
     ),
+    "noReport": MessageLookupByLibrary.simpleMessage("Aucun signalement !"),
     "noResults": MessageLookupByLibrary.simpleMessage("Pas de Résultats"),
     "noResultsMessage": MessageLookupByLibrary.simpleMessage(
       "Aucun résultat trouvé pour votre recherche",
     ),
+    "noUserDataAvailable": MessageLookupByLibrary.simpleMessage(
+      "Aucune donnée utilisateur disponible",
+    ),
+    "noVideos": MessageLookupByLibrary.simpleMessage("Aucune vidéo"),
+    "nobiographyfound": MessageLookupByLibrary.simpleMessage(
+      "Aucune biographie disponible",
+    ),
     "nobuyon": MessageLookupByLibrary.simpleMessage(
       "Aucun service d\'achat disponible",
     ),
+    "noimage": MessageLookupByLibrary.simpleMessage("Aucune image"),
     "nointernetconnection": MessageLookupByLibrary.simpleMessage(
       "Pas de connexion Internet",
     ),
@@ -216,6 +268,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Nombre de Saisons",
     ),
     "ohnolabel": MessageLookupByLibrary.simpleMessage("Oh Non !"),
+    "okLabel": MessageLookupByLibrary.simpleMessage("OK"),
     "passwordconfirmlabel": MessageLookupByLibrary.simpleMessage(
       "Confirmer le Mot de Passe",
     ),
@@ -235,8 +288,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "populartvwidget_title": MessageLookupByLibrary.simpleMessage(
       "Séries TV Populaires",
     ),
+    "poweredby": MessageLookupByLibrary.simpleMessage("Propulsé par"),
     "privacylabel": MessageLookupByLibrary.simpleMessage("Confidentialité"),
     "profilenavbar": MessageLookupByLibrary.simpleMessage("Profil"),
+    "readmorelabel": MessageLookupByLibrary.simpleMessage("Lire plus..."),
     "realitytvlabel": MessageLookupByLibrary.simpleMessage(
       "Séries TV de Téléréalité",
     ),
@@ -246,12 +301,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "removefromwatchlist": MessageLookupByLibrary.simpleMessage(
       "Retirer de la Liste de Surveillance",
     ),
+    "report": MessageLookupByLibrary.simpleMessage("Signalement"),
+    "reportPage": MessageLookupByLibrary.simpleMessage("Page de signalement"),
     "reportabuglabel": MessageLookupByLibrary.simpleMessage(
       "Signaler un Problème",
     ),
     "reportpagelabel": MessageLookupByLibrary.simpleMessage(
       "Veuillez nous envoyer un rapport si vous trouvez des bugs ou avez des suggestions pour l\'application.",
     ),
+    "role": MessageLookupByLibrary.simpleMessage("Rôle"),
     "romancemovielabel": MessageLookupByLibrary.simpleMessage(
       "Films Romantiques",
     ),
@@ -263,6 +321,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Séries TV de Science-Fiction et Fantaisie",
     ),
     "searchhint": MessageLookupByLibrary.simpleMessage("Rechercher"),
+    "sendEmail": MessageLookupByLibrary.simpleMessage("Envoyer l’e-mail"),
     "sendfeedbacklabel": MessageLookupByLibrary.simpleMessage(
       "Envoyer des Commentaires",
     ),
@@ -273,6 +332,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "signupbuttonlabel": MessageLookupByLibrary.simpleMessage("S\'inscrire"),
     "soaptvlabel": MessageLookupByLibrary.simpleMessage(
       "Séries TV de Feuilleton",
+    ),
+    "somethingwentwrong": MessageLookupByLibrary.simpleMessage(
+      "Une erreur est survenue. Veuillez réessayer plus tard.",
     ),
     "spanishlabel": MessageLookupByLibrary.simpleMessage("Espagnol"),
     "storyline": MessageLookupByLibrary.simpleMessage("Synopsis"),
@@ -295,6 +357,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Séries TV Tendances",
     ),
     "tryAgain": MessageLookupByLibrary.simpleMessage("Réessayer"),
+    "tvShowsKnownFor": MessageLookupByLibrary.simpleMessage(
+      "Connu pour ses séries",
+    ),
     "tvkids": MessageLookupByLibrary.simpleMessage("Enfants"),
     "tvmovielabel": MessageLookupByLibrary.simpleMessage("Téléfilms"),
     "tvnews": MessageLookupByLibrary.simpleMessage("Actualités"),
@@ -314,6 +379,14 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "updateprofilesuccess": MessageLookupByLibrary.simpleMessage(
       "Profil Mis à Jour avec Succès",
+    ),
+    "userProfile": MessageLookupByLibrary.simpleMessage("Profil utilisateur"),
+    "videoslabel": MessageLookupByLibrary.simpleMessage("Vidéos"),
+    "viewFullDetails": MessageLookupByLibrary.simpleMessage(
+      "Voir tous les détails",
+    ),
+    "viewReports": MessageLookupByLibrary.simpleMessage(
+      "Voir les signalements",
     ),
     "warmovielabel": MessageLookupByLibrary.simpleMessage("Films de Guerre"),
     "wartvlabel": MessageLookupByLibrary.simpleMessage(

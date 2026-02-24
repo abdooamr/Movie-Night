@@ -1,3 +1,4 @@
+import 'package:Movie_Night/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shimmer/shimmer.dart';
@@ -53,9 +54,9 @@ class CachedImageCustom extends StatelessWidget {
             color: Colors.grey.shade700,
             borderRadius: BorderRadius.circular(20),
           ),
-          child: const Center(
+          child: Center(
             child: Text(
-              'No Image',
+              S.of(context).noImage,
               style: TextStyle(color: Colors.white),
             ),
           ),

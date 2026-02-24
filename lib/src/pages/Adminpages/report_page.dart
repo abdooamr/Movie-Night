@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:Movie_Night/generated/l10n.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,7 @@ class _Report_screenState extends State<Report_screen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Report Page"),
+        title: Text(S.of(context).reportPage),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
@@ -65,7 +66,7 @@ class _Report_screenState extends State<Report_screen> {
                 children: [
                   Center(
                     child: customtext(
-                        Texts: "User Profile",
+                        Texts: S.of(context).userProfile,
                         textsize: 35,
                         weight: FontWeight.bold),
                   ),
@@ -85,13 +86,17 @@ class _Report_screenState extends State<Report_screen> {
                   ),
                   SizedBox(height: 60),
                   textcustom(
-                    Texts:
-                        "Name: " + widget.firstname! + " " + widget.lastname!,
+                    Texts: "${S.of(context).name}: " +
+                        widget.firstname! +
+                        " " +
+                        widget.lastname!,
                   ),
                   SizedBox(height: 20),
-                  textcustom(Texts: "Email: " + widget.email!),
+                  textcustom(Texts: "${S.of(context).email}: " + widget.email!),
                   (widget.report == null || widget.report == "")
-                      ? textcustom(Texts: "Report: No Report!!!")
+                      ? textcustom(
+                          Texts:
+                              "${S.of(context).report}: ${S.of(context).noReport}")
                       : Padding(
                           padding: const EdgeInsets.all(15.0),
                           child: Container(
@@ -100,7 +105,7 @@ class _Report_screenState extends State<Report_screen> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Text(
-                                "Report: " + widget.report!,
+                                "${S.of(context).report}: " + widget.report!,
                                 style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
@@ -114,7 +119,7 @@ class _Report_screenState extends State<Report_screen> {
                               backgroundColor: WidgetStateProperty.all(
                                   Color.fromARGB(255, 49, 39, 112))),
                           onPressed: () => remove_report(),
-                          child: Text("Clear Report"))
+                          child: Text(S.of(context).clearReport))
                 ],
               ),
             ),

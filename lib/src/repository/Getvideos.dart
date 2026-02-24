@@ -1,3 +1,4 @@
+import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/langprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/models/video_model.dart';
@@ -30,7 +31,7 @@ class _Videos_pageState extends State<Videos_page> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Videos'),
+        title: Text(S.of(context).videoslabel),
         elevation: 0,
         backgroundColor: Colors.transparent,
       ),
@@ -41,7 +42,7 @@ class _Videos_pageState extends State<Videos_page> {
           ),
           Videos_list(
             future: VideosFuture,
-            headlineText: 'Videos',
+            headlineText: S.of(context).videoslabel,
           ),
           const SizedBox(
             height: 10,

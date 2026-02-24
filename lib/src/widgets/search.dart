@@ -1,3 +1,4 @@
+import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/langprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -132,8 +133,8 @@ class Search extends SearchDelegate<Model> {
             return const SizedBox();
           }
         } else {
-          return const Center(
-            child: Text('Not Found'),
+          return Center(
+            child: Text(S.of(context).noDataFound),
           );
         }
       },

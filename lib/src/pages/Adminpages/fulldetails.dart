@@ -1,3 +1,4 @@
+import 'package:Movie_Night/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/components/allcomp.dart';
 
@@ -24,7 +25,7 @@ class Fulldetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Full User Profile"),
+        title: Text(S.of(context).fullUserProfile),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
@@ -41,7 +42,7 @@ class Fulldetail extends StatelessWidget {
                 children: [
                   Center(
                     child: customtext(
-                        Texts: "Full User Profile",
+                        Texts: S.of(context).fullUserProfile,
                         textsize: 35,
                         weight: FontWeight.bold),
                   ),
@@ -64,11 +65,11 @@ class Fulldetail extends StatelessWidget {
                     Texts: "Name: " + firstname! + " " + lastname!,
                   ),
                   SizedBox(height: 20),
-                  textcustom(Texts: "Email: " + email!),
+                  textcustom(Texts: "${S.of(context).email}: " + email!),
                   SizedBox(height: 20),
-                  textcustom(Texts: "Role: " + role!),
+                  textcustom(Texts: "${S.of(context).role}: " + role!),
                   SizedBox(height: 20),
-                  textcustom(Texts: "ID: " + id!),
+                  textcustom(Texts: "${S.of(context).id}: " + id!),
                   SizedBox(height: 20),
                 ],
               ),

@@ -1314,6 +1314,291 @@ class S {
   String get ohnolabel {
     return Intl.message('Oh No!', name: 'ohnolabel', desc: '', args: []);
   }
+
+  /// `OK`
+  String get okLabel {
+    return Intl.message('OK', name: 'okLabel', desc: '', args: []);
+  }
+
+  /// `Something went wrong. Please try again later.`
+  String get somethingwentwrong {
+    return Intl.message(
+      'Something went wrong. Please try again later.',
+      name: 'somethingwentwrong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete User`
+  String get deleteUser {
+    return Intl.message('Delete User', name: 'deleteUser', desc: '', args: []);
+  }
+
+  /// `Are you sure you want to delete your account? This action cannot be undone.`
+  String get deleteUserConfirmation {
+    return Intl.message(
+      'Are you sure you want to delete your account? This action cannot be undone.',
+      name: 'deleteUserConfirmation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No Image`
+  String get noImage {
+    return Intl.message('No Image', name: 'noImage', desc: '', args: []);
+  }
+
+  /// `User Profile`
+  String get userProfile {
+    return Intl.message(
+      'User Profile',
+      name: 'userProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name`
+  String get name {
+    return Intl.message('Name', name: 'name', desc: '', args: []);
+  }
+
+  /// `Role`
+  String get role {
+    return Intl.message('Role', name: 'role', desc: '', args: []);
+  }
+
+  /// `Email`
+  String get email {
+    return Intl.message('Email', name: 'email', desc: '', args: []);
+  }
+
+  /// `Add Admin`
+  String get addAdmin {
+    return Intl.message('Add Admin', name: 'addAdmin', desc: '', args: []);
+  }
+
+  /// `Cancel`
+  String get cancelLabel {
+    return Intl.message('Cancel', name: 'cancelLabel', desc: '', args: []);
+  }
+
+  /// `Admin Panel`
+  String get adminPanel {
+    return Intl.message('Admin Panel', name: 'adminPanel', desc: '', args: []);
+  }
+
+  /// `Delete`
+  String get delete {
+    return Intl.message('Delete', name: 'delete', desc: '', args: []);
+  }
+
+  /// `ID`
+  String get id {
+    return Intl.message('ID', name: 'id', desc: '', args: []);
+  }
+
+  /// `Report`
+  String get report {
+    return Intl.message('Report', name: 'report', desc: '', args: []);
+  }
+
+  /// `Detail Category`
+  String get detailCategory {
+    return Intl.message(
+      'Detail Category',
+      name: 'detailCategory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View Reports`
+  String get viewReports {
+    return Intl.message(
+      'View Reports',
+      name: 'viewReports',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View Full Details`
+  String get viewFullDetails {
+    return Intl.message(
+      'View Full Details',
+      name: 'viewFullDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Full User Profile`
+  String get fullUserProfile {
+    return Intl.message(
+      'Full User Profile',
+      name: 'fullUserProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Report Page`
+  String get reportPage {
+    return Intl.message('Report Page', name: 'reportPage', desc: '', args: []);
+  }
+
+  /// `Clear Report`
+  String get clearReport {
+    return Intl.message(
+      'Clear Report',
+      name: 'clearReport',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No Report!!!`
+  String get noReport {
+    return Intl.message('No Report!!!', name: 'noReport', desc: '', args: []);
+  }
+
+  /// `Enter the email associated with your account`
+  String get forgetPasswordPageQuestion {
+    return Intl.message(
+      'Enter the email associated with your account',
+      name: 'forgetPasswordPageQuestion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send Email`
+  String get sendEmail {
+    return Intl.message('Send Email', name: 'sendEmail', desc: '', args: []);
+  }
+
+  /// `No Data Found`
+  String get noDataFound {
+    return Intl.message(
+      'No Data Found',
+      name: 'noDataFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No birthday found`
+  String get noBirthdayFound {
+    return Intl.message(
+      'No birthday found',
+      name: 'noBirthdayFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Biography`
+  String get biography {
+    return Intl.message('Biography', name: 'biography', desc: '', args: []);
+  }
+
+  /// `No biography found`
+  String get nobiographyfound {
+    return Intl.message(
+      'No biography found',
+      name: 'nobiographyfound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Movies Known For`
+  String get moviesKnownFor {
+    return Intl.message(
+      'Movies Known For',
+      name: 'moviesKnownFor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `TV Shows Known For`
+  String get tvShowsKnownFor {
+    return Intl.message(
+      'TV Shows Known For',
+      name: 'tvShowsKnownFor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Videos`
+  String get videoslabel {
+    return Intl.message('Videos', name: 'videoslabel', desc: '', args: []);
+  }
+
+  /// `Powered by`
+  String get poweredby {
+    return Intl.message('Powered by', name: 'poweredby', desc: '', args: []);
+  }
+
+  /// `Read More...`
+  String get readmorelabel {
+    return Intl.message(
+      'Read More...',
+      name: 'readmorelabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No Image`
+  String get noimage {
+    return Intl.message('No Image', name: 'noimage', desc: '', args: []);
+  }
+
+  /// `No Videos`
+  String get noVideos {
+    return Intl.message('No Videos', name: 'noVideos', desc: '', args: []);
+  }
+
+  /// `No user data available`
+  String get noUserDataAvailable {
+    return Intl.message(
+      'No user data available',
+      name: 'noUserDataAvailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hey`
+  String get Heylabel {
+    return Intl.message('Hey', name: 'Heylabel', desc: '', args: []);
+  }
+
+  /// `Delete Bookmark`
+  String get deleteBookmark {
+    return Intl.message(
+      'Delete Bookmark',
+      name: 'deleteBookmark',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to delete this bookmark? This action cannot be undone.`
+  String get deleteBookmarkConfirmation {
+    return Intl.message(
+      'Are you sure you want to delete this bookmark? This action cannot be undone.',
+      name: 'deleteBookmarkConfirmation',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

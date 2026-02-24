@@ -1,3 +1,4 @@
+import 'package:Movie_Night/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/pages/Adminpages/add_admin.dart';
 import 'package:Movie_Night/src/pages/Adminpages/fulldetails.dart';
@@ -29,7 +30,7 @@ class Detailscategory extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Center(child: Text('Details Category')),
+        title: Center(child: Text(S.of(context).detailCategory)),
       ),
       body: Center(
         child: Column(
@@ -37,7 +38,7 @@ class Detailscategory extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              'Details Category',
+              S.of(context).detailCategory,
               style: TextStyle(fontFamily: 'Pacifico', fontSize: 40),
             ),
             SizedBox(height: 20),
@@ -64,7 +65,7 @@ class Detailscategory extends StatelessWidget {
                   ),
                 );
               },
-              child: Text("View Reports"),
+              child: Text(S.of(context).viewReports),
             ),
             SizedBox(height: 20),
             ElevatedButton(
@@ -90,7 +91,7 @@ class Detailscategory extends StatelessWidget {
                   ),
                 );
               },
-              child: Text("View Full Details"),
+              child: Text(S.of(context).viewFullDetails),
             ),
             SizedBox(height: 20),
             ElevatedButton(
@@ -116,7 +117,7 @@ class Detailscategory extends StatelessWidget {
                   ),
                 );
               },
-              child: Text("Add Admin"),
+              child: Text(S.of(context).addAdmin),
             ),
           ],
         ),

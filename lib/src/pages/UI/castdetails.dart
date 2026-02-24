@@ -1,3 +1,4 @@
+import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/langprovider.dart';
 import 'package:Movie_Night/src/components/Cached_image.dart';
 import 'package:Movie_Night/src/models/Knownfor_model.dart';
@@ -54,12 +55,13 @@ class _DetailPageState extends State<Cast_DetailPage> {
               strokeWidth: 3,
             ));
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(
+                child: Text('${S.of(context).error}: ${snapshot.error}'));
           } else {
             // Access the movie details using 'snapshot.data'
             var castdetails = snapshot.data;
             if (castdetails == null) {
-              return Center(child: Text('No data found'));
+              return Center(child: Text(S.of(context).noDataFound));
             }
             return CustomScrollView(
               // sliver app bar
@@ -129,7 +131,7 @@ class _DetailPageState extends State<Cast_DetailPage> {
                                         const Icon(IconsaxBold.calendar),
                                         Text(
                                           castdetails.birthday == null
-                                              ? 'No birthday found'
+                                              ? S.of(context).noBirthdayFound
                                               : DateFormat.yMMMd().format(
                                                   castdetails.birthday!),
                                           style: Theme.of(context)
@@ -163,7 +165,8 @@ class _DetailPageState extends State<Cast_DetailPage> {
                                     launchUrlString(
                                         'https://www.imdb.com/name/${castdetails.imdbId}/');
                                   },
-                                  label: Text("IMDB Profile"),
+                                  label: Text(
+                                      "IMDB ${S.of(context).profilenavbar}"),
                                   icon: const Icon(Icons.link),
                                   style: ButtonStyle(
                                     backgroundColor: WidgetStateProperty.all(
@@ -181,25 +184,25 @@ class _DetailPageState extends State<Cast_DetailPage> {
 
                             const SizedBox(height: 12),
                             Text(
-                              'biography',
+                              S.of(context).biography,
                               style: Theme.of(context).textTheme.titleLarge,
                             ),
 
                             Text(
                               castdetails.biography == null ||
                                       castdetails.biography!.isEmpty
-                                  ? 'No biography found'
+                                  ? S.of(context).nobiographyfound
                                   : castdetails.biography!,
                               style: Theme.of(context).textTheme.titleSmall,
                             ),
                             Cast_knownfor(
                                 istvshow: false,
                                 future: castmovies,
-                                headlineText: "Movies Known For"),
+                                headlineText: S.of(context).moviesKnownFor),
                             Cast_knownfor(
                                 istvshow: true,
                                 future: casttvshows,
-                                headlineText: "Tv Shows Known For"),
+                                headlineText: S.of(context).tvShowsKnownFor),
 
                             // Visibility(
                             //   visible: widget.isTvShow,

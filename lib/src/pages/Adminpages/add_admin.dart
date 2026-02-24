@@ -1,4 +1,5 @@
 // ignore_for_file: must_be_immutable
+import 'package:Movie_Night/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -45,7 +46,7 @@ class _AddAdminState extends State<AddAdmin> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("User Profile"),
+        title: Text(S.of(context).userProfile),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
@@ -76,17 +77,17 @@ class _AddAdminState extends State<AddAdmin> {
                   ),
                   SizedBox(height: 20),
                   Text(
-                    "Name: ${widget.firstname!} ${widget.lastname!}",
+                    "${S.of(context).name}: ${widget.firstname!} ${widget.lastname!}",
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   SizedBox(height: 10),
                   Text(
-                    "Email: ${widget.email!}",
+                    "${S.of(context).email}: ${widget.email!}",
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   SizedBox(height: 10),
                   Text(
-                    "Role: ${widget.role!}",
+                    "${S.of(context).role}: ${widget.role!}",
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   SizedBox(height: 30),
@@ -101,7 +102,7 @@ class _AddAdminState extends State<AddAdmin> {
                             addAdmin();
                           },
                           child: Text(
-                            "Add Admin",
+                            S.of(context).addAdmin,
                           ),
                         ),
                 ],

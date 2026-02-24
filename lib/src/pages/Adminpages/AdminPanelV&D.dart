@@ -1,3 +1,4 @@
+import 'package:Movie_Night/generated/l10n.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class adminpanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: const Text("Admin Panel")),
+        title: Center(child: Text(S.of(context).adminPanel)),
         elevation: 0,
         backgroundColor: Colors.transparent,
       ),
@@ -48,7 +49,7 @@ class adminpanel extends StatelessWidget {
               return buildUser(user, context);
             }).toList());
           } else {
-            return const Center(child: Text('Something went wrong.'));
+            return Center(child: Text(S.of(context).somethingwentwrong));
           }
         },
       ),
@@ -57,13 +58,13 @@ class adminpanel extends StatelessWidget {
 
   Widget buildUser(Users user, BuildContext context) {
     Widget cancelButton = TextButton(
-      child: Text("Cancel"),
+      child: Text(S.of(context).cancelLabel),
       onPressed: () {
         Navigator.pop(context);
       },
     );
     Widget okbutton = TextButton(
-      child: Text("ok"),
+      child: Text(S.of(context).okLabel),
       onPressed: () {
         _deleteUser(user.id);
         Navigator.pop(context);
@@ -82,9 +83,9 @@ class adminpanel extends StatelessWidget {
                     showDialog(
                         context: context,
                         builder: (_) => AlertDialog(
-                              title: Text('Delete User'),
+                              title: Text(S.of(context).deleteUser),
                               content: Text(
-                                'ARE YOU SURE YOU WANT TO DELETE THE USER? ',
+                                S.of(context).deleteUserConfirmation,
                                 style: TextStyle(color: Colors.red),
                               ),
                               actions: [cancelButton, okbutton],
@@ -92,7 +93,7 @@ class adminpanel extends StatelessWidget {
                   },
                   backgroundColor: Colors.red,
                   icon: Icons.delete,
-                  label: "Delete",
+                  label: S.of(context).delete,
                 )
               ]),
               child: Card(

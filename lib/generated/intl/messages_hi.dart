@@ -32,6 +32,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Familygenre": MessageLookupByLibrary.simpleMessage("परिवार"),
     "Fantasygenre": MessageLookupByLibrary.simpleMessage("काल्पनिक"),
     "Frenchlabel": MessageLookupByLibrary.simpleMessage("फ्रेंच"),
+    "Heylabel": MessageLookupByLibrary.simpleMessage("नमस्ते"),
     "Heytherelabel": MessageLookupByLibrary.simpleMessage("हेलो"),
     "Historygenre": MessageLookupByLibrary.simpleMessage("इतिहास"),
     "Horrorgenre": MessageLookupByLibrary.simpleMessage("भूतपूर्व"),
@@ -60,9 +61,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "actiontvlabel": MessageLookupByLibrary.simpleMessage(
       "क्रिया और एडवेंचर टीवी शो",
     ),
+    "addAdmin": MessageLookupByLibrary.simpleMessage("एडमिन जोड़ें"),
     "addtowatchlist": MessageLookupByLibrary.simpleMessage(
       "देखने की सूचि में जोड़ें",
     ),
+    "adminPanel": MessageLookupByLibrary.simpleMessage("एडमिन पैनल"),
     "adminpanellabel": MessageLookupByLibrary.simpleMessage("एडमिन पैनल"),
     "adminsettingslabel": MessageLookupByLibrary.simpleMessage("एडमिन"),
     "adventuremovielabel": MessageLookupByLibrary.simpleMessage(
@@ -78,7 +81,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "एनीमेशन फ़िल्में",
     ),
     "arabiclabel": MessageLookupByLibrary.simpleMessage("अरबी"),
+    "biography": MessageLookupByLibrary.simpleMessage("जीवनी"),
     "buyon": MessageLookupByLibrary.simpleMessage("खरीदें:"),
+    "cancelLabel": MessageLookupByLibrary.simpleMessage("रद्द करें"),
     "changelanguagelabel": MessageLookupByLibrary.simpleMessage("भाषा बदलें"),
     "changepassworderror": MessageLookupByLibrary.simpleMessage(
       "पासवर्ड बदलने में त्रुटि. कृपया पुनः प्रयास करें",
@@ -89,10 +94,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "changepasswordsuccess": MessageLookupByLibrary.simpleMessage(
       "पासवर्ड सफलतापूर्वक बदल गया",
     ),
+    "clearReport": MessageLookupByLibrary.simpleMessage("रिपोर्ट हटाएं"),
     "comedymovielabel": MessageLookupByLibrary.simpleMessage("कॉमेडी फ़िल्में"),
     "createaccountlabel": MessageLookupByLibrary.simpleMessage("खाता बनाएँ"),
     "crimemovielabel": MessageLookupByLibrary.simpleMessage("अपराध फ़िल्में"),
     "darkmodelabel": MessageLookupByLibrary.simpleMessage("डार्क मोड"),
+    "delete": MessageLookupByLibrary.simpleMessage("हटाएं"),
+    "deleteBookmark": MessageLookupByLibrary.simpleMessage("बुकमार्क हटाएं"),
+    "deleteBookmarkConfirmation": MessageLookupByLibrary.simpleMessage(
+      "क्या आप वाकई इस बुकमार्क को हटाना चाहते हैं? यह कार्रवाई वापस नहीं ली जा सकती।",
+    ),
+    "deleteUser": MessageLookupByLibrary.simpleMessage("उपयोगकर्ता हटाएं"),
+    "deleteUserConfirmation": MessageLookupByLibrary.simpleMessage(
+      "क्या आप वाकई अपना खाता हटाना चाहते हैं? यह कार्रवाई वापस नहीं ली जा सकती।",
+    ),
     "deleteaccountlabel": MessageLookupByLibrary.simpleMessage("खाता हटाएं"),
     "deleteerror": MessageLookupByLibrary.simpleMessage(
       "खाता हटाने में त्रुटि. कृपया पुनः लॉग इन करें और पुनः प्रयास करें",
@@ -101,6 +116,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "समस्या को विस्तार से व्याख्या करें",
     ),
     "descriptionlabel": MessageLookupByLibrary.simpleMessage("विवरण  (आवश्यक)"),
+    "detailCategory": MessageLookupByLibrary.simpleMessage("विवरण श्रेणी"),
     "deutschlabel": MessageLookupByLibrary.simpleMessage("जर्मन"),
     "documentarymovielabel": MessageLookupByLibrary.simpleMessage(
       "डॉक्यूमेंटरी फ़िल्में",
@@ -115,6 +131,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "egypttvwidget_title": MessageLookupByLibrary.simpleMessage(
       "मिस्री टीवी शो",
     ),
+    "email": MessageLookupByLibrary.simpleMessage("ईमेल"),
     "emailaddresslabel": MessageLookupByLibrary.simpleMessage("ईमेल पता"),
     "englishlabel": MessageLookupByLibrary.simpleMessage("अंग्रेज़ी"),
     "error": MessageLookupByLibrary.simpleMessage("त्रुटि"),
@@ -124,8 +141,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "काल्पनिक फ़िल्में",
     ),
     "firstnamelabel": MessageLookupByLibrary.simpleMessage("पहला नाम"),
+    "forgetPasswordPageQuestion": MessageLookupByLibrary.simpleMessage(
+      "अपने खाते से जुड़ा ईमेल दर्ज करें",
+    ),
     "forgotpasswordlabel": MessageLookupByLibrary.simpleMessage(
       "पासवर्ड भूल गए?",
+    ),
+    "fullUserProfile": MessageLookupByLibrary.simpleMessage(
+      "पूर्ण उपयोगकर्ता प्रोफ़ाइल",
     ),
     "generalsettingslabel": MessageLookupByLibrary.simpleMessage("सामान्य"),
     "globalreviewswitch": MessageLookupByLibrary.simpleMessage(
@@ -140,6 +163,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "horrormovielabel": MessageLookupByLibrary.simpleMessage(
       "भूतपूर्व फ़िल्में",
     ),
+    "id": MessageLookupByLibrary.simpleMessage("आईडी"),
     "italianlabel": MessageLookupByLibrary.simpleMessage("इतालवी"),
     "kidstvlabel": MessageLookupByLibrary.simpleMessage(
       "बच्चों के लिए टीवी शो",
@@ -158,23 +182,41 @@ class MessageLookup extends MessageLookupByLibrary {
     "managesettingslabel": MessageLookupByLibrary.simpleMessage("प्रबंधन"),
     "mediatypemoviess": MessageLookupByLibrary.simpleMessage("फ़िल्में"),
     "minute": MessageLookupByLibrary.simpleMessage("मिनट"),
+    "moviesKnownFor": MessageLookupByLibrary.simpleMessage(
+      "इन फिल्मों के लिए प्रसिद्ध",
+    ),
     "movieswitch": MessageLookupByLibrary.simpleMessage("फ़िल्में"),
     "musicmovielabel": MessageLookupByLibrary.simpleMessage("संगीत फ़िल्में"),
     "mysterymovielabel": MessageLookupByLibrary.simpleMessage("रहस्य फ़िल्में"),
+    "name": MessageLookupByLibrary.simpleMessage("नाम"),
     "newstvlabel": MessageLookupByLibrary.simpleMessage("समाचार टीवी शो"),
+    "noBirthdayFound": MessageLookupByLibrary.simpleMessage(
+      "जन्म तिथि नहीं मिली",
+    ),
+    "noDataFound": MessageLookupByLibrary.simpleMessage("कोई डेटा नहीं मिला"),
+    "noImage": MessageLookupByLibrary.simpleMessage("कोई छवि नहीं"),
     "noInternet": MessageLookupByLibrary.simpleMessage(
       "कोई इंटरनेट कनेक्शन नहीं",
     ),
     "noInternetMessage": MessageLookupByLibrary.simpleMessage(
       "कृपया अपने इंटरनेट कनेक्शन की जाँच करें और पुनः प्रयास करें",
     ),
+    "noReport": MessageLookupByLibrary.simpleMessage("कोई रिपोर्ट नहीं!"),
     "noResults": MessageLookupByLibrary.simpleMessage("कोई परिणाम नहीं"),
     "noResultsMessage": MessageLookupByLibrary.simpleMessage(
       "आपकी खोज के लिए कोई परिणाम नहीं मिले",
     ),
+    "noUserDataAvailable": MessageLookupByLibrary.simpleMessage(
+      "उपयोगकर्ता डेटा उपलब्ध नहीं",
+    ),
+    "noVideos": MessageLookupByLibrary.simpleMessage("कोई वीडियो नहीं"),
+    "nobiographyfound": MessageLookupByLibrary.simpleMessage(
+      "कोई जीवनी उपलब्ध नहीं",
+    ),
     "nobuyon": MessageLookupByLibrary.simpleMessage(
       "कोई खरीदी सेवाएँ उपलब्ध नहीं हैं",
     ),
+    "noimage": MessageLookupByLibrary.simpleMessage("कोई छवि नहीं"),
     "nointernetconnection": MessageLookupByLibrary.simpleMessage(
       "कोई इंटरनेट कनेक्शन नहीं",
     ),
@@ -196,6 +238,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "numberofseasons": MessageLookupByLibrary.simpleMessage("सीजनों की संख्या"),
     "ohnolabel": MessageLookupByLibrary.simpleMessage("ओह नो!"),
+    "okLabel": MessageLookupByLibrary.simpleMessage("ठीक है"),
     "passwordconfirmlabel": MessageLookupByLibrary.simpleMessage(
       "पासवर्ड की पुष्टि करें",
     ),
@@ -215,8 +258,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "populartvwidget_title": MessageLookupByLibrary.simpleMessage(
       "लोकप्रिय टीवी शो",
     ),
+    "poweredby": MessageLookupByLibrary.simpleMessage("द्वारा संचालित"),
     "privacylabel": MessageLookupByLibrary.simpleMessage("गोपनीयता"),
     "profilenavbar": MessageLookupByLibrary.simpleMessage("प्रोफ़ाइल"),
+    "readmorelabel": MessageLookupByLibrary.simpleMessage("और पढ़ें..."),
     "realitytvlabel": MessageLookupByLibrary.simpleMessage(
       "वास्तविकता टीवी शो",
     ),
@@ -226,12 +271,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "removefromwatchlist": MessageLookupByLibrary.simpleMessage(
       "देखने की सूचि से हटाएँ",
     ),
+    "report": MessageLookupByLibrary.simpleMessage("रिपोर्ट"),
+    "reportPage": MessageLookupByLibrary.simpleMessage("रिपोर्ट पेज"),
     "reportabuglabel": MessageLookupByLibrary.simpleMessage(
       "बग की रिपोर्ट करें",
     ),
     "reportpagelabel": MessageLookupByLibrary.simpleMessage(
       "कृपया हमें यदि आपको ऐप में कोई बग मिलता है या कोई सुझाव हो, तो हमें रिपोर्ट भेजें।",
     ),
+    "role": MessageLookupByLibrary.simpleMessage("भूमिका"),
     "romancemovielabel": MessageLookupByLibrary.simpleMessage(
       "रोमांस फ़िल्में",
     ),
@@ -243,6 +291,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "विज्ञान-कल्पना और काल्पनिकता टीवी शो",
     ),
     "searchhint": MessageLookupByLibrary.simpleMessage("खोजें"),
+    "sendEmail": MessageLookupByLibrary.simpleMessage("ईमेल भेजें"),
     "sendfeedbacklabel": MessageLookupByLibrary.simpleMessage(
       "प्रतिक्रिया भेजें",
     ),
@@ -250,6 +299,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "share": MessageLookupByLibrary.simpleMessage("साझा करें"),
     "signupbuttonlabel": MessageLookupByLibrary.simpleMessage("साइन अप"),
     "soaptvlabel": MessageLookupByLibrary.simpleMessage("साबुन टीवी शो"),
+    "somethingwentwrong": MessageLookupByLibrary.simpleMessage(
+      "कुछ गलत हो गया। कृपया बाद में फिर से कोशिश करें।",
+    ),
     "spanishlabel": MessageLookupByLibrary.simpleMessage("स्पैनिश"),
     "storyline": MessageLookupByLibrary.simpleMessage("कहानी"),
     "success": MessageLookupByLibrary.simpleMessage("सफलता"),
@@ -269,6 +321,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "लोकप्रिय टीवी शो",
     ),
     "tryAgain": MessageLookupByLibrary.simpleMessage("पुनः प्रयास करें"),
+    "tvShowsKnownFor": MessageLookupByLibrary.simpleMessage(
+      "इन टीवी शोज़ के लिए प्रसिद्ध",
+    ),
     "tvkids": MessageLookupByLibrary.simpleMessage("बच्चों के लिए"),
     "tvmovielabel": MessageLookupByLibrary.simpleMessage("टीवी फ़िल्में"),
     "tvnews": MessageLookupByLibrary.simpleMessage("समाचार"),
@@ -289,6 +344,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "updateprofilesuccess": MessageLookupByLibrary.simpleMessage(
       "प्रोफ़ाइल सफलतापूर्वक अपडेट की गई",
     ),
+    "userProfile": MessageLookupByLibrary.simpleMessage("उपयोगकर्ता प्रोफ़ाइल"),
+    "videoslabel": MessageLookupByLibrary.simpleMessage("वीडियो"),
+    "viewFullDetails": MessageLookupByLibrary.simpleMessage("पूरा विवरण देखें"),
+    "viewReports": MessageLookupByLibrary.simpleMessage("रिपोर्ट देखें"),
     "warmovielabel": MessageLookupByLibrary.simpleMessage("युद्ध फ़िल्में"),
     "wartvlabel": MessageLookupByLibrary.simpleMessage(
       "युद्ध और राजनीति टीवी शो",

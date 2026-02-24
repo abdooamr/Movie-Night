@@ -55,7 +55,7 @@ class _BuyProviderWidgetState extends State<BuyProviderWidget> {
                   Row(
                     children: [
                       Text(
-                        "Powered by",
+                        S.of(context).poweredby,
                         style: Theme.of(context).textTheme.titleSmall,
                       ),
                       SizedBox(

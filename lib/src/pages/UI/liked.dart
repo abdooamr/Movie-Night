@@ -2,6 +2,7 @@ import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/langprovider.dart';
 import 'package:Movie_Night/src/models/liked_model.dart';
 import 'package:Movie_Night/src/pages/allpages.dart';
+import 'package:Movie_Night/src/widgets/shimmerWidgets/likedPageShimmerWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:Movie_Night/src/models/movie_model.dart';
@@ -75,12 +76,22 @@ class _LikedState extends State<Liked> {
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return CircularProgressIndicator(
-                                color: Colors.deepPurpleAccent,
-                                strokeWidth: 3,
-                              );
+                              final isDark = Theme.of(context).brightness ==
+                                  Brightness.dark;
+
+                              final baseColor = isDark
+                                  ? Colors.grey.shade800
+                                  : Colors.grey.shade300;
+                              final highlightColor = isDark
+                                  ? Colors.grey.shade700
+                                  : Colors.grey.shade100;
+
+                              return likedPageShimmerWidget(
+                                  baseColor: baseColor,
+                                  highlightColor: highlightColor);
                             } else if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
+                              return Text(
+                                  '${S.of(context).error}: ${snapshot.error}');
                             } else if (snapshot.hasData) {
                               return GestureDetector(
                                 onTap: () {
@@ -184,7 +195,7 @@ class _LikedState extends State<Liked> {
                                 ),
                               );
                             } else {
-                              return Text('No data found.');
+                              return Text(S.of(context).noDataFound);
                             }
                           },
                         );

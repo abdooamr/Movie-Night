@@ -1,3 +1,4 @@
+import 'package:Movie_Night/generated/l10n.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -56,7 +57,7 @@ class _ForgetNewState extends State<ForgetNew> {
                     Padding(
                       padding: const EdgeInsets.only(left: 10),
                       child: Text(
-                        "Forget Password ?",
+                        S.of(context).forgotpasswordlabel,
                         style: TextStyle(
                             fontFamily: 'Pacifico',
                             color: Colors.white,
@@ -67,7 +68,7 @@ class _ForgetNewState extends State<ForgetNew> {
                     Padding(
                       padding: const EdgeInsets.only(left: 10),
                       child: Text(
-                        "Enter the email associated with your account",
+                        S.of(context).forgetPasswordPageQuestion,
                         style: TextStyle(
                             fontFamily: 'Pacifico',
                             color: Colors.grey,
@@ -92,7 +93,7 @@ class _ForgetNewState extends State<ForgetNew> {
                                   ),
                                   fillColor: Color.fromARGB(255, 56, 48, 76),
                                   filled: true,
-                                  labelText: "Email",
+                                  labelText: S.of(context).email,
                                   labelStyle: TextStyle(color: Colors.white),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(20),
@@ -116,7 +117,7 @@ class _ForgetNewState extends State<ForgetNew> {
                                 PasswordReset();
                               },
                               child: Text(
-                                'Send Email',
+                                S.of(context).sendEmail,
                                 style: TextStyle(
                                     color: Colors.black, fontSize: 20),
                               ),

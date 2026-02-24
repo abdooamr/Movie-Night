@@ -39,7 +39,7 @@ class _SendReportState extends State<SendReport> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,
-          title: Center(child: const Text('Send Report')),
+          title: Center(child: Text(S.of(context).sendreportlabel)),
         ),
         body: SingleChildScrollView(
           child: Column(

@@ -83,13 +83,14 @@ class _DetailPageState extends State<DetailPage> {
               strokeWidth: 3,
             ));
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(
+                child: Text('${S.of(context).error}: ${snapshot.error}'));
           } else {
             // Access the movie details using 'snapshot.data'
             var movieDetails = snapshot.data;
             var genress = movieDetails!.genres;
             if (snapshot.data == null) {
-              return Center(child: Text('No data found'));
+              return Center(child: Text(S.of(context).noDataFound));
             }
             return CustomScrollView(
               // sliver app bar
@@ -383,7 +384,11 @@ class _DetailPageState extends State<DetailPage> {
                                                     true
                                                 ? IconsaxBold.heart
                                                 : IconsaxOutline.heart,
-                                        label: S.of(context).like,
+                                        label:
+                                            box.get(movieDetails.id)?.isLiked ==
+                                                    true
+                                                ? S.of(context).likednavbar
+                                                : S.of(context).like,
                                         onTap: () {
                                           box.put(
                                             movieDetails.id,

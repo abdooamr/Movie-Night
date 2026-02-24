@@ -1,3 +1,4 @@
+import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/langprovider.dart';
 import 'package:Movie_Night/src/components/Cached_image.dart';
 import 'package:flutter/material.dart';
@@ -95,7 +96,8 @@ class _GlobalReviewsWidgetState extends State<GlobalReviewsWidget> {
                                             isExpanded = true;
                                           });
                                         },
-                                        child: const Text('Read More...')),
+                                        child:
+                                            Text(S.of(context).readmorelabel)),
                                   ),
                             Text(
                               data[index].createdAt.toString().substring(0, 10),

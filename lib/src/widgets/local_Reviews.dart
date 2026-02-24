@@ -1,3 +1,4 @@
+import 'package:Movie_Night/generated/l10n.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -103,7 +104,8 @@ class _LocalReviewsWidgetState extends State<LocalReviewsWidget> {
                                             isExpandedList[index] = true;
                                           });
                                         },
-                                        child: const Text('Read More...'),
+                                        child:
+                                            Text(S.of(context).readmorelabel),
                                       ),
                                     ),
                                   Text(

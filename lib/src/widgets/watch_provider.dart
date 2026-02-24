@@ -56,7 +56,7 @@ class _WatchProviderWidgetState extends State<WatchProviderWidget> {
                   Row(
                     children: [
                       Text(
-                        "Powered by",
+                        S.of(context).poweredby,
                         style: Theme.of(context).textTheme.titleSmall,
                       ),
                       SizedBox(
