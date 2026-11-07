@@ -208,11 +208,12 @@ parents.
 ---
 
 > **Status (2026-11-07):** 3.1–3.7 done. 3.8 partial: in-constraint upgrades, simple_icons 16,
-> devicelocale 0.9 and the Firebase majors (core 5, auth 7, messaging 17, storage 14, firestore 7) applied;
-> analyze/tests pass but Firebase needs a manual device check (login, Firestore, push, upload).
+> devicelocale 0.9 applied;
+> analyze/tests pass.
 > Still blocked by Flutter 3.35.5 / Dart 3.9: flutter_email_sender, fluttertoast, shimmer, flutter_slidable,
 > share_plus, cached_network_image, in_app_update (need Dart 3.10–3.13). google_sign_in left at 6.2.1.
-> Not verified on device: light-mode walkthrough, 200% text scale, tablet/landscape, a11y inspector.
+> Firebase majors REVERTED (firebase_auth 7 needs Kotlin 2.4; build failed on device). Kotlin plugin now 2.3.0.
+> Device-tested (SM A505FN): home, explore, detail, liked, search, profile, light mode, 200% text scale, landscape home. Not tested: reviews write, profile-pic upload, login/logout, tablet.
 
 ## Phase 3 exit criteria
 
