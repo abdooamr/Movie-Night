@@ -48,10 +48,15 @@ class MoviesListView extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      headlineText,
-                      style: Theme.of(context).textTheme.titleLarge,
+                    Flexible(
+                      child: Text(
+                        headlineText,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
                     ),
+                    const SizedBox(width: 8),
                     GestureDetector(
                       onTap: () {
                         Navigator.push(

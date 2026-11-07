@@ -9,12 +9,17 @@ class MyCarouselSlider extends StatelessWidget {
       this.viewportFraction = .5,
       Key? key,
       this.onPageChanged,
-      this.aspectRatio = 1.5})
+      this.aspectRatio = 1.5,
+      this.height})
       : super(key: key);
   Widget Function(BuildContext context, int index, int realindex)? itemBuilder;
   dynamic Function(int index, CarouselPageChangedReason reason)? onPageChanged;
 
   final double aspectRatio;
+
+  /// When set, overrides [aspectRatio] (needed so the carousel doesn't grow
+  /// with screen width in landscape / on tablets).
+  final double? height;
   final int itemCount;
   final double viewportFraction;
   @override
@@ -27,6 +32,7 @@ class MyCarouselSlider extends StatelessWidget {
           enableInfiniteScroll: itemCount > 2,
           viewportFraction: viewportFraction,
           enlargeCenterPage: itemCount != 1,
+          height: height,
           aspectRatio: aspectRatio),
     );
   }

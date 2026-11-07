@@ -160,7 +160,7 @@ class _LocalReviewsWidgetState extends State<LocalReviewsWidget> {
                   child: Center(
                     child: Text(
                       S.of(context).noReviews,
-                      style: TextStyle(color: Colors.white),
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ),
                 ),

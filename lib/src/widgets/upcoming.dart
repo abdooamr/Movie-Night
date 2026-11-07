@@ -49,6 +49,12 @@ class UpcomingMovies extends StatelessWidget {
                 height: 3,
               ),
               MyCarouselSlider(
+                height:
+                    (PosterSize.of(context).width + 4.5) * 250 / 174.5 * 1.2 +
+                        8,
+                viewportFraction: ((PosterSize.of(context).width + 40) /
+                        MediaQuery.sizeOf(context).width)
+                    .clamp(0.2, 0.5),
                 itemCount: data!.length > 20
                     ? 21
                     : data.length + 1, // Adjust the itemCount
@@ -141,7 +147,10 @@ class UpcomingMovies extends StatelessWidget {
                           child: BackdropFilter(
                             filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                             child: Container(
-                              height: 70,
+                              height: 70 *
+                                  MediaQuery.textScalerOf(context)
+                                      .scale(1)
+                                      .clamp(1.0, 2.0),
                               width: PosterSize.of(context).width + 15,
                               padding: const EdgeInsets.all(10),
                               color: Colors.black26,
