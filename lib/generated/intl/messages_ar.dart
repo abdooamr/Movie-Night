@@ -20,6 +20,8 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'ar';
 
+  static String m0(character) => "بدور ${character}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "Actiongenre": MessageLookupByLibrary.simpleMessage("أكشن"),
@@ -80,6 +82,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "biography": MessageLookupByLibrary.simpleMessage("نبذة عنه"),
     "buyon": MessageLookupByLibrary.simpleMessage("شراء على"),
     "cancelLabel": MessageLookupByLibrary.simpleMessage("إلغاء"),
+    "castAs": m0,
     "changelanguagelabel": MessageLookupByLibrary.simpleMessage("تغيير اللغة"),
     "changepassworderror": MessageLookupByLibrary.simpleMessage(
       "خطأ في تغيير كلمة المرور. يرجى المحاولة مرة أخرى",
@@ -91,6 +94,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "تم إرسال رسالة إعادة تعيين كلمة المرور بنجاح",
     ),
     "clearReport": MessageLookupByLibrary.simpleMessage("مسح البلاغ"),
+    "clearSearchTooltip": MessageLookupByLibrary.simpleMessage("مسح البحث"),
     "comedymovielabel": MessageLookupByLibrary.simpleMessage("أفلام كوميدية"),
     "createaccountlabel": MessageLookupByLibrary.simpleMessage("إنشاء حساب"),
     "crimemovielabel": MessageLookupByLibrary.simpleMessage("أفلام جريمة"),
@@ -100,6 +104,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteBookmarkConfirmation": MessageLookupByLibrary.simpleMessage(
       "متأكد إنك عايز تحذف ده من المحفوظات؟ مش هتقدر ترجّعه.",
     ),
+    "deleteReviewTooltip": MessageLookupByLibrary.simpleMessage("حذف المراجعة"),
     "deleteUser": MessageLookupByLibrary.simpleMessage("حذف الحساب"),
     "deleteUserConfirmation": MessageLookupByLibrary.simpleMessage(
       "متأكد إنك عايز تحذف حسابك؟ مش هتقدر ترجّعه بعد كده.",
@@ -131,6 +136,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "englishlabel": MessageLookupByLibrary.simpleMessage("الإنجليزية"),
     "error": MessageLookupByLibrary.simpleMessage("خطأ"),
+    "errorLoginAgain": MessageLookupByLibrary.simpleMessage(
+      "حدث خطأ، يرجى تسجيل الدخول مرة أخرى والمحاولة مجددًا",
+    ),
+    "errorTitle": MessageLookupByLibrary.simpleMessage("خطأ"),
     "explorenavbar": MessageLookupByLibrary.simpleMessage("استكشاف"),
     "familymovielabel": MessageLookupByLibrary.simpleMessage("أفلام عائلية"),
     "fantasymovielabel": MessageLookupByLibrary.simpleMessage("أفلام خيال"),
@@ -145,6 +154,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "الملف الشخصي بالكامل",
     ),
     "generalsettingslabel": MessageLookupByLibrary.simpleMessage("عام"),
+    "genericError": MessageLookupByLibrary.simpleMessage(
+      "حدث خطأ ما. حاول مرة أخرى.",
+    ),
     "globalreviewswitch": MessageLookupByLibrary.simpleMessage("مراجعة عامة"),
     "hello": MessageLookupByLibrary.simpleMessage("مرحبًا"),
     "hindilabel": MessageLookupByLibrary.simpleMessage("الهندية"),
@@ -186,6 +198,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noResultsMessage": MessageLookupByLibrary.simpleMessage(
       "لم يتم العثور على نتائج لبحثك",
     ),
+    "noReviews": MessageLookupByLibrary.simpleMessage("لا توجد مراجعات"),
     "noUserDataAvailable": MessageLookupByLibrary.simpleMessage(
       "مفيش بيانات للمستخدم",
     ),
@@ -234,6 +247,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "poweredby": MessageLookupByLibrary.simpleMessage("بدعم من"),
     "privacylabel": MessageLookupByLibrary.simpleMessage("الخصوصية"),
+    "profilePicUploadFailed": MessageLookupByLibrary.simpleMessage(
+      "تعذر رفع صورة الملف الشخصي. حاول مرة أخرى.",
+    ),
     "profilenavbar": MessageLookupByLibrary.simpleMessage("الملف الشخصي"),
     "readmorelabel": MessageLookupByLibrary.simpleMessage("اقرأ أكتر..."),
     "realitytvlabel": MessageLookupByLibrary.simpleMessage("برامج واقع"),
@@ -258,6 +274,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "searchhint": MessageLookupByLibrary.simpleMessage("بحث"),
     "sendEmail": MessageLookupByLibrary.simpleMessage("إرسال الإيميل"),
+    "sendReviewTooltip": MessageLookupByLibrary.simpleMessage("إرسال المراجعة"),
     "sendfeedbacklabel": MessageLookupByLibrary.simpleMessage("إرسال ملاحظات"),
     "sendreportlabel": MessageLookupByLibrary.simpleMessage("إرسال التقرير"),
     "share": MessageLookupByLibrary.simpleMessage("مشاركة"),
@@ -311,5 +328,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "welcomemessage": MessageLookupByLibrary.simpleMessage("مرحبًا مجددًا"),
     "westernmovielabel": MessageLookupByLibrary.simpleMessage("أفلام ويسترن"),
+    "writeReview": MessageLookupByLibrary.simpleMessage("اكتب مراجعة"),
   };
 }

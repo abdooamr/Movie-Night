@@ -196,6 +196,15 @@
     "noUserDataAvailable": "Nessun dato utente disponibile",
     "Heylabel": "Ciao",
     "deleteBookmark": "Elimina segnalibro",
-    "deleteBookmarkConfirmation": "Sei sicuro di voler eliminare questo segnalibro? Questa azione non può essere annullata."
+    "deleteBookmarkConfirmation": "Sei sicuro di voler eliminare questo segnalibro? Questa azione non può essere annullata.",
+    "noReviews" : "Nessuna recensione",
+    "writeReview" : "Scrivi una recensione",
+    "castAs" : "Nel ruolo di {character}",
+    "errorTitle" : "Errore",
+    "errorLoginAgain" : "Errore, accedi di nuovo e riprova",
+    "deleteReviewTooltip" : "Elimina recensione",
+    "sendReviewTooltip" : "Invia recensione",
+    "clearSearchTooltip" : "Cancella ricerca",
+    "genericError" : "Qualcosa è andato storto. Riprova.",
+    "profilePicUploadFailed" : "Impossibile caricare la foto del profilo. Riprova."
 }
-

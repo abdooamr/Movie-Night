@@ -196,5 +196,15 @@
     "noUserDataAvailable" : "No user data available",
     "Heylabel" : "Hey",
     "deleteBookmark" : "Delete Bookmark",
-    "deleteBookmarkConfirmation" : "Are you sure you want to delete this bookmark? This action cannot be undone."
+    "deleteBookmarkConfirmation" : "Are you sure you want to delete this bookmark? This action cannot be undone.",
+    "noReviews" : "No Reviews",
+    "writeReview" : "Write a review",
+    "castAs" : "As {character}",
+    "errorTitle" : "Error",
+    "errorLoginAgain" : "Error please log in again and try again",
+    "deleteReviewTooltip" : "Delete review",
+    "sendReviewTooltip" : "Send review",
+    "clearSearchTooltip" : "Clear search",
+    "genericError" : "Something went wrong. Please try again.",
+    "profilePicUploadFailed" : "Could not upload profile picture. Please try again."
 }

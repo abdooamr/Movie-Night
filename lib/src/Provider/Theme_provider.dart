@@ -75,7 +75,7 @@ class MyThemes {
           unselectedItemColor: Colors.grey.shade500),
       textTheme: const TextTheme(
           bodyMedium: TextStyle(
-            color: Colors.white,
+            color: Colors.black87,
           ),
           bodyLarge: TextStyle(
             color: Colors.black,

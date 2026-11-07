@@ -179,16 +179,11 @@ class UpcomingMovies extends StatelessWidget {
             ),
           );
         } else {
-          return Padding(
-            padding:
-                EdgeInsets.only(top: MediaQuery.of(context).size.height / 2.5),
-            child: const Center(
-              child: CircularProgressIndicator(
-                color: Colors.deepPurpleAccent,
-                strokeWidth: 3,
-              ),
-            ),
-          );
+          final isDark = Theme.of(context).brightness == Brightness.dark;
+          return upcomingShimmerWidget(
+              baseColor: isDark ? Colors.grey.shade800 : Colors.grey.shade300,
+              highlightColor:
+                  isDark ? Colors.grey.shade700 : Colors.grey.shade100);
         }
       },
     );

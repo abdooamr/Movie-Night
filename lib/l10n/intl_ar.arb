@@ -196,5 +196,15 @@
     "noUserDataAvailable": "مفيش بيانات للمستخدم",
     "Heylabel": "أهلاً",
     "deleteBookmark": "حذف من المحفوظات",
-    "deleteBookmarkConfirmation": "متأكد إنك عايز تحذف ده من المحفوظات؟ مش هتقدر ترجّعه."
+    "deleteBookmarkConfirmation": "متأكد إنك عايز تحذف ده من المحفوظات؟ مش هتقدر ترجّعه.",
+    "noReviews" : "لا توجد مراجعات",
+    "writeReview" : "اكتب مراجعة",
+    "castAs" : "بدور {character}",
+    "errorTitle" : "خطأ",
+    "errorLoginAgain" : "حدث خطأ، يرجى تسجيل الدخول مرة أخرى والمحاولة مجددًا",
+    "deleteReviewTooltip" : "حذف المراجعة",
+    "sendReviewTooltip" : "إرسال المراجعة",
+    "clearSearchTooltip" : "مسح البحث",
+    "genericError" : "حدث خطأ ما. حاول مرة أخرى.",
+    "profilePicUploadFailed" : "تعذر رفع صورة الملف الشخصي. حاول مرة أخرى."
 }

@@ -1,6 +1,6 @@
 import 'package:Movie_Night/generated/l10n.dart';
-import 'package:Movie_Night/src/Provider/langprovider.dart';
 import 'package:flutter/material.dart';
+import 'package:Movie_Night/src/widgets/shimmerWidgets/searchResultShimmerWidget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:Movie_Night/src/pages/UI/castdetails.dart';
 import 'package:Movie_Night/src/pages/UI/detail_page.dart';
@@ -10,9 +10,12 @@ import '../models/movie_model.dart';
 
 class Search extends SearchDelegate<Model> {
   SharedPreferences? _prefs;
-  DropdownProvider dropdownProvider = DropdownProvider();
+  final String lang;
+  final Map<String, Future<Model>> _cache = {};
 
-  Search() {
+  static const _debounce = Duration(milliseconds: 300);
+
+  Search({required this.lang}) {
     SharedPreferences.getInstance().then((prefs) {
       _prefs = prefs;
     });
@@ -22,6 +25,7 @@ class Search extends SearchDelegate<Model> {
   List<Widget>? buildActions(BuildContext context) {
     return [
       IconButton(
+        tooltip: S.of(context).clearSearchTooltip,
         onPressed: () {
           query = '';
         },
@@ -33,6 +37,24 @@ class Search extends SearchDelegate<Model> {
   @override
   Widget? buildLeading(BuildContext context) {
     return null;
+  }
+
+  /// One future per query string: rebuilds reuse it, and a query the user has
+  /// already typed past is dropped during the debounce without hitting TMDB.
+  Future<Model> _search(String q) {
+    return _cache.putIfAbsent(q, () async {
+      await Future.delayed(_debounce);
+      if (q != query) {
+        _cache.remove(q);
+        throw StateError('superseded');
+      }
+      try {
+        return await searchData(q, lang);
+      } catch (_) {
+        _cache.remove(q); // allow retry on failure
+        rethrow;
+      }
+    });
   }
 
   @override
@@ -48,24 +70,15 @@ class Search extends SearchDelegate<Model> {
   Widget _buildSearchResults(BuildContext context,
       {bool showSuggestions = false}) {
     if (_prefs == null) {
-      return const Center(
-          child: CircularProgressIndicator(
-        color: Colors.deepPurpleAccent,
-        strokeWidth: 3,
-      ));
+      return const searchResultShimmerWidget();
     }
     final savedQueries = _prefs!.getStringList('search_queries') ?? [];
 
     return FutureBuilder<Model>(
-      future: searchData(query, dropdownProvider.selectedValue),
+      future: query.isEmpty ? Future.error('empty') : _search(query),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(
-              color: Colors.deepPurpleAccent,
-              strokeWidth: 3,
-            ),
-          );
+          return const searchResultShimmerWidget();
         } else if (snapshot.hasData && query.isNotEmpty) {
           final data = snapshot.data?.results;
           return ListView.builder(

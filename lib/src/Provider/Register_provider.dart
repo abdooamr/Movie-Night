@@ -1,10 +1,14 @@
-import 'package:Movie_Night/src/components/textcustom.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:Movie_Night/src/utils/app_logger.dart';
+import 'package:Movie_Night/src/data/user_repository.dart';
 import 'package:Movie_Night/src/models/user_model.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+/// The single sign-up / Google sign-in path (task 2.8 removed the duplicate
+/// `services/googleauth.dart`). Firestore writes go through [UserRepository].
+enum GoogleSignInResult { success, cancelled, failed }
 
 class UserProvider extends ChangeNotifier {
   Users? _user;
@@ -12,7 +16,7 @@ class UserProvider extends ChangeNotifier {
   Users? get user => _user;
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  UserRepository get _users => UserRepository.instance;
 
   Future<void> createUser({
     required Users user,
@@ -30,61 +34,37 @@ class UserProvider extends ChangeNotifier {
         await firebaseUser.updateDisplayName(user.firstName + user.lastName);
         await firebaseUser.updatePhotoURL(user.ProfilePic);
 
-        // Create user document in FirebaseFirestore
-        await _firestore.collection('users').doc(firebaseUser.uid).set({
-          'id': firebaseUser.uid,
-          'role': user.role,
-          'ProfilePic': user.ProfilePic,
-          'firstName': user.firstName,
-          'lastName': user.lastName,
-          'email': user.email,
-          'report': "",
-        });
+        await _users.createUserDocument(firebaseUser.uid, user);
 
         _user = user;
         notifyListeners();
       }
-    } catch (error) {
-      // Handle error
-      print('Error creating user: $error');
+    } catch (error, stack) {
+      AppLog.error('createUser', error, stack);
       rethrow; // Rethrow the error to allow the UI to handle it
     }
   }
 
-  Future<bool> signInWithGoogle() async {
-    bool result = false;
+  /// Distinguishes a dismissed account picker from a real failure.
+  Future<GoogleSignInResult> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      final GoogleSignInAuthentication? googleAuth =
-          await googleUser?.authentication;
+      if (googleUser == null) return GoogleSignInResult.cancelled;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
       final credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
+          accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
 
-      UserCredential userCredential =
+      final UserCredential userCredential =
           await _auth.signInWithCredential(credential);
-      User? user = userCredential.user;
+      final User? user = userCredential.user;
+      if (user == null) return GoogleSignInResult.failed;
 
-      if (user != null) {
-        if (userCredential.additionalUserInfo!.isNewUser) {
-          // add the data to fire base
-          await _firestore.collection('users').doc(user.uid).set({
-            'id': user.uid,
-            'role': "User",
-            'ProfilePic': user.photoURL,
-            'firstName': user.displayName!.split(" ")[0],
-            'lastName': user.displayName!.split(" ")[1],
-            'email': user.email,
-            'report': "",
-          });
-        }
-        result = true;
-      }
-      return result;
-    } catch (e) {
-      textcustom(
-        Texts: e.toString(),
-      );
+      await _users.ensureGoogleUserDocument(user);
+      return GoogleSignInResult.success;
+    } catch (e, stack) {
+      AppLog.error('googleSignIn', e, stack);
+      return GoogleSignInResult.failed;
     }
-    return result;
   }
 }

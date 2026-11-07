@@ -20,6 +20,8 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'hi';
 
+  static String m0(character) => "${character} के रूप में";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "Actiongenre": MessageLookupByLibrary.simpleMessage("क्रिया"),
@@ -84,6 +86,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "biography": MessageLookupByLibrary.simpleMessage("जीवनी"),
     "buyon": MessageLookupByLibrary.simpleMessage("खरीदें:"),
     "cancelLabel": MessageLookupByLibrary.simpleMessage("रद्द करें"),
+    "castAs": m0,
     "changelanguagelabel": MessageLookupByLibrary.simpleMessage("भाषा बदलें"),
     "changepassworderror": MessageLookupByLibrary.simpleMessage(
       "पासवर्ड बदलने में त्रुटि. कृपया पुनः प्रयास करें",
@@ -95,6 +98,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "पासवर्ड सफलतापूर्वक बदल गया",
     ),
     "clearReport": MessageLookupByLibrary.simpleMessage("रिपोर्ट हटाएं"),
+    "clearSearchTooltip": MessageLookupByLibrary.simpleMessage("खोज साफ़ करें"),
     "comedymovielabel": MessageLookupByLibrary.simpleMessage("कॉमेडी फ़िल्में"),
     "createaccountlabel": MessageLookupByLibrary.simpleMessage("खाता बनाएँ"),
     "crimemovielabel": MessageLookupByLibrary.simpleMessage("अपराध फ़िल्में"),
@@ -103,6 +107,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteBookmark": MessageLookupByLibrary.simpleMessage("बुकमार्क हटाएं"),
     "deleteBookmarkConfirmation": MessageLookupByLibrary.simpleMessage(
       "क्या आप वाकई इस बुकमार्क को हटाना चाहते हैं? यह कार्रवाई वापस नहीं ली जा सकती।",
+    ),
+    "deleteReviewTooltip": MessageLookupByLibrary.simpleMessage(
+      "समीक्षा हटाएं",
     ),
     "deleteUser": MessageLookupByLibrary.simpleMessage("उपयोगकर्ता हटाएं"),
     "deleteUserConfirmation": MessageLookupByLibrary.simpleMessage(
@@ -135,6 +142,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "emailaddresslabel": MessageLookupByLibrary.simpleMessage("ईमेल पता"),
     "englishlabel": MessageLookupByLibrary.simpleMessage("अंग्रेज़ी"),
     "error": MessageLookupByLibrary.simpleMessage("त्रुटि"),
+    "errorLoginAgain": MessageLookupByLibrary.simpleMessage(
+      "त्रुटि, कृपया फिर से लॉग इन करें और दोबारा प्रयास करें",
+    ),
+    "errorTitle": MessageLookupByLibrary.simpleMessage("त्रुटि"),
     "explorenavbar": MessageLookupByLibrary.simpleMessage("अन्वेषण"),
     "familymovielabel": MessageLookupByLibrary.simpleMessage("परिवार फ़िल्में"),
     "fantasymovielabel": MessageLookupByLibrary.simpleMessage(
@@ -151,6 +162,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "पूर्ण उपयोगकर्ता प्रोफ़ाइल",
     ),
     "generalsettingslabel": MessageLookupByLibrary.simpleMessage("सामान्य"),
+    "genericError": MessageLookupByLibrary.simpleMessage(
+      "कुछ गलत हो गया। कृपया पुनः प्रयास करें।",
+    ),
     "globalreviewswitch": MessageLookupByLibrary.simpleMessage(
       "वैश्विक समीक्षा",
     ),
@@ -206,6 +220,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noResultsMessage": MessageLookupByLibrary.simpleMessage(
       "आपकी खोज के लिए कोई परिणाम नहीं मिले",
     ),
+    "noReviews": MessageLookupByLibrary.simpleMessage("कोई समीक्षा नहीं"),
     "noUserDataAvailable": MessageLookupByLibrary.simpleMessage(
       "उपयोगकर्ता डेटा उपलब्ध नहीं",
     ),
@@ -260,6 +275,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "poweredby": MessageLookupByLibrary.simpleMessage("द्वारा संचालित"),
     "privacylabel": MessageLookupByLibrary.simpleMessage("गोपनीयता"),
+    "profilePicUploadFailed": MessageLookupByLibrary.simpleMessage(
+      "प्रोफ़ाइल फ़ोटो अपलोड नहीं हो सकी। कृपया पुनः प्रयास करें।",
+    ),
     "profilenavbar": MessageLookupByLibrary.simpleMessage("प्रोफ़ाइल"),
     "readmorelabel": MessageLookupByLibrary.simpleMessage("और पढ़ें..."),
     "realitytvlabel": MessageLookupByLibrary.simpleMessage(
@@ -292,6 +310,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "searchhint": MessageLookupByLibrary.simpleMessage("खोजें"),
     "sendEmail": MessageLookupByLibrary.simpleMessage("ईमेल भेजें"),
+    "sendReviewTooltip": MessageLookupByLibrary.simpleMessage("समीक्षा भेजें"),
     "sendfeedbacklabel": MessageLookupByLibrary.simpleMessage(
       "प्रतिक्रिया भेजें",
     ),
@@ -361,5 +380,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "westernmovielabel": MessageLookupByLibrary.simpleMessage(
       "पश्चिमी फ़िल्में",
     ),
+    "writeReview": MessageLookupByLibrary.simpleMessage("समीक्षा लिखें"),
   };
 }

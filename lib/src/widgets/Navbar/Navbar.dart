@@ -20,10 +20,23 @@ class CustomBottomNavigationBar extends StatefulWidget {
 
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   int currentIndex = 0;
+  late List<Widget> _pages;
+
+  // Built once per sign-in state (not in build()) so IndexedStack keeps each
+  // page's State and scroll position alive across tab switches.
+  List<Widget> _buildPages(bool signedIn) => signedIn
+      ? [
+          HomePage(),
+          const ExplorePage(),
+          const Liked(),
+          const settings_screen(),
+        ]
+      : [HomePage(), const ExplorePage(), const loWelcomeScreen()];
 
   @override
   void initState() {
     super.initState();
+    _pages = _buildPages(widget.isSignedIn);
     // Needs a live Activity, so run after the first frame.
     WidgetsBinding.instance.addPostFrameCallback((_) => checkForForcedUpdate());
   }
@@ -31,6 +44,10 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   @override
   void didUpdateWidget(CustomBottomNavigationBar oldWidget) {
     super.didUpdateWidget(oldWidget);
+
+    if (widget.isSignedIn != oldWidget.isSignedIn) {
+      _pages = _buildPages(widget.isSignedIn);
+    }
 
     // Set currentIndex to 0 only when widget.isSignedIn changes from false to true
     if (widget.isSignedIn && !oldWidget.isSignedIn) {
@@ -48,22 +65,13 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
 
   @override
   Widget build(BuildContext context) {
-    List pages = widget.isSignedIn
-        ? [
-            HomePage(),
-            const ExplorePage(),
-            const Liked(),
-            const settings_screen()
-          ]
-        : [HomePage(), const ExplorePage(), const loWelcomeScreen()];
-
     // Reset currentIndex if it's out of range
-    if (currentIndex >= pages.length) {
+    if (currentIndex >= _pages.length) {
       currentIndex = 0;
     }
 
     return Scaffold(
-      body: pages[currentIndex],
+      body: IndexedStack(index: currentIndex, children: _pages),
       extendBody: true,
       bottomNavigationBar: ClipRRect(
         borderRadius: BorderRadius.circular(20),

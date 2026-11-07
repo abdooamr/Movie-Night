@@ -100,7 +100,7 @@ class _CastWidgetState extends State<CastWidget> {
                           SizedBox(
                             width: 100,
                             child: Text(
-                              "As ${data[index].character}",
+                              S.of(context).castAs(data[index].character ?? ""),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context).textTheme.labelMedium,

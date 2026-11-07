@@ -1,5 +1,6 @@
 import 'package:Movie_Night/src/models/local_review_model.dart';
 import 'package:flutter/foundation.dart';
+import 'package:Movie_Night/src/utils/app_logger.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -30,9 +31,9 @@ class ReviewProvider extends ChangeNotifier {
 
       // Notify listeners that the state has changed (review added successfully).
       notifyListeners();
-    } catch (error) {
-      // Handle the error here.
-      print('Error adding review: $error');
+    } catch (error, stack) {
+      AppLog.error('addReview', error, stack);
+      rethrow; // UI shows the failure
     }
   }
 
@@ -63,8 +64,9 @@ class ReviewProvider extends ChangeNotifier {
       final reviewDoc = _firestore.collection('reviews').doc(movieId);
       await reviewDoc.collection('users').doc(userId).delete();
       notifyListeners();
-    } catch (error) {
-      print('Error deleting review: $error');
+    } catch (error, stack) {
+      AppLog.error('deleteReview', error, stack);
+      rethrow;
     }
   }
 }

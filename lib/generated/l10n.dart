@@ -1599,6 +1599,96 @@ class S {
       args: [],
     );
   }
+
+  /// `No Reviews`
+  String get noReviews {
+    return Intl.message('No Reviews', name: 'noReviews', desc: '', args: []);
+  }
+
+  /// `Write a review`
+  String get writeReview {
+    return Intl.message(
+      'Write a review',
+      name: 'writeReview',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `As {character}`
+  String castAs(Object character) {
+    return Intl.message(
+      'As $character',
+      name: 'castAs',
+      desc: '',
+      args: [character],
+    );
+  }
+
+  /// `Error`
+  String get errorTitle {
+    return Intl.message('Error', name: 'errorTitle', desc: '', args: []);
+  }
+
+  /// `Error please log in again and try again`
+  String get errorLoginAgain {
+    return Intl.message(
+      'Error please log in again and try again',
+      name: 'errorLoginAgain',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete review`
+  String get deleteReviewTooltip {
+    return Intl.message(
+      'Delete review',
+      name: 'deleteReviewTooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send review`
+  String get sendReviewTooltip {
+    return Intl.message(
+      'Send review',
+      name: 'sendReviewTooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Clear search`
+  String get clearSearchTooltip {
+    return Intl.message(
+      'Clear search',
+      name: 'clearSearchTooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Something went wrong. Please try again.`
+  String get genericError {
+    return Intl.message(
+      'Something went wrong. Please try again.',
+      name: 'genericError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Could not upload profile picture. Please try again.`
+  String get profilePicUploadFailed {
+    return Intl.message(
+      'Could not upload profile picture. Please try again.',
+      name: 'profilePicUploadFailed',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

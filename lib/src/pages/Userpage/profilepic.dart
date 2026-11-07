@@ -1,4 +1,5 @@
 import 'package:Movie_Night/generated/l10n.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:Movie_Night/src/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -59,8 +60,14 @@ class _ProfilePicState extends State<ProfilePic> {
                             backgroundColor: Color(0xFFF5F6F9),
                           ),
                           onPressed: () async {
-                            await (fetchuserdata.updateimage(
-                                currentUser.uid, currentUser));
+                            final failMsg =
+                                S.of(context).profilePicUploadFailed;
+                            try {
+                              await fetchuserdata.updateimage(
+                                  currentUser.uid, currentUser);
+                            } catch (_) {
+                              Fluttertoast.showToast(msg: failMsg);
+                            }
                           },
                           child: Icon(Icons.camera_alt, color: Colors.black),
                         ),

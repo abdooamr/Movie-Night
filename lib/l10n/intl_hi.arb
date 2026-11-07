@@ -196,6 +196,15 @@
     "noUserDataAvailable": "उपयोगकर्ता डेटा उपलब्ध नहीं",
     "Heylabel": "नमस्ते",
     "deleteBookmark": "बुकमार्क हटाएं",
-    "deleteBookmarkConfirmation": "क्या आप वाकई इस बुकमार्क को हटाना चाहते हैं? यह कार्रवाई वापस नहीं ली जा सकती।"
+    "deleteBookmarkConfirmation": "क्या आप वाकई इस बुकमार्क को हटाना चाहते हैं? यह कार्रवाई वापस नहीं ली जा सकती।",
+    "noReviews" : "कोई समीक्षा नहीं",
+    "writeReview" : "समीक्षा लिखें",
+    "castAs" : "{character} के रूप में",
+    "errorTitle" : "त्रुटि",
+    "errorLoginAgain" : "त्रुटि, कृपया फिर से लॉग इन करें और दोबारा प्रयास करें",
+    "deleteReviewTooltip" : "समीक्षा हटाएं",
+    "sendReviewTooltip" : "समीक्षा भेजें",
+    "clearSearchTooltip" : "खोज साफ़ करें",
+    "genericError" : "कुछ गलत हो गया। कृपया पुनः प्रयास करें।",
+    "profilePicUploadFailed" : "प्रोफ़ाइल फ़ोटो अपलोड नहीं हो सकी। कृपया पुनः प्रयास करें।"
 }
-

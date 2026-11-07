@@ -7,27 +7,27 @@ class Home_page_listview extends StatelessWidget {
   const Home_page_listview({
     super.key,
     required this.movie,
-    required this.upcomingFuture,
-    required this.trendingFuture,
-    required this.popularMoviesFuture,
-    required this.EgyptionMovies,
+    this.upcomingFuture,
+    this.trendingFuture,
+    this.popularMoviesFuture,
+    this.EgyptionMovies,
     required this.tvshow,
-    required this.trendingtvshowFuture,
-    required this.Egyptionseries,
-    required this.popularTvFuture,
-    required this.airingTodayFuture,
+    this.trendingtvshowFuture,
+    this.Egyptionseries,
+    this.popularTvFuture,
+    this.airingTodayFuture,
   });
 
   final bool movie;
-  final Future<Model> upcomingFuture;
-  final Future<Model> trendingFuture;
-  final Future<Model> popularMoviesFuture;
-  final Future<Model> EgyptionMovies;
+  final Future<Model>? upcomingFuture;
+  final Future<Model>? trendingFuture;
+  final Future<Model>? popularMoviesFuture;
+  final Future<Model>? EgyptionMovies;
   final bool tvshow;
-  final Future<Model> trendingtvshowFuture;
-  final Future<Model> airingTodayFuture;
-  final Future<Model> Egyptionseries;
-  final Future<Model> popularTvFuture;
+  final Future<Model>? trendingtvshowFuture;
+  final Future<Model>? airingTodayFuture;
+  final Future<Model>? Egyptionseries;
+  final Future<Model>? popularTvFuture;
 
   @override
   Widget build(BuildContext context) {
@@ -37,46 +37,46 @@ class Home_page_listview extends StatelessWidget {
           if (movie)
             UpcomingMovies(
               headlineText: S.of(context).upcomingwidget_title,
-              future: upcomingFuture,
+              future: upcomingFuture!,
               istvshow: false,
             ),
           if (movie)
             MoviesListView(
-                future: trendingFuture,
+                future: trendingFuture!,
                 headlineText: S.of(context).trendingmovieswidget_title,
                 istvshow: false),
           if (movie)
             MoviesListView(
-              future: popularMoviesFuture,
+              future: popularMoviesFuture!,
               headlineText: S.of(context).popularmovieswidget_title,
               istvshow: false,
             ),
           if (movie)
             MoviesListView(
-                future: EgyptionMovies,
+                future: EgyptionMovies!,
                 headlineText: S.of(context).egyptmovieswidget_title,
                 istvshow: false),
           if (tvshow)
             UpcomingMovies(
-              future: airingTodayFuture,
+              future: airingTodayFuture!,
               headlineText: S.of(context).airingtodaywidget_title,
               istvshow: true,
             ),
           if (tvshow)
             MoviesListView(
-              future: trendingtvshowFuture,
+              future: trendingtvshowFuture!,
               headlineText: S.of(context).trendingtvwidget_title,
               istvshow: true,
             ),
           if (tvshow)
             MoviesListView(
-              future: popularTvFuture,
+              future: popularTvFuture!,
               headlineText: S.of(context).populartvwidget_title,
               istvshow: true,
             ),
           if (tvshow)
             MoviesListView(
-              future: Egyptionseries,
+              future: Egyptionseries!,
               headlineText: S.of(context).egypttvwidget_title,
               istvshow: true,
             ),

@@ -20,6 +20,8 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'fr';
 
+  static String m0(character) => "Dans le rôle de ${character}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "Actiongenre": MessageLookupByLibrary.simpleMessage("Action"),
@@ -92,6 +94,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "biography": MessageLookupByLibrary.simpleMessage("Biographie"),
     "buyon": MessageLookupByLibrary.simpleMessage("Acheter sur"),
     "cancelLabel": MessageLookupByLibrary.simpleMessage("Annuler"),
+    "castAs": m0,
     "changelanguagelabel": MessageLookupByLibrary.simpleMessage(
       "Changer de langue",
     ),
@@ -107,6 +110,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "clearReport": MessageLookupByLibrary.simpleMessage(
       "Supprimer le signalement",
     ),
+    "clearSearchTooltip": MessageLookupByLibrary.simpleMessage(
+      "Effacer la recherche",
+    ),
     "comedymovielabel": MessageLookupByLibrary.simpleMessage(
       "Films de Comédie",
     ),
@@ -121,6 +127,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "deleteBookmarkConfirmation": MessageLookupByLibrary.simpleMessage(
       "Es-tu sûr de vouloir supprimer ce favori ? Cette action est irréversible.",
+    ),
+    "deleteReviewTooltip": MessageLookupByLibrary.simpleMessage(
+      "Supprimer l\'avis",
     ),
     "deleteUser": MessageLookupByLibrary.simpleMessage("Supprimer le compte"),
     "deleteUserConfirmation": MessageLookupByLibrary.simpleMessage(
@@ -159,6 +168,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "emailaddresslabel": MessageLookupByLibrary.simpleMessage("Adresse Email"),
     "englishlabel": MessageLookupByLibrary.simpleMessage("Anglais"),
     "error": MessageLookupByLibrary.simpleMessage("Erreur"),
+    "errorLoginAgain": MessageLookupByLibrary.simpleMessage(
+      "Erreur, veuillez vous reconnecter et réessayer",
+    ),
+    "errorTitle": MessageLookupByLibrary.simpleMessage("Erreur"),
     "explorenavbar": MessageLookupByLibrary.simpleMessage("Explorer"),
     "familymovielabel": MessageLookupByLibrary.simpleMessage("Films Familiaux"),
     "fantasymovielabel": MessageLookupByLibrary.simpleMessage(
@@ -175,6 +188,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Profil utilisateur complet",
     ),
     "generalsettingslabel": MessageLookupByLibrary.simpleMessage("Général"),
+    "genericError": MessageLookupByLibrary.simpleMessage(
+      "Une erreur s\'est produite. Veuillez réessayer.",
+    ),
     "globalreviewswitch": MessageLookupByLibrary.simpleMessage("Avis Global"),
     "hello": MessageLookupByLibrary.simpleMessage("Salut"),
     "hindilabel": MessageLookupByLibrary.simpleMessage("Hindi"),
@@ -232,6 +248,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noResultsMessage": MessageLookupByLibrary.simpleMessage(
       "Aucun résultat trouvé pour votre recherche",
     ),
+    "noReviews": MessageLookupByLibrary.simpleMessage("Aucun avis"),
     "noUserDataAvailable": MessageLookupByLibrary.simpleMessage(
       "Aucune donnée utilisateur disponible",
     ),
@@ -290,6 +307,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "poweredby": MessageLookupByLibrary.simpleMessage("Propulsé par"),
     "privacylabel": MessageLookupByLibrary.simpleMessage("Confidentialité"),
+    "profilePicUploadFailed": MessageLookupByLibrary.simpleMessage(
+      "Impossible d\'envoyer la photo de profil. Veuillez réessayer.",
+    ),
     "profilenavbar": MessageLookupByLibrary.simpleMessage("Profil"),
     "readmorelabel": MessageLookupByLibrary.simpleMessage("Lire plus..."),
     "realitytvlabel": MessageLookupByLibrary.simpleMessage(
@@ -322,6 +342,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "searchhint": MessageLookupByLibrary.simpleMessage("Rechercher"),
     "sendEmail": MessageLookupByLibrary.simpleMessage("Envoyer l’e-mail"),
+    "sendReviewTooltip": MessageLookupByLibrary.simpleMessage(
+      "Envoyer l\'avis",
+    ),
     "sendfeedbacklabel": MessageLookupByLibrary.simpleMessage(
       "Envoyer des Commentaires",
     ),
@@ -403,5 +426,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "Bienvenue de retour",
     ),
     "westernmovielabel": MessageLookupByLibrary.simpleMessage("Films Western"),
+    "writeReview": MessageLookupByLibrary.simpleMessage("Écrire un avis"),
   };
 }

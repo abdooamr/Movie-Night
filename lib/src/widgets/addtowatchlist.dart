@@ -1,7 +1,6 @@
 import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/components/squaretile.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:Movie_Night/src/data/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:ficonsax/ficonsax.dart';
 
@@ -16,10 +15,10 @@ class Watchlistwidget extends StatefulWidget {
 }
 
 class _WatchlistwidgetState extends State<Watchlistwidget> {
-  final CollectionReference _usersCollection =
-      FirebaseFirestore.instance.collection('users');
+  final UserRepository _users = UserRepository.instance;
 
   bool isInWatchlist = false;
+  bool _busy = false;
 
   @override
   void initState() {
@@ -28,50 +27,33 @@ class _WatchlistwidgetState extends State<Watchlistwidget> {
   }
 
   Future<void> _checkIfMovieInWatchlist() async {
-    final user = await _usersCollection
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-    if (user.exists) {
-      final watchlistKey = widget.istvshow ? 'tvwatchlist' : 'Moviewatchlist';
-      final watchlistData = user.data() as Map<String, dynamic>?;
-      final watchlist = watchlistData?[watchlistKey];
-      setState(() {
-        isInWatchlist = watchlist != null && watchlist.contains(widget.movieid);
-      });
-    } else {
-      setState(() {
-        isInWatchlist = false;
-      });
+    try {
+      final inList =
+          await _users.isInWatchlist(widget.movieid, isTvShow: widget.istvshow);
+      if (mounted) setState(() => isInWatchlist = inList);
+    } catch (_) {
+      // Leave the default (not in watchlist) if the read fails.
     }
   }
 
-  Future<void> _addMovieToWatchlist(int movieId) async {
-    final user = await _usersCollection
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-    final watchlistKey = widget.istvshow ? 'tvwatchlist' : 'Moviewatchlist';
-    if (user.exists) {
-      if (!isInWatchlist) {
-        // Update the watchlist using arrayUnion to add the movieId to the existing watchlist.
-        user.reference.update({
-          watchlistKey: FieldValue.arrayUnion([movieId]),
-        });
+  Future<void> _toggleWatchlist() async {
+    if (_busy) return;
+    _busy = true;
+    final adding = !isInWatchlist;
+    // Optimistic: flip now, roll back if the write fails.
+    setState(() => isInWatchlist = adding);
+    try {
+      if (adding) {
+        await _users.addToWatchlist(widget.movieid, isTvShow: widget.istvshow);
       } else {
-        // Update the watchlist using arrayRemove to remove the movieId from the existing watchlist.
-        user.reference.update({
-          watchlistKey: FieldValue.arrayRemove([movieId]),
-        });
+        await _users.removeFromWatchlist(widget.movieid,
+            isTvShow: widget.istvshow);
       }
-    } else {
-      // Create a new user document and add the movie ID to their watchlist.
-      await _usersCollection.doc(FirebaseAuth.instance.currentUser!.uid).set({
-        watchlistKey: [movieId],
-      });
+    } catch (_) {
+      if (mounted) setState(() => isInWatchlist = !adding);
+    } finally {
+      _busy = false;
     }
-    // Toggle the isInWatchlist state after the update.
-    setState(() {
-      isInWatchlist = !isInWatchlist;
-    });
   }
 
   @override
@@ -81,9 +63,7 @@ class _WatchlistwidgetState extends State<Watchlistwidget> {
       label: isInWatchlist
           ? S.of(context).removefromwatchlist
           : S.of(context).addtowatchlist,
-      onTap: () {
-        _addMovieToWatchlist(widget.movieid);
-      },
+      onTap: _toggleWatchlist,
     );
   }
 }

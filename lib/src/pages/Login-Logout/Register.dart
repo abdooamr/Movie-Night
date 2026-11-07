@@ -1,3 +1,4 @@
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/register_provider.dart';
 import 'package:flutter/material.dart';
@@ -222,9 +223,14 @@ class _RegisterState extends State<Register> {
                             children: [
                               // google button
                               Square_Tile(
-                                  onTap: () {
-                                    user_Provider.signInWithGoogle();
-                                    Navigator.pop(context);
+                                  onTap: () async {
+                                    final failMsg = S.of(context).genericError;
+                                    final nav = Navigator.of(context);
+                                    final result = await user_Provider.signInWithGoogle();
+                                    if (result == GoogleSignInResult.failed) {
+                                      Fluttertoast.showToast(msg: failMsg);
+                                    }
+                                    nav.pop();
                                   },
                                   imagePath: 'images/google.png'),
                             ]),

@@ -1,3 +1,4 @@
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:Movie_Night/generated/l10n.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -77,7 +78,7 @@ class _LocalReviewsWidgetState extends State<LocalReviewsWidget> {
                               ),
                               title: Text(
                                 data[index].displayname,
-                                style: const TextStyle(color: Colors.white70),
+                                style: const TextStyle(color: Colors.white),
                               ),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,17 +115,26 @@ class _LocalReviewsWidgetState extends State<LocalReviewsWidget> {
                                         .toString()
                                         .substring(0, 10),
                                     style:
-                                        const TextStyle(color: Colors.white54),
+                                        const TextStyle(color: Colors.white70),
                                   ),
                                   if (currentuser.uid == data[index].id)
                                     Align(
                                       alignment: Alignment.centerRight,
                                       child: IconButton(
-                                        onPressed: () {
-                                          reviewProvider.deleteReview(
-                                            movieId: widget.id.toString(),
-                                            userId: currentuser.uid,
-                                          );
+                                        tooltip:
+                                            S.of(context).deleteReviewTooltip,
+                                        onPressed: () async {
+                                          final failMsg =
+                                              S.of(context).genericError;
+                                          try {
+                                            await reviewProvider.deleteReview(
+                                              movieId: widget.id.toString(),
+                                              userId: currentuser.uid,
+                                            );
+                                          } catch (_) {
+                                            Fluttertoast.showToast(
+                                                msg: failMsg);
+                                          }
                                         },
                                         icon: const Icon(
                                           IconsaxBold.trash,
@@ -149,8 +159,8 @@ class _LocalReviewsWidgetState extends State<LocalReviewsWidget> {
                   height: 100,
                   child: Center(
                     child: Text(
-                      'No Reviews',
-                      style: TextStyle(color: Colors.white70),
+                      S.of(context).noReviews,
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ),
@@ -167,7 +177,7 @@ class _LocalReviewsWidgetState extends State<LocalReviewsWidget> {
                 controller: reviewController,
                 decoration: InputDecoration(
                   focusColor: Colors.deepPurpleAccent,
-                  hintText: 'Write a review',
+                  hintText: S.of(context).writeReview,
                   hintStyle: Theme.of(context).textTheme.bodyMedium,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
@@ -176,7 +186,9 @@ class _LocalReviewsWidgetState extends State<LocalReviewsWidget> {
               ),
             ),
             IconButton(
-              onPressed: () {
+              tooltip: S.of(context).sendReviewTooltip,
+              onPressed: () async {
+                final failMsg = S.of(context).genericError;
                 final localReview = Localreviews(
                   ProfilePic: currentuser.photoURL ?? '',
                   review: reviewController.text,
@@ -186,11 +198,15 @@ class _LocalReviewsWidgetState extends State<LocalReviewsWidget> {
                   id: currentuser.uid,
                 );
                 if (reviewController.text.isNotEmpty) {
-                  reviewProvider.addReview(
-                      movieId: widget.id.toString(),
-                      userId: currentuser.uid,
-                      localReview: localReview);
-                  reviewController.clear();
+                  try {
+                    await reviewProvider.addReview(
+                        movieId: widget.id.toString(),
+                        userId: currentuser.uid,
+                        localReview: localReview);
+                    reviewController.clear();
+                  } catch (_) {
+                    Fluttertoast.showToast(msg: failMsg);
+                  }
                 }
               },
               icon: const Icon(

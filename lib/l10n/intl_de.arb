@@ -196,6 +196,15 @@
     "noUserDataAvailable": "Keine Benutzerdaten verfügbar",
     "Heylabel": "Hallo",
     "deleteBookmark": "Lesezeichen löschen",
-    "deleteBookmarkConfirmation": "Bist du sicher, dass du dieses Lesezeichen löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+    "deleteBookmarkConfirmation": "Bist du sicher, dass du dieses Lesezeichen löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "noReviews" : "Keine Bewertungen",
+    "writeReview" : "Bewertung schreiben",
+    "castAs" : "Als {character}",
+    "errorTitle" : "Fehler",
+    "errorLoginAgain" : "Fehler, bitte melden Sie sich erneut an und versuchen Sie es noch einmal",
+    "deleteReviewTooltip" : "Rezension löschen",
+    "sendReviewTooltip" : "Rezension senden",
+    "clearSearchTooltip" : "Suche löschen",
+    "genericError" : "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+    "profilePicUploadFailed" : "Profilbild konnte nicht hochgeladen werden. Bitte erneut versuchen."
 }
-

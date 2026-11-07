@@ -1,3 +1,4 @@
+import 'package:Movie_Night/src/utils/app_logger.dart';
 import 'package:Movie_Night/generated/l10n.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class _ForgetNewState extends State<ForgetNew> {
       await FirebaseAuth.instance
           .sendPasswordResetEmail(email: _emailController.text.trim());
     } on FirebaseAuthException catch (e) {
-      print(e);
+      AppLog.error('passwordReset', e);
       showDialog(
           context: context,
           builder: (context) {

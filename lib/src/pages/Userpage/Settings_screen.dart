@@ -1,8 +1,10 @@
+import 'package:Movie_Night/src/utils/app_logger.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/pages/Userpage/Watchlist.dart';
 import 'package:Movie_Night/src/widgets/themechanger.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:Movie_Night/src/data/user_repository.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -21,9 +23,8 @@ class settings_screen extends StatefulWidget {
 
 class _settings_screenState extends State<settings_screen> {
   final Userx = FirebaseAuth.instance.currentUser!;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final UserRepository _users = UserRepository.instance;
   bool? isadmin;
-  String role = "";
   final userx = FirebaseAuth.instance.currentUser;
   final InAppReview _inAppReview = InAppReview.instance;
 
@@ -32,29 +33,28 @@ class _settings_screenState extends State<settings_screen> {
       await _inAppReview.requestReview();
       await _inAppReview.openStoreListing();
     } else {
-      // Handle the case where in-app reviews are not available
-      // You can provide an alternative way for users to leave feedback
+      // In-app review unavailable (emulator, not on store): go to the store page.
+      try {
+        await _inAppReview.openStoreListing();
+      } catch (e, st) {
+        AppLog.error('openStoreListing', e, st);
+        Fluttertoast.showToast(msg: S.of(context).genericError);
+      }
     }
   }
 
   Future Delete_account() async {
-    // add the data to fire base
-    await _firestore.collection('users').doc(userx!.uid).delete();
+    await _users.deleteUserDocument(userx!.uid);
   }
 
   Future checkisadmin() async {
-    await _firestore.collection("users").doc(userx!.uid).get().then((value) {
-      role = value.data()!['role'];
-      if (role == "admin") {
-        setState(() {
-          isadmin = true;
-        });
-      } else {
-        setState(() {
-          isadmin = false;
-        });
-      }
-    });
+    bool admin;
+    try {
+      admin = await _users.isAdmin(userx!.uid);
+    } catch (_) {
+      admin = false;
+    }
+    if (mounted) setState(() => isadmin = admin);
   }
 
   @override
@@ -179,8 +179,8 @@ class _settings_screenState extends State<settings_screen> {
               behavior: SnackBarBehavior.floating,
               backgroundColor: Colors.transparent,
               content: AwesomeSnackbarContent(
-                title: "Error",
-                message: 'Error please log in again and try again',
+                title: S.of(context).errorTitle,
+                message: S.of(context).errorLoginAgain,
                 contentType: ContentType.failure,
               ),
             );

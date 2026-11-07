@@ -1,3 +1,4 @@
+import 'package:fluttertoast/fluttertoast.dart';
 // ignore_for_file: body_might_complete_normally_catch_error
 import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/allproviders.dart';
@@ -186,9 +187,14 @@ class _LoginState extends State<Login> {
                               children: [
                                 // google button
                                 Square_Tile(
-                                    onTap: () {
-                                      user_Provider.signInWithGoogle();
-                                      Navigator.pop(context);
+                                    onTap: () async {
+                                      final failMsg = S.of(context).genericError;
+                                      final nav = Navigator.of(context);
+                                      final result = await user_Provider.signInWithGoogle();
+                                      if (result == GoogleSignInResult.failed) {
+                                        Fluttertoast.showToast(msg: failMsg);
+                                      }
+                                      nav.pop();
                                     },
                                     imagePath: 'images/google.png'),
                               ]),

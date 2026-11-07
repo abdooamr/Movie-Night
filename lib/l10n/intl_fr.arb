@@ -196,6 +196,15 @@
     "noUserDataAvailable": "Aucune donnée utilisateur disponible",
     "Heylabel": "Salut",
     "deleteBookmark": "Supprimer le favori",
-    "deleteBookmarkConfirmation": "Es-tu sûr de vouloir supprimer ce favori ? Cette action est irréversible."
+    "deleteBookmarkConfirmation": "Es-tu sûr de vouloir supprimer ce favori ? Cette action est irréversible.",
+    "noReviews" : "Aucun avis",
+    "writeReview" : "Écrire un avis",
+    "castAs" : "Dans le rôle de {character}",
+    "errorTitle" : "Erreur",
+    "errorLoginAgain" : "Erreur, veuillez vous reconnecter et réessayer",
+    "deleteReviewTooltip" : "Supprimer l'avis",
+    "sendReviewTooltip" : "Envoyer l'avis",
+    "clearSearchTooltip" : "Effacer la recherche",
+    "genericError" : "Une erreur s'est produite. Veuillez réessayer.",
+    "profilePicUploadFailed" : "Impossible d'envoyer la photo de profil. Veuillez réessayer."
 }
-
