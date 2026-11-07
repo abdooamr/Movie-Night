@@ -141,7 +141,10 @@ class BookmarkWidget extends StatelessWidget {
                       Text(
                         movieDetails.overview,
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                              color: Colors.grey.shade400,
+                              color: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? Colors.grey.shade400
+                                  : Colors.grey.shade700,
                             ),
                         maxLines: 4,
                         overflow: TextOverflow.ellipsis,

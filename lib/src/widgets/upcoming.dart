@@ -158,7 +158,8 @@ class UpcomingMovies extends StatelessWidget {
                                   Text(
                                     getGenres(data[index].genreIds!),
                                     overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(fontSize: 12),
+                                    style: const TextStyle(
+                                        fontSize: 12, color: Colors.white70),
                                   ),
                                 ],
                               ),

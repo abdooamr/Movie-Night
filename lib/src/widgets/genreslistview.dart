@@ -111,7 +111,11 @@ class GenresListView extends StatelessWidget {
                                                 : '',
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
-                                              color: Colors.grey.shade400,
+                                              color: Theme.of(context)
+                                                          .brightness ==
+                                                      Brightness.dark
+                                                  ? Colors.grey.shade400
+                                                  : Colors.grey.shade700,
                                               fontSize: 13,
                                             ),
                                           ),
