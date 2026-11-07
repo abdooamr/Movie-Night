@@ -34,23 +34,49 @@ Movie Night is a Flutter app that allows users to explore and discover the lates
    ```
 
 
-2. Open a file named `services.dart` and add your TMDb API key:
+2. Create `env.json` in the project root by copying the template:
 
-   ```
-   var key=your_api_key_here
+   ```bash
+   cp env.example.json env.json
    ```
 
-4. Install dependencies:
+   Then paste your TMDb **v3 API key** into it:
+
+   ```json
+   {
+     "TMDB_API_KEY": "your_tmdb_v3_api_key_here"
+   }
+   ```
+
+   `env.json` is gitignored — never commit it. The key is read at build time
+   via `String.fromEnvironment('TMDB_API_KEY')` in
+   `lib/src/services/services.dart`.
+
+3. Install dependencies:
 
    ```bash
    flutter pub get
    ```
 
-5. Run the app:
+4. Run the app — the `--dart-define-from-file` flag is **required**:
 
    ```bash
-   flutter run
+   flutter run --dart-define-from-file=env.json
    ```
+
+   Same flag for builds:
+
+   ```bash
+   flutter build apk --release --dart-define-from-file=env.json
+   ```
+
+   **VS Code:** just press F5 — `.vscode/launch.json` already passes the flag.
+
+   **Android Studio / IntelliJ:** Run > Edit Configurations > Additional run
+   args > `--dart-define-from-file=env.json`
+
+   If the key is missing or wrong, every TMDb request returns 401 and the app
+   shows empty lists.
 
 ## Contributing
 

@@ -30,3 +30,6 @@ app.*.map.json
 **/android/key.properties
 **/android/app/upload-keystore.jks
 ios/Runner/GoogleService-Info.plist
+
+# Local secrets — see env.example.json
+env.json
