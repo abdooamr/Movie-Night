@@ -26,15 +26,12 @@ void main() async {
     ChangeNotifierProvider(create: (context) => ThemeProvider()),
     ChangeNotifierProvider(create: (context) => UserProvider()),
     ChangeNotifierProvider(create: (context) => UserData()),
-    ChangeNotifierProvider(
-      create: (context) => DropdownProvider(),
-      child: MyApp(),
-    ),
-  ], child: MyApp()));
+    ChangeNotifierProvider(create: (context) => DropdownProvider()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({
+  const MyApp({
     super.key,
   });
 
@@ -46,50 +43,45 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
-      builder: (context, child) {
-        final themeProvider = Provider.of<ThemeProvider>(context);
-        return Consumer<DropdownProvider>(
-            builder: (context, dropdownProvider, child) {
-          return MaterialApp(
-            title: 'Movie app',
-            theme: MyThemes.lightTheme,
-            darkTheme: MyThemes.darkTheme,
-            themeMode: themeProvider.themeMode,
-            debugShowCheckedModeBanner: false,
-            locale: Locale(dropdownProvider.selectedValue),
-            localizationsDelegates: [
-              S.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: S.delegate.supportedLocales,
-            home: FutureBuilder<bool>(
-              future: _checkInternetConnectivity(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.deepPurpleAccent,
-                      strokeWidth: 3,
-                    ),
-                  );
-                }
-                if (snapshot.data == true) {
-                  return AuthPage();
-                }
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  _showNoInternetDialog(context);
-                });
-                return const SizedBox.shrink();
-              },
-            ),
-          );
-        });
-      },
-    );
+    final themeProvider = context.watch<ThemeProvider>();
+    return Consumer<DropdownProvider>(
+        builder: (context, dropdownProvider, child) {
+      return MaterialApp(
+        title: 'Movie app',
+        theme: MyThemes.lightTheme,
+        darkTheme: MyThemes.darkTheme,
+        themeMode: themeProvider.themeMode,
+        debugShowCheckedModeBanner: false,
+        locale: Locale(dropdownProvider.selectedValue),
+        localizationsDelegates: [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
+        home: FutureBuilder<bool>(
+          future: _checkInternetConnectivity(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.deepPurpleAccent,
+                  strokeWidth: 3,
+                ),
+              );
+            }
+            if (snapshot.data == true) {
+              return AuthPage();
+            }
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              _showNoInternetDialog(context);
+            });
+            return const SizedBox.shrink();
+          },
+        ),
+      );
+    });
   }
 
   void _showNoInternetDialog(BuildContext context) {
