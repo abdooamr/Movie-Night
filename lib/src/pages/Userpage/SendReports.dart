@@ -13,7 +13,7 @@ class SendReport extends StatefulWidget {
 class _SendReportState extends State<SendReport> {
   final _subjectController = TextEditingController();
   final _bodycontroller = TextEditingController();
-  final recipient_email = "miu.team4.27@gmail,com";
+  final recipient_email = "miu.team4.27@gmail.com";
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final userx = FirebaseAuth.instance.currentUser;
 
