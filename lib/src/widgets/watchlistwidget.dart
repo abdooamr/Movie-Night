@@ -105,6 +105,7 @@ class BookmarkWidget extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: CachedImageCustom(
+                      decodeWidth: 150,
                       movieDetails.posterPath == null
                           ? 'images/placeholder.png'
                           : '$imageUrl${movieDetails.posterPath!}',

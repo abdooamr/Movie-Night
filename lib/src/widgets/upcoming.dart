@@ -98,7 +98,8 @@ class UpcomingMovies extends StatelessWidget {
                     );
                   } else {
                     // Render the regular movie item
-                    return Stack(
+                    return RepaintBoundary(
+                        child: Stack(
                       alignment: Alignment.bottomCenter,
                       children: [
                         GestureDetector(
@@ -161,7 +162,7 @@ class UpcomingMovies extends StatelessWidget {
                           ),
                         ),
                       ],
-                    );
+                    ));
                   }
                 },
               ),

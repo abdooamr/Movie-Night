@@ -8,11 +8,16 @@ class CachedImageCustom extends StatelessWidget {
   final double? height;
   final double? width;
 
+  /// Logical width the image is displayed at, used to downscale decoding.
+  /// Falls back to [width]. When both are null the image decodes at full size.
+  final double? decodeWidth;
+
   const CachedImageCustom(
     this.imageUrl, {
     super.key,
     this.height,
     this.width,
+    this.decodeWidth,
   });
 
   @override
@@ -22,10 +27,16 @@ class CachedImageCustom extends StatelessWidget {
     final baseColor = isDark ? Colors.grey.shade800 : Colors.grey.shade300;
     final highlightColor = isDark ? Colors.grey.shade700 : Colors.grey.shade100;
 
+    final logicalWidth = decodeWidth ?? width;
+    final memCacheWidth = logicalWidth == null || !logicalWidth.isFinite
+        ? null
+        : (logicalWidth * MediaQuery.devicePixelRatioOf(context)).round();
+
     return CachedNetworkImage(
       imageUrl: imageUrl,
       height: height,
       width: width,
+      memCacheWidth: memCacheWidth,
       fit: BoxFit.cover,
 
       /// 🔹 Shimmer Placeholder

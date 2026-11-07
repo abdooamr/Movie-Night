@@ -80,6 +80,7 @@ class MoviesListView extends StatelessWidget {
                   height: 310,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
+                    itemExtent: 176, // 170 poster + 2 x 3 padding
                     itemCount: data!.length > 20 ? 20 : data.length,
                     itemBuilder: (context, index) {
                       return Padding(

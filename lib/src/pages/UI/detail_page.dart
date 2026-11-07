@@ -170,6 +170,7 @@ class _DetailPageState extends State<DetailPage> {
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                               child: CachedImageCustom(
+                                                decodeWidth: 120,
                                                 movieDetails.posterPath == null
                                                     ? 'images/placeholder.png'
                                                     : '$imageUrl${movieDetails.posterPath!}',

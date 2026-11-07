@@ -49,6 +49,7 @@ class _CastWidgetState extends State<CastWidget> {
                 aspectRatio: 1.9,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
+                  itemExtent: 110, // 100 text column + 2 x 5 padding
                   shrinkWrap: true,
                   itemCount:
                       data!.length > 20 ? 20 : data.length, //max length = 20

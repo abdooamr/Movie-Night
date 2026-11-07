@@ -61,57 +61,61 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
         borderRadius: BorderRadius.circular(20),
         child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
-            child: Consumer<DropdownProvider>(
-                builder: (context, dropdownProvider, _) {
-              return BottomNavigationBar(
-                currentIndex: currentIndex,
-                backgroundColor: Colors.black.withValues(alpha: 0.1),
-                type: BottomNavigationBarType.fixed,
-                onTap: onTap,
-                selectedItemColor: Theme.of(context)
-                    .bottomNavigationBarTheme
-                    .selectedItemColor,
-                unselectedItemColor: Colors.grey.shade500,
-                elevation: 0,
-                showSelectedLabels: true,
-                showUnselectedLabels: true,
-                selectedFontSize: 10,
-                unselectedFontSize: 10,
-                items: widget.isSignedIn
-                    ? [
-                        BottomNavigationBarItem(
-                            icon: Icon(IconsaxOutline.home),
-                            activeIcon: Icon(IconsaxBold.home),
-                            label: S.of(context).homenavbar),
-                        BottomNavigationBarItem(
-                            icon: Icon(IconsaxOutline.search_normal),
-                            activeIcon: Icon(IconsaxBold.search_normal),
-                            label: S.of(context).explorenavbar),
-                        BottomNavigationBarItem(
-                            icon: Icon(IconsaxOutline.heart),
-                            activeIcon: Icon(IconsaxBold.heart),
-                            label: S.of(context).likednavbar),
-                        BottomNavigationBarItem(
-                            icon: Icon(IconsaxOutline.user),
-                            activeIcon: Icon(IconsaxBold.user),
-                            label: S.of(context).profilenavbar),
-                      ]
-                    : [
-                        BottomNavigationBarItem(
-                            icon: Icon(IconsaxOutline.home),
-                            activeIcon: Icon(IconsaxBold.home),
-                            label: S.of(context).homenavbar),
-                        BottomNavigationBarItem(
-                            icon: Icon(IconsaxOutline.search_normal),
-                            activeIcon: Icon(IconsaxBold.search_normal),
-                            label: S.of(context).explorenavbar),
-                        BottomNavigationBarItem(
-                            icon: Icon(IconsaxOutline.user),
-                            activeIcon: Icon(IconsaxBold.user),
-                            label: S.of(context).loginbuttonlabel),
-                      ],
-              );
-            })),
+            // Boundary goes on the child (not around the BackdropFilter, which
+            // would isolate it from the content it is meant to blur).
+            child: RepaintBoundary(
+              child: Consumer<DropdownProvider>(
+                  builder: (context, dropdownProvider, _) {
+                return BottomNavigationBar(
+                  currentIndex: currentIndex,
+                  backgroundColor: Colors.black.withValues(alpha: 0.1),
+                  type: BottomNavigationBarType.fixed,
+                  onTap: onTap,
+                  selectedItemColor: Theme.of(context)
+                      .bottomNavigationBarTheme
+                      .selectedItemColor,
+                  unselectedItemColor: Colors.grey.shade500,
+                  elevation: 0,
+                  showSelectedLabels: true,
+                  showUnselectedLabels: true,
+                  selectedFontSize: 10,
+                  unselectedFontSize: 10,
+                  items: widget.isSignedIn
+                      ? [
+                          BottomNavigationBarItem(
+                              icon: Icon(IconsaxOutline.home),
+                              activeIcon: Icon(IconsaxBold.home),
+                              label: S.of(context).homenavbar),
+                          BottomNavigationBarItem(
+                              icon: Icon(IconsaxOutline.search_normal),
+                              activeIcon: Icon(IconsaxBold.search_normal),
+                              label: S.of(context).explorenavbar),
+                          BottomNavigationBarItem(
+                              icon: Icon(IconsaxOutline.heart),
+                              activeIcon: Icon(IconsaxBold.heart),
+                              label: S.of(context).likednavbar),
+                          BottomNavigationBarItem(
+                              icon: Icon(IconsaxOutline.user),
+                              activeIcon: Icon(IconsaxBold.user),
+                              label: S.of(context).profilenavbar),
+                        ]
+                      : [
+                          BottomNavigationBarItem(
+                              icon: Icon(IconsaxOutline.home),
+                              activeIcon: Icon(IconsaxBold.home),
+                              label: S.of(context).homenavbar),
+                          BottomNavigationBarItem(
+                              icon: Icon(IconsaxOutline.search_normal),
+                              activeIcon: Icon(IconsaxBold.search_normal),
+                              label: S.of(context).explorenavbar),
+                          BottomNavigationBarItem(
+                              icon: Icon(IconsaxOutline.user),
+                              activeIcon: Icon(IconsaxBold.user),
+                              label: S.of(context).loginbuttonlabel),
+                        ],
+                );
+              }),
+            )),
       ),
     );
   }
