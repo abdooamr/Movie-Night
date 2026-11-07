@@ -44,7 +44,7 @@ These replace `MyThemes` and `colorpalette.dart`. Each theme gets an explicit `C
 | `primaryContainer` / `onPrimaryContainer` | `#2C2350` / `#E6DEFF` | `#E6DEFF` / `#1B1235` | Selected segment, tab indicator pill |
 | `error` | `#FF8E84` (8.5:1) | `#B3261E` (6.3:1) | Destructive actions and errors **only** |
 | `onError` | `#3B0A07` (7.7:1) | `#FFFFFF` (6.5:1) | Label on an error fill |
-| `MNColors.rating` ("marquee") | `#F5C04A` (11.2:1) | `#946000` (5.1:1 on surface) | Rating star and score **only** |
+| `MNColors.rating` ("marquee") | `#F5C04A` (11.2:1) | `#8A5800` (5.8:1 on surface, 4.9:1 on High) | Rating star and score **only** |
 | `MNColors.scrim` | black, 0 → 80% gradient | same | Under any text on imagery. Over a pure-white poster: #333333, so white text is 12.6:1 |
 | `MNColors.chrome` | `surface` at 86% + 0.5 px hairline at `onSurface` 8% | `surface` at 86% | The glass material (§7). Worst case, `onSurfaceVariant` on chrome over the opposite extreme: 5.4:1 dark, 5.2:1 light |
 
