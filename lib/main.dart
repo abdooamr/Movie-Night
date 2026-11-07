@@ -40,7 +40,8 @@ class MyApp extends StatelessWidget {
 
   Future<bool> _checkInternetConnectivity() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    return connectivityResult != ConnectivityResult.none;
+    // connectivity_plus 7.x returns a List of results.
+    return !connectivityResult.contains(ConnectivityResult.none);
   }
 
   @override
@@ -68,19 +69,21 @@ class MyApp extends StatelessWidget {
             home: FutureBuilder<bool>(
               future: _checkInternetConnectivity(),
               builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator(
-                    color: Colors.deepPurpleAccent,
-                    strokeWidth: 3,
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.deepPurpleAccent,
+                      strokeWidth: 3,
+                    ),
                   );
-                } else if (snapshot.data == true) {
-                  return AuthPage();
-                } else {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    _showNoInternetDialog(context);
-                  });
-                  return SizedBox.shrink();
                 }
+                if (snapshot.data == true) {
+                  return AuthPage();
+                }
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  _showNoInternetDialog(context);
+                });
+                return const SizedBox.shrink();
               },
             ),
           );
