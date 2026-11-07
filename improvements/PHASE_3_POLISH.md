@@ -183,7 +183,7 @@ picture, the upload fails, and **nothing at all happens** — no error, no rever
 
 ---
 
-## - [ ] 3.8 — Dependency upgrade sweep
+## - [x] 3.8 — Dependency upgrade sweep  (partial; remaining majors deferred until a Flutter SDK upgrade)
 
 **Effort:** L · **Risk:** High — breaking APIs
 
