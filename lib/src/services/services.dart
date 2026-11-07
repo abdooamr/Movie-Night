@@ -1,294 +1,75 @@
+// Compatibility shims over [TmdbRepository] (task 2.5).
+//
+// Every function here forwards to `TmdbRepository.instance`, so all existing
+// call sites get the shared HTTP client, timeout + retry, typed
+// [TmdbException]s and the memory/disk cache without being rewritten at once.
+// New code should use `TmdbRepository` directly; screens migrate one at a time.
+//
+// These deliberately return the repository's Future unchanged (no `async`
+// wrapper) so a cached call yields the *same* Future instance and a
+// FutureBuilder rebuilt with it does not flash back to its loading state.
+
+import 'package:Movie_Night/src/data/tmdb_repository.dart';
 import 'package:Movie_Night/src/models/Knownfor_model.dart';
 import 'package:Movie_Night/src/models/cast_model.dart';
-import 'package:Movie_Night/src/models/moviedetails.dart';
-import 'package:Movie_Night/src/models/video_prov_model.dart';
-import 'package:http/http.dart' as http;
+import 'package:Movie_Night/src/models/credit_model.dart';
+import 'package:Movie_Night/src/models/global_review_model.dart';
 import 'package:Movie_Night/src/models/movie_model.dart' as movie;
+import 'package:Movie_Night/src/models/moviedetails.dart';
 import 'package:Movie_Night/src/models/video_model.dart';
-import '../models/credit_model.dart';
-import '../models/global_review_model.dart';
+import 'package:Movie_Night/src/models/video_prov_model.dart';
 
-/// Every TMDB call goes through [_get] so a stalled connection fails fast
-/// (TimeoutException) instead of leaving the UI on a spinner forever.
-const Duration _timeout = Duration(seconds: 15);
+export 'package:Movie_Night/src/data/tmdb_client.dart'
+    show TmdbException, TmdbErrorKind;
 
-Future<http.Response> _get(String url) =>
-    http.get(Uri.parse(url)).timeout(_timeout);
+TmdbRepository get _repo => TmdbRepository.instance;
 
-const String baseUrl = 'https://api.themoviedb.org/3/';
-// TMDB key is supplied at build time, never committed.
-// Fill it into `env.json` (gitignored) and run with:
-//   flutter run --dart-define-from-file=env.json
-// See env.example.json and README.md -> Configuration.
-const String _apiKey = String.fromEnvironment('TMDB_API_KEY');
-const String key = '?api_key=$_apiKey';
-const String video = "&append_to_response=videos";
-const String orginallangeng = "&with_original_language=en";
-const String egyptregion = "&with_origin_country=EG";
+Future<movie.Model> getUpcomingMovies(String lang) =>
+    _repo.upcomingMovies(lang);
 
-// NOTE: Removed global mutable endPoint. Use local `final` endpoint in each function.
+Future<movie.Model> getTrending(bool isTvShow, String lang) =>
+    _repo.trending(isTvShow, lang);
 
-Future<movie.Model> getUpcomingMovies(String lang) async {
-  final String endPoint = 'movie/upcoming';
-  final List<movie.Result> allResults = [];
-
-  for (int page = 1; page <= 5; page++) {
-    final String url = '$baseUrl$endPoint$key&page=$page&language=$lang';
-    final response = await _get(url);
-
-    if (response.statusCode == 200) {
-      final movie.Model model = movie.modelFromJson(response.body);
-      allResults.addAll(model.results);
-    } else {
-      throw Exception('Failed to load upcoming movies');
-    }
-  }
-
-  return movie.Model(
-    page: 1,
-    results: allResults,
-    totalPages: 5,
-    totalResults: allResults.length,
-  );
-}
-
-Future<movie.Model> getTrending(bool isTvShow, String lang) async {
-  final String endPoint = isTvShow ? 'trending/tv/day' : 'trending/movie/day';
-  final List<movie.Result> allResults = [];
-
-  for (int page = 1; page <= 5; page++) {
-    final String url = '$baseUrl$endPoint$key&page=$page&language=$lang';
-    final response = await _get(url);
-
-    if (response.statusCode == 200) {
-      final movie.Model model = movie.modelFromJson(response.body);
-      allResults.addAll(model.results);
-    } else {
-      throw Exception('Failed to load trending');
-    }
-  }
-
-  return movie.Model(
-    page: 1,
-    results: allResults,
-    totalPages: 5,
-    totalResults: allResults.length,
-  );
-}
-
-Future<movie.Model> getPopular(bool isTvShow, String lang) async {
-  final String endPoint = isTvShow ? 'tv/popular' : 'movie/popular';
-  final List<movie.Result> allResults = [];
-
-  for (int page = 1; page <= 5; page++) {
-    final String url = '$baseUrl$endPoint$key&page=$page&language=$lang';
-    final response = await _get(url);
-
-    if (response.statusCode == 200) {
-      final movie.Model model = movie.modelFromJson(response.body);
-      allResults.addAll(model.results);
-    } else {
-      throw Exception('Failed to load popular');
-    }
-  }
-
-  return movie.Model(
-    page: 1,
-    results: allResults,
-    totalPages: 5,
-    totalResults: allResults.length,
-  );
-}
+Future<movie.Model> getPopular(bool isTvShow, String lang) =>
+    _repo.popular(isTvShow, lang);
 
 Future<movie.Model> discoverMovies({
   int? genreId,
   int? pageCount,
   String? lang,
-}) async {
-  final String endPoint = 'discover/movie';
-  final List<movie.Result> allResults = [];
+}) =>
+    _repo.discoverMovies(genreId: genreId, pageCount: pageCount, lang: lang);
 
-  // NOTE: you currently ignore `pageCount`; keeping behavior the same (always 5 pages).
-  for (int page = 1; page <= 5; page++) {
-    final String url = genreId == null
-        ? '$baseUrl$endPoint$key&page=$page'
-        : '$baseUrl$endPoint$key&with_genres=$genreId&page=$page&language=$lang';
+Future<Credit> getCredits(int id, bool isTvShow, String lang) =>
+    _repo.credits(id, isTvShow, lang);
 
-    final response = await _get(url);
+Future<movie.Model> getrecommendations(int id, bool isTvShow, String lang) =>
+    _repo.recommendations(id, isTvShow, lang);
 
-    if (response.statusCode == 200) {
-      final movie.Model model = movie.modelFromJson(response.body);
-      allResults.addAll(model.results);
-    } else {
-      throw Exception('Failed to load genres');
-    }
-  }
+Future<Review> getReviews(int id, bool isTvShow, String lang) =>
+    _repo.reviews(id, isTvShow, lang);
 
-  return movie.Model(
-    page: 1,
-    results: allResults,
-    totalPages: 5,
-    totalResults: allResults.length,
-  );
-}
+Future<movie.Model> movieSearch(String query, String lang) =>
+    _repo.searchTv(query, lang);
 
-Future<Credit> getCredits(int id, bool isTvShow, String lang) async {
-  final String endPoint = isTvShow ? 'tv/$id/credits' : 'movie/$id/credits';
-  final String url = '$baseUrl$endPoint$key&language=$lang';
-  final response = await _get(url);
+Future<movie.Model> searchData(String query, String lang) =>
+    _repo.searchMulti(query, lang);
 
-  if (response.statusCode == 200) {
-    return creditFromJson(response.body);
-  } else {
-    throw Exception('Failed to load credits');
-  }
-}
+Future<Video> getyoutubeid(int id, bool isTvShow, String lang) =>
+    _repo.videos(id, isTvShow, lang);
 
-Future<movie.Model> getrecommendations(
-    int id, bool isTvShow, String lang) async {
-  final String endPoint =
-      isTvShow ? 'tv/$id/recommendations' : 'movie/$id/recommendations';
-  final String url = '$baseUrl$endPoint$key&language=$lang';
-  final response = await _get(url);
+Future<Watchprovider?> getprovider(int id, bool isTvShow, String lang) =>
+    _repo.watchProviders(id, isTvShow, lang);
 
-  if (response.statusCode == 200) {
-    return movie.modelFromJson(response.body);
-  } else {
-    throw Exception('Failed to load similar');
-  }
-}
+Future<movie.Model> getEgyptionmovies(bool isTvShow, String lang) =>
+    _repo.egyptianTitles(isTvShow, lang);
 
-Future<Review> getReviews(int id, bool isTvShow, String lang) async {
-  final String endPoint = isTvShow ? 'tv/$id/reviews' : 'movie/$id/reviews';
-  final String url = '$baseUrl$endPoint$key&language=$lang';
-  final response = await _get(url);
+Future<movie.Model> getAiringToday(String lang) => _repo.airingToday(lang);
 
-  if (response.statusCode == 200) {
-    return reviewFromJson(response.body);
-  } else {
-    throw Exception('Failed to load reviews');
-  }
-}
+Future<MovieModel> getdetails(int id, bool isTvShow, String lang) =>
+    _repo.details(id, isTvShow, lang);
 
-Future<movie.Model> movieSearch(String query, String lang) async {
-  final String endPoint = 'search/tv';
-  final String url = '$baseUrl$endPoint$key&query=$query&language=$lang';
+Future<CastModel> getcastdetails(int id, String lang) => _repo.person(id, lang);
 
-  final response = await _get(url);
-  if (response.statusCode == 200) {
-    return movie.modelFromJson(response.body);
-  } else {
-    throw Exception('Not found');
-  }
-}
-
-Future<movie.Model> searchData(String query, String lang) async {
-  final String endPoint = 'search/multi';
-  final String url = '$baseUrl$endPoint$key&query=$query&language=$lang';
-
-  final response = await _get(url);
-  if (response.statusCode == 200) {
-    return movie.modelFromJson(response.body);
-  } else {
-    throw Exception('Not found');
-  }
-}
-
-Future<Video> getyoutubeid(int id, bool isTvShow, String lang) async {
-  final String endPoint = isTvShow ? 'tv/$id/videos' : 'movie/$id/videos';
-  final String url = '$baseUrl$endPoint$key$video&language=$lang';
-  final response = await _get(url);
-
-  if (response.statusCode == 200) {
-    return videoFromJson(response.body);
-  } else {
-    throw Exception('Failed to load video id');
-  }
-}
-
-Future<Watchprovider?> getprovider(int id, bool isTvShow, String lang) async {
-  final String endPoint =
-      isTvShow ? 'tv/$id/watch/providers' : 'movie/$id/watch/providers';
-  final String url = '$baseUrl$endPoint$key$video&language=$lang';
-  final response = await _get(url);
-
-  if (response.statusCode == 200) {
-    return watchproviderFromJson(response.body);
-  } else {
-    throw Exception('Failed to load Providers');
-  }
-}
-
-Future<movie.Model> getEgyptionmovies(bool isTvShow, String lang) async {
-  final String endPoint = isTvShow ? 'discover/tv' : 'discover/movie';
-  final List<movie.Result> allResults = [];
-
-  for (int page = 1; page <= 5; page++) {
-    final String url =
-        '$baseUrl$endPoint$key$egyptregion&page=$page&language=$lang';
-    final response = await _get(url);
-
-    if (response.statusCode == 200) {
-      final movie.Model model = movie.modelFromJson(response.body);
-      allResults.addAll(model.results);
-    } else {
-      throw Exception('Failed to load genres');
-    }
-  }
-
-  return movie.Model(
-    page: 1,
-    results: allResults,
-    totalPages: 5,
-    totalResults: allResults.length,
-  );
-}
-
-Future<movie.Model> getAiringToday(String lang) async {
-  final String endPoint = 'tv/airing_today';
-  final String url = '$baseUrl$endPoint$key$orginallangeng&language=$lang';
-
-  final response = await _get(url);
-  if (response.statusCode == 200) {
-    return movie.modelFromJson(response.body);
-  } else {
-    throw Exception('Failed to load trending');
-  }
-}
-
-Future<MovieModel> getdetails(int id, bool isTvShow, String lang) async {
-  final String endPoint = isTvShow ? 'tv/$id' : 'movie/$id';
-  final String url = '$baseUrl$endPoint$key&language=$lang';
-
-  final response = await _get(url);
-  if (response.statusCode == 200) {
-    return movieModelFromJson(response.body);
-  } else {
-    throw Exception('Failed to load Details');
-  }
-}
-
-Future<CastModel> getcastdetails(int id, String lang) async {
-  final String endPoint = 'person/$id';
-  final String url = '$baseUrl$endPoint$key&language=$lang';
-
-  final response = await _get(url);
-  if (response.statusCode == 200) {
-    return castModelFromJson(response.body);
-  } else {
-    throw Exception('Failed to load Details');
-  }
-}
-
-Future<KnownFor> getcastknownfor(int id, bool isTvShow, String lang) async {
-  final String endPoint =
-      isTvShow ? 'person/$id/tv_credits' : 'person/$id/movie_credits';
-  final String url = '$baseUrl$endPoint$key&language=$lang';
-
-  final response = await _get(url);
-  if (response.statusCode == 200) {
-    return knownForFromJson(response.body);
-  } else {
-    throw Exception('Failed to load Details');
-  }
-}
+Future<KnownFor> getcastknownfor(int id, bool isTvShow, String lang) =>
+    _repo.personCredits(id, isTvShow, lang);

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:Movie_Night/src/Provider/Theme_provider.dart';
+import 'package:Movie_Night/src/Provider/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 class ChangeThemeButtonWidget extends StatelessWidget {

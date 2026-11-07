@@ -1,6 +1,6 @@
 import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/langprovider.dart';
-import 'package:Movie_Night/src/components/Cached_image.dart';
+import 'package:Movie_Night/src/components/cached_image.dart';
 import 'package:Movie_Night/src/models/Knownfor_model.dart';
 import 'package:Movie_Night/src/models/cast_model.dart';
 import 'package:Movie_Night/src/widgets/cast_movies.dart';

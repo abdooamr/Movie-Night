@@ -15,66 +15,51 @@ class ExplorePage extends StatefulWidget {
   State<ExplorePage> createState() => _ExplorePageState();
 }
 
+/// Explore tabs in display order: TMDB genre id + localized label.
+final List<(int, String Function(S))> _genreTabs = [
+  (28, (s) => s.Actiongenre),
+  (12, (s) => s.Adventuregenre),
+  (16, (s) => s.Animationgenre),
+  (35, (s) => s.Comedygenre),
+  (80, (s) => s.Crimegenre),
+  (99, (s) => s.Documentarygenre),
+  (18, (s) => s.Dramagenre),
+  (10751, (s) => s.Familygenre),
+  (14, (s) => s.Fantasygenre),
+  (36, (s) => s.Historygenre),
+  (27, (s) => s.Horrorgenre),
+  (9648, (s) => s.Mysterygenre),
+  (10749, (s) => s.Romancegenre),
+  (878, (s) => s.ScienceFictiongenre),
+  (53, (s) => s.Thrillergenre),
+  (10752, (s) => s.Wargenre),
+];
+
 class _ExplorePageState extends State<ExplorePage>
     with SingleTickerProviderStateMixin {
-  late Future<Model> actionFuture,
-      adventureFuture,
-      animationFuture,
-      comedyFuture,
-      crimeFuture,
-      documentaryFuture,
-      dramaFuture,
-      familyFuture,
-      fantasyFuture,
-      historyFuture,
-      horrorFuture,
-      mysteryFuture,
-      romanceFuture,
-      scifiFuture,
-      thrillerFuture,
-      warFuture;
-
   late TabController _tabController;
   late DropdownProvider dropdownProvider;
 
+  /// Per-genre feeds, created on first view of a tab and reused afterwards so
+  /// revisiting a tab or rebuilding does not refetch. Cleared when the
+  /// language changes, since the cached results are localized.
+  final Map<int, Future<Model>> _genreFutures = {};
+  String? _genreFuturesLang;
+
+  Future<Model> _futureFor(int genreId, String lang) {
+    if (_genreFuturesLang != lang) {
+      _genreFutures.clear();
+      _genreFuturesLang = lang;
+    }
+    return _genreFutures.putIfAbsent(
+        genreId, () => discoverMovies(genreId: genreId, lang: lang));
+  }
+
   @override
   void initState() {
-    _tabController = TabController(length: 16, vsync: this);
-    dropdownProvider = Provider.of<DropdownProvider>(context, listen: false);
-    actionFuture =
-        discoverMovies(genreId: 28, lang: dropdownProvider.selectedValue);
-    adventureFuture =
-        discoverMovies(genreId: 12, lang: dropdownProvider.selectedValue);
-    animationFuture =
-        discoverMovies(genreId: 16, lang: dropdownProvider.selectedValue);
-    comedyFuture =
-        discoverMovies(genreId: 35, lang: dropdownProvider.selectedValue);
-    crimeFuture =
-        discoverMovies(genreId: 80, lang: dropdownProvider.selectedValue);
-    documentaryFuture =
-        discoverMovies(genreId: 99, lang: dropdownProvider.selectedValue);
-    dramaFuture =
-        discoverMovies(genreId: 18, lang: dropdownProvider.selectedValue);
-    familyFuture =
-        discoverMovies(genreId: 10751, lang: dropdownProvider.selectedValue);
-    fantasyFuture =
-        discoverMovies(genreId: 14, lang: dropdownProvider.selectedValue);
-    historyFuture =
-        discoverMovies(genreId: 36, lang: dropdownProvider.selectedValue);
-    horrorFuture =
-        discoverMovies(genreId: 27, lang: dropdownProvider.selectedValue);
-    mysteryFuture =
-        discoverMovies(genreId: 9648, lang: dropdownProvider.selectedValue);
-    romanceFuture =
-        discoverMovies(genreId: 10749, lang: dropdownProvider.selectedValue);
-    scifiFuture =
-        discoverMovies(genreId: 878, lang: dropdownProvider.selectedValue);
-    thrillerFuture =
-        discoverMovies(genreId: 53, lang: dropdownProvider.selectedValue);
-    warFuture =
-        discoverMovies(genreId: 10752, lang: dropdownProvider.selectedValue);
-
     super.initState();
+    _tabController = TabController(length: _genreTabs.length, vsync: this);
+    dropdownProvider = Provider.of<DropdownProvider>(context, listen: false);
   }
 
   @override
@@ -94,7 +79,7 @@ class _ExplorePageState extends State<ExplorePage>
               onTap: () {
                 showSearch(
                   context: context,
-                  delegate: Search(),
+                  delegate: Search(lang: dropdownProvider.selectedValue),
                 );
               },
               child: Container(
@@ -130,109 +115,26 @@ class _ExplorePageState extends State<ExplorePage>
               padding: EdgeInsets.zero,
               tabAlignment: TabAlignment.start,
               tabs: [
-                Tab(text: S.of(context).Actiongenre),
-                Tab(text: S.of(context).Adventuregenre),
-                Tab(text: S.of(context).Animationgenre),
-                Tab(text: S.of(context).Comedygenre),
-                Tab(text: S.of(context).Crimegenre),
-                Tab(text: S.of(context).Documentarygenre),
-                Tab(text: S.of(context).Dramagenre),
-                Tab(text: S.of(context).Familygenre),
-                Tab(text: S.of(context).Fantasygenre),
-                Tab(text: S.of(context).Historygenre),
-                Tab(text: S.of(context).Horrorgenre),
-                Tab(text: S.of(context).Mysterygenre),
-                Tab(text: S.of(context).Romancegenre),
-                Tab(text: S.of(context).ScienceFictiongenre),
-                Tab(text: S.of(context).Thrillergenre),
-                Tab(text: S.of(context).Wargenre),
+                for (final (_, label) in _genreTabs)
+                  Tab(text: label(S.of(context))),
               ],
             ),
             Consumer<DropdownProvider>(builder: (context, dropdownProvider, _) {
+              final lang = dropdownProvider.selectedValue;
               return Expanded(
                 child: TabBarView(
                   controller: _tabController,
                   children: [
-                    GenresListView(
-                      future: actionFuture,
-                      headlineText: "",
-                      istvshow: false,
-                    ),
-                    GenresListView(
-                      future: adventureFuture,
-                      headlineText: "",
-                      istvshow: false,
-                    ),
-                    GenresListView(
-                      future: animationFuture,
-                      headlineText: "",
-                      istvshow: false,
-                    ),
-                    GenresListView(
-                      future: comedyFuture,
-                      headlineText: "",
-                      istvshow: false,
-                    ),
-                    GenresListView(
-                      future: crimeFuture,
-                      headlineText: "",
-                      istvshow: false,
-                    ),
-                    GenresListView(
-                      future: documentaryFuture,
-                      headlineText: "",
-                      istvshow: false,
-                    ),
-                    GenresListView(
-                      future: dramaFuture,
-                      headlineText: "",
-                      istvshow: false,
-                    ),
-                    GenresListView(
-                      future: familyFuture,
-                      headlineText: "",
-                      istvshow: false,
-                    ),
-                    GenresListView(
-                      future: fantasyFuture,
-                      headlineText: "",
-                      istvshow: false,
-                    ),
-                    GenresListView(
-                      future: historyFuture,
-                      headlineText: "",
-                      istvshow: false,
-                    ),
-                    GenresListView(
-                      future: horrorFuture,
-                      headlineText: "",
-                      istvshow: false,
-                    ),
-                    GenresListView(
-                      future: mysteryFuture,
-                      headlineText: "",
-                      istvshow: false,
-                    ),
-                    GenresListView(
-                      future: romanceFuture,
-                      headlineText: "",
-                      istvshow: false,
-                    ),
-                    GenresListView(
-                      future: scifiFuture,
-                      headlineText: "",
-                      istvshow: false,
-                    ),
-                    GenresListView(
-                      future: thrillerFuture,
-                      headlineText: "",
-                      istvshow: false,
-                    ),
-                    GenresListView(
-                      future: warFuture,
-                      headlineText: "",
-                      istvshow: false,
-                    ),
+                    // Builder defers _futureFor until TabBarView actually
+                    // builds the page, so only visited tabs hit the network.
+                    for (final (genreId, _) in _genreTabs)
+                      Builder(
+                        builder: (context) => GenresListView(
+                          future: _futureFor(genreId, lang),
+                          headlineText: "",
+                          istvshow: false,
+                        ),
+                      ),
                   ],
                 ),
               );

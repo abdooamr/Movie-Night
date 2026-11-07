@@ -1,6 +1,6 @@
 import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/langprovider.dart';
-import 'package:Movie_Night/src/components/Cached_image.dart';
+import 'package:Movie_Night/src/components/cached_image.dart';
 import 'package:Movie_Night/src/components/squaretile.dart';
 import 'package:Movie_Night/src/components/stars.dart';
 import 'package:Movie_Night/src/models/liked_model.dart';
@@ -310,7 +310,7 @@ class _DetailHeader extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Videos_page(
+                    builder: (context) => VideosPage(
                       movieid: movieDetails.id,
                       isTvShow: isTvShow,
                     ),

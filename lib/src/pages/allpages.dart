@@ -1,4 +1,4 @@
-export 'Adminpages/AdminPanelV&D.dart';
+export 'Adminpages/admin_panel_vd.dart';
 export 'Login-Logout/Forget_password.dart';
 export 'Login-Logout/Login.dart';
 export 'Login-Logout/Login_welcome_screen.dart';

@@ -14,14 +14,14 @@ import 'package:Movie_Night/src/widgets/allwidget.dart';
 import 'package:Movie_Night/src/widgets/userinfotile.dart';
 import 'package:in_app_review/in_app_review.dart';
 
-class settings_screen extends StatefulWidget {
-  const settings_screen({super.key});
+class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({super.key});
 
   @override
-  State<settings_screen> createState() => _settings_screenState();
+  State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
-class _settings_screenState extends State<settings_screen> {
+class _SettingsScreenState extends State<SettingsScreen> {
   final Userx = FirebaseAuth.instance.currentUser!;
   final UserRepository _users = UserRepository.instance;
   bool? isadmin;
@@ -132,7 +132,7 @@ class _settings_screenState extends State<settings_screen> {
         leading: Iconwidget(icon: IconsaxBold.bookmark, color: Colors.purple),
         onTap: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => userwatchlist()));
+              MaterialPageRoute(builder: (context) => UserWatchlist()));
         },
       );
 

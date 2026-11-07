@@ -1,6 +1,6 @@
 import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/langprovider.dart';
-import 'package:Movie_Night/src/components/Cached_image.dart';
+import 'package:Movie_Night/src/components/cached_image.dart';
 import 'package:Movie_Night/src/pages/UI/castdetails.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/models/credit_model.dart';

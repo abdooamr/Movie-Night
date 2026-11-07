@@ -1,6 +1,6 @@
 import 'package:Movie_Night/src/widgets/shimmerWidgets/genreListViewShimmerWidget.dart';
 import 'package:flutter/material.dart';
-import 'package:Movie_Night/src/components/Cached_image.dart';
+import 'package:Movie_Night/src/components/cached_image.dart';
 import 'package:Movie_Night/src/pages/UI/detail_page.dart';
 import 'package:Movie_Night/src/utils/utils.dart';
 import '../models/movie_model.dart';

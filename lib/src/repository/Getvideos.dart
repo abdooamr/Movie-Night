@@ -6,16 +6,16 @@ import 'package:Movie_Night/src/services/services.dart';
 import 'package:Movie_Night/src/widgets/videos.dart';
 import 'package:provider/provider.dart';
 
-class Videos_page extends StatefulWidget {
+class VideosPage extends StatefulWidget {
   final int? movieid;
   final bool isTvShow;
-  const Videos_page({super.key, this.movieid, required this.isTvShow});
+  const VideosPage({super.key, this.movieid, required this.isTvShow});
 
   @override
-  State<Videos_page> createState() => _Videos_pageState();
+  State<VideosPage> createState() => _Videos_pageState();
 }
 
-class _Videos_pageState extends State<Videos_page> {
+class _Videos_pageState extends State<VideosPage> {
   late Future<Video> VideosFuture;
   late DropdownProvider dropdownProvider;
 

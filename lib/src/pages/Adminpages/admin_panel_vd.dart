@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:Movie_Night/src/models/user_model.dart';
-import 'package:Movie_Night/src/pages/Adminpages/details%20category.dart';
+import 'package:Movie_Night/src/pages/Adminpages/details_category.dart';
 
 class adminpanel extends StatelessWidget {
   final userrx = FirebaseAuth.instance.currentUser;
@@ -37,14 +37,8 @@ class adminpanel extends StatelessWidget {
             final docs = snapshot.data!;
             return ListView(
                 children: docs.map((doc) {
-              final user = Users(
-                  id: doc.data()['id'],
-                  role: doc.data()['role'],
-                  firstName: doc.data()["firstName"],
-                  lastName: doc.data()["lastName"],
-                  ProfilePic: doc.data()["ProfilePic"],
-                  report: doc.data()["report"],
-                  email: doc.data()["email"]);
+              // Tolerates legacy `firstname`/`lastname` docs (task 2.8).
+              final user = Users.fromFirestore(doc.data());
 
               return buildUser(user, context);
             }).toList());

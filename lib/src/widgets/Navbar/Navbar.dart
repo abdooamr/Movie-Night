@@ -29,9 +29,9 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           HomePage(),
           const ExplorePage(),
           const Liked(),
-          const settings_screen(),
+          const SettingsScreen(),
         ]
-      : [HomePage(), const ExplorePage(), const loWelcomeScreen()];
+      : [HomePage(), const ExplorePage(), const LoginWelcomeScreen()];
 
   @override
   void initState() {

@@ -9,12 +9,12 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
-class userwatchlist extends StatefulWidget {
+class UserWatchlist extends StatefulWidget {
   @override
-  State<userwatchlist> createState() => _userwatchlistState();
+  State<UserWatchlist> createState() => _userwatchlistState();
 }
 
-class _userwatchlistState extends State<userwatchlist>
+class _userwatchlistState extends State<UserWatchlist>
     with TickerProviderStateMixin {
   late TabController _tabController;
   late DropdownProvider dropdownProvider;

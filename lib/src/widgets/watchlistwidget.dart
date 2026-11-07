@@ -1,5 +1,5 @@
 import 'package:Movie_Night/generated/l10n.dart';
-import 'package:Movie_Night/src/components/Cached_image.dart';
+import 'package:Movie_Night/src/components/cached_image.dart';
 import 'package:Movie_Night/src/components/stars.dart';
 import 'package:Movie_Night/src/models/moviedetails.dart';
 import 'package:Movie_Night/src/pages/UI/detail_page.dart';

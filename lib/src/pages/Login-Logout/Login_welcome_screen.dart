@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/pages/allpages.dart';
 import 'package:lottie/lottie.dart';
 
-class loWelcomeScreen extends StatelessWidget {
-  const loWelcomeScreen({super.key});
+class LoginWelcomeScreen extends StatelessWidget {
+  const LoginWelcomeScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(

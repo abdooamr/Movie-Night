@@ -19,13 +19,14 @@ class LikedModelAdapter extends TypeAdapter<LikedModel> {
       voteAverage: fields[3] as double,
       posterPath: fields[4] as String,
       id: fields[5] as int,
+      isTvShow: fields[6] as bool?,
     );
   }
 
   @override
   void write(BinaryWriter writer, LikedModel obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.isLiked)
       ..writeByte(1)
@@ -37,7 +38,9 @@ class LikedModelAdapter extends TypeAdapter<LikedModel> {
       ..writeByte(4)
       ..write(obj.posterPath)
       ..writeByte(5)
-      ..write(obj.id);
+      ..write(obj.id)
+      ..writeByte(6)
+      ..write(obj.isTvShow);
   }
 
   @override
