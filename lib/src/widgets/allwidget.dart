@@ -1,4 +1,3 @@
-export 'Navbar/loggedinmainpage.dart';
 export 'Navbar/Navbar.dart';
 export 'carousel_slider.dart';
 export 'cast.dart';

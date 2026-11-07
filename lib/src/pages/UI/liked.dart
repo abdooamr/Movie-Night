@@ -19,8 +19,6 @@ class Liked extends StatefulWidget {
 }
 
 class _LikedState extends State<Liked> {
-  late Future<Model> searchdetails;
-  @override
   @override
   Widget build(BuildContext context) {
     final PageController controller = PageController();
@@ -65,7 +63,6 @@ class _LikedState extends State<Liked> {
                       var liked = box.getAt(index);
                       if (!(liked?.isLiked ?? false)) {
                         liked!.delete();
-                        controller.initialPage == index;
                       }
 
                       Widget content;

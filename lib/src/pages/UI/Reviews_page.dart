@@ -1,5 +1,4 @@
 import 'package:Movie_Night/generated/l10n.dart';
-import 'package:Movie_Night/src/Provider/langprovider.dart';
 import 'package:Movie_Night/src/widgets/global_Reviews.dart';
 import 'package:Movie_Night/src/widgets/local_Reviews.dart';
 import 'package:Movie_Night/src/widgets/switch.dart';
@@ -17,7 +16,6 @@ class ReviewsPage extends StatefulWidget {
 class _ReviewsPageState extends State<ReviewsPage> {
   bool Local = true;
   bool Global = false;
-  late DropdownProvider dropdownProvider;
 
   @override
   Widget build(BuildContext context) {
