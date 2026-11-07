@@ -1,0 +1,51 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:Movie_Night/src/design/app_theme.dart';
+import 'package:Movie_Night/src/design/typography.dart';
+
+void main() {
+  final theme = buildAppTheme(Brightness.dark);
+
+  test('type scale', () {
+    final t = theme.textTheme;
+    expect(t.bodyLarge!.fontSize, 17);
+    expect(t.labelSmall!.fontSize, 11);
+    expect(t.displaySmall!.fontFamily, 'poppins');
+    expect(t.bodyLarge!.fontFamily, isNull);
+    expect(t.titleLarge!.height, closeTo(25 / 20, 0.001));
+    expect(t.displaySmall!.fontWeight, FontWeight.w700);
+    expect(t.labelMedium!.fontWeight, FontWeight.w500);
+  });
+
+  test('highContrast makes onSurfaceVariant == onSurface', () {
+    final hc = buildAppTheme(Brightness.light, highContrast: true).colorScheme;
+    expect(hc.onSurfaceVariant, hc.onSurface);
+    final normal = buildAppTheme(Brightness.light).colorScheme;
+    expect(hc.outline, normal.onSurfaceVariant);
+  });
+
+  test('emboldenTextTheme raises weights one step', () {
+    final t = buildTextTheme(theme.colorScheme.onSurface);
+    final b = emboldenTextTheme(t);
+    expect(b.bodyLarge!.fontWeight, FontWeight.w500);
+    expect(b.titleMedium!.fontWeight, FontWeight.w700);
+    expect(b.displaySmall!.fontWeight, FontWeight.w800);
+    expect(b.bodyLarge!.fontSize, 17);
+  });
+
+  test('page transitions', () {
+    final b = theme.pageTransitionsTheme.builders;
+    expect(b[TargetPlatform.iOS], isA<CupertinoPageTransitionsBuilder>());
+    expect(b[TargetPlatform.android],
+        isA<PredictiveBackPageTransitionsBuilder>());
+  });
+
+  test('component themes', () {
+    expect(theme.useMaterial3, isTrue);
+    expect(theme.filledButtonTheme.style!.minimumSize!.resolve({}),
+        const Size.fromHeight(50));
+    expect(theme.appBarTheme.scrolledUnderElevation, 0);
+    expect(theme.snackBarTheme.behavior, SnackBarBehavior.floating);
+    expect(theme.inputDecorationTheme.filled, isTrue);
+  });
+}
