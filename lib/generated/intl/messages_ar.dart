@@ -22,6 +22,22 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(character) => "بدور ${character}";
 
+  static String m1(section) => "تعذّر تحميل ${section}.";
+
+  static String m2(query) =>
+      "لا توجد نتائج لـ «${query}». تحقق من الإملاء أو جرّب عنوانًا آخر.";
+
+  static String m3(title) => "تشغيل ${title}";
+
+  static String m4(score) => "${score} من 10";
+
+  static String m5(email) =>
+      "تحقق من بريدك الإلكتروني. أرسلنا رابط إعادة التعيين إلى ${email}.";
+
+  static String m6(count) => "عرض كل المراجعات (${count})";
+
+  static String m7(title, url) => "شاهد ${title} على Movie Night\n${url}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "Actiongenre": MessageLookupByLibrary.simpleMessage("أكشن"),
@@ -78,8 +94,43 @@ class MessageLookup extends MessageLookupByLibrary {
     "animationmovielabel": MessageLookupByLibrary.simpleMessage(
       "أفلام رسوم متحركة",
     ),
+    "appearance": MessageLookupByLibrary.simpleMessage("المظهر"),
+    "appearanceDark": MessageLookupByLibrary.simpleMessage("داكن"),
+    "appearanceLight": MessageLookupByLibrary.simpleMessage("فاتح"),
+    "appearanceSystem": MessageLookupByLibrary.simpleMessage("النظام"),
     "arabiclabel": MessageLookupByLibrary.simpleMessage("العربية"),
+    "authErrorEmailInUse": MessageLookupByLibrary.simpleMessage(
+      "يوجد حساب بهذا البريد الإلكتروني بالفعل.",
+    ),
+    "authErrorGeneric": MessageLookupByLibrary.simpleMessage(
+      "تعذّر إكمال ذلك. حاول مرة أخرى.",
+    ),
+    "authErrorInvalidCredential": MessageLookupByLibrary.simpleMessage(
+      "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
+    ),
+    "authErrorInvalidEmail": MessageLookupByLibrary.simpleMessage(
+      "أدخل بريدًا إلكترونيًا مثل name@example.com.",
+    ),
+    "authErrorNetwork": MessageLookupByLibrary.simpleMessage(
+      "أنت غير متصل. تحقق من اتصالك وحاول مرة أخرى.",
+    ),
+    "authErrorRecentLogin": MessageLookupByLibrary.simpleMessage(
+      "لحمايتك، سجّل الدخول مرة أخرى لحذف حسابك.",
+    ),
+    "authErrorTooManyRequests": MessageLookupByLibrary.simpleMessage(
+      "محاولات كثيرة جدًا. حاول مرة أخرى بعد بضع دقائق.",
+    ),
+    "authErrorUserNotFound": MessageLookupByLibrary.simpleMessage(
+      "لا يوجد حساب بهذا البريد الإلكتروني.",
+    ),
+    "authErrorWeakPassword": MessageLookupByLibrary.simpleMessage(
+      "اختر كلمة مرور أقوى.",
+    ),
+    "backToLogIn": MessageLookupByLibrary.simpleMessage(
+      "العودة إلى تسجيل الدخول",
+    ),
     "biography": MessageLookupByLibrary.simpleMessage("نبذة عنه"),
+    "browseMovies": MessageLookupByLibrary.simpleMessage("تصفّح الأفلام"),
     "buyon": MessageLookupByLibrary.simpleMessage("شراء على"),
     "cancelLabel": MessageLookupByLibrary.simpleMessage("إلغاء"),
     "castAs": m0,
@@ -93,17 +144,35 @@ class MessageLookup extends MessageLookupByLibrary {
     "changepasswordsuccess": MessageLookupByLibrary.simpleMessage(
       "تم إرسال رسالة إعادة تعيين كلمة المرور بنجاح",
     ),
+    "clearHistory": MessageLookupByLibrary.simpleMessage("مسح"),
     "clearReport": MessageLookupByLibrary.simpleMessage("مسح البلاغ"),
     "clearSearchTooltip": MessageLookupByLibrary.simpleMessage("مسح البحث"),
+    "close": MessageLookupByLibrary.simpleMessage("إغلاق"),
     "comedymovielabel": MessageLookupByLibrary.simpleMessage("أفلام كوميدية"),
+    "continueWithGoogle": MessageLookupByLibrary.simpleMessage(
+      "المتابعة باستخدام Google",
+    ),
+    "couldntLoadSection": m1,
+    "couldntLoadTitle": MessageLookupByLibrary.simpleMessage(
+      "تعذّر تحميل هذا العنوان.",
+    ),
     "createaccountlabel": MessageLookupByLibrary.simpleMessage("إنشاء حساب"),
     "crimemovielabel": MessageLookupByLibrary.simpleMessage("أفلام جريمة"),
     "darkmodelabel": MessageLookupByLibrary.simpleMessage("وضع الظلام"),
     "delete": MessageLookupByLibrary.simpleMessage("حذف"),
+    "deleteAccountDone": MessageLookupByLibrary.simpleMessage("تم حذف حسابك."),
+    "deleteAccountMessage": MessageLookupByLibrary.simpleMessage(
+      "سيتم حذف ملفك الشخصي وقائمة المشاهدة ومراجعاتك نهائيًا. لا يمكن التراجع عن هذا الإجراء.",
+    ),
+    "deleteAccountTitle": MessageLookupByLibrary.simpleMessage("حذف الحساب؟"),
     "deleteBookmark": MessageLookupByLibrary.simpleMessage("حذف من المحفوظات"),
     "deleteBookmarkConfirmation": MessageLookupByLibrary.simpleMessage(
       "متأكد إنك عايز تحذف ده من المحفوظات؟ مش هتقدر ترجّعه.",
     ),
+    "deleteReviewMessage": MessageLookupByLibrary.simpleMessage(
+      "لا يمكن التراجع عن هذا الإجراء.",
+    ),
+    "deleteReviewTitle": MessageLookupByLibrary.simpleMessage("حذف المراجعة؟"),
     "deleteReviewTooltip": MessageLookupByLibrary.simpleMessage("حذف المراجعة"),
     "deleteUser": MessageLookupByLibrary.simpleMessage("حذف الحساب"),
     "deleteUserConfirmation": MessageLookupByLibrary.simpleMessage(
@@ -135,12 +204,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "عنوان البريد الإلكتروني",
     ),
     "englishlabel": MessageLookupByLibrary.simpleMessage("الإنجليزية"),
+    "enterFirstName": MessageLookupByLibrary.simpleMessage("أدخل الاسم الأول."),
+    "enterPassword": MessageLookupByLibrary.simpleMessage("أدخل كلمة المرور."),
+    "enterValidEmail": MessageLookupByLibrary.simpleMessage(
+      "أدخل عنوان بريد إلكتروني صالحًا.",
+    ),
     "error": MessageLookupByLibrary.simpleMessage("خطأ"),
     "errorLoginAgain": MessageLookupByLibrary.simpleMessage(
       "حدث خطأ، يرجى تسجيل الدخول مرة أخرى والمحاولة مجددًا",
     ),
     "errorTitle": MessageLookupByLibrary.simpleMessage("خطأ"),
-    "explorenavbar": MessageLookupByLibrary.simpleMessage("استكشاف"),
+    "explorenavbar": MessageLookupByLibrary.simpleMessage("بحث"),
     "familymovielabel": MessageLookupByLibrary.simpleMessage("أفلام عائلية"),
     "fantasymovielabel": MessageLookupByLibrary.simpleMessage("أفلام خيال"),
     "firstnamelabel": MessageLookupByLibrary.simpleMessage("الاسم الأول"),
@@ -164,11 +238,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "homenavbar": MessageLookupByLibrary.simpleMessage("الرئيسية"),
     "horrormovielabel": MessageLookupByLibrary.simpleMessage("أفلام رعب"),
     "id": MessageLookupByLibrary.simpleMessage("الرقم التعريفي"),
+    "inWatchlist": MessageLookupByLibrary.simpleMessage("في قائمة المشاهدة"),
     "italianlabel": MessageLookupByLibrary.simpleMessage("الإيطالية"),
     "kidstvlabel": MessageLookupByLibrary.simpleMessage("برامج أطفال"),
     "lastnamelabel": MessageLookupByLibrary.simpleMessage("الاسم الأخير"),
+    "libraryLiked": MessageLookupByLibrary.simpleMessage("المفضلة"),
+    "libraryWatchlist": MessageLookupByLibrary.simpleMessage("قائمة المشاهدة"),
     "like": MessageLookupByLibrary.simpleMessage("إعجاب"),
-    "likednavbar": MessageLookupByLibrary.simpleMessage("المفضلة"),
+    "liked": MessageLookupByLibrary.simpleMessage("في المفضلة"),
+    "likedEmptyBody": MessageLookupByLibrary.simpleMessage(
+      "اضغط على ♡ في أي فيلم أو مسلسل لحفظه هنا.",
+    ),
+    "likednavbar": MessageLookupByLibrary.simpleMessage("المكتبة"),
     "localreviewswitch": MessageLookupByLibrary.simpleMessage("مراجعة محلية"),
     "loginbuttonlabel": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "logintocontinue": MessageLookupByLibrary.simpleMessage(
@@ -185,7 +266,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "name": MessageLookupByLibrary.simpleMessage("الاسم"),
     "newstvlabel": MessageLookupByLibrary.simpleMessage("برامج أخبار"),
     "noBirthdayFound": MessageLookupByLibrary.simpleMessage("مفيش تاريخ ميلاد"),
-    "noDataFound": MessageLookupByLibrary.simpleMessage("مفيش بيانات"),
+    "noDataFound": MessageLookupByLibrary.simpleMessage("لا يوجد ما يُعرض"),
     "noImage": MessageLookupByLibrary.simpleMessage("مفيش صورة"),
     "noInternet": MessageLookupByLibrary.simpleMessage(
       "لا يوجد اتصال بالإنترنت",
@@ -193,8 +274,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "noInternetMessage": MessageLookupByLibrary.simpleMessage(
       "يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى",
     ),
-    "noReport": MessageLookupByLibrary.simpleMessage("مفيش بلاغات!"),
+    "noReport": MessageLookupByLibrary.simpleMessage("لا توجد بلاغات"),
     "noResults": MessageLookupByLibrary.simpleMessage("لا توجد نتائج"),
+    "noResultsFor": m2,
     "noResultsMessage": MessageLookupByLibrary.simpleMessage(
       "لم يتم العثور على نتائج لبحثك",
     ),
@@ -210,7 +292,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "لا يوجد اتصال بالإنترنت",
     ),
     "nolikedmovies": MessageLookupByLibrary.simpleMessage(
-      "قائمة الأفلام المفضلة لديك فارغة\nابدأ في إضافة بعض الأفلام إلى قائمة إعجاباتك واكتشف مفضلاتك!",
+      "لا توجد عناوين مفضلة بعد",
     ),
     "nomoviesinwatchlist": MessageLookupByLibrary.simpleMessage(
       "قائمة المشاهدة الخاصة بك فارغة\nابدأ في إضافة بعض الأفلام إلى قائمة المشاهدة الخاصة بك واكتشف مفضلاتك!",
@@ -230,9 +312,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "تأكيد كلمة المرور",
     ),
     "passwordlabel": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
-    "passwordvalidationtext": MessageLookupByLibrary.simpleMessage(
-      "• يجب أن تكون كلمة المرور: \n • 8 أحرف على الأقل \n • تحتوي على حرف كبير واحد على الأقل \n • حرف صغير واحد \n • حرف خاص واحد",
+    "passwordsDontMatch": MessageLookupByLibrary.simpleMessage(
+      "كلمتا المرور غير متطابقتين.",
     ),
+    "passwordvalidationtext": MessageLookupByLibrary.simpleMessage(
+      "استخدم 8 أحرف على الأقل، تشمل حرفًا كبيرًا وحرفًا صغيرًا ورقمًا ورمزًا.",
+    ),
+    "playVideo": m3,
     "pleasecheckinternetconnection": MessageLookupByLibrary.simpleMessage(
       "يرجى التحقق من اتصالك بالإنترنت وحاول مرة أخرى",
     ),
@@ -251,17 +337,40 @@ class MessageLookup extends MessageLookupByLibrary {
       "تعذر رفع صورة الملف الشخصي. حاول مرة أخرى.",
     ),
     "profilenavbar": MessageLookupByLibrary.simpleMessage("الملف الشخصي"),
-    "readmorelabel": MessageLookupByLibrary.simpleMessage("اقرأ أكتر..."),
+    "ratingOutOf10": m4,
+    "readmorelabel": MessageLookupByLibrary.simpleMessage("اقرأ المزيد"),
     "realitytvlabel": MessageLookupByLibrary.simpleMessage("برامج واقع"),
-    "registarnowlabel": MessageLookupByLibrary.simpleMessage("سجل الآن"),
+    "registarnowlabel": MessageLookupByLibrary.simpleMessage("إنشاء حساب"),
+    "removedFromLiked": MessageLookupByLibrary.simpleMessage(
+      "تمت الإزالة من المفضلة",
+    ),
+    "removedFromWatchlist": MessageLookupByLibrary.simpleMessage(
+      "تمت الإزالة من قائمة المشاهدة",
+    ),
     "removefromwatchlist": MessageLookupByLibrary.simpleMessage(
       "إزالة من قائمة المشاهدة",
     ),
     "report": MessageLookupByLibrary.simpleMessage("بلاغ"),
+    "reportFailed": MessageLookupByLibrary.simpleMessage(
+      "تعذّر إرسال البلاغ. حاول مرة أخرى.",
+    ),
     "reportPage": MessageLookupByLibrary.simpleMessage("صفحة البلاغ"),
+    "reportSent": MessageLookupByLibrary.simpleMessage(
+      "تم إرسال البلاغ. شكرًا لمساعدتك في تحسين Movie Night.",
+    ),
+    "reportSummaryRequired": MessageLookupByLibrary.simpleMessage(
+      "أضف ملخصًا قصيرًا.",
+    ),
     "reportabuglabel": MessageLookupByLibrary.simpleMessage("الإبلاغ عن خطأ"),
     "reportpagelabel": MessageLookupByLibrary.simpleMessage(
       "يرجى إرسال تقرير إلينا إذا وجدت أي أخطاء أو لديك أي اقتراحات للتطبيق.",
+    ),
+    "resetLinkSent": m5,
+    "resetPassword": MessageLookupByLibrary.simpleMessage(
+      "إعادة تعيين كلمة المرور",
+    ),
+    "resetPasswordSubtitle": MessageLookupByLibrary.simpleMessage(
+      "سنرسل إليك رابط إعادة التعيين بالبريد الإلكتروني",
     ),
     "role": MessageLookupByLibrary.simpleMessage("الدور"),
     "romancemovielabel": MessageLookupByLibrary.simpleMessage("أفلام رومانسية"),
@@ -272,16 +381,27 @@ class MessageLookup extends MessageLookupByLibrary {
     "scifitvlabel": MessageLookupByLibrary.simpleMessage(
       "مسلسلات خيال علمي وفانتازيا",
     ),
-    "searchhint": MessageLookupByLibrary.simpleMessage("بحث"),
+    "searchhint": MessageLookupByLibrary.simpleMessage("أفلام، مسلسلات، أشخاص"),
+    "seeAllReviews": m6,
     "sendEmail": MessageLookupByLibrary.simpleMessage("إرسال الإيميل"),
     "sendReviewTooltip": MessageLookupByLibrary.simpleMessage("إرسال المراجعة"),
     "sendfeedbacklabel": MessageLookupByLibrary.simpleMessage("إرسال ملاحظات"),
     "sendreportlabel": MessageLookupByLibrary.simpleMessage("إرسال التقرير"),
     "share": MessageLookupByLibrary.simpleMessage("مشاركة"),
+    "shareText": m7,
+    "signInPromptBody": MessageLookupByLibrary.simpleMessage(
+      "سجّل الدخول للاحتفاظ بقائمة مشاهدة والإعجاب بالعناوين وكتابة المراجعات.",
+    ),
+    "signInPromptTitle": MessageLookupByLibrary.simpleMessage(
+      "سجّل الدخول لحفظ العناوين",
+    ),
+    "signInToReview": MessageLookupByLibrary.simpleMessage(
+      "سجّل الدخول لقراءة المراجعات وكتابتها.",
+    ),
     "signupbuttonlabel": MessageLookupByLibrary.simpleMessage("إنشاء حساب"),
     "soaptvlabel": MessageLookupByLibrary.simpleMessage("مسلسلات صابونية"),
     "somethingwentwrong": MessageLookupByLibrary.simpleMessage(
-      "حصلت مشكلة. جرّب تاني بعد شوية.",
+      "تعذّر التحميل. حاول مرة أخرى.",
     ),
     "spanishlabel": MessageLookupByLibrary.simpleMessage("الإسبانية"),
     "storyline": MessageLookupByLibrary.simpleMessage("القصة"),
@@ -291,6 +411,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "talktvlabel": MessageLookupByLibrary.simpleMessage("برامج حوارية"),
     "thecast": MessageLookupByLibrary.simpleMessage("أبطال العمل"),
     "thrillermovielabel": MessageLookupByLibrary.simpleMessage("أفلام إثارة"),
+    "tmdbLabel": MessageLookupByLibrary.simpleMessage("TMDB"),
     "trendingmovieswidget_title": MessageLookupByLibrary.simpleMessage(
       "أفلام رائجة",
     ),
@@ -306,6 +427,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "tvsoap": MessageLookupByLibrary.simpleMessage("صابوني"),
     "tvswitch": MessageLookupByLibrary.simpleMessage("مسلسلات"),
     "tvtalk": MessageLookupByLibrary.simpleMessage("برامج حوارية"),
+    "undo": MessageLookupByLibrary.simpleMessage("تراجع"),
     "unlike": MessageLookupByLibrary.simpleMessage("إلغاء الإعجاب"),
     "upcomingwidget_title": MessageLookupByLibrary.simpleMessage("أفلام قادمة"),
     "updateaccountlabel": MessageLookupByLibrary.simpleMessage("تحديث الحساب"),
@@ -313,14 +435,26 @@ class MessageLookup extends MessageLookupByLibrary {
       "تحديث الملف الشخصي",
     ),
     "updateprofilesuccess": MessageLookupByLibrary.simpleMessage(
-      "تم تحديث الملف الشخصي بنجاح",
+      "تم تحديث الملف الشخصي",
     ),
     "userProfile": MessageLookupByLibrary.simpleMessage("الملف الشخصي"),
     "videoslabel": MessageLookupByLibrary.simpleMessage("فيديوهات"),
     "viewFullDetails": MessageLookupByLibrary.simpleMessage("عرض كل التفاصيل"),
+    "viewPosterFullScreen": MessageLookupByLibrary.simpleMessage(
+      "عرض الملصق بملء الشاشة",
+    ),
     "viewReports": MessageLookupByLibrary.simpleMessage("عرض البلاغات"),
     "warmovielabel": MessageLookupByLibrary.simpleMessage("أفلام حرب"),
     "wartvlabel": MessageLookupByLibrary.simpleMessage("مسلسلات حرب وسياسة"),
+    "watchTrailers": MessageLookupByLibrary.simpleMessage(
+      "شاهد الإعلانات التشويقية",
+    ),
+    "watchlistEmptyBody": MessageLookupByLibrary.simpleMessage(
+      "أضف عناوين إلى قائمة المشاهدة لتجدها هنا لاحقًا.",
+    ),
+    "watchlistUpdateFailed": MessageLookupByLibrary.simpleMessage(
+      "تعذّر تحديث قائمة المشاهدة. حاول مرة أخرى.",
+    ),
     "watchlistlabel": MessageLookupByLibrary.simpleMessage("قائمة المشاهدة"),
     "watchon": MessageLookupByLibrary.simpleMessage("مشاهدة على"),
     "watchvideosbuttonlabel": MessageLookupByLibrary.simpleMessage(

@@ -84,10 +84,10 @@ class S {
     );
   }
 
-  /// `Egyption Movies`
+  /// `Egyptian Movies`
   String get egyptmovieswidget_title {
     return Intl.message(
-      'Egyption Movies',
+      'Egyptian Movies',
       name: 'egyptmovieswidget_title',
       desc: '',
       args: [],
@@ -124,10 +124,10 @@ class S {
     );
   }
 
-  /// `Egyption TV Shows`
+  /// `Egyptian TV Shows`
   String get egypttvwidget_title {
     return Intl.message(
-      'Egyption TV Shows',
+      'Egyptian TV Shows',
       name: 'egypttvwidget_title',
       desc: '',
       args: [],
@@ -139,14 +139,14 @@ class S {
     return Intl.message('Home', name: 'homenavbar', desc: '', args: []);
   }
 
-  /// `Explore`
+  /// `Search`
   String get explorenavbar {
-    return Intl.message('Explore', name: 'explorenavbar', desc: '', args: []);
+    return Intl.message('Search', name: 'explorenavbar', desc: '', args: []);
   }
 
-  /// `Liked`
+  /// `Library`
   String get likednavbar {
-    return Intl.message('Liked', name: 'likednavbar', desc: '', args: []);
+    return Intl.message('Library', name: 'likednavbar', desc: '', args: []);
   }
 
   /// `Profile`
@@ -164,9 +164,14 @@ class S {
     return Intl.message('TV Shows', name: 'tvswitch', desc: '', args: []);
   }
 
-  /// `Search`
+  /// `Movies, TV shows, people`
   String get searchhint {
-    return Intl.message('Search', name: 'searchhint', desc: '', args: []);
+    return Intl.message(
+      'Movies, TV shows, people',
+      name: 'searchhint',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Action`
@@ -360,10 +365,10 @@ class S {
     return Intl.message('Oh No!', name: 'OhNo', desc: '', args: []);
   }
 
-  /// `Your Liked Movies List is Empty\nStart adding some movies to your likes and discover your favorites!`
+  /// `No liked titles yet`
   String get nolikedmovies {
     return Intl.message(
-      'Your Liked Movies List is Empty\nStart adding some movies to your likes and discover your favorites!',
+      'No liked titles yet',
       name: 'nolikedmovies',
       desc: '',
       args: [],
@@ -685,9 +690,9 @@ class S {
     );
   }
 
-  /// `Logout`
+  /// `Log Out`
   String get logoutlabel {
-    return Intl.message('Logout', name: 'logoutlabel', desc: '', args: []);
+    return Intl.message('Log Out', name: 'logoutlabel', desc: '', args: []);
   }
 
   /// `Delete Account`
@@ -845,10 +850,10 @@ class S {
     return Intl.message('Last Name', name: 'lastnamelabel', desc: '', args: []);
   }
 
-  /// `Profile Updated Successfully`
+  /// `Profile updated`
   String get updateprofilesuccess {
     return Intl.message(
-      'Profile Updated Successfully',
+      'Profile updated',
       name: 'updateprofilesuccess',
       desc: '',
       args: [],
@@ -1145,15 +1150,15 @@ class S {
     );
   }
 
-  /// `Login`
+  /// `Log In`
   String get loginbuttonlabel {
-    return Intl.message('Login', name: 'loginbuttonlabel', desc: '', args: []);
+    return Intl.message('Log In', name: 'loginbuttonlabel', desc: '', args: []);
   }
 
-  /// `Sign Up`
+  /// `Create Account`
   String get signupbuttonlabel {
     return Intl.message(
-      'Sign Up',
+      'Create Account',
       name: 'signupbuttonlabel',
       desc: '',
       args: [],
@@ -1225,10 +1230,10 @@ class S {
     );
   }
 
-  /// `•Password must be: \n •8 characters long \n •Contain at least one uppercase letter \n •One lowercase letter \n •One special character`
+  /// `Use at least 8 characters, including an uppercase letter, a lowercase letter, a number and a symbol.`
   String get passwordvalidationtext {
     return Intl.message(
-      '•Password must be: \n •8 characters long \n •Contain at least one uppercase letter \n •One lowercase letter \n •One special character',
+      'Use at least 8 characters, including an uppercase letter, a lowercase letter, a number and a symbol.',
       name: 'passwordvalidationtext',
       desc: '',
       args: [],
@@ -1255,10 +1260,10 @@ class S {
     );
   }
 
-  /// `Register Now`
+  /// `Create Account`
   String get registarnowlabel {
     return Intl.message(
-      'Register Now',
+      'Create Account',
       name: 'registarnowlabel',
       desc: '',
       args: [],
@@ -1320,10 +1325,10 @@ class S {
     return Intl.message('OK', name: 'okLabel', desc: '', args: []);
   }
 
-  /// `Something went wrong. Please try again later.`
+  /// `Couldn't load this. Try again.`
   String get somethingwentwrong {
     return Intl.message(
-      'Something went wrong. Please try again later.',
+      'Couldn\'t load this. Try again.',
       name: 'somethingwentwrong',
       desc: '',
       args: [],
@@ -1460,9 +1465,9 @@ class S {
     );
   }
 
-  /// `No Report!!!`
+  /// `No reports`
   String get noReport {
-    return Intl.message('No Report!!!', name: 'noReport', desc: '', args: []);
+    return Intl.message('No reports', name: 'noReport', desc: '', args: []);
   }
 
   /// `Enter the email associated with your account`
@@ -1480,10 +1485,10 @@ class S {
     return Intl.message('Send Email', name: 'sendEmail', desc: '', args: []);
   }
 
-  /// `No Data Found`
+  /// `Nothing to show`
   String get noDataFound {
     return Intl.message(
-      'No Data Found',
+      'Nothing to show',
       name: 'noDataFound',
       desc: '',
       args: [],
@@ -1545,14 +1550,9 @@ class S {
     return Intl.message('Powered by', name: 'poweredby', desc: '', args: []);
   }
 
-  /// `Read More...`
+  /// `Read more`
   String get readmorelabel {
-    return Intl.message(
-      'Read More...',
-      name: 'readmorelabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Read more', name: 'readmorelabel', desc: '', args: []);
   }
 
   /// `No Image`
@@ -1688,6 +1688,516 @@ class S {
       desc: '',
       args: [],
     );
+  }
+
+  /// `Liked`
+  String get libraryLiked {
+    return Intl.message('Liked', name: 'libraryLiked', desc: '', args: []);
+  }
+
+  /// `Watchlist`
+  String get libraryWatchlist {
+    return Intl.message(
+      'Watchlist',
+      name: 'libraryWatchlist',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tap ♡ on any movie or show to keep it here.`
+  String get likedEmptyBody {
+    return Intl.message(
+      'Tap ♡ on any movie or show to keep it here.',
+      name: 'likedEmptyBody',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add titles to your Watchlist to find them here later.`
+  String get watchlistEmptyBody {
+    return Intl.message(
+      'Add titles to your Watchlist to find them here later.',
+      name: 'watchlistEmptyBody',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Browse Movies`
+  String get browseMovies {
+    return Intl.message(
+      'Browse Movies',
+      name: 'browseMovies',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Log In to Save Titles`
+  String get signInPromptTitle {
+    return Intl.message(
+      'Log In to Save Titles',
+      name: 'signInPromptTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Log in to keep a watchlist, like titles and write reviews.`
+  String get signInPromptBody {
+    return Intl.message(
+      'Log in to keep a watchlist, like titles and write reviews.',
+      name: 'signInPromptBody',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Log in to read and write reviews.`
+  String get signInToReview {
+    return Intl.message(
+      'Log in to read and write reviews.',
+      name: 'signInToReview',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue with Google`
+  String get continueWithGoogle {
+    return Intl.message(
+      'Continue with Google',
+      name: 'continueWithGoogle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Couldn't load {section}.`
+  String couldntLoadSection(Object section) {
+    return Intl.message(
+      'Couldn\'t load $section.',
+      name: 'couldntLoadSection',
+      desc: '',
+      args: [section],
+    );
+  }
+
+  /// `Couldn't load this title.`
+  String get couldntLoadTitle {
+    return Intl.message(
+      'Couldn\'t load this title.',
+      name: 'couldntLoadTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No results for “{query}”. Check the spelling or try another title.`
+  String noResultsFor(Object query) {
+    return Intl.message(
+      'No results for “$query”. Check the spelling or try another title.',
+      name: 'noResultsFor',
+      desc: '',
+      args: [query],
+    );
+  }
+
+  /// `Clear`
+  String get clearHistory {
+    return Intl.message('Clear', name: 'clearHistory', desc: '', args: []);
+  }
+
+  /// `Undo`
+  String get undo {
+    return Intl.message('Undo', name: 'undo', desc: '', args: []);
+  }
+
+  /// `Removed from Watchlist`
+  String get removedFromWatchlist {
+    return Intl.message(
+      'Removed from Watchlist',
+      name: 'removedFromWatchlist',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Removed from Liked`
+  String get removedFromLiked {
+    return Intl.message(
+      'Removed from Liked',
+      name: 'removedFromLiked',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete Account?`
+  String get deleteAccountTitle {
+    return Intl.message(
+      'Delete Account?',
+      name: 'deleteAccountTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your profile, watchlist and reviews will be permanently deleted. This can't be undone.`
+  String get deleteAccountMessage {
+    return Intl.message(
+      'Your profile, watchlist and reviews will be permanently deleted. This can\'t be undone.',
+      name: 'deleteAccountMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your account has been deleted.`
+  String get deleteAccountDone {
+    return Intl.message(
+      'Your account has been deleted.',
+      name: 'deleteAccountDone',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete Review?`
+  String get deleteReviewTitle {
+    return Intl.message(
+      'Delete Review?',
+      name: 'deleteReviewTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This can't be undone.`
+  String get deleteReviewMessage {
+    return Intl.message(
+      'This can\'t be undone.',
+      name: 'deleteReviewMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email or password is incorrect.`
+  String get authErrorInvalidCredential {
+    return Intl.message(
+      'Email or password is incorrect.',
+      name: 'authErrorInvalidCredential',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You're offline. Check your connection and try again.`
+  String get authErrorNetwork {
+    return Intl.message(
+      'You\'re offline. Check your connection and try again.',
+      name: 'authErrorNetwork',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Too many attempts. Try again in a few minutes.`
+  String get authErrorTooManyRequests {
+    return Intl.message(
+      'Too many attempts. Try again in a few minutes.',
+      name: 'authErrorTooManyRequests',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An account with this email already exists.`
+  String get authErrorEmailInUse {
+    return Intl.message(
+      'An account with this email already exists.',
+      name: 'authErrorEmailInUse',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose a stronger password.`
+  String get authErrorWeakPassword {
+    return Intl.message(
+      'Choose a stronger password.',
+      name: 'authErrorWeakPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No account uses this email.`
+  String get authErrorUserNotFound {
+    return Intl.message(
+      'No account uses this email.',
+      name: 'authErrorUserNotFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter an email like name@example.com.`
+  String get authErrorInvalidEmail {
+    return Intl.message(
+      'Enter an email like name@example.com.',
+      name: 'authErrorInvalidEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Couldn't complete that. Try again.`
+  String get authErrorGeneric {
+    return Intl.message(
+      'Couldn\'t complete that. Try again.',
+      name: 'authErrorGeneric',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `For your security, log in again to delete your account.`
+  String get authErrorRecentLogin {
+    return Intl.message(
+      'For your security, log in again to delete your account.',
+      name: 'authErrorRecentLogin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Passwords don't match.`
+  String get passwordsDontMatch {
+    return Intl.message(
+      'Passwords don\'t match.',
+      name: 'passwordsDontMatch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter a valid email address.`
+  String get enterValidEmail {
+    return Intl.message(
+      'Enter a valid email address.',
+      name: 'enterValidEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your password.`
+  String get enterPassword {
+    return Intl.message(
+      'Enter your password.',
+      name: 'enterPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter a first name.`
+  String get enterFirstName {
+    return Intl.message(
+      'Enter a first name.',
+      name: 'enterFirstName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check your email. We sent a reset link to {email}.`
+  String resetLinkSent(Object email) {
+    return Intl.message(
+      'Check your email. We sent a reset link to $email.',
+      name: 'resetLinkSent',
+      desc: '',
+      args: [email],
+    );
+  }
+
+  /// `Back to Log In`
+  String get backToLogIn {
+    return Intl.message(
+      'Back to Log In',
+      name: 'backToLogIn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reset Password`
+  String get resetPassword {
+    return Intl.message(
+      'Reset Password',
+      name: 'resetPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We'll email you a reset link`
+  String get resetPasswordSubtitle {
+    return Intl.message(
+      'We\'ll email you a reset link',
+      name: 'resetPasswordSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Report sent. Thanks for helping improve Movie Night.`
+  String get reportSent {
+    return Intl.message(
+      'Report sent. Thanks for helping improve Movie Night.',
+      name: 'reportSent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Couldn't send report. Try again.`
+  String get reportFailed {
+    return Intl.message(
+      'Couldn\'t send report. Try again.',
+      name: 'reportFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add a short summary.`
+  String get reportSummaryRequired {
+    return Intl.message(
+      'Add a short summary.',
+      name: 'reportSummaryRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Couldn't update Watchlist. Try again.`
+  String get watchlistUpdateFailed {
+    return Intl.message(
+      'Couldn\'t update Watchlist. Try again.',
+      name: 'watchlistUpdateFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `In Watchlist`
+  String get inWatchlist {
+    return Intl.message(
+      'In Watchlist',
+      name: 'inWatchlist',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Appearance`
+  String get appearance {
+    return Intl.message('Appearance', name: 'appearance', desc: '', args: []);
+  }
+
+  /// `System`
+  String get appearanceSystem {
+    return Intl.message('System', name: 'appearanceSystem', desc: '', args: []);
+  }
+
+  /// `Dark`
+  String get appearanceDark {
+    return Intl.message('Dark', name: 'appearanceDark', desc: '', args: []);
+  }
+
+  /// `Light`
+  String get appearanceLight {
+    return Intl.message('Light', name: 'appearanceLight', desc: '', args: []);
+  }
+
+  /// `See All Reviews ({count})`
+  String seeAllReviews(Object count) {
+    return Intl.message(
+      'See All Reviews ($count)',
+      name: 'seeAllReviews',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `Watch Trailers`
+  String get watchTrailers {
+    return Intl.message(
+      'Watch Trailers',
+      name: 'watchTrailers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View poster full screen`
+  String get viewPosterFullScreen {
+    return Intl.message(
+      'View poster full screen',
+      name: 'viewPosterFullScreen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Play {title}`
+  String playVideo(Object title) {
+    return Intl.message(
+      'Play $title',
+      name: 'playVideo',
+      desc: '',
+      args: [title],
+    );
+  }
+
+  /// `{score} out of 10`
+  String ratingOutOf10(Object score) {
+    return Intl.message(
+      '$score out of 10',
+      name: 'ratingOutOf10',
+      desc: '',
+      args: [score],
+    );
+  }
+
+  /// `TMDB`
+  String get tmdbLabel {
+    return Intl.message('TMDB', name: 'tmdbLabel', desc: '', args: []);
+  }
+
+  /// `Check out {title} on Movie Night\n{url}`
+  String shareText(Object title, Object url) {
+    return Intl.message(
+      'Check out $title on Movie Night\n$url',
+      name: 'shareText',
+      desc: '',
+      args: [title, url],
+    );
+  }
+
+  /// `Close`
+  String get close {
+    return Intl.message('Close', name: 'close', desc: '', args: []);
+  }
+
+  /// `Liked`
+  String get liked {
+    return Intl.message('Liked', name: 'liked', desc: '', args: []);
   }
 }
 

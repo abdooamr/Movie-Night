@@ -22,6 +22,22 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(character) => "${character} के रूप में";
 
+  static String m1(section) => "${section} लोड नहीं हो सका।";
+
+  static String m2(query) =>
+      "“${query}” के लिए कोई परिणाम नहीं। वर्तनी जाँचें या कोई दूसरा शीर्षक आज़माएँ।";
+
+  static String m3(title) => "${title} चलाएँ";
+
+  static String m4(score) => "10 में से ${score}";
+
+  static String m5(email) =>
+      "अपना ईमेल देखें। हमने ${email} पर रीसेट लिंक भेजा है।";
+
+  static String m6(count) => "सभी समीक्षाएँ देखें (${count})";
+
+  static String m7(title, url) => "Movie Night पर ${title} देखें\n${url}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "Actiongenre": MessageLookupByLibrary.simpleMessage("क्रिया"),
@@ -82,8 +98,41 @@ class MessageLookup extends MessageLookupByLibrary {
     "animationmovielabel": MessageLookupByLibrary.simpleMessage(
       "एनीमेशन फ़िल्में",
     ),
+    "appearance": MessageLookupByLibrary.simpleMessage("दिखावट"),
+    "appearanceDark": MessageLookupByLibrary.simpleMessage("डार्क"),
+    "appearanceLight": MessageLookupByLibrary.simpleMessage("लाइट"),
+    "appearanceSystem": MessageLookupByLibrary.simpleMessage("सिस्टम"),
     "arabiclabel": MessageLookupByLibrary.simpleMessage("अरबी"),
+    "authErrorEmailInUse": MessageLookupByLibrary.simpleMessage(
+      "इस ईमेल से पहले से एक खाता मौजूद है।",
+    ),
+    "authErrorGeneric": MessageLookupByLibrary.simpleMessage(
+      "यह पूरा नहीं हो सका। फिर कोशिश करें।",
+    ),
+    "authErrorInvalidCredential": MessageLookupByLibrary.simpleMessage(
+      "ईमेल या पासवर्ड गलत है।",
+    ),
+    "authErrorInvalidEmail": MessageLookupByLibrary.simpleMessage(
+      "name@example.com जैसा ईमेल दर्ज करें।",
+    ),
+    "authErrorNetwork": MessageLookupByLibrary.simpleMessage(
+      "आप ऑफ़लाइन हैं। अपना कनेक्शन जाँचें और फिर कोशिश करें।",
+    ),
+    "authErrorRecentLogin": MessageLookupByLibrary.simpleMessage(
+      "आपकी सुरक्षा के लिए, खाता हटाने से पहले फिर से लॉग इन करें।",
+    ),
+    "authErrorTooManyRequests": MessageLookupByLibrary.simpleMessage(
+      "बहुत ज़्यादा प्रयास हुए। कुछ मिनट बाद फिर कोशिश करें।",
+    ),
+    "authErrorUserNotFound": MessageLookupByLibrary.simpleMessage(
+      "इस ईमेल से कोई खाता नहीं है।",
+    ),
+    "authErrorWeakPassword": MessageLookupByLibrary.simpleMessage(
+      "कोई मज़बूत पासवर्ड चुनें।",
+    ),
+    "backToLogIn": MessageLookupByLibrary.simpleMessage("लॉग इन पर वापस जाएँ"),
     "biography": MessageLookupByLibrary.simpleMessage("जीवनी"),
+    "browseMovies": MessageLookupByLibrary.simpleMessage("फ़िल्में देखें"),
     "buyon": MessageLookupByLibrary.simpleMessage("खरीदें:"),
     "cancelLabel": MessageLookupByLibrary.simpleMessage("रद्द करें"),
     "castAs": m0,
@@ -97,17 +146,37 @@ class MessageLookup extends MessageLookupByLibrary {
     "changepasswordsuccess": MessageLookupByLibrary.simpleMessage(
       "पासवर्ड सफलतापूर्वक बदल गया",
     ),
+    "clearHistory": MessageLookupByLibrary.simpleMessage("साफ़ करें"),
     "clearReport": MessageLookupByLibrary.simpleMessage("रिपोर्ट हटाएं"),
     "clearSearchTooltip": MessageLookupByLibrary.simpleMessage("खोज साफ़ करें"),
+    "close": MessageLookupByLibrary.simpleMessage("बंद करें"),
     "comedymovielabel": MessageLookupByLibrary.simpleMessage("कॉमेडी फ़िल्में"),
+    "continueWithGoogle": MessageLookupByLibrary.simpleMessage(
+      "Google से जारी रखें",
+    ),
+    "couldntLoadSection": m1,
+    "couldntLoadTitle": MessageLookupByLibrary.simpleMessage(
+      "यह शीर्षक लोड नहीं हो सका।",
+    ),
     "createaccountlabel": MessageLookupByLibrary.simpleMessage("खाता बनाएँ"),
     "crimemovielabel": MessageLookupByLibrary.simpleMessage("अपराध फ़िल्में"),
     "darkmodelabel": MessageLookupByLibrary.simpleMessage("डार्क मोड"),
     "delete": MessageLookupByLibrary.simpleMessage("हटाएं"),
+    "deleteAccountDone": MessageLookupByLibrary.simpleMessage(
+      "आपका खाता हटा दिया गया है।",
+    ),
+    "deleteAccountMessage": MessageLookupByLibrary.simpleMessage(
+      "आपकी प्रोफ़ाइल, वॉचलिस्ट और समीक्षाएँ हमेशा के लिए हटा दी जाएँगी। इसे पूर्ववत नहीं किया जा सकता।",
+    ),
+    "deleteAccountTitle": MessageLookupByLibrary.simpleMessage("खाता हटाएँ?"),
     "deleteBookmark": MessageLookupByLibrary.simpleMessage("बुकमार्क हटाएं"),
     "deleteBookmarkConfirmation": MessageLookupByLibrary.simpleMessage(
       "क्या आप वाकई इस बुकमार्क को हटाना चाहते हैं? यह कार्रवाई वापस नहीं ली जा सकती।",
     ),
+    "deleteReviewMessage": MessageLookupByLibrary.simpleMessage(
+      "इसे पूर्ववत नहीं किया जा सकता।",
+    ),
+    "deleteReviewTitle": MessageLookupByLibrary.simpleMessage("समीक्षा हटाएँ?"),
     "deleteReviewTooltip": MessageLookupByLibrary.simpleMessage(
       "समीक्षा हटाएं",
     ),
@@ -133,20 +202,29 @@ class MessageLookup extends MessageLookupByLibrary {
       "प्रोफ़ाइल संपादित करें",
     ),
     "egyptmovieswidget_title": MessageLookupByLibrary.simpleMessage(
-      "मिस्री फ़िल्में",
+      "मिस्र की फ़िल्में",
     ),
     "egypttvwidget_title": MessageLookupByLibrary.simpleMessage(
-      "मिस्री टीवी शो",
+      "मिस्र के टीवी शो",
     ),
     "email": MessageLookupByLibrary.simpleMessage("ईमेल"),
     "emailaddresslabel": MessageLookupByLibrary.simpleMessage("ईमेल पता"),
     "englishlabel": MessageLookupByLibrary.simpleMessage("अंग्रेज़ी"),
+    "enterFirstName": MessageLookupByLibrary.simpleMessage(
+      "पहला नाम दर्ज करें।",
+    ),
+    "enterPassword": MessageLookupByLibrary.simpleMessage(
+      "अपना पासवर्ड दर्ज करें।",
+    ),
+    "enterValidEmail": MessageLookupByLibrary.simpleMessage(
+      "एक मान्य ईमेल पता दर्ज करें।",
+    ),
     "error": MessageLookupByLibrary.simpleMessage("त्रुटि"),
     "errorLoginAgain": MessageLookupByLibrary.simpleMessage(
       "त्रुटि, कृपया फिर से लॉग इन करें और दोबारा प्रयास करें",
     ),
     "errorTitle": MessageLookupByLibrary.simpleMessage("त्रुटि"),
-    "explorenavbar": MessageLookupByLibrary.simpleMessage("अन्वेषण"),
+    "explorenavbar": MessageLookupByLibrary.simpleMessage("खोजें"),
     "familymovielabel": MessageLookupByLibrary.simpleMessage("परिवार फ़िल्में"),
     "fantasymovielabel": MessageLookupByLibrary.simpleMessage(
       "काल्पनिक फ़िल्में",
@@ -178,21 +256,28 @@ class MessageLookup extends MessageLookupByLibrary {
       "भूतपूर्व फ़िल्में",
     ),
     "id": MessageLookupByLibrary.simpleMessage("आईडी"),
+    "inWatchlist": MessageLookupByLibrary.simpleMessage("वॉचलिस्ट में है"),
     "italianlabel": MessageLookupByLibrary.simpleMessage("इतालवी"),
     "kidstvlabel": MessageLookupByLibrary.simpleMessage(
       "बच्चों के लिए टीवी शो",
     ),
     "lastnamelabel": MessageLookupByLibrary.simpleMessage("अंतिम नाम"),
+    "libraryLiked": MessageLookupByLibrary.simpleMessage("पसंदीदा"),
+    "libraryWatchlist": MessageLookupByLibrary.simpleMessage("वॉचलिस्ट"),
     "like": MessageLookupByLibrary.simpleMessage("पसंद"),
-    "likednavbar": MessageLookupByLibrary.simpleMessage("पसंदीदा"),
+    "liked": MessageLookupByLibrary.simpleMessage("पसंदीदा"),
+    "likedEmptyBody": MessageLookupByLibrary.simpleMessage(
+      "किसी भी फ़िल्म या शो पर ♡ दबाएँ, ताकि वह यहाँ रहे।",
+    ),
+    "likednavbar": MessageLookupByLibrary.simpleMessage("लाइब्रेरी"),
     "localreviewswitch": MessageLookupByLibrary.simpleMessage(
       "स्थानीय समीक्षा",
     ),
-    "loginbuttonlabel": MessageLookupByLibrary.simpleMessage("लॉगिन"),
+    "loginbuttonlabel": MessageLookupByLibrary.simpleMessage("लॉग इन करें"),
     "logintocontinue": MessageLookupByLibrary.simpleMessage(
       "कृपया जारी रखने के लिए लॉगिन करें",
     ),
-    "logoutlabel": MessageLookupByLibrary.simpleMessage("लॉगआउट"),
+    "logoutlabel": MessageLookupByLibrary.simpleMessage("लॉग आउट करें"),
     "managesettingslabel": MessageLookupByLibrary.simpleMessage("प्रबंधन"),
     "mediatypemoviess": MessageLookupByLibrary.simpleMessage("फ़िल्में"),
     "minute": MessageLookupByLibrary.simpleMessage("मिनट"),
@@ -207,7 +292,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "noBirthdayFound": MessageLookupByLibrary.simpleMessage(
       "जन्म तिथि नहीं मिली",
     ),
-    "noDataFound": MessageLookupByLibrary.simpleMessage("कोई डेटा नहीं मिला"),
+    "noDataFound": MessageLookupByLibrary.simpleMessage(
+      "दिखाने के लिए कुछ नहीं",
+    ),
     "noImage": MessageLookupByLibrary.simpleMessage("कोई छवि नहीं"),
     "noInternet": MessageLookupByLibrary.simpleMessage(
       "कोई इंटरनेट कनेक्शन नहीं",
@@ -215,8 +302,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "noInternetMessage": MessageLookupByLibrary.simpleMessage(
       "कृपया अपने इंटरनेट कनेक्शन की जाँच करें और पुनः प्रयास करें",
     ),
-    "noReport": MessageLookupByLibrary.simpleMessage("कोई रिपोर्ट नहीं!"),
+    "noReport": MessageLookupByLibrary.simpleMessage("कोई रिपोर्ट नहीं"),
     "noResults": MessageLookupByLibrary.simpleMessage("कोई परिणाम नहीं"),
+    "noResultsFor": m2,
     "noResultsMessage": MessageLookupByLibrary.simpleMessage(
       "आपकी खोज के लिए कोई परिणाम नहीं मिले",
     ),
@@ -236,7 +324,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "कोई इंटरनेट कनेक्शन नहीं",
     ),
     "nolikedmovies": MessageLookupByLibrary.simpleMessage(
-      "आपकी पसंदीदा फ़िल्मों की सूची खाली है\nकुछ फ़िल्में अपनी पसंदीदा सूचि में जोड़ना शुरू करें और अपने पसंदीदा को खोजें!",
+      "अभी कोई पसंदीदा शीर्षक नहीं",
     ),
     "nomoviesinwatchlist": MessageLookupByLibrary.simpleMessage(
       "आपकी देखी गई फ़िल्मों की सूची खाली है\nकुछ फ़िल्में अपनी देखी गई सूचि में जोड़ना शुरू करें और अपने पसंदीदा को खोजें!",
@@ -258,9 +346,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "पासवर्ड की पुष्टि करें",
     ),
     "passwordlabel": MessageLookupByLibrary.simpleMessage("पासवर्ड"),
-    "passwordvalidationtext": MessageLookupByLibrary.simpleMessage(
-      "• पासवर्ड कोने: \n • 8 अक्षरों का होना चाहिए \n • कम से कम एक अपरकेस अक्षर \n • एक लोअरकेस अक्षर \n • एक विशेष चरित्र",
+    "passwordsDontMatch": MessageLookupByLibrary.simpleMessage(
+      "पासवर्ड मेल नहीं खाते।",
     ),
+    "passwordvalidationtext": MessageLookupByLibrary.simpleMessage(
+      "कम से कम 8 अक्षर रखें, जिनमें एक बड़ा अक्षर, एक छोटा अक्षर, एक अंक और एक प्रतीक हो।",
+    ),
+    "playVideo": m3,
     "pleasecheckinternetconnection": MessageLookupByLibrary.simpleMessage(
       "अपने इंटरनेट कनेक्शन की जाँच करें और पुन: प्रयास करें",
     ),
@@ -279,23 +371,42 @@ class MessageLookup extends MessageLookupByLibrary {
       "प्रोफ़ाइल फ़ोटो अपलोड नहीं हो सकी। कृपया पुनः प्रयास करें।",
     ),
     "profilenavbar": MessageLookupByLibrary.simpleMessage("प्रोफ़ाइल"),
-    "readmorelabel": MessageLookupByLibrary.simpleMessage("और पढ़ें..."),
+    "ratingOutOf10": m4,
+    "readmorelabel": MessageLookupByLibrary.simpleMessage("और पढ़ें"),
     "realitytvlabel": MessageLookupByLibrary.simpleMessage(
       "वास्तविकता टीवी शो",
     ),
-    "registarnowlabel": MessageLookupByLibrary.simpleMessage(
-      "अभी पंजीकरण करें",
+    "registarnowlabel": MessageLookupByLibrary.simpleMessage("खाता बनाएँ"),
+    "removedFromLiked": MessageLookupByLibrary.simpleMessage(
+      "पसंदीदा से हटाया गया",
+    ),
+    "removedFromWatchlist": MessageLookupByLibrary.simpleMessage(
+      "वॉचलिस्ट से हटाया गया",
     ),
     "removefromwatchlist": MessageLookupByLibrary.simpleMessage(
       "देखने की सूचि से हटाएँ",
     ),
     "report": MessageLookupByLibrary.simpleMessage("रिपोर्ट"),
+    "reportFailed": MessageLookupByLibrary.simpleMessage(
+      "रिपोर्ट नहीं भेजी जा सकी। फिर कोशिश करें।",
+    ),
     "reportPage": MessageLookupByLibrary.simpleMessage("रिपोर्ट पेज"),
+    "reportSent": MessageLookupByLibrary.simpleMessage(
+      "रिपोर्ट भेज दी गई। Movie Night को बेहतर बनाने में मदद के लिए धन्यवाद।",
+    ),
+    "reportSummaryRequired": MessageLookupByLibrary.simpleMessage(
+      "एक छोटा सारांश जोड़ें।",
+    ),
     "reportabuglabel": MessageLookupByLibrary.simpleMessage(
       "बग की रिपोर्ट करें",
     ),
     "reportpagelabel": MessageLookupByLibrary.simpleMessage(
       "कृपया हमें यदि आपको ऐप में कोई बग मिलता है या कोई सुझाव हो, तो हमें रिपोर्ट भेजें।",
+    ),
+    "resetLinkSent": m5,
+    "resetPassword": MessageLookupByLibrary.simpleMessage("पासवर्ड रीसेट करें"),
+    "resetPasswordSubtitle": MessageLookupByLibrary.simpleMessage(
+      "हम आपको रीसेट लिंक ईमेल करेंगे",
     ),
     "role": MessageLookupByLibrary.simpleMessage("भूमिका"),
     "romancemovielabel": MessageLookupByLibrary.simpleMessage(
@@ -308,7 +419,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "scifitvlabel": MessageLookupByLibrary.simpleMessage(
       "विज्ञान-कल्पना और काल्पनिकता टीवी शो",
     ),
-    "searchhint": MessageLookupByLibrary.simpleMessage("खोजें"),
+    "searchhint": MessageLookupByLibrary.simpleMessage(
+      "फ़िल्में, टीवी शो, लोग",
+    ),
+    "seeAllReviews": m6,
     "sendEmail": MessageLookupByLibrary.simpleMessage("ईमेल भेजें"),
     "sendReviewTooltip": MessageLookupByLibrary.simpleMessage("समीक्षा भेजें"),
     "sendfeedbacklabel": MessageLookupByLibrary.simpleMessage(
@@ -316,10 +430,20 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "sendreportlabel": MessageLookupByLibrary.simpleMessage("रिपोर्ट भेजें"),
     "share": MessageLookupByLibrary.simpleMessage("साझा करें"),
-    "signupbuttonlabel": MessageLookupByLibrary.simpleMessage("साइन अप"),
+    "shareText": m7,
+    "signInPromptBody": MessageLookupByLibrary.simpleMessage(
+      "वॉचलिस्ट रखने, शीर्षकों को पसंद करने और समीक्षाएँ लिखने के लिए लॉग इन करें।",
+    ),
+    "signInPromptTitle": MessageLookupByLibrary.simpleMessage(
+      "शीर्षक सहेजने के लिए लॉग इन करें",
+    ),
+    "signInToReview": MessageLookupByLibrary.simpleMessage(
+      "समीक्षाएँ पढ़ने और लिखने के लिए लॉग इन करें।",
+    ),
+    "signupbuttonlabel": MessageLookupByLibrary.simpleMessage("खाता बनाएँ"),
     "soaptvlabel": MessageLookupByLibrary.simpleMessage("साबुन टीवी शो"),
     "somethingwentwrong": MessageLookupByLibrary.simpleMessage(
-      "कुछ गलत हो गया। कृपया बाद में फिर से कोशिश करें।",
+      "यह लोड नहीं हो सका। फिर कोशिश करें।",
     ),
     "spanishlabel": MessageLookupByLibrary.simpleMessage("स्पैनिश"),
     "storyline": MessageLookupByLibrary.simpleMessage("कहानी"),
@@ -333,6 +457,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "thrillermovielabel": MessageLookupByLibrary.simpleMessage(
       "थ्रिलर फ़िल्में",
     ),
+    "tmdbLabel": MessageLookupByLibrary.simpleMessage("TMDB"),
     "trendingmovieswidget_title": MessageLookupByLibrary.simpleMessage(
       "लोकप्रिय फ़िल्में",
     ),
@@ -350,6 +475,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "tvsoap": MessageLookupByLibrary.simpleMessage("साबुन"),
     "tvswitch": MessageLookupByLibrary.simpleMessage("टीवी शो"),
     "tvtalk": MessageLookupByLibrary.simpleMessage("बातचीत"),
+    "undo": MessageLookupByLibrary.simpleMessage("पूर्ववत करें"),
     "unlike": MessageLookupByLibrary.simpleMessage("पसंद नहीं"),
     "upcomingwidget_title": MessageLookupByLibrary.simpleMessage(
       "आने वाली फ़िल्में",
@@ -361,15 +487,25 @@ class MessageLookup extends MessageLookupByLibrary {
       "प्रोफ़ाइल अपडेट करें",
     ),
     "updateprofilesuccess": MessageLookupByLibrary.simpleMessage(
-      "प्रोफ़ाइल सफलतापूर्वक अपडेट की गई",
+      "प्रोफ़ाइल अपडेट हो गई",
     ),
     "userProfile": MessageLookupByLibrary.simpleMessage("उपयोगकर्ता प्रोफ़ाइल"),
     "videoslabel": MessageLookupByLibrary.simpleMessage("वीडियो"),
     "viewFullDetails": MessageLookupByLibrary.simpleMessage("पूरा विवरण देखें"),
+    "viewPosterFullScreen": MessageLookupByLibrary.simpleMessage(
+      "पोस्टर फ़ुल स्क्रीन में देखें",
+    ),
     "viewReports": MessageLookupByLibrary.simpleMessage("रिपोर्ट देखें"),
     "warmovielabel": MessageLookupByLibrary.simpleMessage("युद्ध फ़िल्में"),
     "wartvlabel": MessageLookupByLibrary.simpleMessage(
       "युद्ध और राजनीति टीवी शो",
+    ),
+    "watchTrailers": MessageLookupByLibrary.simpleMessage("ट्रेलर देखें"),
+    "watchlistEmptyBody": MessageLookupByLibrary.simpleMessage(
+      "अपनी वॉचलिस्ट में शीर्षक जोड़ें, ताकि बाद में वे यहाँ मिलें।",
+    ),
+    "watchlistUpdateFailed": MessageLookupByLibrary.simpleMessage(
+      "वॉचलिस्ट अपडेट नहीं हो सकी। फिर कोशिश करें।",
     ),
     "watchlistlabel": MessageLookupByLibrary.simpleMessage("देखें"),
     "watchon": MessageLookupByLibrary.simpleMessage("देखें:"),
