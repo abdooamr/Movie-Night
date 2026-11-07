@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// User-selectable appearance. Defaults to following the system.
+enum AppAppearance { system, dark, light }
+
 class ThemeProvider extends ChangeNotifier {
-  ThemeMode themeMode = ThemeMode.dark;
-  bool get isDarkMode => themeMode == ThemeMode.dark;
+  static const _appearanceKey = 'appearance';
+  static const _legacyDarkModeKey = 'darkMode';
+
+  AppAppearance appearance = AppAppearance.system;
+
+  ThemeMode get themeMode => switch (appearance) {
+        AppAppearance.system => ThemeMode.system,
+        AppAppearance.dark => ThemeMode.dark,
+        AppAppearance.light => ThemeMode.light,
+      };
+
+  /// Kept for legacy switch widgets; removed with them.
+  bool get isDarkMode => appearance == AppAppearance.dark;
 
   ThemeProvider() {
     _load();
@@ -12,79 +26,40 @@ class ThemeProvider extends ChangeNotifier {
   Future<void> _load() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final isDark = prefs.getBool('darkMode');
-      if (isDark != null) {
-        themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
+      final stored = prefs.getString(_appearanceKey);
+      AppAppearance? loaded;
+      if (stored != null) {
+        for (final a in AppAppearance.values) {
+          if (a.name == stored) loaded = a;
+        }
+      } else {
+        // One-time migration from the old bool switch.
+        final legacy = prefs.getBool(_legacyDarkModeKey);
+        if (legacy != null) {
+          loaded = legacy ? AppAppearance.dark : AppAppearance.light;
+          await prefs.setString(_appearanceKey, loaded.name);
+          await prefs.remove(_legacyDarkModeKey);
+        }
+      }
+      if (loaded != null && loaded != appearance) {
+        appearance = loaded;
         notifyListeners();
       }
     } catch (_) {
-      // Fall back to the default (dark) theme.
+      // Fall back to following the system.
     }
   }
 
-  Future<void> toggleTheme(bool isOn) async {
-    themeMode = isOn ? ThemeMode.dark : ThemeMode.light;
+  Future<void> setAppearance(AppAppearance a) async {
+    appearance = a;
     notifyListeners();
     try {
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('darkMode', isOn);
+      await prefs.setString(_appearanceKey, a.name);
     } catch (_) {}
   }
-}
 
-class MyThemes {
-  //-------------DARK THEME SETTINGS----
-  static final darkTheme = ThemeData(
-      useMaterial3: true,
-      scaffoldBackgroundColor: Color(0xFF171823),
-      brightness: Brightness.dark,
-      fontFamily: 'poppins',
-      listTileTheme: const ListTileThemeData(tileColor: Color(0xFF171823)),
-      iconTheme: const IconThemeData(color: Colors.white),
-      cardColor: Color.fromARGB(255, 28, 28, 30),
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.grey.shade500),
-      textTheme: const TextTheme(
-          bodyMedium: TextStyle(
-            color: Colors.white,
-          ),
-          bodyLarge: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-          titleLarge: TextStyle(
-              fontSize: 20, fontWeight: FontWeight.w600, color: Colors.white)),
-      pageTransitionsTheme: const PageTransitionsTheme(
-          builders: {TargetPlatform.android: ZoomPageTransitionsBuilder()})
-      // colorScheme:  ColorScheme.dark(),
-      );
-
-  //-------------light THEME SETTINGS----
-  static final lightTheme = ThemeData(
-      useMaterial3: true,
-      scaffoldBackgroundColor: Colors.white,
-      brightness: Brightness.light,
-      fontFamily: 'poppins',
-      listTileTheme: const ListTileThemeData(tileColor: Colors.white),
-      iconTheme: const IconThemeData(color: Colors.black),
-      cardColor: Color.fromARGB(255, 86, 60, 133),
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          backgroundColor: Colors.white,
-          selectedItemColor: Colors.black,
-          unselectedItemColor: Colors.grey.shade500),
-      textTheme: const TextTheme(
-          bodyMedium: TextStyle(
-            color: Colors.black87,
-          ),
-          bodyLarge: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
-          titleLarge: TextStyle(
-              fontSize: 20, fontWeight: FontWeight.w600, color: Colors.black)),
-      pageTransitionsTheme: const PageTransitionsTheme(
-          builders: {TargetPlatform.android: ZoomPageTransitionsBuilder()})
-      //colorScheme:  ColorScheme.light(),
-      );
+  @Deprecated('Use setAppearance; removed with the legacy switch widgets.')
+  Future<void> toggleTheme(bool isOn) =>
+      setAppearance(isOn ? AppAppearance.dark : AppAppearance.light);
 }

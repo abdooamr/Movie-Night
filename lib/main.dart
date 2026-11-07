@@ -10,6 +10,7 @@ import 'package:Movie_Night/src/widgets/offline_banner.dart';
 import 'package:Movie_Night/src/Auth/auth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'generated/l10n.dart';
+import 'src/design/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +28,13 @@ void main() async {
   ], child: const MyApp()));
 }
 
+final _lightTheme = buildAppTheme(Brightness.light);
+final _darkTheme = buildAppTheme(Brightness.dark);
+final _lightHighContrastTheme =
+    buildAppTheme(Brightness.light, highContrast: true);
+final _darkHighContrastTheme =
+    buildAppTheme(Brightness.dark, highContrast: true);
+
 class MyApp extends StatelessWidget {
   const MyApp({
     super.key,
@@ -38,9 +46,11 @@ class MyApp extends StatelessWidget {
     return Consumer<DropdownProvider>(
         builder: (context, dropdownProvider, child) {
       return MaterialApp(
-        title: 'Movie app',
-        theme: MyThemes.lightTheme,
-        darkTheme: MyThemes.darkTheme,
+        title: 'Movie Night',
+        theme: _lightTheme,
+        darkTheme: _darkTheme,
+        highContrastTheme: _lightHighContrastTheme,
+        highContrastDarkTheme: _darkHighContrastTheme,
         themeMode: themeProvider.themeMode,
         debugShowCheckedModeBanner: false,
         locale: Locale(dropdownProvider.selectedValue),
@@ -51,8 +61,9 @@ class MyApp extends StatelessWidget {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: S.delegate.supportedLocales,
-        builder: (context, child) =>
-            OfflineBanner(child: child ?? const SizedBox.shrink()),
+        builder: (context, child) => OfflineBanner(
+            child: applyAccessibilityTheme(
+                context, child ?? const SizedBox.shrink())),
         home: AuthPage(),
       );
     });

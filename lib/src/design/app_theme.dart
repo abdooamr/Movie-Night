@@ -45,12 +45,21 @@ ColorScheme _scheme(Brightness b, bool highContrast) {
 }
 
 /// Builds the Screening Room theme (spec sections 3, 4, 5, 7, 9).
-ThemeData buildAppTheme(Brightness brightness, {bool highContrast = false}) {
+///
+/// [boldText] emboldens the text theme before component themes are derived
+/// from it, so buttons, app bars, list tiles etc. follow the OS Bold Text
+/// setting too.
+ThemeData buildAppTheme(
+  Brightness brightness, {
+  bool highContrast = false,
+  bool boldText = false,
+}) {
   final cs = _scheme(brightness, highContrast);
   final mn = brightness == Brightness.dark
       ? MNColors.dark(highContrast: highContrast)
       : MNColors.light(highContrast: highContrast);
-  final text = buildTextTheme(cs.onSurface);
+  final plain = buildTextTheme(cs.onSurface);
+  final text = boldText ? emboldenTextTheme(plain) : plain;
   const minTap = Size(MNSize.minTap, MNSize.minTap);
   const pill = StadiumBorder();
 
@@ -185,4 +194,19 @@ ThemeData buildAppTheme(Brightness brightness, {bool highContrast = false}) {
   // an explicit family (e.g. Roboto) on the system-font roles. copyWith keeps
   // our roles verbatim so they inherit the platform font.
   return base.copyWith(textTheme: text, primaryTextTheme: text);
+}
+
+final Map<(Brightness, bool), ThemeData> _boldThemes = {};
+
+/// MaterialApp.builder helper: when the OS Bold Text setting is on, re-themes
+/// [child] with an emboldened full theme (including component themes).
+Widget applyAccessibilityTheme(BuildContext context, Widget child) {
+  if (!MediaQuery.boldTextOf(context)) return child;
+  final brightness = Theme.of(context).brightness;
+  final highContrast = MediaQuery.highContrastOf(context);
+  final data = _boldThemes.putIfAbsent(
+    (brightness, highContrast),
+    () => buildAppTheme(brightness, highContrast: highContrast, boldText: true),
+  );
+  return Theme(data: data, child: child);
 }

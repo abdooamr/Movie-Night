@@ -77,4 +77,47 @@ void main() {
     expect(theme.snackBarTheme.behavior, SnackBarBehavior.floating);
     expect(theme.inputDecorationTheme.filled, isTrue);
   });
+
+  test('boldText emboldens component themes, not just textTheme', () {
+    final bold = buildAppTheme(Brightness.dark, boldText: true);
+    FontWeight? w(ThemeData t) =>
+        t.filledButtonTheme.style!.textStyle!.resolve({})!.fontWeight;
+    expect(w(theme), FontWeight.w600);
+    expect(w(bold), FontWeight.w700);
+    expect(bold.listTileTheme.titleTextStyle!.fontWeight,
+        isNot(theme.listTileTheme.titleTextStyle!.fontWeight));
+    expect(bold.appBarTheme.titleTextStyle!.fontWeight,
+        isNot(theme.appBarTheme.titleTextStyle!.fontWeight));
+  });
+
+  testWidgets('applyAccessibilityTheme emboldens under MediaQuery.boldText',
+      (tester) async {
+    Future<FontWeight?> weightFor(bool boldText) async {
+      FontWeight? result;
+      await tester.pumpWidget(MediaQuery(
+        data: MediaQueryData(boldText: boldText),
+        child: Theme(
+          data: theme,
+          child: Builder(
+            builder: (context) => applyAccessibilityTheme(
+              context,
+              Builder(builder: (context) {
+                result = Theme.of(context)
+                    .filledButtonTheme
+                    .style!
+                    .textStyle!
+                    .resolve({})!
+                    .fontWeight;
+                return const SizedBox();
+              }),
+            ),
+          ),
+        ),
+      ));
+      return result;
+    }
+
+    expect(await weightFor(false), FontWeight.w600);
+    expect(await weightFor(true), FontWeight.w700);
+  });
 }
