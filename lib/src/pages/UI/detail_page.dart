@@ -35,6 +35,7 @@ class DetailPage extends StatefulWidget {
     this.creditData,
     this.id,
     required this.isTvShow,
+    this.heroTag,
   });
 
   final int? index;
@@ -42,6 +43,9 @@ class DetailPage extends StatefulWidget {
   final Model? data;
   final Credit? creditData;
   final bool isTvShow;
+
+  /// Hero tag of the poster that opened this page (see `heroTagFor`).
+  final String? heroTag;
 
   @override
   State<DetailPage> createState() => _DetailPageState();

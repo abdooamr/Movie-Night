@@ -6,6 +6,7 @@ export 'Login-Logout/Register.dart';
 export 'UI/detail_page.dart';
 export 'UI/explore.dart';
 export 'UI/home_page.dart';
+export 'UI/library_page.dart';
 export 'UI/liked.dart';
 export 'Userpage/Settings_screen.dart';
 export 'Userpage/Update_User_details.dart';
