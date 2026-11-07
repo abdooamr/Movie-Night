@@ -8,8 +8,20 @@ import 'package:Movie_Night/src/models/video_model.dart';
 import '../models/credit_model.dart';
 import '../models/global_review_model.dart';
 
+/// Every TMDB call goes through [_get] so a stalled connection fails fast
+/// (TimeoutException) instead of leaving the UI on a spinner forever.
+const Duration _timeout = Duration(seconds: 15);
+
+Future<http.Response> _get(String url) =>
+    http.get(Uri.parse(url)).timeout(_timeout);
+
 const String baseUrl = 'https://api.themoviedb.org/3/';
-const String key = '?api_key=cc18b713f1ab56cfab6306f06b6c1b9d';
+// TMDB key is supplied at build time, never committed.
+// Fill it into `env.json` (gitignored) and run with:
+//   flutter run --dart-define-from-file=env.json
+// See env.example.json and README.md -> Configuration.
+const String _apiKey = String.fromEnvironment('TMDB_API_KEY');
+const String key = '?api_key=$_apiKey';
 const String video = "&append_to_response=videos";
 const String orginallangeng = "&with_original_language=en";
 const String egyptregion = "&with_origin_country=EG";
@@ -22,7 +34,7 @@ Future<movie.Model> getUpcomingMovies(String lang) async {
 
   for (int page = 1; page <= 5; page++) {
     final String url = '$baseUrl$endPoint$key&page=$page&language=$lang';
-    final response = await http.get(Uri.parse(url));
+    final response = await _get(url);
 
     if (response.statusCode == 200) {
       final movie.Model model = movie.modelFromJson(response.body);
@@ -46,7 +58,7 @@ Future<movie.Model> getTrending(bool isTvShow, String lang) async {
 
   for (int page = 1; page <= 5; page++) {
     final String url = '$baseUrl$endPoint$key&page=$page&language=$lang';
-    final response = await http.get(Uri.parse(url));
+    final response = await _get(url);
 
     if (response.statusCode == 200) {
       final movie.Model model = movie.modelFromJson(response.body);
@@ -70,7 +82,7 @@ Future<movie.Model> getPopular(bool isTvShow, String lang) async {
 
   for (int page = 1; page <= 5; page++) {
     final String url = '$baseUrl$endPoint$key&page=$page&language=$lang';
-    final response = await http.get(Uri.parse(url));
+    final response = await _get(url);
 
     if (response.statusCode == 200) {
       final movie.Model model = movie.modelFromJson(response.body);
@@ -102,7 +114,7 @@ Future<movie.Model> discoverMovies({
         ? '$baseUrl$endPoint$key&page=$page'
         : '$baseUrl$endPoint$key&with_genres=$genreId&page=$page&language=$lang';
 
-    final response = await http.get(Uri.parse(url));
+    final response = await _get(url);
 
     if (response.statusCode == 200) {
       final movie.Model model = movie.modelFromJson(response.body);
@@ -123,7 +135,7 @@ Future<movie.Model> discoverMovies({
 Future<Credit> getCredits(int id, bool isTvShow, String lang) async {
   final String endPoint = isTvShow ? 'tv/$id/credits' : 'movie/$id/credits';
   final String url = '$baseUrl$endPoint$key&language=$lang';
-  final response = await http.get(Uri.parse(url));
+  final response = await _get(url);
 
   if (response.statusCode == 200) {
     return creditFromJson(response.body);
@@ -137,7 +149,7 @@ Future<movie.Model> getrecommendations(
   final String endPoint =
       isTvShow ? 'tv/$id/recommendations' : 'movie/$id/recommendations';
   final String url = '$baseUrl$endPoint$key&language=$lang';
-  final response = await http.get(Uri.parse(url));
+  final response = await _get(url);
 
   if (response.statusCode == 200) {
     return movie.modelFromJson(response.body);
@@ -149,7 +161,7 @@ Future<movie.Model> getrecommendations(
 Future<Review> getReviews(int id, bool isTvShow, String lang) async {
   final String endPoint = isTvShow ? 'tv/$id/reviews' : 'movie/$id/reviews';
   final String url = '$baseUrl$endPoint$key&language=$lang';
-  final response = await http.get(Uri.parse(url));
+  final response = await _get(url);
 
   if (response.statusCode == 200) {
     return reviewFromJson(response.body);
@@ -162,7 +174,7 @@ Future<movie.Model> movieSearch(String query, String lang) async {
   final String endPoint = 'search/tv';
   final String url = '$baseUrl$endPoint$key&query=$query&language=$lang';
 
-  final response = await http.get(Uri.parse(url));
+  final response = await _get(url);
   if (response.statusCode == 200) {
     return movie.modelFromJson(response.body);
   } else {
@@ -174,7 +186,7 @@ Future<movie.Model> searchData(String query, String lang) async {
   final String endPoint = 'search/multi';
   final String url = '$baseUrl$endPoint$key&query=$query&language=$lang';
 
-  final response = await http.get(Uri.parse(url));
+  final response = await _get(url);
   if (response.statusCode == 200) {
     return movie.modelFromJson(response.body);
   } else {
@@ -185,7 +197,7 @@ Future<movie.Model> searchData(String query, String lang) async {
 Future<Video> getyoutubeid(int id, bool isTvShow, String lang) async {
   final String endPoint = isTvShow ? 'tv/$id/videos' : 'movie/$id/videos';
   final String url = '$baseUrl$endPoint$key$video&language=$lang';
-  final response = await http.get(Uri.parse(url));
+  final response = await _get(url);
 
   if (response.statusCode == 200) {
     return videoFromJson(response.body);
@@ -198,7 +210,7 @@ Future<Watchprovider?> getprovider(int id, bool isTvShow, String lang) async {
   final String endPoint =
       isTvShow ? 'tv/$id/watch/providers' : 'movie/$id/watch/providers';
   final String url = '$baseUrl$endPoint$key$video&language=$lang';
-  final response = await http.get(Uri.parse(url));
+  final response = await _get(url);
 
   if (response.statusCode == 200) {
     return watchproviderFromJson(response.body);
@@ -214,7 +226,7 @@ Future<movie.Model> getEgyptionmovies(bool isTvShow, String lang) async {
   for (int page = 1; page <= 5; page++) {
     final String url =
         '$baseUrl$endPoint$key$egyptregion&page=$page&language=$lang';
-    final response = await http.get(Uri.parse(url));
+    final response = await _get(url);
 
     if (response.statusCode == 200) {
       final movie.Model model = movie.modelFromJson(response.body);
@@ -236,7 +248,7 @@ Future<movie.Model> getAiringToday(String lang) async {
   final String endPoint = 'tv/airing_today';
   final String url = '$baseUrl$endPoint$key$orginallangeng&language=$lang';
 
-  final response = await http.get(Uri.parse(url));
+  final response = await _get(url);
   if (response.statusCode == 200) {
     return movie.modelFromJson(response.body);
   } else {
@@ -248,7 +260,7 @@ Future<MovieModel> getdetails(int id, bool isTvShow, String lang) async {
   final String endPoint = isTvShow ? 'tv/$id' : 'movie/$id';
   final String url = '$baseUrl$endPoint$key&language=$lang';
 
-  final response = await http.get(Uri.parse(url));
+  final response = await _get(url);
   if (response.statusCode == 200) {
     return movieModelFromJson(response.body);
   } else {
@@ -260,7 +272,7 @@ Future<CastModel> getcastdetails(int id, String lang) async {
   final String endPoint = 'person/$id';
   final String url = '$baseUrl$endPoint$key&language=$lang';
 
-  final response = await http.get(Uri.parse(url));
+  final response = await _get(url);
   if (response.statusCode == 200) {
     return castModelFromJson(response.body);
   } else {
@@ -273,7 +285,7 @@ Future<KnownFor> getcastknownfor(int id, bool isTvShow, String lang) async {
       isTvShow ? 'person/$id/tv_credits' : 'person/$id/movie_credits';
   final String url = '$baseUrl$endPoint$key&language=$lang';
 
-  final response = await http.get(Uri.parse(url));
+  final response = await _get(url);
   if (response.statusCode == 200) {
     return knownForFromJson(response.body);
   } else {

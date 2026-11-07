@@ -116,7 +116,15 @@ class _CastWidgetState extends State<CastWidget> {
             ],
           );
         } else if (snapshot.hasError) {
-          throw snapshot.error.toString();
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: Center(
+              child: Text(
+                S.of(context).somethingwentwrong,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
         } else {
           return const SizedBox.shrink();
         }
