@@ -263,5 +263,7 @@
     "tmdbLabel": "TMDB",
     "shareText": "Guarda {title} su Movie Night\n{url}",
     "close": "Chiudi",
-    "liked": "Preferito"
+    "liked": "Preferito",
+    "showPassword": "Mostra password",
+    "hidePassword": "Nascondi password"
 }

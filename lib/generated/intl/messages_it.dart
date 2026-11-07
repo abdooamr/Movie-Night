@@ -269,6 +269,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Revisione Globale",
     ),
     "hello": MessageLookupByLibrary.simpleMessage("Ciao"),
+    "hidePassword": MessageLookupByLibrary.simpleMessage("Nascondi password"),
     "hindilabel": MessageLookupByLibrary.simpleMessage("Hindi"),
     "historymovielabel": MessageLookupByLibrary.simpleMessage("Film Storico"),
     "homenavbar": MessageLookupByLibrary.simpleMessage("Home"),
@@ -441,6 +442,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "sendreportlabel": MessageLookupByLibrary.simpleMessage("Invia Report"),
     "share": MessageLookupByLibrary.simpleMessage("Condividi"),
     "shareText": m7,
+    "showPassword": MessageLookupByLibrary.simpleMessage("Mostra password"),
     "signInPromptBody": MessageLookupByLibrary.simpleMessage(
       "Accedi per tenere una watchlist, mettere mi piace ai titoli e scrivere recensioni.",
     ),

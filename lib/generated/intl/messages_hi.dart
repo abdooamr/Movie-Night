@@ -247,6 +247,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "वैश्विक समीक्षा",
     ),
     "hello": MessageLookupByLibrary.simpleMessage("नमस्ते"),
+    "hidePassword": MessageLookupByLibrary.simpleMessage("पासवर्ड छिपाएं"),
     "hindilabel": MessageLookupByLibrary.simpleMessage("हिंदी"),
     "historymovielabel": MessageLookupByLibrary.simpleMessage(
       "इतिहास फ़िल्में",
@@ -431,6 +432,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "sendreportlabel": MessageLookupByLibrary.simpleMessage("रिपोर्ट भेजें"),
     "share": MessageLookupByLibrary.simpleMessage("साझा करें"),
     "shareText": m7,
+    "showPassword": MessageLookupByLibrary.simpleMessage("पासवर्ड दिखाएं"),
     "signInPromptBody": MessageLookupByLibrary.simpleMessage(
       "वॉचलिस्ट रखने, शीर्षकों को पसंद करने और समीक्षाएँ लिखने के लिए लॉग इन करें।",
     ),

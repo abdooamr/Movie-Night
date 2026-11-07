@@ -298,5 +298,7 @@
         }
     },
     "close": "Close",
-    "liked": "Liked"
+    "liked": "Liked",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
 }

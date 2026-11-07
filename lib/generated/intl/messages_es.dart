@@ -281,6 +281,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Revisión Global",
     ),
     "hello": MessageLookupByLibrary.simpleMessage("Hola"),
+    "hidePassword": MessageLookupByLibrary.simpleMessage("Ocultar contraseña"),
     "hindilabel": MessageLookupByLibrary.simpleMessage("Hindi"),
     "historymovielabel": MessageLookupByLibrary.simpleMessage(
       "Películas de Historia",
@@ -475,6 +476,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "sendreportlabel": MessageLookupByLibrary.simpleMessage("Enviar Informe"),
     "share": MessageLookupByLibrary.simpleMessage("Compartir"),
     "shareText": m7,
+    "showPassword": MessageLookupByLibrary.simpleMessage("Mostrar contraseña"),
     "signInPromptBody": MessageLookupByLibrary.simpleMessage(
       "Inicia sesión para tener una lista de seguimiento, dar me gusta y escribir reseñas.",
     ),

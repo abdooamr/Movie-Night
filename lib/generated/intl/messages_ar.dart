@@ -233,6 +233,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "globalreviewswitch": MessageLookupByLibrary.simpleMessage("مراجعة عامة"),
     "hello": MessageLookupByLibrary.simpleMessage("مرحبًا"),
+    "hidePassword": MessageLookupByLibrary.simpleMessage("إخفاء كلمة المرور"),
     "hindilabel": MessageLookupByLibrary.simpleMessage("الهندية"),
     "historymovielabel": MessageLookupByLibrary.simpleMessage("أفلام تاريخية"),
     "homenavbar": MessageLookupByLibrary.simpleMessage("الرئيسية"),
@@ -389,6 +390,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "sendreportlabel": MessageLookupByLibrary.simpleMessage("إرسال التقرير"),
     "share": MessageLookupByLibrary.simpleMessage("مشاركة"),
     "shareText": m7,
+    "showPassword": MessageLookupByLibrary.simpleMessage("إظهار كلمة المرور"),
     "signInPromptBody": MessageLookupByLibrary.simpleMessage(
       "سجّل الدخول للاحتفاظ بقائمة مشاهدة والإعجاب بالعناوين وكتابة المراجعات.",
     ),

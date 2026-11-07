@@ -263,5 +263,7 @@
     "tmdbLabel": "TMDB",
     "shareText": "Movie Night पर {title} देखें\n{url}",
     "close": "बंद करें",
-    "liked": "पसंदीदा"
+    "liked": "पसंदीदा",
+    "showPassword": "पासवर्ड दिखाएं",
+    "hidePassword": "पासवर्ड छिपाएं"
 }

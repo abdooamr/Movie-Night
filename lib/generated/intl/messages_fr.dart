@@ -277,6 +277,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "globalreviewswitch": MessageLookupByLibrary.simpleMessage("Avis Global"),
     "hello": MessageLookupByLibrary.simpleMessage("Salut"),
+    "hidePassword": MessageLookupByLibrary.simpleMessage(
+      "Masquer le mot de passe",
+    ),
     "hindilabel": MessageLookupByLibrary.simpleMessage("Hindi"),
     "historymovielabel": MessageLookupByLibrary.simpleMessage(
       "Films Historiques",
@@ -473,6 +476,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "share": MessageLookupByLibrary.simpleMessage("Partager"),
     "shareText": m7,
+    "showPassword": MessageLookupByLibrary.simpleMessage(
+      "Afficher le mot de passe",
+    ),
     "signInPromptBody": MessageLookupByLibrary.simpleMessage(
       "Connectez-vous pour garder une liste de suivi, aimer des titres et écrire des avis.",
     ),
