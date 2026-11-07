@@ -1,4 +1,5 @@
 import 'package:Movie_Night/src/components/poster_card.dart';
+import 'package:Movie_Night/src/design/tokens.dart';
 import 'package:Movie_Night/src/navigation/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -32,6 +33,8 @@ class _Rails extends StatelessWidget {
   }
 }
 
+const _destKey = ValueKey('dest-hero');
+
 void main() {
   final pushed = <(int, bool, String?)>[];
 
@@ -39,7 +42,17 @@ void main() {
     pushed.clear();
     debugDetailPageBuilder = (id, isTv, heroTag) {
       pushed.add((id, isTv, heroTag));
-      return Scaffold(body: Center(child: Text('Detail $id')));
+      return Scaffold(
+        body: Column(
+          children: [
+            Text('Detail $id'),
+            Hero(
+              tag: heroTag!,
+              child: const SizedBox(key: _destKey, width: 300, height: 450),
+            ),
+          ],
+        ),
+      );
     };
   });
   tearDown(() => debugDetailPageBuilder = null);
@@ -57,8 +70,19 @@ void main() {
     ));
 
     final trending = heroTagFor(source: 'trending', isTv: false, id: 1);
+    final sourceWidth = tester.getSize(find.byType(Hero).first).width;
     await tester.tap(find.byType(PosterCard).first);
+    await tester.pump(); // push
+    await tester.pump(); // flight starts
+    await tester.pump(MNDuration.short);
+    // Mid-flight the shuttle (the destination child) sits between the two
+    // sizes; without a HeroController on the tab navigator it would already
+    // be its full 300 pt width.
+    final midWidth = tester.getSize(find.byKey(_destKey)).width;
+    expect(midWidth, greaterThan(sourceWidth + 1));
+    expect(midWidth, lessThan(299));
     await tester.pumpAndSettle();
+    expect(tester.getSize(find.byKey(_destKey)).width, 300);
 
     expect(tester.takeException(), isNull);
     expect(find.text('Detail 1'), findsOneWidget);

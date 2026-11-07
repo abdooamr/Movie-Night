@@ -162,7 +162,13 @@ class AppShellState extends State<AppShell> {
       enabled: current,
       child: NavigatorPopHandler<Object?>(
         enabled: current,
-        onPopWithResult: (_) => _navigatorKeys[i].currentState?.maybePop(),
+        // All four handlers sit on the same shell route, and the route calls
+        // every one of them on a blocked pop (even disabled ones), so only
+        // the current tab may act.
+        onPopWithResult: (_) {
+          if (i != _index) return;
+          _navigatorKeys[i].currentState?.maybePop();
+        },
         child: HeroControllerScope(
           controller: _heroControllers[i],
           child: Navigator(

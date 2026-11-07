@@ -42,6 +42,28 @@ class _TickerProbe extends StatelessWidget {
   }
 }
 
+/// A tab root with a button that pushes a 'Pushed [name]' route.
+class _PushRoot extends StatelessWidget {
+  const _PushRoot(this.name);
+
+  final String name;
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        body: Center(
+          child: TextButton(
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) =>
+                    Scaffold(body: Center(child: Text('Pushed $name'))),
+              ),
+            ),
+            child: Text('Push $name'),
+          ),
+        ),
+      );
+}
+
 List<Widget> _pages(bool signedIn) => [
       const _HomeRoot(),
       const Scaffold(body: Center(child: Text('SearchRoot'))),
@@ -124,6 +146,34 @@ void main() {
     expect(find.byType(AppShell), findsOneWidget);
   });
 
+  testWidgets("system back leaves hidden tabs' stacks alone", (tester) async {
+    await tester.pumpWidget(shellApp(
+      isSignedIn: true,
+      pagesBuilder: (_) => const [
+        _PushRoot('A'),
+        _PushRoot('B'),
+        _PushRoot('C'),
+        _PushRoot('D'),
+      ],
+    ));
+    await tester.tap(find.text('Push A'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Search'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Push B'));
+    await tester.pumpAndSettle();
+    expect(find.text('Pushed B'), findsOneWidget);
+
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(find.text('Pushed B'), findsNothing);
+    expect(find.text('Push B'), findsOneWidget);
+
+    await tester.tap(find.text('Home'));
+    await tester.pumpAndSettle();
+    expect(find.text('Pushed A'), findsOneWidget);
+  });
+
   testWidgets('only the current tab has tickers enabled', (tester) async {
     final log = <String, bool>{};
     await tester.pumpWidget(shellApp(
@@ -158,6 +208,10 @@ void main() {
     await tester.pumpWidget(shellApp(isSignedIn: true, pagesBuilder: _pages));
     expect(find.byType(BackdropFilter), findsNothing);
 
+    addTearDown(() {
+      debugDefaultTargetPlatformOverride = null;
+      tester.platformDispatcher.clearAccessibilityFeaturesTestValue();
+    });
     debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
     await tester.pumpWidget(shellApp(isSignedIn: true, pagesBuilder: _pages));
     await tester.pumpAndSettle();
@@ -169,8 +223,7 @@ void main() {
         const FakeAccessibilityFeatures(highContrast: true);
     await tester.pumpAndSettle();
     expect(find.byType(BackdropFilter), findsNothing);
-
-    tester.platformDispatcher.clearAccessibilityFeaturesTestValue();
+    // Reset before the framework's end-of-test invariant check.
     debugDefaultTargetPlatformOverride = null;
   });
 }

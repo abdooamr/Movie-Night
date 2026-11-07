@@ -21,12 +21,14 @@ class ChromeBar extends StatelessWidget {
   });
 
   /// Corner radius of the floating iOS bar.
+  // TODO(tokens): move to MNRadius/MNSize in Task 15
   static const double floatingRadius = 28;
 
   /// Backdrop blur of the floating iOS bar.
   static const double blurSigma = 24;
 
   /// Hairline drawn on the floating iOS bar.
+  // TODO(tokens): move to MNRadius/MNSize in Task 15
   static const double hairline = 0.5;
 
   final List<NavigationDestination> destinations;

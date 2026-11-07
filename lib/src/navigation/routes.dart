@@ -47,8 +47,10 @@ Future<void> openSeeAll(
 Route<void>? _signInRoute;
 
 /// Presents the sign-in flow modally on the **root** navigator, above the
-/// tab bar. The shell dismisses it once the user is signed in.
+/// tab bar. The shell dismisses it once the user is signed in. A no-op while
+/// the sheet is already up, so a double tap never stacks two sheets.
 Future<void> presentSignIn(BuildContext context) {
+  if (_signInRoute?.isActive ?? false) return Future<void>.value();
   final route = MaterialPageRoute<void>(
     fullscreenDialog: true,
     builder: (_) => const _SignInSheet(),
