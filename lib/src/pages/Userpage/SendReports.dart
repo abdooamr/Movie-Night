@@ -17,6 +17,13 @@ class _SendReportState extends State<SendReport> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final userx = FirebaseAuth.instance.currentUser;
 
+  @override
+  void dispose() {
+    _subjectController.dispose();
+    _bodycontroller.dispose();
+    super.dispose();
+  }
+
   Future SendReport() async {
     // add the data to fire base
     await _firestore.collection('users').doc(userx!.uid).update({
