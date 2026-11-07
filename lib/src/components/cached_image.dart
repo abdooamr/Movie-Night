@@ -1,8 +1,12 @@
-import 'package:Movie_Night/generated/l10n.dart';
-import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:ficonsax/ficonsax.dart';
+import 'package:flutter/material.dart';
 
+import '../design/motion.dart';
+import '../design/tokens.dart';
+
+/// Network image with a static `surfaceContainer` placeholder, a short
+/// fade-in and a local Iconsax error glyph (no third-party fallbacks).
 class CachedImageCustom extends StatelessWidget {
   final String imageUrl;
   final double? height;
@@ -12,67 +16,70 @@ class CachedImageCustom extends StatelessWidget {
   /// Falls back to [width]. When both are null the image decodes at full size.
   final double? decodeWidth;
 
+  /// Accessible description. When null the image is treated as decorative
+  /// and excluded from semantics.
+  final String? semanticLabel;
+
+  /// Clips the image, placeholder and error box.
+  final BorderRadius? borderRadius;
+
+  /// Shows a person glyph instead of a film glyph when the image fails.
+  final bool isPerson;
+
   const CachedImageCustom(
     this.imageUrl, {
     super.key,
     this.height,
     this.width,
     this.decodeWidth,
+    this.semanticLabel,
+    this.borderRadius,
+    this.isPerson = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    final baseColor = isDark ? Colors.grey.shade800 : Colors.grey.shade300;
-    final highlightColor = isDark ? Colors.grey.shade700 : Colors.grey.shade100;
-
+    final cs = Theme.of(context).colorScheme;
     final logicalWidth = decodeWidth ?? width;
     final memCacheWidth = logicalWidth == null || !logicalWidth.isFinite
         ? null
         : (logicalWidth * MediaQuery.devicePixelRatioOf(context)).round();
 
-    return CachedNetworkImage(
+    Widget box({Widget? child}) => Container(
+          height: height,
+          width: width,
+          color: cs.surfaceContainer,
+          alignment: AlignmentDirectional.center,
+          child: child,
+        );
+
+    Widget image = CachedNetworkImage(
       imageUrl: imageUrl,
       height: height,
       width: width,
       memCacheWidth: memCacheWidth,
       fit: BoxFit.cover,
+      // Spec section 9: fade-ins are `short`; fades stay on under Reduce
+      // Motion.
+      fadeInDuration: MNMotion.of(context).fade(MNDuration.short),
+      fadeOutDuration: Duration.zero,
+      placeholder: (context, url) => box(),
+      errorWidget: (context, url, error) => box(
+        child: Icon(
+          isPerson ? IconsaxOutline.user : IconsaxOutline.video,
+          color: cs.onSurfaceVariant,
+        ),
+      ),
+    );
 
-      /// 🔹 Shimmer Placeholder
-      placeholder: (context, url) {
-        return Shimmer.fromColors(
-          period: const Duration(milliseconds: 1500),
-          baseColor: baseColor,
-          highlightColor: highlightColor,
-          child: Container(
-            height: height,
-            width: width,
-            decoration: BoxDecoration(
-              color: baseColor,
-              borderRadius: BorderRadius.circular(20),
-            ),
-          ),
-        );
-      },
-
-      /// 🔹 Error Widget
-      errorWidget: (context, url, error) {
-        return Container(
-          height: height,
-          width: width,
-          decoration: BoxDecoration(
-            color: Colors.grey.shade700,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Center(
-            child: Text(
-              S.of(context).noImage,
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        );
-      },
+    if (borderRadius != null) {
+      image = ClipRRect(borderRadius: borderRadius!, child: image);
+    }
+    return Semantics(
+      image: semanticLabel != null,
+      label: semanticLabel,
+      excludeSemantics: true,
+      child: image,
     );
   }
 }
