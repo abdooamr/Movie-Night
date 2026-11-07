@@ -105,7 +105,8 @@ class MNColors extends ThemeExtension<MNColors> {
 
   factory MNColors.dark({bool highContrast = false}) => MNColors(
         rating: const Color(0xFFF5C04A),
-        chrome: highContrast ? _darkSurface : _darkSurface.withValues(alpha: 0.86),
+        chrome:
+            highContrast ? _darkSurface : _darkSurface.withValues(alpha: 0.86),
         chromeHairline: _darkOnSurface.withValues(alpha: 0.08),
         scrim: _scrim,
         glowOpacity: 0.55,
@@ -113,9 +114,10 @@ class MNColors extends ThemeExtension<MNColors> {
       );
 
   factory MNColors.light({bool highContrast = false}) => MNColors(
-        rating: const Color(0xFF946000),
-        chrome:
-            highContrast ? _lightSurface : _lightSurface.withValues(alpha: 0.86),
+        rating: const Color(0xFF8A5800),
+        chrome: highContrast
+            ? _lightSurface
+            : _lightSurface.withValues(alpha: 0.86),
         chromeHairline: _lightOnSurface.withValues(alpha: 0.08),
         scrim: _scrim,
         glowOpacity: 0.30,

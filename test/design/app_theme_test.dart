@@ -33,17 +33,46 @@ void main() {
     expect(b.bodyLarge!.fontSize, 17);
   });
 
+  test('every role is set; only display and headline roles use Poppins', () {
+    final t = theme.textTheme;
+    final roles = {
+      "displayLarge": t.displayLarge,
+      "displayMedium": t.displayMedium,
+      "displaySmall": t.displaySmall,
+      "headlineLarge": t.headlineLarge,
+      "headlineMedium": t.headlineMedium,
+      "headlineSmall": t.headlineSmall,
+      "titleLarge": t.titleLarge,
+      "titleMedium": t.titleMedium,
+      "titleSmall": t.titleSmall,
+      "bodyLarge": t.bodyLarge,
+      "bodyMedium": t.bodyMedium,
+      "bodySmall": t.bodySmall,
+      "labelLarge": t.labelLarge,
+      "labelMedium": t.labelMedium,
+      "labelSmall": t.labelSmall,
+    };
+    expect(roles.length, 15);
+    roles.forEach((name, s) {
+      expect(s, isNotNull, reason: name);
+      final poppins = name.startsWith("display") ||
+          name.startsWith("headline") ||
+          name == "titleLarge";
+      expect(s!.fontFamily, poppins ? "poppins" : isNull, reason: name);
+    });
+  });
+
   test('page transitions', () {
     final b = theme.pageTransitionsTheme.builders;
     expect(b[TargetPlatform.iOS], isA<CupertinoPageTransitionsBuilder>());
-    expect(b[TargetPlatform.android],
-        isA<PredictiveBackPageTransitionsBuilder>());
+    expect(
+        b[TargetPlatform.android], isA<PredictiveBackPageTransitionsBuilder>());
   });
 
   test('component themes', () {
     expect(theme.useMaterial3, isTrue);
     expect(theme.filledButtonTheme.style!.minimumSize!.resolve({}),
-        const Size.fromHeight(50));
+        const Size(48, 50));
     expect(theme.appBarTheme.scrolledUnderElevation, 0);
     expect(theme.snackBarTheme.behavior, SnackBarBehavior.floating);
     expect(theme.inputDecorationTheme.filled, isTrue);

@@ -63,7 +63,6 @@ ThemeData buildAppTheme(Brightness brightness, {bool highContrast = false}) {
     textTheme: text,
     primaryTextTheme: text,
     extensions: [mn],
-    splashFactory: InkSparkle.splashFactory,
     pageTransitionsTheme: const PageTransitionsTheme(builders: {
       TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
       TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
@@ -71,7 +70,7 @@ ThemeData buildAppTheme(Brightness brightness, {bool highContrast = false}) {
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
         shape: pill,
-        minimumSize: const Size.fromHeight(MNSize.buttonHeight),
+        minimumSize: const Size(MNSize.minTap, MNSize.buttonHeight),
         textStyle: text.labelLarge,
       ),
     ),
@@ -170,8 +169,7 @@ ThemeData buildAppTheme(Brightness brightness, {bool highContrast = false}) {
       iconColor: cs.onSurfaceVariant,
       textColor: cs.onSurface,
       titleTextStyle: text.bodyLarge,
-      subtitleTextStyle:
-          text.bodyMedium!.copyWith(color: cs.onSurfaceVariant),
+      subtitleTextStyle: text.bodyMedium!.copyWith(color: cs.onSurfaceVariant),
     ),
     tabBarTheme: TabBarThemeData(
       labelColor: cs.primary,

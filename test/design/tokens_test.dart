@@ -32,16 +32,8 @@ void main() {
 
       for (final t in text.entries) {
         for (final b in backgrounds.entries) {
-          // Spec hex for light rating (#946000) gives 4.33:1 on
-          // surfaceContainerHigh; the spec only claims 5.1 on surface.
-          // Rating is not placed on sheets, so assert >= 4.3 there.
-          final min = (brightness == Brightness.light &&
-                  t.key == 'rating' &&
-                  b.key == 'surfaceContainerHigh')
-              ? 4.3
-              : 4.5;
-          test('${t.key} on ${b.key} >= $min', () {
-            expect(contrast(t.value, b.value), greaterThanOrEqualTo(min));
+          test('${t.key} on ${b.key} >= 4.5', () {
+            expect(contrast(t.value, b.value), greaterThanOrEqualTo(4.5));
           });
         }
       }

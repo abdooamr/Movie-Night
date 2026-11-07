@@ -15,10 +15,14 @@ TextStyle _s(double size, double leading, FontWeight w, Color c,
 /// Type scale from spec section 4. Poppins for display roles only; the rest
 /// use the platform system font.
 TextTheme buildTextTheme(Color onSurface) => TextTheme(
+      displayLarge: _s(57, 64, FontWeight.w700, onSurface, poppins: true),
+      displayMedium: _s(45, 52, FontWeight.w700, onSurface, poppins: true),
       displaySmall: _s(34, 41, FontWeight.w700, onSurface, poppins: true),
+      headlineLarge: _s(32, 40, FontWeight.w700, onSurface, poppins: true),
       headlineMedium: _s(28, 34, FontWeight.w700, onSurface, poppins: true),
       headlineSmall: _s(22, 28, FontWeight.w600, onSurface, poppins: true),
       titleLarge: _s(20, 25, FontWeight.w600, onSurface, poppins: true),
+      titleSmall: _s(14, 20, FontWeight.w500, onSurface),
       titleMedium: _s(17, 22, FontWeight.w600, onSurface),
       bodyLarge: _s(17, 22, FontWeight.w400, onSurface),
       labelLarge: _s(16, 21, FontWeight.w600, onSurface),
