@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/langprovider.dart';
 import 'package:Movie_Night/src/pages/allpages.dart';
+import 'package:Movie_Night/src/services/app_update.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +20,13 @@ class CustomBottomNavigationBar extends StatefulWidget {
 
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   int currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    // Needs a live Activity, so run after the first frame.
+    WidgetsBinding.instance.addPostFrameCallback((_) => checkForForcedUpdate());
+  }
 
   @override
   void didUpdateWidget(CustomBottomNavigationBar oldWidget) {
