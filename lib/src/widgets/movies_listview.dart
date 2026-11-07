@@ -1,3 +1,4 @@
+import 'package:Movie_Night/src/utils/poster_size.dart';
 import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/components/cached_image.dart';
 import 'package:Movie_Night/src/pages/UI/detail_page.dart';
@@ -77,10 +78,10 @@ class MoviesListView extends StatelessWidget {
                   height: 20,
                 ),
                 SizedBox(
-                  height: 310,
+                  height: PosterSize.of(context).listHeight,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemExtent: 176, // 170 poster + 2 x 3 padding
+                    itemExtent: PosterSize.of(context).itemExtent,
                     itemCount: data!.length > 20 ? 20 : data.length,
                     itemBuilder: (context, index) {
                       return Padding(
@@ -111,8 +112,8 @@ class MoviesListView extends StatelessWidget {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
                                 child: CachedImageCustom(
-                                  height: 240,
-                                  width: 170,
+                                  height: PosterSize.of(context).height,
+                                  width: PosterSize.of(context).width,
                                   '$imageUrl${data[index].posterPath}',
                                 ),
                               ),
@@ -121,8 +122,8 @@ class MoviesListView extends StatelessWidget {
                               height: 15,
                             ),
                             Container(
-                              width: 170,
-                              height: 50,
+                              width: PosterSize.of(context).width,
+                              height: PosterSize.of(context).captionHeight,
                               margin: const EdgeInsets.only(left: 5),
                               child: Column(
                                 mainAxisAlignment:

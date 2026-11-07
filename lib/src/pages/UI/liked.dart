@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/langprovider.dart';
 import 'package:Movie_Night/src/models/liked_model.dart';
@@ -167,7 +168,7 @@ class _LikedCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 250,
+        width: math.min(250, MediaQuery.sizeOf(context).width * 0.65),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(50),
@@ -177,7 +178,7 @@ class _LikedCard extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                height: 300,
+                height: math.min(300, MediaQuery.sizeOf(context).height * 0.38),
                 margin: const EdgeInsets.only(bottom: 25),
                 decoration: BoxDecoration(
                   color: Colors.grey,
@@ -263,8 +264,10 @@ class _EmptyLiked extends StatelessWidget {
             const SizedBox(width: 10),
             Text(
               S.of(context).ohnolabel,
-              style:
-                  Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 50),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge!
+                  .copyWith(fontSize: 50),
             ),
           ],
         ),

@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/components/cached_image.dart';
 import 'package:Movie_Night/src/components/stars.dart';
@@ -97,8 +98,11 @@ class BookmarkWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  width: 150,
-                  height: 230,
+                  width: math.min(150, MediaQuery.sizeOf(context).width * 0.35),
+                  height:
+                      math.min(150, MediaQuery.sizeOf(context).width * 0.35) *
+                          230 /
+                          150,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -113,7 +117,7 @@ class BookmarkWidget extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: 200,
+                  width: math.min(200, MediaQuery.sizeOf(context).width * 0.45),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

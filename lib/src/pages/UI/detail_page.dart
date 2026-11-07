@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/langprovider.dart';
 import 'package:Movie_Night/src/components/cached_image.dart';
@@ -237,7 +238,7 @@ class _DetailHeader extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: 200,
+                width: math.min(200, MediaQuery.sizeOf(context).width * 0.5),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

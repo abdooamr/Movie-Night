@@ -1,3 +1,4 @@
+import 'package:Movie_Night/src/utils/poster_size.dart';
 import 'dart:ui';
 import 'package:Movie_Night/src/pages/UI/showallmovies.dart';
 import 'package:Movie_Night/src/widgets/shimmerWidgets/upcomingShimmerWidget.dart';
@@ -68,8 +69,9 @@ class UpcomingMovies extends StatelessWidget {
                         );
                       },
                       child: Container(
-                        width: 174.5,
-                        height: 250,
+                        width: PosterSize.of(context).width + 4.5,
+                        height:
+                            (PosterSize.of(context).width + 4.5) * 250 / 174.5,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: Colors
@@ -123,8 +125,10 @@ class UpcomingMovies extends StatelessWidget {
                               data[index].posterPath == null
                                   ? 'https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg'
                                   : '$imageUrl${data[index].posterPath!}',
-                              width: 174.5,
-                              height: 250,
+                              width: PosterSize.of(context).width + 4.5,
+                              height: (PosterSize.of(context).width + 4.5) *
+                                  250 /
+                                  174.5,
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -138,7 +142,7 @@ class UpcomingMovies extends StatelessWidget {
                             filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                             child: Container(
                               height: 70,
-                              width: 185,
+                              width: PosterSize.of(context).width + 15,
                               padding: const EdgeInsets.all(10),
                               color: Colors.black26,
                               child: Column(
