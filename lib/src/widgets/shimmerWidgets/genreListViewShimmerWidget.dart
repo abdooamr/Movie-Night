@@ -82,7 +82,7 @@ class genreListViewShimmerWidget extends StatelessWidget {
                                       height: 14,
                                       width: 120,
                                       decoration: BoxDecoration(
-                                        color: highlightColor.withOpacity(0.4),
+                                        color: highlightColor.withValues(alpha: 0.4),
                                         borderRadius: BorderRadius.circular(4),
                                       ),
                                     ),
@@ -90,7 +90,7 @@ class genreListViewShimmerWidget extends StatelessWidget {
                                       height: 12,
                                       width: 90,
                                       decoration: BoxDecoration(
-                                        color: highlightColor.withOpacity(0.3),
+                                        color: highlightColor.withValues(alpha: 0.3),
                                         borderRadius: BorderRadius.circular(4),
                                       ),
                                     ),

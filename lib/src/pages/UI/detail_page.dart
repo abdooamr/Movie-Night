@@ -424,8 +424,11 @@ class _DetailPageState extends State<DetailPage> {
                                           icon: Icons.share_rounded,
                                           label: S.of(context).share,
                                           onTap: () {
-                                            Share.share(
-                                              "Check out this movie ${movieDetails.title} on Movie Night App\n\nhttps://www.themoviedb.org/movie/${movieDetails.id}",
+                                            SharePlus.instance.share(
+                                              ShareParams(
+                                                text:
+                                                    "Check out this movie ${movieDetails.title} on Movie Night App\n\nhttps://www.themoviedb.org/movie/${movieDetails.id}",
+                                              ),
                                             );
                                           })
                                     ],

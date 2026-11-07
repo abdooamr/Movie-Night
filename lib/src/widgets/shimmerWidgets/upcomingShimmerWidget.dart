@@ -52,7 +52,7 @@ class upcomingShimmerWidget extends StatelessWidget {
                   child: Container(
                     height: 70,
                     decoration: BoxDecoration(
-                      color: highlightColor.withOpacity(0.4),
+                      color: highlightColor.withValues(alpha: 0.4),
                       borderRadius: const BorderRadius.only(
                         bottomLeft: Radius.circular(20),
                         bottomRight: Radius.circular(20),

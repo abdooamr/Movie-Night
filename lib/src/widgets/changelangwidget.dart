@@ -18,85 +18,65 @@ class Change_language_widget extends StatelessWidget {
       ),
       body: Consumer<DropdownProvider>(
         builder: (context, dropdownProvider, _) {
-          return ListView(itemExtent: 60, children: [
-            RadioListTile(
-              value: 'en',
-              groupValue: dropdownProvider.selectedValue,
-              onChanged: (newValue) {
-                dropdownProvider.setSelectedValue(newValue!);
-              },
-              title: Text(
-                S.of(context).englishlabel,
-                style: Theme.of(context).textTheme.titleLarge,
+          return RadioGroup<String>(
+            groupValue: dropdownProvider.selectedValue,
+            onChanged: (newValue) {
+              if (newValue != null) {
+                dropdownProvider.setSelectedValue(newValue);
+              }
+            },
+            child: ListView(itemExtent: 60, children: [
+              RadioListTile<String>(
+                value: 'en',
+                title: Text(
+                  S.of(context).englishlabel,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
               ),
-            ),
-            RadioListTile(
-              value: 'ar',
-              groupValue: dropdownProvider.selectedValue,
-              onChanged: (newValue) {
-                dropdownProvider.setSelectedValue(newValue!);
-              },
-              title: Text(
-                S.of(context).arabiclabel,
-                style: Theme.of(context).textTheme.titleLarge,
+              RadioListTile<String>(
+                value: 'ar',
+                title: Text(
+                  S.of(context).arabiclabel,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
               ),
-            ),
-            RadioListTile(
-              value: 'fr',
-              groupValue: dropdownProvider.selectedValue,
-              onChanged: (newValue) {
-                dropdownProvider.setSelectedValue(newValue!);
-              },
-              title: Text(
-                S.of(context).Frenchlabel,
-                style: Theme.of(context).textTheme.titleLarge,
+              RadioListTile<String>(
+                value: 'fr',
+                title: Text(
+                  S.of(context).Frenchlabel,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
               ),
-            ),
-            RadioListTile(
-              value: 'de',
-              groupValue: dropdownProvider.selectedValue,
-              onChanged: (newValue) {
-                dropdownProvider.setSelectedValue(newValue!);
-              },
-              title: Text(
-                S.of(context).deutschlabel,
-                style: Theme.of(context).textTheme.titleLarge,
+              RadioListTile<String>(
+                value: 'de',
+                title: Text(
+                  S.of(context).deutschlabel,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
               ),
-            ),
-            RadioListTile(
-              value: 'es',
-              groupValue: dropdownProvider.selectedValue,
-              onChanged: (newValue) {
-                dropdownProvider.setSelectedValue(newValue!);
-              },
-              title: Text(
-                S.of(context).spanishlabel,
-                style: Theme.of(context).textTheme.titleLarge,
+              RadioListTile<String>(
+                value: 'es',
+                title: Text(
+                  S.of(context).spanishlabel,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
               ),
-            ),
-            RadioListTile(
-              value: 'hi',
-              groupValue: dropdownProvider.selectedValue,
-              onChanged: (newValue) {
-                dropdownProvider.setSelectedValue(newValue!);
-              },
-              title: Text(
-                S.of(context).hindilabel,
-                style: Theme.of(context).textTheme.titleLarge,
+              RadioListTile<String>(
+                value: 'hi',
+                title: Text(
+                  S.of(context).hindilabel,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
               ),
-            ),
-            RadioListTile(
-              value: 'it',
-              groupValue: dropdownProvider.selectedValue,
-              onChanged: (newValue) {
-                dropdownProvider.setSelectedValue(newValue!);
-              },
-              title: Text(
-                S.of(context).italianlabel,
-                style: Theme.of(context).textTheme.titleLarge,
+              RadioListTile<String>(
+                value: 'it',
+                title: Text(
+                  S.of(context).italianlabel,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
               ),
-            ),
-          ]);
+            ]),
+          );
         },
       ),
     );

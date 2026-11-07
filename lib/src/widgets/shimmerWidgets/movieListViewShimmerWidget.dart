@@ -89,7 +89,7 @@ class movieListViewShimmerWidget extends StatelessWidget {
                             height: 14,
                             width: 140,
                             decoration: BoxDecoration(
-                              color: highlightColor.withOpacity(0.4),
+                              color: highlightColor.withValues(alpha: 0.4),
                               borderRadius: BorderRadius.circular(4),
                             ),
                           ),
@@ -97,7 +97,7 @@ class movieListViewShimmerWidget extends StatelessWidget {
                             height: 12,
                             width: 100,
                             decoration: BoxDecoration(
-                              color: highlightColor.withOpacity(0.3),
+                              color: highlightColor.withValues(alpha: 0.3),
                               borderRadius: BorderRadius.circular(4),
                             ),
                           ),

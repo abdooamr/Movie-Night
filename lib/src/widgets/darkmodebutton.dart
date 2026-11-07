@@ -15,7 +15,7 @@ class ChangeThemeButtonWidget extends StatelessWidget {
         final provider = Provider.of<ThemeProvider>(context, listen: false);
         provider.toggleTheme(value);
       },
-      activeColor: themeProvider.isDarkMode ? Colors.purple : Colors.green,
+      activeThumbColor: themeProvider.isDarkMode ? Colors.purple : Colors.green,
     );
   }
 }
