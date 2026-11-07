@@ -32,14 +32,14 @@ dependencies:
   awesome_snackbar_content: ^0.1.0
   cached_network_image: ^3.2.3
   carousel_slider: ^5.0.0
-  cloud_firestore: ^6.1.2
+  cloud_firestore: 7.1.0
   connectivity_plus: ^7.0.0
   cupertino_icons: ^1.0.2
   ficonsax: ^0.0.3
-  firebase_auth: ^6.1.4
-  firebase_core: ^4.4.0
-  firebase_messaging: ^16.1.1
-  firebase_storage: ^13.0.6
+  firebase_auth: 7.0.1
+  firebase_core: 5.1.0
+  firebase_messaging: 17.0.1
+  firebase_storage: 14.0.1
   flutter:
     sdk: flutter
   flutter_email_sender: ^8.0.0
