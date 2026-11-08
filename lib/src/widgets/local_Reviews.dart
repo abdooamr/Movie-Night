@@ -1,17 +1,23 @@
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:Movie_Night/generated/l10n.dart';
+import 'package:Movie_Night/src/Provider/reviewsprovider.dart';
+import 'package:Movie_Night/src/components/app_text_field.dart';
+import 'package:Movie_Night/src/components/feedback.dart';
+import 'package:Movie_Night/src/design/tokens.dart';
+import 'package:Movie_Night/src/models/local_review_model.dart';
+import 'package:Movie_Night/src/widgets/review_list.dart';
+import 'package:Movie_Night/src/widgets/review_card.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:Movie_Night/src/Provider/reviewsprovider.dart';
-import 'package:Movie_Night/src/models/local_review_model.dart';
 
 class LocalReviewsWidget extends StatefulWidget {
-  const LocalReviewsWidget({Key? key, required this.id}) : super(key: key);
+  const LocalReviewsWidget({super.key, required this.id, this.seeAllBuilder});
 
   final int id;
+
+  final AllReviewsBuilder? seeAllBuilder;
 
   @override
   State<LocalReviewsWidget> createState() => _LocalReviewsWidgetState();
@@ -19,7 +25,6 @@ class LocalReviewsWidget extends StatefulWidget {
 
 class _LocalReviewsWidgetState extends State<LocalReviewsWidget> {
   late ReviewProvider reviewProvider;
-  List<bool> isExpandedList = [];
   final TextEditingController reviewController = TextEditingController();
   final currentuser = FirebaseAuth.instance.currentUser!;
   late DateFormat dateFormat;
@@ -37,182 +42,82 @@ class _LocalReviewsWidgetState extends State<LocalReviewsWidget> {
     super.dispose();
   }
 
+  Stream<List<ReviewCardData>> _stream() {
+    return reviewProvider.getReviews(widget.id.toString()).map(
+          (reviews) => [
+            for (final r in reviews)
+              ReviewCardData(
+                id: r.id,
+                author: r.displayname,
+                date: r.createdat,
+                body: r.review ?? '',
+                avatarUrl: r.ProfilePic,
+                onDelete: currentuser.uid == r.id ? _delete : null,
+              ),
+          ],
+        );
+  }
+
+  Future<void> _delete() async {
+    final failMsg = S.of(context).genericError;
+    try {
+      await reviewProvider.deleteReview(
+        movieId: widget.id.toString(),
+        userId: currentuser.uid,
+      );
+    } catch (_) {
+      if (mounted) AppFeedback.error(context, failMsg);
+    }
+  }
+
+  Future<void> _send() async {
+    final text = reviewController.text.trim();
+    if (text.isEmpty) return;
+    final failMsg = S.of(context).genericError;
+    final localReview = Localreviews(
+      ProfilePic: currentuser.photoURL ?? '',
+      review: text,
+      displayname: currentuser.displayName!,
+      email: currentuser.email!,
+      createdat: dateFormat.format(DateTime.now()),
+      id: currentuser.uid,
+    );
+    try {
+      await reviewProvider.addReview(
+        movieId: widget.id.toString(),
+        userId: currentuser.uid,
+        localReview: localReview,
+      );
+      reviewController.clear();
+    } catch (_) {
+      if (mounted) AppFeedback.error(context, failMsg);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        StreamBuilder<List<Localreviews>>(
-          stream: reviewProvider.getReviews(widget.id.toString()),
-          builder: (context, snapshot) {
-            if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-              final data = snapshot.data!;
-
-              return Column(
-                children: [
-                  AspectRatio(
-                    aspectRatio: 1,
-                    child: ListView.builder(
-                      shrinkWrap: false,
-                      itemCount: data.length,
-                      itemBuilder: (context, index) {
-                        isExpandedList.add(false);
-
-                        return Container(
-                          margin: const EdgeInsets.all(5),
-                          child: Card(
-                            color: Colors.black38,
-                            child: ListTile(
-                              leading: CircleAvatar(
-                                backgroundColor: Colors.grey,
-                                radius: 40,
-                                child: ClipOval(
-                                  child: FadeInImage(
-                                    width: 60,
-                                    height: double.infinity,
-                                    fit: BoxFit.cover,
-                                    image: NetworkImage(data[index].ProfilePic),
-                                    placeholder: const NetworkImage(
-                                        'http://www.familylore.org/images/2/25/UnknownPerson.png'),
-                                  ),
-                                ),
-                              ),
-                              title: Text(
-                                data[index].displayname,
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  ConstrainedBox(
-                                    constraints: isExpandedList[index]
-                                        ? const BoxConstraints()
-                                        : const BoxConstraints(maxHeight: 120),
-                                    child: Text(
-                                      data[index].review!,
-                                      softWrap: true,
-                                      overflow: TextOverflow.fade,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium,
-                                    ),
-                                  ),
-                                  if (!isExpandedList[index])
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: TextButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            isExpandedList[index] = true;
-                                          });
-                                        },
-                                        child:
-                                            Text(S.of(context).readmorelabel),
-                                      ),
-                                    ),
-                                  Text(
-                                    data[index]
-                                        .createdat
-                                        .toString()
-                                        .substring(0, 10),
-                                    style:
-                                        const TextStyle(color: Colors.white70),
-                                  ),
-                                  if (currentuser.uid == data[index].id)
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: IconButton(
-                                        tooltip:
-                                            S.of(context).deleteReviewTooltip,
-                                        onPressed: () async {
-                                          final failMsg =
-                                              S.of(context).genericError;
-                                          try {
-                                            await reviewProvider.deleteReview(
-                                              movieId: widget.id.toString(),
-                                              userId: currentuser.uid,
-                                            );
-                                          } catch (_) {
-                                            Fluttertoast.showToast(
-                                                msg: failMsg);
-                                          }
-                                        },
-                                        icon: const Icon(
-                                          IconsaxBold.trash,
-                                          color: Colors.red,
-                                        ),
-                                      ),
-                                    )
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              );
-            } else {
-              return SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
-                child: SizedBox(
-                  height: 100,
-                  child: Center(
-                    child: Text(
-                      S.of(context).noReviews,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ),
-                ),
-              );
-            }
-          },
-        ),
+        ReviewList(seeAllBuilder: widget.seeAllBuilder!, streamFactory: _stream),
+        const SizedBox(height: MNSpace.md),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: MediaQuery.of(context).size.width * 0.75,
-              child: TextFormField(
+            Expanded(
+              child: AppTextField(
                 controller: reviewController,
-                decoration: InputDecoration(
-                  focusColor: Colors.deepPurpleAccent,
-                  hintText: S.of(context).writeReview,
-                  hintStyle: Theme.of(context).textTheme.bodyMedium,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                ),
+                label: S.of(context).writeReview,
+                kind: AppFieldKind.multiline,
               ),
             ),
-            IconButton(
-              tooltip: S.of(context).sendReviewTooltip,
-              onPressed: () async {
-                final failMsg = S.of(context).genericError;
-                final localReview = Localreviews(
-                  ProfilePic: currentuser.photoURL ?? '',
-                  review: reviewController.text,
-                  displayname: currentuser.displayName!,
-                  email: currentuser.email!,
-                  createdat: dateFormat.format(DateTime.now()),
-                  id: currentuser.uid,
-                );
-                if (reviewController.text.isNotEmpty) {
-                  try {
-                    await reviewProvider.addReview(
-                        movieId: widget.id.toString(),
-                        userId: currentuser.uid,
-                        localReview: localReview);
-                    reviewController.clear();
-                  } catch (_) {
-                    Fluttertoast.showToast(msg: failMsg);
-                  }
-                }
-              },
-              icon: const Icon(
-                IconsaxBold.send_square,
-                size: 40,
-                color: Colors.deepPurpleAccent,
+            const SizedBox(width: MNSpace.sm),
+            ValueListenableBuilder<TextEditingValue>(
+              valueListenable: reviewController,
+              builder: (context, value, _) => IconButton.filled(
+                tooltip: S.of(context).sendReviewTooltip,
+                onPressed: value.text.trim().isEmpty ? null : _send,
+                icon: const Icon(IconsaxOutline.send_2),
               ),
             ),
           ],
