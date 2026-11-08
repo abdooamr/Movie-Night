@@ -71,9 +71,11 @@ void main() {
         builder: (context) => MediaQuery(
           data: MediaQuery.of(context)
               .copyWith(textScaler: const TextScaler.linear(2)),
-          child: SizedBox(
-            width: 320,
-            child: PersonBio(text: 'A biography sentence. ' * 9),
+          child: SingleChildScrollView(
+            child: SizedBox(
+              width: 320,
+              child: PersonBio(text: 'A biography sentence. ' * 9),
+            ),
           ),
         ),
       ),
