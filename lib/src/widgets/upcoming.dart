@@ -1,19 +1,37 @@
-import 'package:Movie_Night/src/utils/poster_size.dart';
-import 'dart:ui';
-import 'package:Movie_Night/src/pages/UI/showallmovies.dart';
-import 'package:Movie_Night/src/widgets/shimmerWidgets/upcomingShimmerWidget.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
-import 'package:Movie_Night/src/pages/UI/detail_page.dart';
-import 'package:Movie_Night/src/utils/utils.dart';
-import 'package:Movie_Night/src/widgets/carousel_slider.dart';
-import '../../generated/l10n.dart';
-import '../models/movie_model.dart';
+import 'package:flutter/services.dart';
 
-class UpcomingMovies extends StatelessWidget {
+import '../../generated/l10n.dart';
+import '../components/cached_image.dart';
+import '../components/poster_card.dart' show heroTagFor;
+import '../components/pressable.dart';
+import '../components/section_header.dart';
+import '../components/state_views.dart';
+import '../design/motion.dart';
+import '../design/tokens.dart';
+import '../models/movie_model.dart';
+import '../navigation/routes.dart';
+import '../utils/poster_size.dart';
+import '../utils/utils.dart' show getGenres, imageUrl;
+import 'carousel_slider.dart';
+import 'movies_listview.dart' show isTvResult;
+import 'shimmerWidgets/upcomingShimmerWidget.dart';
+
+/// The Home hero carousel: [SectionHeader] with "See All", a carousel of
+/// posters with a gradient-scrim caption, and a dot indicator.
+///
+/// [onFocusChanged] reports the centred item (on load and on every page
+/// change), which Home uses as the spill-glow source.
+class UpcomingMovies extends StatefulWidget {
   const UpcomingMovies({
     required this.future,
     required this.headlineText,
     required this.istvshow,
+    this.onRetry,
+    this.onFocusChanged,
+    this.heroSource,
     Key? key,
   }) : super(key: key);
 
@@ -21,185 +39,322 @@ class UpcomingMovies extends StatelessWidget {
   final String headlineText;
   final bool istvshow;
 
+  /// Reloads [future]. When null a failed load hides the section.
+  final VoidCallback? onRetry;
+
+  /// Called with the centred item.
+  final ValueChanged<Result>? onFocusChanged;
+
+  /// Section key for [heroTagFor]; defaults to [headlineText].
+  final String? heroSource;
+
+  /// Items in the carousel.
+  static const int maxCount = 20;
+
+  /// The hero poster is a little larger than a rail poster.
+  static const double _heroScale = 1.2;
+
+  /// Width of the centred carousel poster.
+  static double posterWidthOf(BuildContext context) =>
+      PosterSize.of(context).width * _heroScale;
+
+  /// Height of the centred carousel poster (2:3).
+  static double posterHeightOf(BuildContext context) =>
+      posterWidthOf(context) / PosterSize.posterAspect;
+
+  @override
+  State<UpcomingMovies> createState() => _UpcomingMoviesState();
+}
+
+class _UpcomingMoviesState extends State<UpcomingMovies> {
+  final ValueNotifier<int> _index = ValueNotifier(0);
+
+  /// The future whose first item has been reported to [onFocusChanged].
+  Future<Model>? _reported;
+
+  @override
+  void didUpdateWidget(UpcomingMovies oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.future != widget.future) _index.value = 0;
+  }
+
+  @override
+  void dispose() {
+    _index.dispose();
+    super.dispose();
+  }
+
+  void _reportInitial(List<Result> items) {
+    if (identical(_reported, widget.future)) return;
+    _reported = widget.future;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || widget.onFocusChanged == null) return;
+      final i = _index.value.clamp(0, items.length - 1);
+      widget.onFocusChanged!(items[i]);
+    });
+  }
+
+  void _open(Result item, String source) {
+    final isTv = isTvResult(item, railIsTv: widget.istvshow);
+    openTitle(
+      context,
+      id: item.id!,
+      isTv: isTv,
+      heroTag: heroTagFor(source: source, isTv: isTv, id: item.id!),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Model>(
-      future: future,
+      future: widget.future,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          final isDark = Theme.of(context).brightness == Brightness.dark;
-
-          final baseColor =
-              isDark ? Colors.grey.shade800 : Colors.grey.shade300;
-          final highlightColor =
-              isDark ? Colors.grey.shade700 : Colors.grey.shade100;
-
-          return upcomingShimmerWidget(
-              baseColor: baseColor, highlightColor: highlightColor);
-        } else if (snapshot.hasData) {
-          final data = snapshot.data?.results;
-
-          return Column(
-            children: [
-              Text(
-                headlineText,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(
-                height: 3,
-              ),
-              MyCarouselSlider(
-                height:
-                    (PosterSize.of(context).width + 4.5) * 250 / 174.5 * 1.2 +
-                        8,
-                viewportFraction: ((PosterSize.of(context).width + 40) /
-                        MediaQuery.sizeOf(context).width)
-                    .clamp(0.2, 0.5),
-                itemCount: data!.length > 20
-                    ? 21
-                    : data.length + 1, // Adjust the itemCount
-                itemBuilder: (context, index, realindex) {
-                  if (index == 20) {
-                    // Render the "See All" button at index 21
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => See_All(
-                              future: future,
-                              headlineText: headlineText,
-                              istvshow: istvshow,
-                            ), // Replace with your "See All" page widget
-                          ),
-                        );
-                      },
-                      child: Container(
-                        width: PosterSize.of(context).width + 4.5,
-                        height:
-                            (PosterSize.of(context).width + 4.5) * 250 / 174.5,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors
-                              .deepPurpleAccent, // Set your desired button color here
-                        ),
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.arrow_forward_ios_rounded,
-                                color: Colors.white, // Set the icon color
-                                size: 48,
-                              ),
-                              Text(
-                                S.of(context).Seealloptions,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge
-                                    ?.copyWith(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  } else {
-                    // Render the regular movie item
-                    return RepaintBoundary(
-                        child: Stack(
-                      alignment: Alignment.bottomCenter,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DetailPage(
-                                  isTvShow: headlineText.contains(
-                                          S.of(context).mediatypemoviess)
-                                      ? false
-                                      : true,
-                                  id: data[index].id,
-                                ),
-                              ),
-                            );
-                          },
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: Image.network(
-                              data[index].posterPath == null
-                                  ? 'https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg'
-                                  : '$imageUrl${data[index].posterPath!}',
-                              width: PosterSize.of(context).width + 4.5,
-                              height: (PosterSize.of(context).width + 4.5) *
-                                  250 /
-                                  174.5,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        ClipRRect(
-                          borderRadius: const BorderRadius.only(
-                            bottomLeft: Radius.circular(20),
-                            bottomRight: Radius.circular(20),
-                          ),
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                            child: Container(
-                              height: 70 *
-                                  MediaQuery.textScalerOf(context)
-                                      .scale(1)
-                                      .clamp(1.0, 2.0),
-                              width: PosterSize.of(context).width + 15,
-                              padding: const EdgeInsets.all(10),
-                              color: Colors.black26,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    data[index].title ?? data[index].name!,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  Text(
-                                    getGenres(data[index].genreIds!),
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                        fontSize: 12, color: Colors.white70),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ));
-                  }
-                },
-              ),
-            ],
-          );
-        } else if (snapshot.hasError) {
-          return Padding(
-            padding: const EdgeInsets.all(16),
-            child: Center(
-              child: Text(
-                S.of(context).somethingwentwrong,
-                textAlign: TextAlign.center,
-              ),
+          return const _SectionPadding(child: upcomingShimmerWidget());
+        }
+        if (snapshot.hasError) {
+          final retry = widget.onRetry;
+          if (retry == null) return const SizedBox.shrink();
+          return _SectionPadding(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SectionHeader(title: widget.headlineText),
+                ErrorState(
+                  compact: true,
+                  message: S.of(context).somethingwentwrong,
+                  onRetry: retry,
+                ),
+              ],
             ),
           );
-        } else {
-          final isDark = Theme.of(context).brightness == Brightness.dark;
-          return upcomingShimmerWidget(
-              baseColor: isDark ? Colors.grey.shade800 : Colors.grey.shade300,
-              highlightColor:
-                  isDark ? Colors.grey.shade700 : Colors.grey.shade100);
         }
+        final results = snapshot.data?.results ?? const <Result>[];
+        if (results.isEmpty) return const SizedBox.shrink();
+        final items = results.take(UpcomingMovies.maxCount).toList();
+        _reportInitial(items);
+
+        final source = widget.heroSource ?? widget.headlineText;
+        final width = UpcomingMovies.posterWidthOf(context);
+        final height = UpcomingMovies.posterHeightOf(context);
+        return _SectionPadding(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SectionHeader(
+                title: widget.headlineText,
+                onSeeAll: () => openSeeAll(
+                  context,
+                  title: widget.headlineText,
+                  load: () => widget.future,
+                  isTv: widget.istvshow,
+                ),
+              ),
+              const SizedBox(height: MNSpace.sm),
+              MyCarouselSlider(
+                height: height,
+                viewportFraction:
+                    ((width + MNSpace.lg) / MediaQuery.sizeOf(context).width)
+                        .clamp(0.2, 0.6),
+                itemCount: items.length,
+                onPageChanged: (index, reason) {
+                  if (reason == CarouselPageChangedReason.manual) {
+                    HapticFeedback.selectionClick();
+                  }
+                  _index.value = index;
+                  widget.onFocusChanged?.call(items[index]);
+                },
+                itemBuilder: (context, index, realIndex) {
+                  final item = items[index];
+                  final isTv = isTvResult(item, railIsTv: widget.istvshow);
+                  return Center(
+                    child: SizedBox(
+                      width: width,
+                      height: height,
+                      child: _HeroPoster(
+                        item: item,
+                        heroTag: heroTagFor(
+                          source: source,
+                          isTv: isTv,
+                          id: item.id!,
+                        ),
+                        onTap: () => _open(item, source),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: MNSpace.md),
+              ValueListenableBuilder<int>(
+                valueListenable: _index,
+                builder: (context, index, _) =>
+                    _Dots(count: items.length, index: index),
+              ),
+            ],
+          ),
+        );
       },
+    );
+  }
+}
+
+class _SectionPadding extends StatelessWidget {
+  const _SectionPadding({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsetsDirectional.symmetric(vertical: MNSpace.md),
+        child: child,
+      );
+}
+
+/// A carousel poster: image with a [MNColors.scrim] caption (title, genres)
+/// instead of a blur. One button "title, genres" for assistive tech.
+class _HeroPoster extends StatelessWidget {
+  const _HeroPoster({
+    required this.item,
+    required this.heroTag,
+    required this.onTap,
+  });
+
+  final Result item;
+  final String heroTag;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+    final mn = MNColors.of(context);
+    final title = item.title ?? item.name ?? '';
+    final genres = getGenres(item.genreIds ?? const []);
+    final label = genres.isEmpty ? title : '$title, $genres';
+
+    return Semantics(
+      container: true,
+      button: true,
+      label: label,
+      excludeSemantics: true,
+      onTap: onTap,
+      child: PressableScale(
+        onTap: onTap,
+        borderRadius: MNRadius.mdAll,
+        child: ClipRRect(
+          borderRadius: MNRadius.mdAll,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              Hero(
+                tag: heroTag,
+                child: LayoutBuilder(
+                  builder: (context, constraints) => item.posterPath == null
+                      ? ColoredBox(
+                          color: cs.surfaceContainer,
+                          child: Center(
+                            child: Icon(
+                              IconsaxOutline.video,
+                              color: cs.onSurfaceVariant,
+                            ),
+                          ),
+                        )
+                      : CachedImageCustom(
+                          '$imageUrl${item.posterPath}',
+                          width: constraints.maxWidth,
+                          height: constraints.maxHeight,
+                          borderRadius: MNRadius.mdAll,
+                        ),
+                ),
+              ),
+              PositionedDirectional(
+                start: 0,
+                end: 0,
+                bottom: 0,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(gradient: mn.scrim),
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                      MNSpace.md,
+                      MNSpace.xl,
+                      MNSpace.md,
+                      MNSpace.md,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.titleMedium!
+                              .copyWith(color: mn.onScrim),
+                        ),
+                        if (genres.isNotEmpty)
+                          Text(
+                            genres,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: theme.textTheme.labelMedium!
+                                .copyWith(color: mn.onScrim),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Page dots. Only opacity and scale animate.
+class _Dots extends StatelessWidget {
+  const _Dots({required this.count, required this.index});
+
+  final int count;
+  final int index;
+
+  static const double _restScale = 0.6;
+  static const double _restOpacity = 0.35;
+
+  @override
+  Widget build(BuildContext context) {
+    final motion = MNMotion.of(context);
+    final color = Theme.of(context).colorScheme.onSurface;
+    return ExcludeSemantics(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          for (var i = 0; i < count; i++)
+            Padding(
+              padding: const EdgeInsetsDirectional.symmetric(
+                horizontal: MNSpace.xxs,
+              ),
+              child: AnimatedScale(
+                scale: i == index ? 1 : _restScale,
+                duration: motion(MNDuration.short),
+                curve: MNCurves.standard,
+                child: AnimatedOpacity(
+                  opacity: i == index ? 1 : _restOpacity,
+                  duration: motion.fade(MNDuration.short),
+                  curve: MNCurves.standard,
+                  child: SizedBox.square(
+                    dimension: MNSpace.sm,
+                    child: DecoratedBox(
+                      decoration:
+                          BoxDecoration(color: color, shape: BoxShape.circle),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }

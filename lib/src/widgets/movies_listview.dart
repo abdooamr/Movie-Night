@@ -1,24 +1,55 @@
-import 'package:Movie_Night/src/utils/poster_size.dart';
-import 'package:Movie_Night/generated/l10n.dart';
-import 'package:Movie_Night/src/components/cached_image.dart';
-import 'package:Movie_Night/src/pages/UI/detail_page.dart';
-import 'package:Movie_Night/src/pages/UI/showallmovies.dart';
-import 'package:Movie_Night/src/widgets/shimmerWidgets/movieListViewShimmerWidget.dart';
-import 'package:flutter/material.dart';
-import 'package:Movie_Night/src/utils/utils.dart';
-import '../models/movie_model.dart';
+import 'dart:math' as math;
 
+import 'package:ficonsax/ficonsax.dart';
+import 'package:flutter/material.dart';
+
+import '../../generated/l10n.dart';
+import '../components/cached_image.dart';
+import '../components/poster_card.dart';
+import '../components/pressable.dart';
+import '../components/section_header.dart';
+import '../components/state_views.dart';
+import '../design/tokens.dart';
+import '../models/movie_model.dart';
+import '../navigation/routes.dart';
+import '../utils/poster_size.dart';
+import '../utils/utils.dart' show getGenres, imageUrl;
+import 'shimmerWidgets/movieListViewShimmerWidget.dart';
+
+/// Whether [item] opens as a TV title. Trending feeds carry a media type;
+/// the others fall back to the rail's own kind.
+bool isTvResult(Result item, {required bool railIsTv}) =>
+    item.mediaType == MediaType.tv ||
+    (item.mediaType == null && railIsTv);
+
+/// A titled poster rail: [SectionHeader] with "See All", then a horizontal
+/// list of [PosterCard]s. At very large text ([PosterSize.stackRails]) the
+/// first [stackedCount] items stack vertically as rows instead.
 class MoviesListView extends StatelessWidget {
   const MoviesListView({
     required this.future,
     Key? key,
     required this.headlineText,
     required this.istvshow,
+    this.onRetry,
+    this.heroSource,
   }) : super(key: key);
 
   final String headlineText;
   final Future<Model> future;
   final bool istvshow;
+
+  /// Reloads [future]. When null a failed load hides the rail.
+  final VoidCallback? onRetry;
+
+  /// Rail key for [heroTagFor]; defaults to [headlineText].
+  final String? heroSource;
+
+  /// Items shown when the rail stacks vertically.
+  static const int stackedCount = 6;
+
+  /// Items shown in the horizontal rail.
+  static const int maxCount = 20;
 
   @override
   Widget build(BuildContext context) {
@@ -26,150 +57,275 @@ class MoviesListView extends StatelessWidget {
       future: future,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          final isDark = Theme.of(context).brightness == Brightness.dark;
-
-          final baseColor =
-              isDark ? Colors.grey.shade800 : Colors.grey.shade300;
-          final highlightColor =
-              isDark ? Colors.grey.shade700 : Colors.grey.shade100;
-
-          return Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: movieListViewShimmerWidget(
-                baseColor: baseColor, highlightColor: highlightColor),
-          );
-        } else if (snapshot.hasData && snapshot.data!.results.isNotEmpty) {
-          var data = snapshot.data?.results;
-          return Padding(
-            padding: const EdgeInsets.all(15.0),
+          return const _RailPadding(child: movieListViewShimmerWidget());
+        }
+        if (snapshot.hasError) {
+          if (onRetry == null) return const SizedBox.shrink();
+          return _RailPadding(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        headlineText,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => See_All(
-                              future: future,
-                              headlineText: headlineText,
-                              istvshow: istvshow,
-                            ),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        S.of(context).Seealloptions,
-                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                              color: Colors.deepPurpleAccent,
-                            ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                SizedBox(
-                  height: PosterSize.of(context).listHeight,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemExtent: PosterSize.of(context).itemExtent,
-                    itemCount: data!.length > 20 ? 20 : data.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 3),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => DetailPage(
-                                      isTvShow: headlineText.contains(S
-                                                  .of(context)
-                                                  .mediatypemoviess) ||
-                                              data[index].mediaType ==
-                                                  MediaType.movie
-                                          ? false
-                                          : true,
-                                      data: snapshot.data!,
-                                      index: index,
-                                      id: data[index].id,
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: CachedImageCustom(
-                                  height: PosterSize.of(context).height,
-                                  width: PosterSize.of(context).width,
-                                  '$imageUrl${data[index].posterPath}',
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Container(
-                              width: PosterSize.of(context).width,
-                              height: PosterSize.of(context).captionHeight,
-                              margin: const EdgeInsets.only(left: 5),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    data[index].title ?? data[index].name!,
-                                    overflow: TextOverflow.ellipsis,
-                                    style:
-                                        Theme.of(context).textTheme.bodyLarge,
-                                  ),
-                                  Text(
-                                    data[index].genreIds!.isNotEmpty
-                                        ? getGenres(data[index].genreIds!)
-                                        : '',
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      color: Theme.of(context).brightness ==
-                                              Brightness.dark
-                                          ? Colors.grey.shade400
-                                          : Colors.grey.shade700,
-                                      fontSize: 13,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+                SectionHeader(title: headlineText),
+                ErrorState(
+                  compact: true,
+                  message: S.of(context).somethingwentwrong,
+                  onRetry: onRetry!,
                 ),
               ],
             ),
           );
-        } else {
-          return const SizedBox.shrink();
         }
+        final results = snapshot.data?.results ?? const <Result>[];
+        if (results.isEmpty) return const SizedBox.shrink();
+
+        final size = PosterSize.of(context);
+        final source = heroSource ?? headlineText;
+        void open(Result item) {
+          final isTv = isTvResult(item, railIsTv: istvshow);
+          openTitle(
+            context,
+            id: item.id!,
+            isTv: isTv,
+            heroTag: heroTagFor(source: source, isTv: isTv, id: item.id!),
+          );
+        }
+
+        return _RailPadding(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SectionHeader(
+                title: headlineText,
+                onSeeAll: () => openSeeAll(
+                  context,
+                  title: headlineText,
+                  load: () => future,
+                  isTv: istvshow,
+                ),
+              ),
+              const SizedBox(height: MNSpace.sm),
+              if (size.stackRails)
+                _StackedRail(
+                  items: results.take(stackedCount).toList(),
+                  size: size,
+                  railIsTv: istvshow,
+                  source: source,
+                  onTap: open,
+                )
+              else
+                _HorizontalRail(
+                  items: results.take(maxCount).toList(),
+                  size: size,
+                  railIsTv: istvshow,
+                  source: source,
+                  onTap: open,
+                ),
+            ],
+          ),
+        );
       },
+    );
+  }
+}
+
+class _RailPadding extends StatelessWidget {
+  const _RailPadding({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsetsDirectional.symmetric(vertical: MNSpace.md),
+        child: child,
+      );
+}
+
+class _HorizontalRail extends StatelessWidget {
+  const _HorizontalRail({
+    required this.items,
+    required this.size,
+    required this.railIsTv,
+    required this.source,
+    required this.onTap,
+  });
+
+  final List<Result> items;
+  final PosterSize size;
+  final bool railIsTv;
+  final String source;
+  final ValueChanged<Result> onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final gutter = (size.itemExtent - size.width) / 2;
+    return SizedBox(
+      height: size.cardHeight,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemExtent: size.itemExtent,
+        padding: EdgeInsetsDirectional.symmetric(
+          horizontal: MNSpace.lg - gutter,
+        ),
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          final item = items[index];
+          final isTv = isTvResult(item, railIsTv: railIsTv);
+          return Padding(
+            padding: EdgeInsetsDirectional.symmetric(horizontal: gutter),
+            child: PosterCard(
+              posterPath: item.posterPath,
+              title: item.title ?? item.name ?? '',
+              subtitle: getGenres(item.genreIds ?? const []),
+              width: size.width,
+              heroTag: heroTagFor(source: source, isTv: isTv, id: item.id!),
+              onTap: () => onTap(item),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+/// Large-text layout: a fixed-height, non-scrolling vertical list of rows
+/// (the outer page scrolls).
+class _StackedRail extends StatelessWidget {
+  const _StackedRail({
+    required this.items,
+    required this.size,
+    required this.railIsTv,
+    required this.source,
+    required this.onTap,
+  });
+
+  final List<Result> items;
+  final PosterSize size;
+  final bool railIsTv;
+  final String source;
+  final ValueChanged<Result> onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final thumbWidth = size.width / 2;
+    final thumbHeight = thumbWidth / PosterSize.posterAspect;
+    final extent =
+        math.max(thumbHeight, size.captionHeight) + MNSpace.sm * 2;
+    return SizedBox(
+      height: extent * items.length,
+      child: ListView.builder(
+        primary: false,
+        physics: const NeverScrollableScrollPhysics(),
+        padding: EdgeInsetsDirectional.zero,
+        itemExtent: extent,
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          final item = items[index];
+          final isTv = isTvResult(item, railIsTv: railIsTv);
+          return _PosterRow(
+            posterPath: item.posterPath,
+            title: item.title ?? item.name ?? '',
+            subtitle: getGenres(item.genreIds ?? const []),
+            thumbWidth: thumbWidth,
+            thumbHeight: thumbHeight,
+            heroTag: heroTagFor(source: source, isTv: isTv, id: item.id!),
+            onTap: () => onTap(item),
+          );
+        },
+      ),
+    );
+  }
+}
+
+/// Row variant of [PosterCard]: thumbnail at the start, title and subtitle
+/// beside it. One button "title, subtitle" for assistive tech.
+class _PosterRow extends StatelessWidget {
+  const _PosterRow({
+    required this.posterPath,
+    required this.title,
+    required this.subtitle,
+    required this.thumbWidth,
+    required this.thumbHeight,
+    required this.heroTag,
+    required this.onTap,
+  });
+
+  final String? posterPath;
+  final String title;
+  final String subtitle;
+  final double thumbWidth;
+  final double thumbHeight;
+  final String heroTag;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+    final label = subtitle.isEmpty ? title : '$title, $subtitle';
+    final thumb = posterPath == null
+        ? ClipRRect(
+            borderRadius: MNRadius.smAll,
+            child: ColoredBox(
+              color: cs.surfaceContainer,
+              child: Center(
+                child: Icon(IconsaxOutline.video, color: cs.onSurfaceVariant),
+              ),
+            ),
+          )
+        : CachedImageCustom(
+            '$imageUrl$posterPath',
+            width: thumbWidth,
+            height: thumbHeight,
+            borderRadius: MNRadius.smAll,
+          );
+    return Semantics(
+      container: true,
+      button: true,
+      label: label,
+      excludeSemantics: true,
+      onTap: onTap,
+      child: PressableScale(
+        onTap: onTap,
+        borderRadius: MNRadius.mdAll,
+        child: Padding(
+          padding: const EdgeInsetsDirectional.symmetric(
+            horizontal: MNSpace.lg,
+            vertical: MNSpace.sm,
+          ),
+          child: Row(
+            children: [
+              SizedBox(
+                width: thumbWidth,
+                height: thumbHeight,
+                child: Hero(tag: heroTag, child: thumb),
+              ),
+              const SizedBox(width: MNSpace.md),
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.titleMedium,
+                    ),
+                    if (subtitle.isNotEmpty)
+                      Text(
+                        subtitle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.labelMedium!
+                            .copyWith(color: cs.onSurfaceVariant),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

@@ -1,89 +1,86 @@
-import 'package:Movie_Night/generated/l10n.dart';
 import 'package:flutter/material.dart';
-import 'package:Movie_Night/src/models/movie_model.dart';
-import 'package:Movie_Night/src/widgets/allwidget.dart';
 
+import '../../generated/l10n.dart';
+import '../models/movie_model.dart';
+import 'movies_listview.dart';
+import 'upcoming.dart';
+
+/// The Home feeds. [name] doubles as the section's Hero source key.
+enum HomeFeed {
+  upcoming,
+  trending,
+  popular,
+  egyptian,
+  airingToday,
+  trendingTv,
+  popularTv,
+  egyptianTv;
+
+  static const movieFeeds = [upcoming, trending, popular, egyptian];
+  static const tvFeeds = [airingToday, trendingTv, popularTv, egyptianTv];
+
+  bool get isTv => tvFeeds.contains(this);
+}
+
+/// Home's sections for one mode (Movies or TV): the hero carousel, then
+/// three poster rails. A plain column; Home places it in a sliver.
 class Home_page_listview extends StatelessWidget {
   const Home_page_listview({
     super.key,
     required this.movie,
-    this.upcomingFuture,
-    this.trendingFuture,
-    this.popularMoviesFuture,
-    this.EgyptionMovies,
-    required this.tvshow,
-    this.trendingtvshowFuture,
-    this.Egyptionseries,
-    this.popularTvFuture,
-    this.airingTodayFuture,
+    required this.futureOf,
+    required this.onRetry,
+    this.onFocusChanged,
   });
 
+  /// Movies when true, TV shows otherwise.
   final bool movie;
-  final Future<Model>? upcomingFuture;
-  final Future<Model>? trendingFuture;
-  final Future<Model>? popularMoviesFuture;
-  final Future<Model>? EgyptionMovies;
-  final bool tvshow;
-  final Future<Model>? trendingtvshowFuture;
-  final Future<Model>? airingTodayFuture;
-  final Future<Model>? Egyptionseries;
-  final Future<Model>? popularTvFuture;
+
+  /// The (cached) future of a feed.
+  final Future<Model> Function(HomeFeed feed) futureOf;
+
+  /// Reloads one feed.
+  final ValueChanged<HomeFeed> onRetry;
+
+  /// The centred carousel item (spill-glow source).
+  final ValueChanged<Result>? onFocusChanged;
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView(
-        children: [
-          if (movie)
-            UpcomingMovies(
-              headlineText: S.of(context).upcomingwidget_title,
-              future: upcomingFuture!,
-              istvshow: false,
-            ),
-          if (movie)
-            MoviesListView(
-                future: trendingFuture!,
-                headlineText: S.of(context).trendingmovieswidget_title,
-                istvshow: false),
-          if (movie)
-            MoviesListView(
-              future: popularMoviesFuture!,
-              headlineText: S.of(context).popularmovieswidget_title,
-              istvshow: false,
-            ),
-          if (movie)
-            MoviesListView(
-                future: EgyptionMovies!,
-                headlineText: S.of(context).egyptmovieswidget_title,
-                istvshow: false),
-          if (tvshow)
-            UpcomingMovies(
-              future: airingTodayFuture!,
-              headlineText: S.of(context).airingtodaywidget_title,
-              istvshow: true,
-            ),
-          if (tvshow)
-            MoviesListView(
-              future: trendingtvshowFuture!,
-              headlineText: S.of(context).trendingtvwidget_title,
-              istvshow: true,
-            ),
-          if (tvshow)
-            MoviesListView(
-              future: popularTvFuture!,
-              headlineText: S.of(context).populartvwidget_title,
-              istvshow: true,
-            ),
-          if (tvshow)
-            MoviesListView(
-              future: Egyptionseries!,
-              headlineText: S.of(context).egypttvwidget_title,
-              istvshow: true,
-            ),
-          // MoviesListView(
-          //     future: topRatedFuture, headlineText: 'Top Rated Movies'),
-        ],
-      ),
+    final s = S.of(context);
+    final feeds = movie ? HomeFeed.movieFeeds : HomeFeed.tvFeeds;
+    String title(HomeFeed f) => switch (f) {
+          HomeFeed.upcoming => s.upcomingwidget_title,
+          HomeFeed.trending => s.trendingmovieswidget_title,
+          HomeFeed.popular => s.popularmovieswidget_title,
+          HomeFeed.egyptian => s.egyptmovieswidget_title,
+          HomeFeed.airingToday => s.airingtodaywidget_title,
+          HomeFeed.trendingTv => s.trendingtvwidget_title,
+          HomeFeed.popularTv => s.populartvwidget_title,
+          HomeFeed.egyptianTv => s.egypttvwidget_title,
+        };
+
+    final hero = feeds.first;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        UpcomingMovies(
+          future: futureOf(hero),
+          headlineText: title(hero),
+          istvshow: hero.isTv,
+          heroSource: hero.name,
+          onRetry: () => onRetry(hero),
+          onFocusChanged: onFocusChanged,
+        ),
+        for (final feed in feeds.skip(1))
+          MoviesListView(
+            future: futureOf(feed),
+            headlineText: title(feed),
+            istvshow: feed.isTv,
+            heroSource: feed.name,
+            onRetry: () => onRetry(feed),
+          ),
+      ],
     );
   }
 }

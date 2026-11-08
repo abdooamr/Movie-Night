@@ -1,76 +1,72 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../design/motion.dart';
+import '../../design/tokens.dart';
+import '../upcoming.dart';
+
+/// Section skeleton for the Home carousel: one [Shimmer] over a title bar
+/// and the centred hero poster. Static under Reduce Motion.
 class upcomingShimmerWidget extends StatelessWidget {
   const upcomingShimmerWidget({
     super.key,
-    required this.baseColor,
-    required this.highlightColor,
+    this.baseColor,
+    this.highlightColor,
   });
 
-  final Color baseColor;
-  final Color highlightColor;
+  /// Defaults to `surfaceContainerHigh`.
+  final Color? baseColor;
+
+  /// Defaults to `surfaceContainerHighest`.
+  final Color? highlightColor;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // Centered title shimmer
-        Shimmer.fromColors(
-          baseColor: baseColor,
-          highlightColor: highlightColor,
-          child: Container(
-            width: 200,
-            height: 24,
-            margin: const EdgeInsets.only(bottom: 15),
-            decoration: BoxDecoration(
-              color: baseColor,
-              borderRadius: BorderRadius.circular(6),
-            ),
-          ),
-        ),
+    final cs = Theme.of(context).colorScheme;
+    final base = baseColor ?? cs.surfaceContainerHigh;
+    final heroWidth = UpcomingMovies.posterWidthOf(context);
+    final heroHeight = UpcomingMovies.posterHeightOf(context);
 
-        const SizedBox(height: 10),
-
-        CarouselSlider.builder(
-          itemCount: 3,
-          itemBuilder: (context, index, realIndex) {
-            return Shimmer.fromColors(
-              period: const Duration(milliseconds: 1500),
-              baseColor: baseColor,
-              highlightColor: highlightColor,
-              child: Container(
-                width: 174.5,
-                height: 250,
-                decoration: BoxDecoration(
-                  color: baseColor,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    height: 70,
-                    decoration: BoxDecoration(
-                      color: highlightColor.withValues(alpha: 0.4),
-                      borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(20),
-                        bottomRight: Radius.circular(20),
-                      ),
-                    ),
+    return ExcludeSemantics(
+      child: Shimmer.fromColors(
+        enabled: !MNMotion.of(context).reduce,
+        baseColor: base,
+        highlightColor: highlightColor ?? cs.surfaceContainerHighest,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsetsDirectional.symmetric(
+                horizontal: MNSpace.lg,
+                vertical: MNSpace.md,
+              ),
+              child: SizedBox(
+                width: heroWidth,
+                height: MNSpace.xl,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: base,
+                    borderRadius: MNRadius.smAll,
                   ),
                 ),
               ),
-            );
-          },
-          options: CarouselOptions(
-            viewportFraction: .5, // SAME as your real slider
-            enlargeCenterPage: true,
-            enableInfiniteScroll: true,
-            aspectRatio: 1.5,
-          ),
+            ),
+            const SizedBox(height: MNSpace.sm),
+            Center(
+              child: SizedBox(
+                width: heroWidth,
+                height: heroHeight,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: base,
+                    borderRadius: MNRadius.mdAll,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
