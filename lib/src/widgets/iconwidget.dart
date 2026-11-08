@@ -1,22 +1,30 @@
 import 'package:flutter/material.dart';
 
+import '../design/tokens.dart';
+
+/// Neutral icon chip for settings rows (spec section 3): `surfaceContainerHigh`
+/// fill with an `onSurfaceVariant` glyph. [destructive] tints the glyph with
+/// `error`; only Delete Account uses it.
 class Iconwidget extends StatelessWidget {
   final IconData icon;
-  final Color color;
+  final bool destructive;
 
-  const Iconwidget({super.key, required this.icon, required this.color});
+  const Iconwidget({super.key, required this.icon, this.destructive = false});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(6),
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: color,
-      ),
-      child: Icon(
-        icon,
-        color: Colors.white,
+    final cs = Theme.of(context).colorScheme;
+    return ExcludeSemantics(
+      child: Container(
+        padding: const EdgeInsetsDirectional.all(MNSpace.sm),
+        decoration: BoxDecoration(
+          color: cs.surfaceContainerHigh,
+          borderRadius: MNRadius.smAll,
+        ),
+        child: Icon(
+          icon,
+          color: destructive ? cs.error : cs.onSurfaceVariant,
+        ),
       ),
     );
   }

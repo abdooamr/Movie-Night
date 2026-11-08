@@ -1,19 +1,24 @@
-import 'package:Movie_Night/src/utils/app_logger.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:Movie_Night/generated/l10n.dart';
-import 'package:Movie_Night/src/pages/Userpage/Watchlist.dart';
-import 'package:Movie_Night/src/widgets/themechanger.dart';
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:Movie_Night/src/components/feedback.dart';
 import 'package:Movie_Night/src/data/user_repository.dart';
+import 'package:Movie_Night/src/design/tokens.dart';
+import 'package:Movie_Night/src/pages/Adminpages/admin_panel_vd.dart';
+import 'package:Movie_Night/src/pages/Login-Logout/auth_errors.dart';
+import 'package:Movie_Night/src/pages/Userpage/SendReports.dart';
+import 'package:Movie_Night/src/pages/Userpage/User_info_page.dart';
+import 'package:Movie_Night/src/pages/Userpage/account_setting.dart';
+import 'package:Movie_Night/src/pages/Userpage/changepassword.dart';
+import 'package:Movie_Night/src/utils/app_logger.dart';
+import 'package:Movie_Night/src/widgets/customsettingscreen.dart';
+import 'package:Movie_Night/src/widgets/themechanger.dart';
+import 'package:Movie_Night/src/widgets/userinfotile.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_settings_screens/flutter_settings_screens.dart';
-import 'package:Movie_Night/src/pages/allpages.dart';
-import 'package:Movie_Night/src/widgets/allwidget.dart';
-import 'package:Movie_Night/src/widgets/userinfotile.dart';
 import 'package:in_app_review/in_app_review.dart';
 
+/// The Profile tab (signed in): user tile, Appearance, General, Account and
+/// the spaced-apart Delete Account row.
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
@@ -22,184 +27,207 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  final Userx = FirebaseAuth.instance.currentUser!;
   final UserRepository _users = UserRepository.instance;
-  bool? isadmin;
-  final userx = FirebaseAuth.instance.currentUser;
   final InAppReview _inAppReview = InAppReview.instance;
+  bool _isAdmin = false;
+  bool _signingOut = false;
 
-  Future<void> _openStoreReview(BuildContext context) async {
-    if (await _inAppReview.isAvailable()) {
-      await _inAppReview.requestReview();
+  @override
+  void initState() {
+    super.initState();
+    _checkIsAdmin();
+  }
+
+  Future<void> _checkIsAdmin() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return;
+    bool admin;
+    try {
+      admin = await _users.isAdmin(uid);
+    } catch (_) {
+      admin = false;
+    }
+    if (mounted) setState(() => _isAdmin = admin);
+  }
+
+  Future<void> _openStoreReview() async {
+    final failMsg = S.of(context).genericError;
+    try {
+      if (await _inAppReview.isAvailable()) {
+        await _inAppReview.requestReview();
+      }
+      // In-app review may show nothing (quota, emulator): open the store too.
       await _inAppReview.openStoreListing();
-    } else {
-      // In-app review unavailable (emulator, not on store): go to the store page.
-      try {
-        await _inAppReview.openStoreListing();
-      } catch (e, st) {
-        AppLog.error('openStoreListing', e, st);
-        Fluttertoast.showToast(msg: S.of(context).genericError);
+    } catch (e, st) {
+      AppLog.error('openStoreListing', e, st);
+      if (mounted) AppFeedback.error(context, failMsg);
+    }
+  }
+
+  Future<void> _logOut() async {
+    final failMsg = S.of(context).genericError;
+    setState(() => _signingOut = true);
+    try {
+      // The shell swaps this tab to the sign-in prompt via the auth stream.
+      await FirebaseAuth.instance.signOut();
+    } catch (e, st) {
+      AppLog.error('signOut', e, st);
+      if (mounted) {
+        setState(() => _signingOut = false);
+        AppFeedback.error(context, failMsg);
       }
     }
   }
 
-  Future Delete_account() async {
-    await _users.deleteUserDocument(userx!.uid);
-  }
+  /// B1: confirm, block, delete the auth user first, then the Firestore
+  /// document. A stale session deletes nothing.
+  Future<void> _deleteAccount() async {
+    final s = S.of(context);
+    final confirmed = await AppFeedback.confirmDestructive(
+      context,
+      title: s.deleteAccountTitle,
+      message: s.deleteAccountMessage,
+      confirmLabel: s.deleteaccountlabel,
+    );
+    if (!confirmed || !mounted) return;
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+    final uid = user.uid;
 
-  Future checkisadmin() async {
-    bool admin;
+    // This screen is replaced (and unmounted) as soon as the auth user is
+    // gone, so keep the root navigator for the dialog and the feedback.
+    final rootNav = Navigator.of(context, rootNavigator: true);
+    showDialog<void>(
+      context: context,
+      useRootNavigator: true,
+      barrierDismissible: false,
+      builder: (_) => const PopScope(
+        canPop: false,
+        child: Center(child: CircularProgressIndicator()),
+      ),
+    );
+
+    String? error;
     try {
-      admin = await _users.isAdmin(userx!.uid);
-    } catch (_) {
-      admin = false;
+      await user.delete();
+      try {
+        await _users.deleteUserDocument(uid);
+      } catch (e, st) {
+        // The account itself is gone; only the profile document remains.
+        AppLog.error('deleteUserDocument', e, st);
+      }
+    } on FirebaseAuthException catch (e, st) {
+      AppLog.error('deleteAccount', e, st);
+      error = e.code == 'requires-recent-login'
+          ? s.authErrorRecentLogin
+          : authErrorText(mounted ? context : rootNav.context, e);
+    } catch (e, st) {
+      AppLog.error('deleteAccount', e, st);
+      error = s.genericError;
     }
-    if (mounted) setState(() => isadmin = admin);
+
+    rootNav.pop();
+    final feedbackContext = mounted ? context : rootNav.context;
+    if (!feedbackContext.mounted) return;
+    if (error != null) {
+      AppFeedback.error(feedbackContext, error);
+    } else {
+      AppFeedback.info(feedbackContext, s.deleteAccountDone);
+    }
   }
 
-  @override
-  void initState() {
-    checkisadmin();
-    super.initState();
-  }
+  void _push(Widget page) => Navigator.of(context)
+      .push(MaterialPageRoute<void>(builder: (_) => page));
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
+    const gap = SizedBox(height: MNSpace.xl);
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-      ),
-      body: SafeArea(
-          child: ListView(
-        padding: EdgeInsets.all(24),
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: userinfotile(),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar.large(
+            title: Semantics(header: true, child: Text(s.profilenavbar)),
           ),
-
-          SizedBox(
-            height: 10,
-          ),
-          DarkModeSwitch(),
-
-          (isadmin == true)
-              ? SettingsGroup(
-                  title: S.of(context).adminsettingslabel,
-                  children: <Widget>[
-                      SimpleSettingsTile(
-                        showDivider: false,
-                        //colorxz: Theme.of(context).listTileTheme.tileColor,
-                        title: S.of(context).adminpanellabel,
-                        subtitle: "",
-                        leading: Iconwidget(
-                            icon: Icons.admin_panel_settings,
-                            color: Color.fromARGB(255, 57, 138, 99)),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => adminpanel()));
-                        },
+          SliverPadding(
+            padding:
+                const EdgeInsetsDirectional.symmetric(horizontal: MNSpace.lg),
+            sliver: SliverList.list(
+              children: [
+                const userinfotile(),
+                gap,
+                const AppearanceSetting(),
+                gap,
+                SettingsSection(
+                  title: s.generalsettingslabel,
+                  children: [
+                    const LanguageSettingsRow(),
+                    SettingsRow(
+                      icon: IconsaxOutline.message_question,
+                      title: s.reportabuglabel,
+                      opensScreen: true,
+                      onTap: () => _push(const SendReport()),
+                    ),
+                    SettingsRow(
+                      icon: IconsaxOutline.star,
+                      // NEEDS_STRING rateMovieNight: Rate Movie Night
+                      title: s.sendfeedbacklabel,
+                      onTap: _openStoreReview,
+                    ),
+                  ],
+                ),
+                gap,
+                SettingsSection(
+                  // NEEDS_STRING accountGroupLabel: Account
+                  title: s.accountsettingslabel,
+                  children: [
+                    const EditProfileRow(),
+                    const ResetPasswordRow(),
+                    SettingsRow(
+                      icon: IconsaxOutline.logout,
+                      title: s.logoutlabel,
+                      busy: _signingOut,
+                      onTap: _logOut,
+                    ),
+                  ],
+                ),
+                if (_isAdmin) ...[
+                  gap,
+                  SettingsSection(
+                    title: s.adminsettingslabel,
+                    children: [
+                      SettingsRow(
+                        icon: IconsaxOutline.security_user,
+                        title: s.adminpanellabel,
+                        opensScreen: true,
+                        onTap: () => _push(adminpanel()),
                       ),
-                    ])
-              : Container(),
-          //SettingsGroup(title: "", children: <Widget>[]),
-          SettingsGroup(
-              title: S.of(context).generalsettingslabel,
-              children: <Widget>[
-                watchlist(),
-                Accountpage(),
-                reportmeth(),
-                feedbackmeth(),
-              ]),
-          SettingsGroup(
-              title: S.of(context).managesettingslabel,
-              children: <Widget>[
-                Logoutmeth(),
-                Deletemeth(),
-              ])
+                    ],
+                  ),
+                ],
+                // Danger zone, spaced apart from everything else.
+                const SizedBox(height: MNSpace.xxxl),
+                SettingsSection(
+                  children: [
+                    SettingsRow(
+                      icon: IconsaxOutline.trash,
+                      title: s.deleteaccountlabel,
+                      destructive: true,
+                      onTap: _deleteAccount,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          // Clears the floating iOS tab bar (and the safe area).
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: MediaQuery.paddingOf(context).bottom + MNSpace.xl,
+            ),
+          ),
         ],
-      )),
+      ),
     );
   }
-
-  Widget watchlist() => SimpleSettingsTile(
-        showDivider: false,
-        title: S.of(context).watchlistlabel,
-        subtitle: "",
-        leading: Iconwidget(icon: IconsaxBold.bookmark, color: Colors.purple),
-        onTap: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => UserWatchlist()));
-        },
-      );
-
-  Widget reportmeth() => SimpleSettingsTile(
-        showDivider: false,
-        title: S.of(context).reportabuglabel,
-        subtitle: "",
-        onTap: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => SendReport()));
-        },
-        leading: Iconwidget(
-            icon: Icons.bug_report, color: Color.fromARGB(255, 57, 138, 99)),
-      );
-  Widget feedbackmeth() => SimpleSettingsTile(
-        showDivider: false,
-        title: S.of(context).sendfeedbacklabel,
-        subtitle: "",
-        leading: Iconwidget(icon: Icons.thumb_up, color: Colors.purple),
-        onTap: () {
-          _openStoreReview(context); // Call the review function here
-        },
-      );
-  Widget Logoutmeth() => SimpleSettingsTile(
-        showDivider: false,
-        title: S.of(context).logoutlabel,
-        subtitle: "",
-        leading: Iconwidget(icon: Icons.logout, color: Colors.blue),
-        onTap: () {
-          FirebaseAuth.instance.signOut();
-        },
-      );
-  Widget Deletemeth() => SimpleSettingsTile(
-        showDivider: false,
-        title: S.of(context).deleteaccountlabel,
-        titleTextStyle: TextStyle(
-            color: Colors.red, fontSize: 20, fontWeight: FontWeight.bold),
-        subtitle: "",
-        leading: Iconwidget(icon: Icons.delete, color: Colors.red),
-        onTap: () {
-          Userx.delete().catchError((e) {
-            final snackBarx = SnackBar(
-              elevation: 0,
-              behavior: SnackBarBehavior.floating,
-              backgroundColor: Colors.transparent,
-              content: AwesomeSnackbarContent(
-                title: S.of(context).errorTitle,
-                message: S.of(context).errorLoginAgain,
-                contentType: ContentType.failure,
-              ),
-            );
-            ScaffoldMessenger.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(snackBarx);
-          });
-          Delete_account();
-        },
-      );
-  Widget admin_panel() => SimpleSettingsTile(
-        showDivider: false,
-        title: S.of(context).adminpanellabel,
-        subtitle: "",
-        leading:
-            Iconwidget(icon: Icons.admin_panel_settings, color: Colors.purple),
-        onTap: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => adminpanel()));
-        },
-      );
 }

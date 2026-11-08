@@ -1,75 +1,60 @@
 import 'package:Movie_Night/generated/l10n.dart';
+import 'package:Movie_Night/src/components/feedback.dart';
+import 'package:Movie_Night/src/pages/Login-Logout/auth_errors.dart';
+import 'package:Movie_Night/src/utils/app_logger.dart';
 import 'package:Movie_Night/src/widgets/customsettingscreen.dart';
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:ficonsax/ficonsax.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_settings_screens/flutter_settings_screens.dart';
-import 'package:Movie_Night/src/widgets/iconwidget.dart';
 
-class Changepassword extends StatefulWidget {
-  const Changepassword({super.key});
+/// Account > Reset Password: emails the signed-in user a reset link and
+/// reports the real result.
+class ResetPasswordRow extends StatefulWidget {
+  const ResetPasswordRow({super.key});
 
   @override
-  State<Changepassword> createState() => _ChangepasswordState();
+  State<ResetPasswordRow> createState() => _ResetPasswordRowState();
 }
 
-Future change_password() async {
-  await FirebaseAuth.instance
-      .sendPasswordResetEmail(email: FirebaseAuth.instance.currentUser!.email!);
-}
+class _ResetPasswordRowState extends State<ResetPasswordRow> {
+  bool _busy = false;
 
-class _ChangepasswordState extends State<Changepassword> {
-  @override
-  Widget build(BuildContext context) {
-    return SimpleSettingsTile(
-      showDivider: false,
-      //colorxz: Theme.of(context).listTileTheme.tileColor,
-      title: S.of(context).privacylabel,
-      leading: Iconwidget(icon: Icons.security, color: Colors.red),
-      child: Settings_Screen(
-        title: S.of(context).changepasswordlabel,
-        children: <Widget>[Change_password(context)],
-      ),
-    );
+  Future<void> _send() async {
+    final s = S.of(context);
+    final email = FirebaseAuth.instance.currentUser?.email;
+    if (email == null || email.isEmpty) {
+      AppFeedback.error(context, s.changepassworderror);
+      return;
+    }
+    setState(() => _busy = true);
+    String? error;
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e, st) {
+      AppLog.error('sendPasswordResetEmail', e, st);
+      error = mounted ? authErrorText(context, e) : s.changepassworderror;
+    } catch (e, st) {
+      AppLog.error('sendPasswordResetEmail', e, st);
+      error = s.changepassworderror;
+    }
+    if (!mounted) return;
+    setState(() => _busy = false);
+    if (error != null) {
+      AppFeedback.error(context, error);
+    } else {
+      AppFeedback.info(context, s.changepasswordsuccess);
+    }
   }
 
-  Widget Change_password(BuildContext context) => SimpleSettingsTile(
-        showDivider: false,
-        //colorxz: Theme.of(context).listTileTheme.tileColor,
-        title: S.of(context).changepasswordlabel,
-        subtitle: "",
-        onTap: () {
-          try {
-            change_password();
-            final snackBarx = SnackBar(
-              elevation: 0,
-              behavior: SnackBarBehavior.floating,
-              backgroundColor: Colors.transparent,
-              content: AwesomeSnackbarContent(
-                title: S.of(context).success,
-                message: S.of(context).changepasswordsuccess,
-                contentType: ContentType.success,
-              ),
-            );
-            ScaffoldMessenger.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(snackBarx);
-          } catch (e) {
-            final snackBarx = SnackBar(
-              elevation: 0,
-              behavior: SnackBarBehavior.floating,
-              backgroundColor: Colors.transparent,
-              content: AwesomeSnackbarContent(
-                title: S.of(context).error,
-                message: S.of(context).changepassworderror,
-                contentType: ContentType.failure,
-              ),
-            );
-            ScaffoldMessenger.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(snackBarx);
-          }
-        },
-        leading: Iconwidget(icon: Icons.password, color: Colors.red),
-      );
+  @override
+  Widget build(BuildContext context) {
+    final s = S.of(context);
+    return SettingsRow(
+      icon: IconsaxOutline.key,
+      title: s.resetPassword,
+      subtitle: s.resetPasswordSubtitle,
+      busy: _busy,
+      onTap: _send,
+    );
+  }
 }

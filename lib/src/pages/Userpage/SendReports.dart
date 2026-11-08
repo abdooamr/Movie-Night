@@ -1,9 +1,16 @@
 import 'package:Movie_Night/generated/l10n.dart';
+import 'package:Movie_Night/src/components/app_text_field.dart';
+import 'package:Movie_Night/src/components/feedback.dart';
+import 'package:Movie_Night/src/design/tokens.dart';
+import 'package:Movie_Night/src/utils/app_logger.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ficonsax/ficonsax.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 
+/// Report a Bug: summary and description are both required; Send stays
+/// disabled until they are filled, then awaits the result.
 class SendReport extends StatefulWidget {
   const SendReport({super.key});
   @override
@@ -11,123 +18,160 @@ class SendReport extends StatefulWidget {
 }
 
 class _SendReportState extends State<SendReport> {
+  static const _recipientEmail = 'miu.team4.27@gmail.com';
+
+  final _formKey = GlobalKey<FormState>();
   final _subjectController = TextEditingController();
-  final _bodycontroller = TextEditingController();
-  final recipient_email = "miu.team4.27@gmail.com";
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final userx = FirebaseAuth.instance.currentUser;
+  final _bodyController = TextEditingController();
+  bool _sending = false;
+
+  bool get _isValid =>
+      _subjectController.text.trim().isNotEmpty &&
+      _bodyController.text.trim().isNotEmpty;
+
+  @override
+  void initState() {
+    super.initState();
+    _subjectController.addListener(_onChanged);
+    _bodyController.addListener(_onChanged);
+  }
+
+  void _onChanged() => setState(() {});
 
   @override
   void dispose() {
     _subjectController.dispose();
-    _bodycontroller.dispose();
+    _bodyController.dispose();
     super.dispose();
   }
 
-  Future SendReport() async {
-    // add the data to fire base
-    await _firestore.collection('users').doc(userx!.uid).update({
-      "report": _bodycontroller.text.trim(),
-    });
+  /// Stores the report on the user's document (read by the admin panel).
+  Future<void> _saveReport(String uid, String body) =>
+      FirebaseFirestore.instance.collection('users').doc(uid).update({
+        'report': body,
+      });
+
+  Future<void> _sendEmail(String subject, String body) =>
+      FlutterEmailSender.send(Email(
+        subject: subject,
+        body: body,
+        recipients: const [_recipientEmail],
+        isHTML: false,
+      ));
+
+  Future<void> _send() async {
+    if (_sending || !(_formKey.currentState?.validate() ?? false)) return;
+    final s = S.of(context);
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) {
+      AppFeedback.error(context, s.reportFailed);
+      return;
+    }
+    final subject = _subjectController.text.trim();
+    final body = _bodyController.text.trim();
+
+    setState(() => _sending = true);
+    var ok = true;
+    try {
+      await _saveReport(uid, body);
+    } catch (e, st) {
+      AppLog.error('saveReport', e, st);
+      ok = false;
+    }
+    if (ok) {
+      // Best effort: the stored report already reached the admin panel;
+      // the mail composer may be missing or dismissed.
+      try {
+        await _sendEmail(subject, body);
+      } catch (e, st) {
+        AppLog.error('sendReportEmail', e, st);
+      }
+    }
+    if (!mounted) return;
+    setState(() => _sending = false);
+    if (!ok) {
+      AppFeedback.error(context, s.reportFailed);
+      return;
+    }
+    final navigator = Navigator.of(context);
+    AppFeedback.info(context, s.reportSent);
+    navigator.pop();
   }
 
-  SendReportemail(String subject, String body) async {
-    final Email email = Email(
-      subject: subject,
-      body: body,
-      recipients: [recipient_email],
-      isHTML: false,
-    );
-    await FlutterEmailSender.send(email);
-  }
-
+  @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
+    final theme = Theme.of(context);
     return Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          title: Center(child: Text(S.of(context).sendreportlabel)),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                margin: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 58, 58, 137),
-                  borderRadius: BorderRadius.circular(10),
-                ),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            pinned: true,
+            title: Semantics(header: true, child: Text(s.reportabuglabel)),
+          ),
+          SliverPadding(
+            padding: const EdgeInsetsDirectional.all(MNSpace.lg),
+            sliver: SliverToBoxAdapter(
+              child: Form(
+                key: _formKey,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Row(
-                      children: [
-                        Icon(Icons.waving_hand, color: Colors.yellow),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                          S.of(context).Heytherelabel,
-                          style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white),
-                        ),
-                      ],
-                    ),
+                    Text(s.Heytherelabel, style: theme.textTheme.titleMedium),
+                    const SizedBox(height: MNSpace.xs),
                     Text(
-                      S.of(context).reportpagelabel,
-                      style: TextStyle(color: Colors.white, fontSize: 15),
+                      s.reportpagelabel,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                    const SizedBox(height: MNSpace.xl),
+                    AppTextField(
+                      controller: _subjectController,
+                      label: s.summarylabel,
+                      icon: IconsaxOutline.text,
+                      action: TextInputAction.next,
+                      validator: (v) => (v == null || v.trim().isEmpty)
+                          ? s.reportSummaryRequired
+                          : null,
+                    ),
+                    const SizedBox(height: MNSpace.lg),
+                    AppTextField(
+                      controller: _bodyController,
+                      label: s.descriptionlabel,
+                      kind: AppFieldKind.multiline,
+                      icon: IconsaxOutline.document_text,
+                      // NEEDS_STRING reportDescriptionRequired: Add a description.
+                      validator: (v) => (v == null || v.trim().isEmpty)
+                          ? s.reportSummaryRequired
+                          : null,
+                    ),
+                    const SizedBox(height: MNSpace.xl),
+                    FilledButton.icon(
+                      onPressed: _isValid && !_sending ? _send : null,
+                      icon: _sending
+                          ? SizedBox.square(
+                              dimension: MNSpace.lg,
+                              child: CircularProgressIndicator(
+                                strokeWidth: MNSpace.xxs,
+                                semanticsLabel: s.sendreportlabel,
+                              ),
+                            )
+                          : const Icon(IconsaxOutline.send),
+                      label: Text(s.sendreportlabel),
                     ),
                   ],
                 ),
               ),
-              ListTile(
-                leading: const Icon(Icons.text_fields),
-                title: Text(S.of(context).summarylabel),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  controller: _subjectController,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: S.of(context).summaryhint),
-                  maxLines: 1,
-                ),
-              ),
-              ListTile(
-                leading: const Icon(Icons.description),
-                title: Text(S.of(context).descriptionlabel),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  controller: _bodycontroller,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: S.of(context).descriptionhint),
-                  maxLines: 10,
-                ),
-              ),
-              ElevatedButton(
-                  onPressed: () {
-                    SendReportemail(_subjectController.text.trim(),
-                        _bodycontroller.text.trim());
-                    SendReport();
-                  },
-                  child: Text(S.of(context).sendreportlabel,
-                      style: TextStyle(
-                          color:
-                              Theme.of(context).textTheme.bodyMedium!.color)),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 58, 58, 137),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32.0),
-                    ),
-                  )),
-            ],
+            ),
           ),
-        ));
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: MediaQuery.paddingOf(context).bottom + MNSpace.xl,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

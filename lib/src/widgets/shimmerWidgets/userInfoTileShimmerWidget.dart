@@ -1,50 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../design/motion.dart';
+import '../../design/tokens.dart';
+
+/// Loading placeholder shaped like [UserInfoHeader]. Static under Reduce
+/// Motion.
 class UserInfoTileShimmerWidget extends StatelessWidget {
   const UserInfoTileShimmerWidget({super.key});
 
+  static const double _nameWidth = 160;
+  static const double _emailWidth = 220;
+
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final cs = Theme.of(context).colorScheme;
+    final base = cs.surfaceContainerHigh;
 
-    final baseColor = isDark ? Colors.grey.shade800 : Colors.grey.shade300;
-    final highlightColor = isDark ? Colors.grey.shade700 : Colors.grey.shade100;
+    Widget bar(double width, double height) => Container(
+          width: width,
+          height: height,
+          decoration: BoxDecoration(color: base, borderRadius: MNRadius.smAll),
+        );
 
-    return Shimmer.fromColors(
-      period: const Duration(milliseconds: 1500),
-      baseColor: baseColor,
-      highlightColor: highlightColor,
-      child: ListTile(
-        tileColor: Theme.of(context).listTileTheme.tileColor,
-        leading: Container(
-          width: 60,
-          height: 60,
-          decoration: BoxDecoration(
-            color: baseColor,
-            shape: BoxShape.circle,
+    final Widget placeholder = ExcludeSemantics(
+      child: Row(
+        children: [
+          Container(
+            width: MNSize.avatar,
+            height: MNSize.avatar,
+            decoration: BoxDecoration(color: base, shape: BoxShape.circle),
           ),
-        ),
-        title: Container(
-          height: 18,
-          width: 160,
-          decoration: BoxDecoration(
-            color: baseColor,
-            borderRadius: BorderRadius.circular(6),
-          ),
-        ),
-        subtitle: Padding(
-          padding: const EdgeInsets.only(top: 8),
-          child: Container(
-            height: 14,
-            width: 220,
-            decoration: BoxDecoration(
-              color: baseColor,
-              borderRadius: BorderRadius.circular(6),
+          const SizedBox(width: MNSpace.lg),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                bar(_nameWidth, MNSpace.lg + MNSpace.xxs),
+                const SizedBox(height: MNSpace.sm),
+                bar(_emailWidth, MNSpace.md + MNSpace.xxs),
+              ],
             ),
           ),
-        ),
+        ],
       ),
+    );
+
+    if (MNMotion.of(context).reduce) return placeholder;
+    return Shimmer.fromColors(
+      period: MNDuration.long * 3.5,
+      baseColor: base,
+      highlightColor: cs.surfaceContainer,
+      child: placeholder,
     );
   }
 }
