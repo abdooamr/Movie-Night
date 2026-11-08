@@ -6,6 +6,7 @@ import 'package:Movie_Night/src/services/services.dart';
 import 'package:Movie_Night/src/widgets/videos.dart';
 import 'package:provider/provider.dart';
 
+/// Trailers and clips for a title; the list itself is the only scroll view.
 class VideosPage extends StatefulWidget {
   final int? movieid;
   final bool isTvShow;
@@ -16,38 +17,31 @@ class VideosPage extends StatefulWidget {
 }
 
 class _Videos_pageState extends State<VideosPage> {
-  late Future<Video> VideosFuture;
-  late DropdownProvider dropdownProvider;
+  late Future<Video> _videos;
 
   @override
   void initState() {
-    dropdownProvider = Provider.of<DropdownProvider>(context, listen: false);
-    VideosFuture = getyoutubeid(
-        widget.movieid!, widget.isTvShow, dropdownProvider.selectedValue);
     super.initState();
+    _videos = _load();
   }
+
+  Future<Video> _load() {
+    final lang =
+        Provider.of<DropdownProvider>(context, listen: false).selectedValue;
+    return getyoutubeid(widget.movieid!, widget.isTvShow, lang);
+  }
+
+  void _retry() => setState(() => _videos = _load());
 
   @override
   Widget build(BuildContext context) {
+    final title = S.of(context).videoslabel;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(S.of(context).videoslabel),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-      ),
-      body: ListView(
-        children: [
-          const SizedBox(
-            height: 25,
-          ),
-          Videos_list(
-            future: VideosFuture,
-            headlineText: S.of(context).videoslabel,
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-        ],
+      appBar: AppBar(title: Text(title)),
+      body: Videos_list(
+        future: _videos,
+        headlineText: title,
+        onRetry: _retry,
       ),
     );
   }

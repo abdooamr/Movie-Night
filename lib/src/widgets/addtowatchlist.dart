@@ -1,17 +1,23 @@
 import 'package:Movie_Night/generated/l10n.dart';
-import 'package:Movie_Night/src/components/squaretile.dart';
+import 'package:Movie_Night/src/components/action_tile.dart';
+import 'package:Movie_Night/src/components/feedback.dart';
 import 'package:Movie_Night/src/data/user_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ficonsax/ficonsax.dart';
 
+/// Signed-in Watchlist toggle tile on Detail. Bookmark outline at rest, bold
+/// when saved. Optimistic: flips at once (light haptic) and rolls back with a
+/// heavy haptic and an error snackbar if the write fails.
 class Watchlistwidget extends StatefulWidget {
   final int movieid;
   final bool istvshow;
 
-  Watchlistwidget({required this.movieid, required this.istvshow});
+  const Watchlistwidget(
+      {super.key, required this.movieid, required this.istvshow});
 
   @override
-  _WatchlistwidgetState createState() => _WatchlistwidgetState();
+  State<Watchlistwidget> createState() => _WatchlistwidgetState();
 }
 
 class _WatchlistwidgetState extends State<Watchlistwidget> {
@@ -41,6 +47,7 @@ class _WatchlistwidgetState extends State<Watchlistwidget> {
     _busy = true;
     final adding = !isInWatchlist;
     // Optimistic: flip now, roll back if the write fails.
+    HapticFeedback.lightImpact();
     setState(() => isInWatchlist = adding);
     try {
       if (adding) {
@@ -50,7 +57,11 @@ class _WatchlistwidgetState extends State<Watchlistwidget> {
             isTvShow: widget.istvshow);
       }
     } catch (_) {
-      if (mounted) setState(() => isInWatchlist = !adding);
+      if (mounted) {
+        setState(() => isInWatchlist = !adding);
+        HapticFeedback.heavyImpact();
+        AppFeedback.error(context, S.of(context).watchlistUpdateFailed);
+      }
     } finally {
       _busy = false;
     }
@@ -58,10 +69,12 @@ class _WatchlistwidgetState extends State<Watchlistwidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SquareTile(
-      icon: isInWatchlist ? IconsaxBold.trash : IconsaxBold.bookmark,
+    return ActionTile(
+      icon: IconsaxOutline.bookmark,
+      selectedIcon: IconsaxBold.bookmark,
+      selected: isInWatchlist,
       label: isInWatchlist
-          ? S.of(context).removefromwatchlist
+          ? S.of(context).inWatchlist
           : S.of(context).addtowatchlist,
       onTap: _toggleWatchlist,
     );

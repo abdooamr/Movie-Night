@@ -1,120 +1,140 @@
 import 'package:Movie_Night/generated/l10n.dart';
+import 'package:Movie_Night/src/components/cached_image.dart';
+import 'package:Movie_Night/src/components/state_views.dart';
+import 'package:Movie_Night/src/design/tokens.dart';
+import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/models/video_model.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+/// The Videos page body: one `ListView.separated` of 16:9 video cards, each
+/// opening the video on YouTube. This is the page's only scroll view.
 class Videos_list extends StatelessWidget {
   const Videos_list({
     required this.future,
-    Key? key,
+    super.key,
     required this.headlineText,
-  }) : super(key: key);
+    this.onRetry,
+  });
 
   final String headlineText;
   final Future<Video> future;
+
+  /// Re-fetches after a failure; without it a failure shows the empty state.
+  final VoidCallback? onRetry;
+
+  static const double maxCardWidth = 700;
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Video>(
       future: future,
       builder: (context, snapshot) {
-        var data = snapshot.data?.results;
-        if (snapshot.hasData) {
-          return Padding(
-            padding: const EdgeInsets.all(13.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.85,
-                  child: ListView.builder(
-                    physics: BouncingScrollPhysics(),
-                    scrollDirection: Axis.vertical,
-                    itemCount: data!.length,
-                    shrinkWrap: false,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          Stack(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 20),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      data[index].name,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium,
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(20),
-                                      child: AspectRatio(
-                                        aspectRatio: 16 / 9,
-                                        child: Image.network(
-                                          "https://img.youtube.com/vi/${data[index].key}/0.jpg",
-                                          fit: BoxFit.cover,
-                                          errorBuilder:
-                                              (context, error, stackTrace) {
-                                            return Container(
-                                              color: Colors.grey,
-                                              child: Center(
-                                                  child: Text(
-                                                S.of(context).noimage,
-                                                style: TextStyle(fontSize: 50),
-                                              )),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  launchUrlString(
-                                      "https://www.youtube.com/watch?v=${data[index].key}");
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 120, vertical: 65),
-                                  child: const Icon(
-                                    Icons.play_circle_outline,
-                                    color: Colors.white54,
-                                    size: 130,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          );
-        } else if (snapshot.hasError) {
-          return Center(
-            child: Text(S.of(context).noVideos),
-          );
-        } else {
-          return Padding(
-            padding:
-                EdgeInsets.only(top: MediaQuery.of(context).size.height / 2.5),
-            child: const Center(
-              child: CircularProgressIndicator(
-                color: Colors.deepPurpleAccent,
-                strokeWidth: 3,
-              ),
-            ),
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const Center(child: CircularProgressIndicator.adaptive());
+        }
+        if (snapshot.hasError && onRetry != null) {
+          return ErrorState(
+            message: S.of(context).couldntLoadSection(headlineText),
+            onRetry: onRetry!,
           );
         }
+        final data = snapshot.data?.results ?? const <Result>[];
+        if (data.isEmpty) {
+          return EmptyState(
+            icon: IconsaxOutline.video_slash,
+            title: S.of(context).noVideos,
+          );
+        }
+        final bottom = MediaQuery.paddingOf(context).bottom;
+        return ListView.separated(
+          padding: EdgeInsetsDirectional.fromSTEB(
+            MNSpace.lg,
+            MNSpace.lg,
+            MNSpace.lg,
+            MNSpace.lg + bottom,
+          ),
+          itemCount: data.length,
+          separatorBuilder: (_, __) => const SizedBox(height: MNSpace.lg),
+          itemBuilder: (context, index) => Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: maxCardWidth),
+              child: _VideoCard(video: data[index]),
+            ),
+          ),
+        );
       },
+    );
+  }
+}
+
+class _VideoCard extends StatelessWidget {
+  const _VideoCard({required this.video});
+
+  final Result video;
+
+  static const double _playSize = 64;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final mn = MNColors.of(context);
+    return Semantics(
+      button: true,
+      label: S.of(context).playVideo(video.name),
+      excludeSemantics: true,
+      child: Material(
+        color: theme.colorScheme.surfaceContainer,
+        borderRadius: MNRadius.mdAll,
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: () => launchUrlString(
+            'https://www.youtube.com/watch?v=${video.key}',
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              AspectRatio(
+                aspectRatio: 16 / 9,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    LayoutBuilder(
+                      builder: (context, c) => CachedImageCustom(
+                        'https://img.youtube.com/vi/${video.key}/0.jpg',
+                        width: c.maxWidth,
+                        height: c.maxHeight,
+                      ),
+                    ),
+                    Center(
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: mn.scrim.colors.last,
+                        ),
+                        child: Icon(
+                          IconsaxBold.play_circle,
+                          size: _playSize,
+                          color: mn.onScrim,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsetsDirectional.all(MNSpace.md),
+                child: Text(
+                  video.name,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.titleMedium,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
