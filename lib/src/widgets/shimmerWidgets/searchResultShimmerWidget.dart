@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
-/// Placeholder rows shown while search results load.
+import '../../design/motion.dart';
+import '../../design/tokens.dart';
+
+/// Placeholder rows shown while search results load. Static under Reduce
+/// Motion.
 class searchResultShimmerWidget extends StatelessWidget {
   const searchResultShimmerWidget({super.key, this.itemCount = 8});
 
@@ -9,28 +13,43 @@ class searchResultShimmerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
-    final base = dark ? Colors.grey.shade800 : Colors.grey.shade300;
-    final highlight = dark ? Colors.grey.shade700 : Colors.grey.shade100;
-    return Shimmer.fromColors(
-      baseColor: base,
-      highlightColor: highlight,
-      child: ListView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: itemCount,
-        itemBuilder: (context, i) => ListTile(
-          leading: CircleAvatar(backgroundColor: base),
-          title: Container(
-            height: 14,
-            margin: const EdgeInsets.only(right: 80),
-            decoration: BoxDecoration(
-                color: base, borderRadius: BorderRadius.circular(4)),
-          ),
-          subtitle: Container(
-            height: 12,
-            margin: const EdgeInsets.only(top: 8, right: 140),
-            decoration: BoxDecoration(
-                color: base, borderRadius: BorderRadius.circular(4)),
+    final cs = Theme.of(context).colorScheme;
+    final base = cs.surfaceContainerHighest;
+    final highlight = cs.surfaceContainerHigh;
+
+    Widget block(double height, double width) => Container(
+          height: height,
+          width: width,
+          decoration: BoxDecoration(color: base, borderRadius: MNRadius.smAll),
+        );
+
+    return ExcludeSemantics(
+      child: Shimmer.fromColors(
+        enabled: !MNMotion.of(context).reduce,
+        baseColor: base,
+        highlightColor: highlight,
+        child: ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: itemCount,
+          itemBuilder: (context, i) => Padding(
+            padding: const EdgeInsetsDirectional.symmetric(
+                horizontal: MNSpace.lg, vertical: MNSpace.sm),
+            child: Row(
+              children: [
+                block(60, 40),
+                const SizedBox(width: MNSpace.md),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      block(MNSpace.lg, MNSpace.xxxl * 3),
+                      const SizedBox(height: MNSpace.sm),
+                      block(MNSpace.md, MNSpace.xxxl * 2),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

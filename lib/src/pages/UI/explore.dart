@@ -1,15 +1,17 @@
 import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/langprovider.dart';
+import 'package:Movie_Night/src/design/tokens.dart';
 import 'package:Movie_Night/src/widgets/genreslistview.dart';
+import 'package:Movie_Night/src/widgets/search.dart';
+import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/services/services.dart';
-import 'package:Movie_Night/src/widgets/allwidget.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/movie_model.dart';
 
 class ExplorePage extends StatefulWidget {
-  const ExplorePage({Key? key}) : super(key: key);
+  const ExplorePage({super.key});
 
   @override
   State<ExplorePage> createState() => _ExplorePageState();
@@ -40,6 +42,10 @@ class _ExplorePageState extends State<ExplorePage>
   late TabController _tabController;
   late DropdownProvider dropdownProvider;
 
+  /// Absorbs the pinned header's height so each genre grid starts below it.
+  final SliverOverlapAbsorberHandle _overlapHandle =
+      SliverOverlapAbsorberHandle();
+
   /// Per-genre feeds, created on first view of a tab and reused afterwards so
   /// revisiting a tab or rebuilding does not refetch. Cleared when the
   /// language changes, since the cached results are localized.
@@ -68,78 +74,102 @@ class _ExplorePageState extends State<ExplorePage>
     super.dispose();
   }
 
+  void _openSearch(BuildContext context) {
+    showSearch(
+      context: context,
+      delegate: Search(lang: dropdownProvider.selectedValue),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
+    final cs = Theme.of(context).colorScheme;
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(top: 30), // Add spacing here
-        child: Column(
-          children: [
-            GestureDetector(
-              onTap: () {
-                showSearch(
-                  context: context,
-                  delegate: Search(lang: dropdownProvider.selectedValue),
-                );
-              },
-              child: Container(
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                height: 70,
-                child: Card(
-                  color: Colors.grey.withValues(alpha: 0.5),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: Row(
-                      children: [
-                        Icon(Icons.search),
-                        SizedBox(
-                          width: 10,
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          SliverOverlapAbsorber(
+            handle: _overlapHandle,
+            sliver: SliverAppBar.large(
+              pinned: true,
+              title: Text(s.explorenavbar),
+              forceElevated: innerBoxIsScrolled,
+              // Search field (56) + gap + tab row.
+              bottom: PreferredSize(
+                preferredSize:
+                    const Size.fromHeight(56 + MNSpace.sm + kTextTabBarHeight),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsetsDirectional.only(
+                        start: MNSpace.lg,
+                        end: MNSpace.lg,
+                        bottom: MNSpace.sm,
+                      ),
+                      // A launcher for the search delegate: the field itself
+                      // never takes input, so it is one button to assistive
+                      // tech.
+                      child: Semantics(
+                        button: true,
+                        label: s.searchhint,
+                        excludeSemantics: true,
+                        onTap: () => _openSearch(context),
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () => _openSearch(context),
+                          child: IgnorePointer(
+                            child: ExcludeFocus(
+                              child: SearchBar(
+                                hintText: s.searchhint,
+                                leading: Icon(
+                                  IconsaxOutline.search_normal,
+                                  color: cs.onSurfaceVariant,
+                                ),
+                                elevation: const WidgetStatePropertyAll(0),
+                              ),
+                            ),
+                          ),
                         ),
-                        Text(S.of(context).searchhint),
+                      ),
+                    ),
+                    TabBar(
+                      controller: _tabController,
+                      isScrollable: true,
+                      tabAlignment: TabAlignment.start,
+                      tabs: [
+                        for (final (_, label) in _genreTabs)
+                          Tab(text: label(s)),
                       ],
                     ),
-                  ),
+                  ],
                 ),
               ),
             ),
-            TabBar(
+          ),
+        ],
+        body: Consumer<DropdownProvider>(
+          builder: (context, dropdownProvider, _) {
+            final lang = dropdownProvider.selectedValue;
+            return TabBarView(
               controller: _tabController,
-              labelColor: Theme.of(context).textTheme.bodyLarge!.color,
-              unselectedLabelColor: Colors.grey,
-              indicatorColor: Colors.deepPurpleAccent,
-              isScrollable: true,
-              padding: EdgeInsets.zero,
-              tabAlignment: TabAlignment.start,
-              tabs: [
-                for (final (_, label) in _genreTabs)
-                  Tab(text: label(S.of(context))),
+              children: [
+                // Builder defers _futureFor until TabBarView actually
+                // builds the page, so only visited tabs hit the network.
+                for (final (genreId, _) in _genreTabs)
+                  Builder(
+                    builder: (context) => GenresListView(
+                      future: _futureFor(genreId, lang),
+                      headlineText: "",
+                      istvshow: false,
+                      genreId: genreId,
+                      overlapHandle: _overlapHandle,
+                      onRetry: () =>
+                          setState(() => _genreFutures.remove(genreId)),
+                    ),
+                  ),
               ],
-            ),
-            Consumer<DropdownProvider>(builder: (context, dropdownProvider, _) {
-              final lang = dropdownProvider.selectedValue;
-              return Expanded(
-                child: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    // Builder defers _futureFor until TabBarView actually
-                    // builds the page, so only visited tabs hit the network.
-                    for (final (genreId, _) in _genreTabs)
-                      Builder(
-                        builder: (context) => GenresListView(
-                          future: _futureFor(genreId, lang),
-                          headlineText: "",
-                          istvshow: false,
-                        ),
-                      ),
-                  ],
-                ),
-              );
-            }),
-          ],
+            );
+          },
         ),
       ),
     );
