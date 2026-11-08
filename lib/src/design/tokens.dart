@@ -69,6 +69,7 @@ class MNColors extends ThemeExtension<MNColors> {
     required this.chrome,
     required this.chromeHairline,
     required this.scrim,
+    required this.onScrim,
     required this.glowOpacity,
     required this.posterShadow,
   });
@@ -85,6 +86,9 @@ class MNColors extends ThemeExtension<MNColors> {
   /// Gradient under any text on imagery.
   final LinearGradient scrim;
 
+  /// Text and icons over the [scrim]; light in both themes.
+  final Color onScrim;
+
   /// Opacity of the spill glow.
   final double glowOpacity;
 
@@ -98,6 +102,7 @@ class MNColors extends ThemeExtension<MNColors> {
     colors: [Color(0x00000000), _scrimEnd],
   );
 
+  static const Color _onScrim = Color(0xFFF3F0F8);
   static const Color _darkSurface = Color(0xFF121117);
   static const Color _lightSurface = Color(0xFFFBFAFD);
   static const Color _darkOnSurface = Color(0xFFF3F0F8);
@@ -109,6 +114,7 @@ class MNColors extends ThemeExtension<MNColors> {
             highContrast ? _darkSurface : _darkSurface.withValues(alpha: 0.86),
         chromeHairline: _darkOnSurface.withValues(alpha: 0.08),
         scrim: _scrim,
+        onScrim: _onScrim,
         glowOpacity: 0.55,
         posterShadow: const [],
       );
@@ -120,6 +126,7 @@ class MNColors extends ThemeExtension<MNColors> {
             : _lightSurface.withValues(alpha: 0.86),
         chromeHairline: _lightOnSurface.withValues(alpha: 0.08),
         scrim: _scrim,
+        onScrim: _onScrim,
         glowOpacity: 0.30,
         posterShadow: const [
           BoxShadow(
@@ -139,6 +146,7 @@ class MNColors extends ThemeExtension<MNColors> {
     Color? chrome,
     Color? chromeHairline,
     LinearGradient? scrim,
+    Color? onScrim,
     double? glowOpacity,
     List<BoxShadow>? posterShadow,
   }) =>
@@ -147,6 +155,7 @@ class MNColors extends ThemeExtension<MNColors> {
         chrome: chrome ?? this.chrome,
         chromeHairline: chromeHairline ?? this.chromeHairline,
         scrim: scrim ?? this.scrim,
+        onScrim: onScrim ?? this.onScrim,
         glowOpacity: glowOpacity ?? this.glowOpacity,
         posterShadow: posterShadow ?? this.posterShadow,
       );
@@ -159,6 +168,7 @@ class MNColors extends ThemeExtension<MNColors> {
       chrome: Color.lerp(chrome, other.chrome, t)!,
       chromeHairline: Color.lerp(chromeHairline, other.chromeHairline, t)!,
       scrim: LinearGradient.lerp(scrim, other.scrim, t)!,
+      onScrim: Color.lerp(onScrim, other.onScrim, t)!,
       glowOpacity: glowOpacity + (other.glowOpacity - glowOpacity) * t,
       posterShadow: BoxShadow.lerpList(posterShadow, other.posterShadow, t)!,
     );

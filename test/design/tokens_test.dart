@@ -75,6 +75,16 @@ void main() {
         1.0);
   });
 
+  test('onScrim is legible on the scrim (80% black over white) in both themes',
+      () {
+    for (final b in Brightness.values) {
+      final mn = buildAppTheme(b).extension<MNColors>()!;
+      expect(mn.onScrim, const Color(0xFFF3F0F8));
+      expect(contrast(mn.onScrim, const Color(0xFF333333)),
+          greaterThanOrEqualTo(4.5));
+    }
+  });
+
   test('MNColors lerp and copyWith', () {
     final a = buildAppTheme(Brightness.dark).extension<MNColors>()!;
     final b = buildAppTheme(Brightness.light).extension<MNColors>()!;
