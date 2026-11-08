@@ -1,174 +1,107 @@
-import 'package:Movie_Night/generated/l10n.dart';
-import 'package:Movie_Night/src/widgets/changelangwidget.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
-import 'package:Movie_Night/src/pages/allpages.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../../generated/l10n.dart';
+import '../../design/motion.dart';
+import '../../design/tokens.dart';
+import '../../widgets/changelangwidget.dart';
+import 'Login.dart';
+import 'Register.dart';
+
+/// Brand name; not translatable.
+const String _brandName = 'Movie Night';
+
+/// First screen of the sign-in flow. Presented modally by `presentSignIn`,
+/// which adds the Close button at the top end.
 class LoginWelcomeScreen extends StatelessWidget {
   const LoginWelcomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: LayoutBuilder(
-        builder: (p0, p1) {
-          return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 60, left: 15),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: p1.maxHeight * 0.1,
-                        child: Text(
-                          S.of(context).hello,
-                          style: TextStyle(
-                              fontSize: 55,
-                              fontFamily: 'Pacifico',
-                              fontWeight: FontWeight.w700,
-                              color:
-                                  Theme.of(context).textTheme.bodyLarge!.color),
-                        ),
-                      ),
-                      Container(
-                        height: p1.maxHeight * 0.1,
-                        child: Text(
-                          S.of(context).welcomemessage,
-                          style: TextStyle(
-                              fontFamily: 'Pacifico',
-                              fontSize: 25,
-                              color: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .color!
-                                  .withValues(alpha: 0.5)),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(children: [
-                    Lottie.asset(
-                      "images/watchmovie.json",
-                      height: p1.maxWidth * 0.5,
-                    ),
-                    Lottie.asset(
-                      "images/popcorn.json",
-                      height: p1.maxWidth * 0.5,
-                    ),
-                  ]),
-                ),
-                // SingleChildScrollView(
-                //   scrollDirection: Axis.horizontal,
-                //   child: Row(children: [
-                //     Container(
-                //       alignment: Alignment.center,
-                //       child: Image.asset(
-                //         "images/mov.jpg",
-                //         scale: 2.5,
-                //         height: p1.maxWidth * 0.5,
-                //       ),
-                //     ),
-                //   ]),
-                // ),
-                SizedBox(
-                  height: p1.maxHeight * 0.1,
-                ),
-                Container(
-                  height: 80,
-                  width: double.infinity,
-                  padding: const EdgeInsets.only(top: 25, left: 24, right: 24),
-                  child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30)),
-                        backgroundColor: Color.fromARGB(255, 49, 39, 112)),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) {
-                          return Change_language_widget();
-                        }),
-                      );
-                    },
-                    icon: Icon(IconsaxBold.global),
-                    label: Text(
-                      S.of(context).changelanguagelabel,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
+    final s = S.of(context);
+    final text = Theme.of(context).textTheme;
+    final allowMotion = MNMotion.of(context).allowScale;
 
-                Container(
-                  height: 80,
-                  width: double.infinity,
-                  padding: const EdgeInsets.only(top: 25, left: 24, right: 24),
-                  child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30)),
-                        backgroundColor: Color.fromARGB(255, 49, 39, 112)),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) {
-                          return Login();
-                        }),
-                      );
-                    },
-                    icon: Icon(IconsaxBold.login_1),
-                    label: Text(
-                      S.of(context).loginbuttonlabel,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  height: 80,
-                  width: double.infinity,
-                  padding: const EdgeInsets.only(top: 25, left: 24, right: 24),
-                  child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30)),
-                        backgroundColor: Color.fromARGB(255, 49, 39, 112)),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) {
-                          return Register();
-                        }),
-                      );
-                    },
-                    icon: Icon(IconsaxBold.user),
-                    label: Text(
-                      S.of(context).signupbuttonlabel,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+    return Scaffold(
+      appBar: AppBar(
+        // The sheet is a fullscreen dialog; its Close button comes from
+        // presentSignIn, so don't let the app bar add a second one.
+        automaticallyImplyLeading: false,
+        actions: [
+          TextButton.icon(
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => const Change_language_widget(),
+              ),
             ),
-          );
-        },
+            icon: const Icon(IconsaxOutline.global),
+            label: Text(s.changelanguagelabel),
+          ),
+          // Keeps clear of the Close button overlaid at the top end.
+          const SizedBox(width: MNSize.minTap),
+        ],
       ),
-      //bottomNavigationBar: CustomNavBar(),
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Padding(
+                padding: const EdgeInsetsDirectional.symmetric(
+                  horizontal: MNSpace.xl,
+                  vertical: MNSpace.lg,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Spacer(),
+                    ExcludeSemantics(
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxHeight: 220),
+                        child: Lottie.asset(
+                          'images/watchmovie.json',
+                          animate: allowMotion,
+                          repeat: allowMotion,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: MNSpace.xl),
+                    Semantics(
+                      header: true,
+                      child: Text(
+                        _brandName,
+                        textAlign: TextAlign.center,
+                        style: text.displaySmall,
+                      ),
+                    ),
+                    const SizedBox(height: MNSpace.sm),
+                    Text(
+                      s.signInPromptBody,
+                      textAlign: TextAlign.center,
+                      style: text.bodyLarge,
+                    ),
+                    const Spacer(),
+                    FilledButton(
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute<void>(builder: (_) => const Login()),
+                      ),
+                      child: Text(s.loginbuttonlabel),
+                    ),
+                    const SizedBox(height: MNSpace.md),
+                    OutlinedButton(
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute<void>(builder: (_) => const Register()),
+                      ),
+                      child: Text(s.createaccountlabel),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -1,249 +1,228 @@
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:Movie_Night/generated/l10n.dart';
-import 'package:Movie_Night/src/Provider/register_provider.dart';
+import 'package:ficonsax/ficonsax.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:Movie_Night/src/pages/allpages.dart';
-import 'package:Movie_Night/src/models/user_model.dart';
-import 'package:Movie_Night/src/components/allcomp.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_icons/simple_icons.dart';
+
+import '../../../generated/l10n.dart';
+import '../../Provider/register_provider.dart';
+import '../../components/app_text_field.dart';
+import '../../design/tokens.dart';
+import '../../models/user_model.dart';
+import '../../utils/app_logger.dart';
+import 'Login.dart';
+import 'auth_errors.dart';
+import 'auth_form_parts.dart';
 
 class Register extends StatefulWidget {
+  const Register({super.key});
+
   @override
   _RegisterState createState() => _RegisterState();
 }
 
 class _RegisterState extends State<Register> {
-  final prrfilepicture = "https://ui-avatars.com/api/?name=";
-  final formkey = GlobalKey<FormState>();
+  static const _userRole = 'User';
+  static final RegExp _strongPassword =
+      RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+
+  final _formKey = GlobalKey<FormState>();
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _FirstNameController = TextEditingController();
-  final _LastNameController = TextEditingController();
-  final _confirmpasswordcontroller = TextEditingController();
-  final _displaynamecontroller = TextEditingController();
-  final _uidcontroller = TextEditingController();
-  var x = '';
-  final userrole = "User";
-  final emailvalidation =
-      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
-  final passwordvalidation =
-      r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+  final _confirmController = TextEditingController();
+  bool _busy = false;
+  String? _error;
 
   @override
   void dispose() {
-    _FirstNameController.dispose();
-    _LastNameController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _confirmpasswordcontroller.dispose;
-    _displaynamecontroller.dispose();
+    _confirmController.dispose();
     super.dispose();
   }
 
-  bool passwordconfiremed() {
-    if (_passwordController.text.trim() ==
-        _confirmpasswordcontroller.text.trim()) {
-      return true;
-    } else {
-      return false;
+  Future<void> _submit() async {
+    if (_busy) return;
+    if (!_formKey.currentState!.validate()) return;
+    final provider = context.read<UserProvider>();
+    final first = _firstNameController.text.trim();
+    final last = _lastNameController.text.trim();
+    final user = Users(
+      password: _passwordController.text,
+      role: _userRole,
+      ProfilePic: 'https://ui-avatars.com/api/?name=$first+$last',
+      firstName: first,
+      lastName: last,
+      email: _emailController.text.trim(),
+    );
+    setState(() {
+      _busy = true;
+      _error = null;
+    });
+    String? error;
+    var ok = false;
+    try {
+      await provider.createUser(user: user);
+      ok = true;
+    } on FirebaseAuthException catch (e) {
+      AppLog.error('register', e);
+      if (!mounted) return;
+      error = authErrorText(context, e);
+    } catch (e, stack) {
+      AppLog.error('register', e, stack);
+      if (!mounted) return;
+      error = S.of(context).authErrorGeneric;
     }
+    if (!mounted) return;
+    if (ok) {
+      closeSignInFlow(context);
+      return;
+    }
+    setState(() {
+      _busy = false;
+      _error = error;
+    });
+  }
+
+  Future<void> _google() async {
+    if (_busy) return;
+    setState(() {
+      _busy = true;
+      _error = null;
+    });
+    final outcome = await runGoogleSignIn(context);
+    if (!mounted || outcome.signedIn) return;
+    setState(() {
+      _busy = false;
+      _error = outcome.error;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    var user_Provider = Provider.of<UserProvider>(context, listen: false);
+    final s = S.of(context);
+    final text = Theme.of(context).textTheme;
+
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      backgroundColor: Color.fromARGB(255, 32, 26, 48),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: customtext(
-                        Texts: S.of(context).createaccountlabel,
-                        textsize: 35,
-                        weight: FontWeight.bold),
+      appBar: AppBar(),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsetsDirectional.all(MNSpace.xl),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Semantics(
+                header: true,
+                child:
+                    Text(s.createaccountlabel, style: text.headlineMedium),
+              ),
+              const SizedBox(height: MNSpace.xs),
+              Text(s.pleasefillallfields, style: text.bodyLarge),
+              const SizedBox(height: MNSpace.xl),
+              AutofillGroup(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      AppTextField(
+                        controller: _firstNameController,
+                        label: s.firstnamelabel,
+                        kind: AppFieldKind.name,
+                        icon: IconsaxOutline.user,
+                        action: TextInputAction.next,
+                        validator: (v) =>
+                            (v ?? '').trim().isEmpty ? s.enterFirstName : null,
+                      ),
+                      const SizedBox(height: MNSpace.lg),
+                      AppTextField(
+                        controller: _lastNameController,
+                        label: s.lastnamelabel,
+                        kind: AppFieldKind.name,
+                        icon: IconsaxOutline.user,
+                        autofillHints: const [AutofillHints.familyName],
+                        action: TextInputAction.next,
+                      ),
+                      const SizedBox(height: MNSpace.lg),
+                      AppTextField(
+                        controller: _emailController,
+                        label: s.emailaddresslabel,
+                        kind: AppFieldKind.email,
+                        icon: IconsaxOutline.sms,
+                        action: TextInputAction.next,
+                        validator: (v) =>
+                            authEmailPattern.hasMatch((v ?? '').trim())
+                                ? null
+                                : s.enterValidEmail,
+                      ),
+                      const SizedBox(height: MNSpace.lg),
+                      AppTextField(
+                        controller: _passwordController,
+                        label: s.passwordlabel,
+                        kind: AppFieldKind.newPassword,
+                        icon: IconsaxOutline.lock,
+                        action: TextInputAction.next,
+                        validator: (v) => _strongPassword.hasMatch(v ?? '')
+                            ? null
+                            : s.passwordvalidationtext,
+                      ),
+                      const SizedBox(height: MNSpace.lg),
+                      AppTextField(
+                        controller: _confirmController,
+                        label: s.passwordconfirmlabel,
+                        kind: AppFieldKind.newPassword,
+                        icon: IconsaxOutline.lock,
+                        action: TextInputAction.done,
+                        onSubmitted: (_) => _submit(),
+                        validator: (v) => v == _passwordController.text
+                            ? null
+                            : s.passwordsDontMatch,
+                      ),
+                    ],
                   ),
-                  Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: customtext(
-                          Texts: S.of(context).pleasefillallfields,
-                          textsize: 15,
-                          weight: FontWeight.bold)),
-                  SizedBox(height: 10),
-                  Form(
-                    key: formkey,
-                    child: Column(
-                      children: [
-                        Customvalformfield(
-                          labelText: S.of(context).Usernamelabel,
-                          controller: _displaynamecontroller,
-                          obscureText: false,
-                          iconshape: Icons.person,
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02,
-                        ),
-                        Customvalformfield(
-                          labelText: S.of(context).firstnamelabel,
-                          controller: _FirstNameController,
-                          obscureText: false,
-                          iconshape: Icons.person,
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02,
-                        ),
-                        Customvalformfield(
-                          labelText: S.of(context).lastnamelabel,
-                          controller: _LastNameController,
-                          obscureText: false,
-                          iconshape: Icons.person,
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02,
-                        ),
-                        Customvalformfield(
-                            labelText: S.of(context).emailaddresslabel,
-                            controller: _emailController,
-                            obscureText: false,
-                            validation: emailvalidation,
-                            iconshape: Icons.email,
-                            valitext: "Please enter a valid email address"),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02,
-                        ),
-                        Customvalformfield(
-                            labelText: S.of(context).passwordlabel,
-                            controller: _passwordController,
-                            validation: passwordvalidation,
-                            obscureText: true,
-                            iconshape: Icons.lock,
-                            valitext: S.of(context).passwordvalidationtext),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02,
-                        ),
-                        Customvalformfield(
-                          labelText: S.of(context).passwordconfirmlabel,
-                          controller: _confirmpasswordcontroller,
-                          obscureText: true,
-                          iconshape: Icons.lock,
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02,
-                        ),
-                        SizedBox(
-                          height: 60,
-                          width: 160,
-                          child: Consumer<UserProvider>(
-                              builder: (context, userProvider, child) {
-                            return ElevatedButton.icon(
-                              onPressed: () {
-                                if (formkey.currentState!.validate()) {
-                                  final user = Users(
-                                    password: _passwordController.text,
-                                    role: userrole,
-                                    ProfilePic:
-                                        "https://ui-avatars.com/api/?name=${_FirstNameController.text}+${_LastNameController.text}",
-                                    firstName: _FirstNameController.text,
-                                    lastName: _LastNameController.text,
-                                    email: _emailController.text,
-                                  );
-
-                                  user_Provider.createUser(user: user);
-
-                                  _FirstNameController.clear();
-                                  _LastNameController.clear();
-                                  _emailController.clear();
-                                  _uidcontroller.clear();
-                                }
-                                Navigator.pop(context);
-                              },
-                              icon: Icon(
-                                Icons.app_registration_rounded,
-                                color: Theme.of(context).iconTheme.color,
+                ),
+              ),
+              if (_error != null) ...[
+                const SizedBox(height: MNSpace.md),
+                AuthErrorText(_error!),
+              ],
+              const SizedBox(height: MNSpace.lg),
+              AuthSubmitButton(
+                label: s.createaccountlabel,
+                busy: _busy,
+                onPressed: _submit,
+              ),
+              const SizedBox(height: MNSpace.md),
+              OutlinedButton.icon(
+                onPressed: _busy ? null : _google,
+                icon: const Icon(SimpleIcons.google),
+                label: Text(s.continueWithGoogle),
+              ),
+              const SizedBox(height: MNSpace.lg),
+              Wrap(
+                alignment: WrapAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  Text(s.alreadyhaveanaccountlabel, style: text.bodyMedium),
+                  TextButton(
+                    onPressed: _busy
+                        ? null
+                        : () => Navigator.of(context).pushReplacement(
+                              MaterialPageRoute<void>(
+                                builder: (_) => const Login(),
                               ),
-                              label: Text(S.of(context).signupbuttonlabel,
-                                  style:
-                                      Theme.of(context).textTheme.titleLarge),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Color.fromARGB(255, 49, 39, 112),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        40)), // This is what you need!
-                              ),
-                            );
-                          }),
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            customtext(
-                                Texts: S.of(context).alreadyhaveanaccountlabel,
-                                textsize: 20),
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) {
-                                      return Login();
-                                    }),
-                                  );
-                                },
-                                child: Text(
-                                  S.of(context).loginbuttonlabel,
-                                  style: TextStyle(
-                                    fontFamily: 'Pacifico',
-                                    color: Colors.deepPurpleAccent,
-                                    fontSize: 20,
-                                  ),
-                                )),
-                          ],
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02,
-                        ),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              // google button
-                              Square_Tile(
-                                  onTap: () async {
-                                    final failMsg = S.of(context).genericError;
-                                    final nav = Navigator.of(context);
-                                    final result = await user_Provider.signInWithGoogle();
-                                    if (result == GoogleSignInResult.failed) {
-                                      Fluttertoast.showToast(msg: failMsg);
-                                    }
-                                    nav.pop();
-                                  },
-                                  imagePath: 'images/google.png'),
-                            ]),
-                      ],
-                    ),
+                            ),
+                    child: Text(s.loginbuttonlabel),
                   ),
                 ],
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
-      //bottomNavigationBar: CustomNavBar(),
     );
   }
 }

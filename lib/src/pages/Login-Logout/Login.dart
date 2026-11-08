@@ -1,53 +1,33 @@
-import 'package:fluttertoast/fluttertoast.dart';
-// ignore_for_file: body_might_complete_normally_catch_error
-import 'package:Movie_Night/generated/l10n.dart';
-import 'package:Movie_Night/src/Provider/allproviders.dart';
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:ficonsax/ficonsax.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:Movie_Night/src/components/allcomp.dart';
-import 'package:Movie_Night/src/pages/allpages.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
+import 'package:simple_icons/simple_icons.dart';
+
+import '../../../generated/l10n.dart';
+import '../../components/app_text_field.dart';
+import '../../design/tokens.dart';
+import '../../utils/app_logger.dart';
+import 'Forget_password.dart';
+import 'Register.dart';
+import 'auth_errors.dart';
+import 'auth_form_parts.dart';
+
+/// Loose "something@something.tld" check; Firebase has the final say.
+final RegExp authEmailPattern = RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$');
 
 class Login extends StatefulWidget {
+  const Login({super.key});
+
   @override
   _LoginState createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
-  final formkey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final emailvalidation =
-      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
-  final passwordvalidation =
-      r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
-  Future SignIn() async {
-    await FirebaseAuth.instance
-        .signInWithEmailAndPassword(
-      email: _emailController.text.trim(),
-      password: _passwordController.text.trim(),
-    )
-        .catchError((e) {
-      final snackBarx = SnackBar(
-        elevation: 0,
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.transparent,
-        content: AwesomeSnackbarContent(
-          title: 'Error',
-          message:
-              'The password is invalid or the user does not have a password.',
-          contentType: ContentType.warning,
-        ),
-      );
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(snackBarx); // code, message, details
-    });
-    ;
-    Navigator.pop(context);
-  }
+  bool _busy = false;
+  String? _error;
 
   @override
   void dispose() {
@@ -56,188 +36,159 @@ class _LoginState extends State<Login> {
     super.dispose();
   }
 
+  Future<void> _submit() async {
+    if (_busy) return;
+    if (!_formKey.currentState!.validate()) return;
+    setState(() {
+      _busy = true;
+      _error = null;
+    });
+    String? error;
+    var ok = false;
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      ok = true;
+    } on FirebaseAuthException catch (e) {
+      AppLog.error('logIn', e);
+      if (!mounted) return;
+      // Don't reveal whether an account exists for this email.
+      error = authErrorText(context, e, hideAccountExistence: true);
+    } catch (e, stack) {
+      AppLog.error('logIn', e, stack);
+      if (!mounted) return;
+      error = S.of(context).authErrorGeneric;
+    }
+    if (!mounted) return;
+    if (ok) {
+      closeSignInFlow(context);
+      return;
+    }
+    setState(() {
+      _busy = false;
+      _error = error;
+    });
+  }
+
+  Future<void> _google() async {
+    if (_busy) return;
+    setState(() {
+      _busy = true;
+      _error = null;
+    });
+    final outcome = await runGoogleSignIn(context);
+    if (!mounted || outcome.signedIn) return;
+    setState(() {
+      _busy = false;
+      _error = outcome.error;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    var user_Provider = Provider.of<UserProvider>(context, listen: false);
+    final s = S.of(context);
+    final text = Theme.of(context).textTheme;
+
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
+      appBar: AppBar(),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsetsDirectional.all(MNSpace.xl),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Semantics(
+                header: true,
+                child: Text(s.loginbuttonlabel, style: text.headlineMedium),
+              ),
+              const SizedBox(height: MNSpace.xs),
+              Text(s.logintocontinue, style: text.bodyLarge),
+              const SizedBox(height: MNSpace.xl),
+              AutofillGroup(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      AppTextField(
+                        controller: _emailController,
+                        label: s.emailaddresslabel,
+                        kind: AppFieldKind.email,
+                        icon: IconsaxOutline.sms,
+                        action: TextInputAction.next,
+                        validator: (v) =>
+                            authEmailPattern.hasMatch((v ?? '').trim())
+                                ? null
+                                : s.enterValidEmail,
+                      ),
+                      const SizedBox(height: MNSpace.lg),
+                      AppTextField(
+                        controller: _passwordController,
+                        label: s.passwordlabel,
+                        kind: AppFieldKind.password,
+                        icon: IconsaxOutline.lock,
+                        action: TextInputAction.done,
+                        onSubmitted: (_) => _submit(),
+                        validator: (v) => (v ?? '').trim().isEmpty
+                            ? s.enterPassword
+                            : null,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              if (_error != null) ...[
+                const SizedBox(height: MNSpace.md),
+                AuthErrorText(_error!),
+              ],
+              const SizedBox(height: MNSpace.lg),
+              AuthSubmitButton(
+                label: s.loginbuttonlabel,
+                busy: _busy,
+                onPressed: _submit,
+              ),
+              Align(
+                alignment: AlignmentDirectional.center,
+                child: TextButton(
+                  onPressed: _busy
+                      ? null
+                      : () => Navigator.of(context).push(
+                            MaterialPageRoute<void>(
+                              builder: (_) => const ForgetNew(),
+                            ),
+                          ),
+                  child: Text(s.forgotpasswordlabel),
+                ),
+              ),
+              const SizedBox(height: MNSpace.sm),
+              OutlinedButton.icon(
+                onPressed: _busy ? null : _google,
+                icon: const Icon(SimpleIcons.google),
+                label: Text(s.continueWithGoogle),
+              ),
+              const SizedBox(height: MNSpace.lg),
+              Wrap(
+                alignment: WrapAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  Text(s.notamemberlabel, style: text.bodyMedium),
+                  TextButton(
+                    onPressed: _busy
+                        ? null
+                        : () => Navigator.of(context).pushReplacement(
+                              MaterialPageRoute<void>(
+                                builder: (_) => const Register(),
+                              ),
+                            ),
+                    child: Text(s.createaccountlabel),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
-      backgroundColor: Color.fromARGB(255, 32, 26, 48),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Image.asset(
-                    "images/logo.png",
-                    scale: 3.5,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Text(
-                    S.of(context).loginbuttonlabel,
-                    style: TextStyle(
-                        fontFamily: 'Pacifico',
-                        color: Colors.white,
-                        fontSize: 35,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Text(
-                    S.of(context).logintocontinue,
-                    style: TextStyle(
-                        fontFamily: 'Pacifico',
-                        color: Colors.grey,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Form(
-                  key: formkey,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.05,
-                      left: MediaQuery.of(context).size.width * 0.05,
-                      right: MediaQuery.of(context).size.width * 0.05,
-                    ),
-                    child: Column(
-                      children: [
-                        Customvalformfield(
-                          labelText: S.of(context).emailaddresslabel,
-                          controller: _emailController,
-                          obscureText: false,
-                          validation: emailvalidation,
-                          iconshape: Icons.email,
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Customvalformfield(
-                          labelText: S.of(context).passwordlabel,
-                          controller: _passwordController,
-                          obscureText: true,
-                          validation: passwordvalidation,
-                          iconshape: Icons.lock,
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        SizedBox(
-                          height: 60,
-                          width: 160,
-                          child: ElevatedButton.icon(
-                            onPressed: () {
-                              SignIn();
-                              Navigator.pop(context);
-                            },
-                            icon: Icon(
-                              IconsaxBold.login_1,
-                              color: Colors.white,
-                            ),
-                            label: Text(
-                              S.of(context).loginbuttonlabel,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromARGB(255, 49, 39, 112),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      40)), // This is what you need!
-                            ),
-                          ),
-                        ),
-                        TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) {
-                                  return ForgetNew();
-                                }),
-                              );
-                            },
-                            child: Text(
-                              S.of(context).forgotpasswordlabel,
-                              style: TextStyle(
-                                fontFamily: 'Pacifico',
-                                color: Colors.deepPurpleAccent,
-                                fontSize: 15,
-                              ),
-                            )),
-                        SizedBox(height: 10),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height * 0.02,
-                            left: MediaQuery.of(context).size.width * 0.02,
-                            right: MediaQuery.of(context).size.width * 0.02,
-                          ),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                // google button
-                                Square_Tile(
-                                    onTap: () async {
-                                      final failMsg = S.of(context).genericError;
-                                      final nav = Navigator.of(context);
-                                      final result = await user_Provider.signInWithGoogle();
-                                      if (result == GoogleSignInResult.failed) {
-                                        Fluttertoast.showToast(msg: failMsg);
-                                      }
-                                      nav.pop();
-                                    },
-                                    imagePath: 'images/google.png'),
-                              ]),
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              S.of(context).notamemberlabel,
-                              style: TextStyle(
-                                  fontFamily: 'Pacifico',
-                                  color: Colors.white,
-                                  //fontWeight: FontWeight.bold,
-                                  fontSize: 20),
-                            ),
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) {
-                                      return Register();
-                                    }),
-                                  );
-                                },
-                                child: Text(
-                                  S.of(context).registarnowlabel,
-                                  style: TextStyle(
-                                    fontFamily: 'Pacifico',
-                                    color: Colors.deepPurpleAccent,
-                                    fontSize: 20,
-                                  ),
-                                )),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-      //bottomNavigationBar: CustomNavBar(),
     );
   }
 }

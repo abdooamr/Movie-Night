@@ -1,147 +1,155 @@
-import 'package:Movie_Night/src/utils/app_logger.dart';
-import 'package:Movie_Night/generated/l10n.dart';
+import 'package:ficonsax/ficonsax.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../../../generated/l10n.dart';
+import '../../components/app_text_field.dart';
+import '../../design/tokens.dart';
+import '../../utils/app_logger.dart';
+import 'Login.dart' show authEmailPattern;
+import 'auth_errors.dart';
+import 'auth_form_parts.dart';
+
 class ForgetNew extends StatefulWidget {
+  const ForgetNew({super.key});
+
   @override
   _ForgetNewState createState() => _ForgetNewState();
 }
 
 class _ForgetNewState extends State<ForgetNew> {
-  final formkey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
+  bool _busy = false;
+  String? _error;
+
+  /// The address the reset link went to; non-null once sent.
+  String? _sentTo;
+
   @override
   void dispose() {
     _emailController.dispose();
     super.dispose();
   }
 
-  Future PasswordReset() async {
+  Future<void> _send() async {
+    if (_busy) return;
+    if (!_formKey.currentState!.validate()) return;
+    final email = _emailController.text.trim();
+    setState(() {
+      _busy = true;
+      _error = null;
+    });
+    String? error;
+    var ok = false;
     try {
-      await FirebaseAuth.instance
-          .sendPasswordResetEmail(email: _emailController.text.trim());
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      ok = true;
     } on FirebaseAuthException catch (e) {
       AppLog.error('passwordReset', e);
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              content: Text(e.message.toString()),
-            );
-          });
+      if (!mounted) return;
+      if (e.code == 'user-not-found') {
+        // Show the same success state, so this form can't be used to find
+        // out which emails have an account.
+        ok = true;
+      } else {
+        error = authErrorText(context, e);
+      }
+    } catch (e, stack) {
+      AppLog.error('passwordReset', e, stack);
+      if (!mounted) return;
+      error = S.of(context).authErrorGeneric;
     }
+    if (!mounted) return;
+    setState(() {
+      _busy = false;
+      if (ok) {
+        _sentTo = email;
+      } else {
+        _error = error;
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
+    final scheme = Theme.of(context).colorScheme;
+    final text = Theme.of(context).textTheme;
+    final sentTo = _sentTo;
+
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      backgroundColor: Color.fromARGB(255, 32, 26, 48),
-      body: SizedBox(
-        child: Stack(
-          children: [
-            SingleChildScrollView(
-              child: Container(
-                padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.1),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      appBar: AppBar(),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsetsDirectional.all(MNSpace.xl),
+          child: sentTo != null
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: Text(
-                        S.of(context).forgotpasswordlabel,
-                        style: TextStyle(
-                            fontFamily: 'Pacifico',
-                            color: Colors.white,
-                            fontSize: 35,
-                            fontWeight: FontWeight.bold),
+                    const SizedBox(height: MNSpace.xxl),
+                    ExcludeSemantics(
+                      child: Icon(
+                        IconsaxBold.tick_circle,
+                        size: MNSize.avatar,
+                        color: scheme.primary,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10),
+                    const SizedBox(height: MNSpace.lg),
+                    Semantics(
+                      liveRegion: true,
                       child: Text(
-                        S.of(context).forgetPasswordPageQuestion,
-                        style: TextStyle(
-                            fontFamily: 'Pacifico',
-                            color: Colors.grey,
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold),
+                        s.resetLinkSent(sentTo),
+                        textAlign: TextAlign.center,
+                        style: text.bodyLarge,
                       ),
                     ),
-                    SizedBox(height: 30),
+                    const SizedBox(height: MNSpace.xl),
+                    FilledButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text(s.backToLogIn),
+                    ),
+                  ],
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Semantics(
+                      header: true,
+                      child: Text(s.resetPassword, style: text.headlineMedium),
+                    ),
+                    const SizedBox(height: MNSpace.xs),
+                    Text(s.resetPasswordSubtitle, style: text.bodyLarge),
+                    const SizedBox(height: MNSpace.xl),
                     Form(
-                      key: formkey,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 30),
-                            child: TextFormField(
-                              controller: _emailController,
-                              style: TextStyle(color: Colors.white),
-                              decoration: InputDecoration(
-                                  prefixIcon: Icon(
-                                    Icons.email,
-                                    color: Colors.grey,
-                                  ),
-                                  fillColor: Color.fromARGB(255, 56, 48, 76),
-                                  filled: true,
-                                  labelText: S.of(context).email,
-                                  labelStyle: TextStyle(color: Colors.white),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                    borderSide: const BorderSide(
-                                      color: Colors.transparent,
-                                    ),
-                                  )),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          SizedBox(
-                            height: 60,
-                            width: 160,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                PasswordReset();
-                              },
-                              child: Text(
-                                S.of(context).sendEmail,
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 20),
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Color.fromARGB(255, 49, 39, 112),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        40)), // This is what you need!
-                              ),
-                            ),
-                          ),
-                        ],
+                      key: _formKey,
+                      child: AppTextField(
+                        controller: _emailController,
+                        label: s.emailaddresslabel,
+                        kind: AppFieldKind.email,
+                        icon: IconsaxOutline.sms,
+                        action: TextInputAction.done,
+                        onSubmitted: (_) => _send(),
+                        validator: (v) =>
+                            authEmailPattern.hasMatch((v ?? '').trim())
+                                ? null
+                                : s.enterValidEmail,
                       ),
+                    ),
+                    if (_error != null) ...[
+                      const SizedBox(height: MNSpace.md),
+                      AuthErrorText(_error!),
+                    ],
+                    const SizedBox(height: MNSpace.lg),
+                    AuthSubmitButton(
+                      label: s.sendEmail,
+                      busy: _busy,
+                      onPressed: _send,
                     ),
                   ],
                 ),
-              ),
-            ),
-          ],
         ),
       ),
-      //bottomNavigationBar: CustomNavBar(),
     );
   }
 }
