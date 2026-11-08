@@ -1,4 +1,5 @@
 import 'package:Movie_Night/generated/l10n.dart';
+import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/pages/Adminpages/add_admin.dart';
 import 'package:Movie_Night/src/pages/Adminpages/fulldetails.dart';
@@ -24,103 +25,68 @@ class Detailscategory extends StatelessWidget {
     this.role,
   }) : super(key: key);
 
+  Widget _tile(BuildContext context, String label, Widget Function() page) {
+    final rtl = Directionality.of(context) == TextDirection.rtl;
+    return ListTile(
+      title: Text(label, style: Theme.of(context).textTheme.titleMedium),
+      trailing: Icon(
+        rtl ? IconsaxOutline.arrow_left_3 : IconsaxOutline.arrow_right_3,
+        color: Theme.of(context).colorScheme.onSurfaceVariant,
+      ),
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => page()),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final l10n = S.of(context);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Center(child: Text(S.of(context).detailCategory)),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              S.of(context).detailCategory,
-              style: TextStyle(fontFamily: 'Pacifico', fontSize: 40),
+      appBar: AppBar(title: Text(l10n.detailCategory)),
+      body: ListView(
+        children: [
+          _tile(
+            context,
+            l10n.viewReports,
+            () => Report_screen(
+              id: id,
+              email: email,
+              firstname: firstname,
+              profilepic: profilepic,
+              lastname: lastname,
+              role: role,
+              report: report,
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 49, 39, 112),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(32.0),
-                ),
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Report_screen(
-                      id: id,
-                      email: email,
-                      firstname: firstname,
-                      profilepic: profilepic,
-                      lastname: lastname,
-                      role: role,
-                      report: report,
-                    ),
-                  ),
-                );
-              },
-              child: Text(S.of(context).viewReports),
+          ),
+          _tile(
+            context,
+            l10n.viewFullDetails,
+            () => Fulldetail(
+              id: id,
+              email: email,
+              firstname: firstname,
+              profilepic: profilepic,
+              lastname: lastname,
+              role: role,
+              report: report,
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 49, 39, 112),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(32.0),
-                ),
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Fulldetail(
-                      id: id,
-                      email: email,
-                      firstname: firstname,
-                      profilepic: profilepic,
-                      lastname: lastname,
-                      role: role,
-                      report: report,
-                    ),
-                  ),
-                );
-              },
-              child: Text(S.of(context).viewFullDetails),
+          ),
+          _tile(
+            context,
+            l10n.addAdmin,
+            () => AddAdmin(
+              id: id,
+              email: email,
+              firstname: firstname,
+              profilepic: profilepic,
+              lastname: lastname,
+              role: role,
+              report: report,
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 49, 39, 112),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(32.0),
-                ),
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AddAdmin(
-                      id: id,
-                      email: email,
-                      firstname: firstname,
-                      profilepic: profilepic,
-                      lastname: lastname,
-                      role: role,
-                      report: report,
-                    ),
-                  ),
-                );
-              },
-              child: Text(S.of(context).addAdmin),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

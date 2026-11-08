@@ -4,7 +4,9 @@ import 'package:Movie_Night/generated/l10n.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:Movie_Night/src/components/allcomp.dart';
+import 'package:Movie_Night/src/components/cached_image.dart';
+import 'package:Movie_Night/src/design/tokens.dart';
+import 'package:ficonsax/ficonsax.dart';
 
 class Report_screen extends StatefulWidget {
   Report_screen({
@@ -47,86 +49,73 @@ class _Report_screenState extends State<Report_screen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+    final l10n = S.of(context);
+    final hasReport = widget.report != null && widget.report != "";
     return Scaffold(
-      appBar: AppBar(
-        title: Text(S.of(context).reportPage),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Center(
-                    child: customtext(
-                        Texts: S.of(context).userProfile,
-                        textsize: 35,
-                        weight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Center(
-                    child: (widget.profilepic == "")
-                        ? Icon(
-                            Icons.person,
-                            size: 100,
-                          )
-                        : CircleAvatar(
-                            radius: 50,
-                            backgroundImage: NetworkImage(widget.profilepic!),
-                          ),
-                  ),
-                  SizedBox(height: 60),
-                  textcustom(
-                    Texts: "${S.of(context).name}: " +
-                        widget.firstname! +
-                        " " +
-                        widget.lastname!,
-                  ),
-                  SizedBox(height: 20),
-                  textcustom(Texts: "${S.of(context).email}: " + widget.email!),
-                  (widget.report == null || widget.report == "")
-                      ? textcustom(
-                          Texts:
-                              "${S.of(context).report}: ${S.of(context).noReport}")
-                      : Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Container(
-                              decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 36, 50, 117),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Text(
-                                "${S.of(context).report}: " + widget.report!,
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.red),
-                              )),
-                        ),
-                  (widget.report == null || widget.report == "")
-                      ? SizedBox(height: 0)
-                      : ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor: WidgetStateProperty.all(
-                                  Color.fromARGB(255, 49, 39, 112))),
-                          onPressed: () => remove_report(),
-                          child: Text(S.of(context).clearReport))
-                ],
-              ),
+      appBar: AppBar(title: Text(l10n.reportPage)),
+      body: SingleChildScrollView(
+        padding: const EdgeInsetsDirectional.symmetric(
+            horizontal: MNSpace.lg, vertical: MNSpace.xl),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Semantics(
+              header: true,
+              child:
+                  Text(l10n.userProfile, style: theme.textTheme.headlineMedium),
             ),
-          ),
-        ],
+            const SizedBox(height: MNSpace.xl),
+            ClipOval(
+              child: (widget.profilepic ?? '').isEmpty
+                  ? SizedBox.square(
+                      dimension: MNSize.avatar,
+                      child: Icon(IconsaxOutline.user,
+                          size: MNSize.avatar / 2,
+                          color: cs.onSurfaceVariant),
+                    )
+                  : CachedImageCustom(
+                      (widget.profilepic ?? ''),
+                      width: MNSize.avatar,
+                      height: MNSize.avatar,
+                      isPerson: true,
+                    ),
+            ),
+            const SizedBox(height: MNSpace.xxl),
+            Text(
+                "${l10n.name}: ${widget.firstname ?? ''} ${widget.lastname ?? ''}",
+                style: theme.textTheme.bodyLarge),
+            const SizedBox(height: MNSpace.lg),
+            Text("${l10n.email}: ${widget.email ?? ''}",
+                style: theme.textTheme.bodyLarge),
+            const SizedBox(height: MNSpace.lg),
+            if (!hasReport)
+              Text("${l10n.report}: ${l10n.noReport}",
+                  style: theme.textTheme.bodyLarge)
+            else ...[
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsetsDirectional.all(MNSpace.lg),
+                decoration: BoxDecoration(
+                  color: cs.errorContainer,
+                  borderRadius: MNRadius.mdAll,
+                ),
+                child: Text(
+                  "${l10n.report}: ${widget.report}",
+                  style: theme.textTheme.titleMedium
+                      ?.copyWith(color: cs.onErrorContainer),
+                ),
+              ),
+              const SizedBox(height: MNSpace.lg),
+              FilledButton(
+                onPressed: remove_report,
+                child: Text(l10n.clearReport),
+              ),
+            ],
+          ],
+        ),
       ),
-      //bottomNavigationBar: CustomNavBar(),
     );
   }
 }

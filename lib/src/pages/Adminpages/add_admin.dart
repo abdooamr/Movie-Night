@@ -3,7 +3,9 @@ import 'package:Movie_Night/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:Movie_Night/src/utils/utils.dart';
+import 'package:Movie_Night/src/components/cached_image.dart';
+import 'package:Movie_Night/src/design/tokens.dart';
+import 'package:ficonsax/ficonsax.dart';
 
 class AddAdmin extends StatefulWidget {
   AddAdmin({
@@ -44,74 +46,52 @@ class _AddAdminState extends State<AddAdmin> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+    final l10n = S.of(context);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(S.of(context).userProfile),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        backgroundColor: kBackgoundColor,
-        shadowColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(height: 20),
-                  Center(
-                    child: (widget.profilepic == "")
-                        ? Icon(
-                            Icons.person,
-                            size: 100,
-                          )
-                        : CircleAvatar(
-                            radius: 50,
-                            backgroundImage: NetworkImage(widget.profilepic!),
-                          ),
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    "${S.of(context).name}: ${widget.firstname!} ${widget.lastname!}",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    "${S.of(context).email}: ${widget.email!}",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    "${S.of(context).role}: ${widget.role!}",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  SizedBox(height: 30),
-                  (widget.role == "admin")
-                      ? SizedBox(height: 0)
-                      : ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor:
-                                WidgetStateProperty.all<Color>(Colors.green),
-                          ),
-                          onPressed: () {
-                            addAdmin();
-                          },
-                          child: Text(
-                            S.of(context).addAdmin,
-                          ),
-                        ),
-                ],
-              ),
+      appBar: AppBar(title: Text(l10n.userProfile)),
+      body: SingleChildScrollView(
+        padding: const EdgeInsetsDirectional.symmetric(
+            horizontal: MNSpace.lg, vertical: MNSpace.xl),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ClipOval(
+              child: (widget.profilepic ?? '').isEmpty
+                  ? SizedBox.square(
+                      dimension: MNSize.avatar,
+                      child: Icon(IconsaxOutline.user,
+                          size: MNSize.avatar / 2,
+                          color: cs.onSurfaceVariant),
+                    )
+                  : CachedImageCustom(
+                      (widget.profilepic ?? ''),
+                      width: MNSize.avatar,
+                      height: MNSize.avatar,
+                      isPerson: true,
+                    ),
             ),
-          ),
-        ],
+            const SizedBox(height: MNSpace.xl),
+            Text(
+              "${l10n.name}: ${widget.firstname ?? ''} ${widget.lastname ?? ''}",
+              style: theme.textTheme.titleLarge,
+            ),
+            const SizedBox(height: MNSpace.sm),
+            Text("${l10n.email}: ${widget.email ?? ''}",
+                style: theme.textTheme.bodyMedium),
+            const SizedBox(height: MNSpace.sm),
+            Text("${l10n.role}: ${widget.role ?? ''}",
+                style: theme.textTheme.bodyMedium),
+            const SizedBox(height: MNSpace.xl),
+            if (widget.role != "admin")
+              FilledButton(
+                onPressed: addAdmin,
+                child: Text(l10n.addAdmin),
+              ),
+          ],
+        ),
       ),
-      //bottomNavigationBar: CustomNavBar(),
     );
   }
 }

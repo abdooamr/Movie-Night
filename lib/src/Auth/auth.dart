@@ -8,12 +8,17 @@ class AuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
-              child: Image.asset('images/logo.png', width: 140),
+              child: Image.asset(
+                'images/logo.png',
+                width: 140,
+                excludeFromSemantics: true,
+              ),
             );
           }
           if (snapshot.hasData) {
