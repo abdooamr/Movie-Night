@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../design/motion.dart';
+import '../../design/tokens.dart';
+
+/// Skeleton for a Liked carousel card. Static under Reduce Motion.
 class likedPageShimmerWidget extends StatelessWidget {
   const likedPageShimmerWidget({
     super.key,
@@ -13,87 +17,45 @@ class likedPageShimmerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget bar(double width, double height) => Container(
+          width: width,
+          height: height,
+          decoration: BoxDecoration(
+            color: highlightColor,
+            borderRadius: MNRadius.smAll,
+          ),
+        );
+
+    Widget card = Container(
+      decoration: BoxDecoration(
+        color: baseColor,
+        borderRadius: MNRadius.lgAll,
+      ),
+      padding: const EdgeInsetsDirectional.all(MNSpace.md),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: highlightColor,
+                borderRadius: MNRadius.mdAll,
+              ),
+            ),
+          ),
+          const SizedBox(height: MNSpace.sm),
+          bar(MNSize.avatar * 2, MNSpace.lg),
+          const SizedBox(height: MNSpace.sm),
+          bar(MNSize.avatar, MNSpace.md),
+        ],
+      ),
+    );
+    card = ExcludeSemantics(child: card);
+    if (MNMotion.of(context).reduce) return card;
     return Shimmer.fromColors(
-      period: const Duration(milliseconds: 1500),
       baseColor: baseColor,
       highlightColor: highlightColor,
-      child: Container(
-        width: 250,
-        decoration: BoxDecoration(
-          color: baseColor,
-          borderRadius: BorderRadius.circular(50),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(25),
-          child: Column(
-            children: [
-              /// Poster shimmer
-              Container(
-                height: 300,
-                margin: const EdgeInsets.only(bottom: 25),
-                decoration: BoxDecoration(
-                  color: highlightColor.withValues(alpha: 0.4),
-                  borderRadius: BorderRadius.circular(30),
-                ),
-              ),
-
-              /// Title shimmer
-              Container(
-                height: 20,
-                width: 150,
-                margin: const EdgeInsets.only(bottom: 10),
-                decoration: BoxDecoration(
-                  color: highlightColor.withValues(alpha: 0.5),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-              ),
-
-              /// Stars shimmer
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(
-                  5,
-                  (index) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: Container(
-                      height: 18,
-                      width: 18,
-                      decoration: BoxDecoration(
-                        color: highlightColor.withValues(alpha: 0.5),
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-
-              const Spacer(),
-
-              /// Genres shimmer
-              Container(
-                height: 14,
-                width: 120,
-                decoration: BoxDecoration(
-                  color: highlightColor.withValues(alpha: 0.4),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-              ),
-
-              const Spacer(flex: 2),
-
-              /// Delete button shimmer
-              Container(
-                height: 30,
-                width: 30,
-                decoration: BoxDecoration(
-                  color: highlightColor.withValues(alpha: 0.5),
-                  shape: BoxShape.circle,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      child: card,
     );
   }
 }

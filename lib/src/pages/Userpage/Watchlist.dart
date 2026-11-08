@@ -1,154 +1,208 @@
-import 'package:Movie_Night/generated/l10n.dart';
-import 'package:Movie_Night/src/Provider/langprovider.dart';
-import 'package:Movie_Night/src/data/tmdb_repository.dart';
-import 'package:Movie_Night/src/data/user_repository.dart';
-import 'package:Movie_Night/src/models/moviedetails.dart';
-import 'package:Movie_Night/src/widgets/shimmerWidgets/watchListShimmerWidget.dart';
-import 'package:Movie_Night/src/widgets/watchlistwidget.dart';
+import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
-
 import 'package:provider/provider.dart';
 
-class UserWatchlist extends StatefulWidget {
+import '../../../generated/l10n.dart';
+import '../../Provider/langprovider.dart';
+import '../../components/feedback.dart';
+import '../../components/segmented_toggle.dart';
+import '../../components/state_views.dart';
+import '../../data/tmdb_repository.dart';
+import '../../data/user_repository.dart';
+import '../../design/tokens.dart';
+import '../../models/moviedetails.dart';
+import '../../widgets/Navbar/Navbar.dart';
+import '../../widgets/shimmerWidgets/watchListShimmerWidget.dart';
+import '../../widgets/watchlistwidget.dart';
+
+enum _Kind { movies, tv }
+
+/// The Watchlist section of the Library tab, as slivers (no Scaffold or
+/// AppBar of its own): a Movies | TV Shows toggle, then the saved titles.
+/// Removal is immediate, with an Undo snackbar (B4).
+class WatchlistView extends StatefulWidget {
+  const WatchlistView({super.key});
+
   @override
-  State<UserWatchlist> createState() => _userwatchlistState();
+  State<WatchlistView> createState() => _WatchlistViewState();
 }
 
-class _userwatchlistState extends State<UserWatchlist>
-    with TickerProviderStateMixin {
-  late TabController _tabController;
-  late DropdownProvider dropdownProvider;
-
+class _WatchlistViewState extends State<WatchlistView> {
   final UserRepository _users = UserRepository.instance;
   final TmdbRepository _tmdb = TmdbRepository.instance;
 
-  // Created once: a `.snapshots()` call in build() would resubscribe on
-  // every rebuild.
-  late final Stream<List<int>> _movieIds =
-      _users.watchlistStream(isTvShow: false);
-  late final Stream<List<int>> _tvIds = _users.watchlistStream(isTvShow: true);
+  _Kind _kind = _Kind.movies;
+
+  // Created once (and again on retry): a `.snapshots()` call in build()
+  // would resubscribe on every rebuild.
+  late Stream<List<int>> _movieIds = _users.watchlistStream(isTvShow: false);
+  late Stream<List<int>> _tvIds = _users.watchlistStream(isTvShow: true);
 
   // One details Future per (title, lang): a Firestore snapshot or a scroll
   // rebuild reuses it instead of refetching every tile (H6).
   final Map<String, Future<MovieModel>> _details = {};
 
-  Future<MovieModel> _detailsFor(int id, bool isTvShow) {
-    final lang = dropdownProvider.selectedValue;
-    final key = '${isTvShow ? 'tv' : 'movie'}/$id/$lang';
+  String _keyFor(int id, bool isTv, String lang) =>
+      '${isTv ? 'tv' : 'movie'}/$id/$lang';
+
+  Future<MovieModel> _detailsFor(int id, bool isTv) {
+    final lang = context.read<DropdownProvider>().selectedValue;
+    final key = _keyFor(id, isTv, lang);
     return _details.putIfAbsent(key, () {
-      final f = _tmdb.details(id, isTvShow, lang);
-      // Forget failures so the next snapshot/rebuild retries that tile.
+      final f = _tmdb.details(id, isTv, lang);
+      // Forget failures so a retry or the next snapshot refetches that row.
       f.then<void>((_) {}, onError: (Object _) => _details.remove(key));
       return f;
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    dropdownProvider = Provider.of<DropdownProvider>(context, listen: false);
-    _tabController = TabController(length: 2, initialIndex: 0, vsync: this);
+  void _retryRow(int id, bool isTv) {
+    final lang = context.read<DropdownProvider>().selectedValue;
+    setState(() => _details.remove(_keyFor(id, isTv, lang)));
   }
 
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
+  void _retryStream() => setState(() {
+        _movieIds = _users.watchlistStream(isTvShow: false);
+        _tvIds = _users.watchlistStream(isTvShow: true);
+      });
 
-  Widget _buildShimmerList() {
-    return ListView.builder(
-      itemCount: 4,
-      itemBuilder: (context, index) {
-        return const WatchlistShimmerTile();
-      },
-    );
-  }
-
-  Widget _buildWatchlist(bool isTvShow) {
-    return StreamBuilder<List<int>>(
-      stream: isTvShow ? _tvIds : _movieIds,
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return _buildShimmerList();
+  Future<void> _remove(int id, bool isTv) async {
+    final s = S.of(context);
+    try {
+      await _users.removeFromWatchlist(id, isTvShow: isTv);
+    } catch (_) {
+      if (mounted) AppFeedback.error(context, s.error);
+      return;
+    }
+    if (!mounted) return;
+    AppFeedback.undo(
+      context,
+      s.removedFromWatchlist,
+      onUndo: () async {
+        try {
+          await _users.addToWatchlist(id, isTvShow: isTv);
+        } catch (_) {
+          if (mounted) AppFeedback.error(context, s.error);
         }
-
-        final watchlist = snapshot.data!;
-
-        if (watchlist.isEmpty) {
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Text(
-                isTvShow
-                    ? S.of(context).notvshowsinwatchlist
-                    : S.of(context).nomoviesinwatchlist,
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 16),
-              ),
-            ),
-          );
-        }
-
-        return ListView.builder(
-          itemCount: watchlist.length,
-          itemBuilder: (context, index) {
-            final movieId = watchlist[index];
-
-            return FutureBuilder<MovieModel>(
-              key: ValueKey('${isTvShow ? 'tv' : 'movie'}/$movieId'),
-              future: _detailsFor(movieId, isTvShow),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const WatchlistShimmerTile();
-                }
-
-                if (snapshot.hasError) {
-                  return const SizedBox();
-                }
-
-                if (!snapshot.hasData) {
-                  return const SizedBox();
-                }
-
-                final movieDetails = snapshot.data!;
-
-                return BookmarkWidget(
-                  movieDetails: movieDetails,
-                  isTvShow: isTvShow,
-                  onPressDelete: () {
-                    _users.removeFromWatchlist(movieId, isTvShow: isTvShow);
-                  },
-                );
-              },
-            );
-          },
-        );
       },
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
+    final isTv = _kind == _Kind.tv;
+    return SliverMainAxisGroup(
+      slivers: [
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsetsDirectional.symmetric(
+              horizontal: MNSpace.lg,
+              vertical: MNSpace.sm,
+            ),
+            child: SegmentedToggle<_Kind>(
+              segments: [
+                (_Kind.movies, s.movieswitch),
+                (_Kind.tv, s.tvswitch),
+              ],
+              selected: _kind,
+              onChanged: (v) => setState(() => _kind = v),
+            ),
+          ),
+        ),
+        StreamBuilder<List<int>>(
+          // A new key per kind so each list starts from its own snapshot.
+          key: ValueKey(_kind),
+          stream: isTv ? _tvIds : _movieIds,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return SliverFillRemaining(
+                hasScrollBody: false,
+                child: ErrorState(
+                  message: s.error,
+                  onRetry: _retryStream,
+                ),
+              );
+            }
+            if (!snapshot.hasData) return _shimmerList();
+            final ids = snapshot.data!;
+            if (ids.isEmpty) {
+              return SliverFillRemaining(
+                hasScrollBody: false,
+                child: EmptyState(
+                  icon: IconsaxOutline.bookmark,
+                  title:
+                      isTv ? s.notvshowsinwatchlist : s.nomoviesinwatchlist,
+                  body: s.watchlistEmptyBody,
+                  actionLabel: s.browseMovies,
+                  onAction: () => AppShell.maybeOf(context)?.selectTab(0),
+                ),
+              );
+            }
+            return SliverPadding(
+              padding: EdgeInsetsDirectional.only(
+                bottom: MediaQuery.paddingOf(context).bottom + MNSpace.lg,
+              ),
+              sliver: SliverList.builder(
+                itemCount: ids.length,
+                itemBuilder: (context, index) => _row(ids[index], isTv),
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _shimmerList() => SliverList.builder(
+        itemCount: 4,
+        itemBuilder: (context, _) => const WatchlistShimmerTile(),
+      );
+
+  Widget _row(int id, bool isTv) {
+    return FutureBuilder<MovieModel>(
+      key: ValueKey('${isTv ? 'tv' : 'movie'}/$id'),
+      future: _detailsFor(id, isTv),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Padding(
+            padding: const EdgeInsetsDirectional.symmetric(
+              vertical: MNSpace.sm,
+            ),
+            child: ErrorState(
+              compact: true,
+              message: S.of(context).error,
+              onRetry: () => _retryRow(id, isTv),
+            ),
+          );
+        }
+        final details = snapshot.data;
+        if (details == null) return const WatchlistShimmerTile();
+        return BookmarkWidget(
+          movieDetails: details,
+          isTvShow: isTv,
+          onRemove: () => _remove(id, isTv),
+        );
+      },
+    );
+  }
+}
+
+/// Standalone Watchlist page (pushed from Settings until Task 13 removes
+/// that row). The Library tab uses [WatchlistView] directly.
+class UserWatchlist extends StatelessWidget {
+  const UserWatchlist({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(S.of(context).watchlistlabel),
-        bottom: TabBar(
-          indicatorColor: Colors.deepPurpleAccent,
-          controller: _tabController,
-          tabs: [
-            Tab(text: S.of(context).movieswitch),
-            Tab(text: S.of(context).tvswitch),
-          ],
+        title: Semantics(
+          header: true,
+          child: Text(S.of(context).watchlistlabel),
         ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          _buildWatchlist(false), // Movies
-          _buildWatchlist(true), // TV Shows
-        ],
-      ),
+      body: const CustomScrollView(slivers: [WatchlistView()]),
     );
   }
 }

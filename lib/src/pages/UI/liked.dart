@@ -1,26 +1,47 @@
 import 'dart:math' as math;
-import 'package:Movie_Night/generated/l10n.dart';
-import 'package:Movie_Night/src/Provider/langprovider.dart';
-import 'package:Movie_Night/src/models/liked_model.dart';
-import 'package:Movie_Night/src/pages/allpages.dart';
+
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:Movie_Night/src/models/movie_model.dart';
-import 'package:Movie_Night/src/services/services.dart';
-import 'package:Movie_Night/src/utils/utils.dart';
-import 'package:Movie_Night/src/widgets/carousel_slider.dart';
 import 'package:provider/provider.dart';
 
-class Liked extends StatefulWidget {
-  const Liked({super.key});
+import '../../../generated/l10n.dart';
+import '../../Provider/langprovider.dart';
+import '../../components/cached_image.dart';
+import '../../components/feedback.dart';
+import '../../components/poster_card.dart';
+import '../../components/rating_badge.dart';
+import '../../components/state_views.dart';
+import '../../design/motion.dart';
+import '../../design/tokens.dart';
+import '../../models/liked_model.dart';
+import '../../models/movie_model.dart';
+import '../../navigation/routes.dart';
+import '../../services/services.dart';
+import '../../utils/poster_size.dart';
+import '../../utils/utils.dart' show imageUrl;
+import '../../widgets/Navbar/Navbar.dart';
+
+/// The Liked section of the Library tab, as slivers (no Scaffold or AppBar of
+/// its own, so it never adds a second header).
+///
+/// Compact widths: a carousel over a cross-fading backdrop with a dot
+/// indicator. Regular widths (600 pt and up): a grid of poster cards.
+/// Removing a title is immediate, with an Undo snackbar (B4).
+class LikedView extends StatefulWidget {
+  const LikedView({super.key, this.box});
+
+  /// Test hook; defaults to the app's `liked` Hive box.
+  final Box<LikedModel>? box;
 
   @override
-  State<Liked> createState() => _LikedState();
+  State<LikedView> createState() => _LikedViewState();
 }
 
-class _LikedState extends State<Liked> {
-  late final PageController _controller;
+class _LikedViewState extends State<LikedView> {
   late final Box<LikedModel> _box;
+  int _index = 0;
 
   /// Memoized media-type lookups for legacy entries saved before
   /// [LikedModel.isTvShow] existed. Keyed by movie id; at most one request
@@ -30,21 +51,15 @@ class _LikedState extends State<Liked> {
   @override
   void initState() {
     super.initState();
-    _controller = PageController();
-    _box = Hive.box<LikedModel>('liked');
+    _box = widget.box ?? Hive.box<LikedModel>('liked');
     // One-time cleanup of entries un-liked by older app versions, which
     // stored isLiked=false instead of deleting. Done after the first frame so
     // the box is never mutated while the builder is iterating it.
     WidgetsBinding.instance.addPostFrameCallback((_) => _sweepUnliked());
   }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
   void _sweepUnliked() {
+    if (!_box.isOpen) return;
     final staleKeys = _box.keys.where((k) => !(_box.get(k)?.isLiked ?? false));
     if (staleKeys.isNotEmpty) _box.deleteAll(staleKeys.toList());
   }
@@ -67,87 +82,255 @@ class _LikedState extends State<Liked> {
 
   Future<void> _openDetails(LikedModel liked) async {
     final lang = context.read<DropdownProvider>().selectedValue;
-    final bool isTvShow;
+    final bool isTv;
     try {
-      isTvShow = liked.isTvShow ?? await _resolveIsTvShow(liked, lang);
+      isTv = liked.isTvShow ?? await _resolveIsTvShow(liked, lang);
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('${S.of(context).error}: $e')),
-      );
+      AppFeedback.error(context, '${S.of(context).error}: $e');
       return;
     }
     if (!mounted) return;
-    Navigator.push(
+    openTitle(
       context,
-      MaterialPageRoute(
-        builder: (context) => DetailPage(id: liked.id, isTvShow: isTvShow),
-      ),
+      id: liked.id,
+      isTv: isTv,
+      heroTag: heroTagFor(source: 'liked', isTv: isTv, id: liked.id),
     );
   }
 
-  void _delete(LikedModel liked, int index) {
-    liked.delete();
-    if (_box.length > 3) {
-      _controller.jumpToPage(index);
-    } else if (_box.length == 2) {
-      _controller.jumpToPage(1);
-    } else {
-      _controller.jumpToPage(0);
-    }
+  /// Removes at once and offers Undo, which puts a copy back under the same
+  /// key (B4).
+  void _remove(LikedModel liked) {
+    final key = liked.key;
+    final copy = LikedModel(
+      isLiked: liked.isLiked,
+      title: liked.title,
+      genres: liked.genres,
+      voteAverage: liked.voteAverage,
+      posterPath: liked.posterPath,
+      id: liked.id,
+      isTvShow: liked.isTvShow,
+    );
+    final box = _box;
+    box.delete(key);
+    AppFeedback.undo(
+      context,
+      S.of(context).removedFromLiked,
+      onUndo: () {
+        if (box.isOpen) box.put(key, copy);
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
+    return ValueListenableBuilder<Box<LikedModel>>(
       valueListenable: _box.listenable(),
-      builder: (context, Box<LikedModel> box, _) {
+      builder: (context, box, _) {
         final items = box.values.where((e) => e.isLiked).toList();
         if (items.isEmpty) return const _EmptyLiked();
+        _index = math.min(_index, items.length - 1);
 
-        return Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            Positioned.fill(
-              bottom: MediaQuery.of(context).size.height / 3,
-              child: PageView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                controller: _controller,
-                itemCount: items.length,
-                itemBuilder: (context, index) {
-                  final liked = items[index];
-                  return FadeInImage(
-                    fit: BoxFit.fitWidth,
-                    placeholder: NetworkImage('$imageUrl${liked.posterPath}'),
-                    image: NetworkImage('$imageUrl${liked.posterPath}'),
-                  );
-                },
-              ),
+        final bottom = MediaQuery.paddingOf(context).bottom + MNSpace.lg;
+        final regular =
+            MediaQuery.sizeOf(context).width >= PosterSize.tabletBreakpoint;
+        if (regular) return _grid(context, items, bottom);
+        return SliverMainAxisGroup(
+          slivers: [
+            SliverLayoutBuilder(
+              builder: (context, constraints) {
+                final height = math.min(
+                  constraints.viewportMainAxisExtent * 0.75,
+                  520.0,
+                );
+                return SliverToBoxAdapter(
+                  child: _LikedCarousel(
+                    // A new key restarts the pager at the clamped page when
+                    // the number of items changes (remove / undo).
+                    key: ValueKey(items.length),
+                    items: items,
+                    height: height,
+                    initialIndex: _index,
+                    onIndex: (i) => setState(() => _index = i),
+                    onOpen: _openDetails,
+                    onRemove: _remove,
+                  ),
+                );
+              },
             ),
-            Center(
-              child: MyCarouselSlider(
-                onPageChanged: (index, reason) {
-                  _controller.animateToPage(index,
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.fastLinearToSlowEaseIn);
-                },
-                itemCount: items.length,
-                viewportFraction: .72,
-                aspectRatio: .7,
-                itemBuilder: (context, index, realindex) {
-                  final liked = items[index];
-                  return _LikedCard(
-                    liked: liked,
-                    onTap: () => _openDetails(liked),
-                    onDelete: () => _delete(liked, index),
-                  );
-                },
-              ),
-            ),
+            SliverToBoxAdapter(child: SizedBox(height: bottom)),
           ],
         );
       },
+    );
+  }
+
+  Widget _grid(BuildContext context, List<LikedModel> items, double bottom) {
+    final size = PosterSize.of(context);
+    final tooltip = S.of(context).deleteBookmark;
+    return SliverPadding(
+      padding: EdgeInsetsDirectional.fromSTEB(
+        MNSpace.lg,
+        MNSpace.sm,
+        MNSpace.lg,
+        bottom,
+      ),
+      sliver: SliverGrid.builder(
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: size.width + MNSpace.md,
+          mainAxisExtent: size.cardHeight,
+          mainAxisSpacing: MNSpace.lg,
+          crossAxisSpacing: MNSpace.md,
+        ),
+        itemCount: items.length,
+        itemBuilder: (context, i) {
+          final liked = items[i];
+          final isTv = liked.isTvShow ?? false;
+          return Stack(
+            children: [
+              PosterCard(
+                posterPath: liked.posterPath.isEmpty ? null : liked.posterPath,
+                title: liked.title,
+                subtitle: liked.genres,
+                heroTag: heroTagFor(source: 'liked', isTv: isTv, id: liked.id),
+                onTap: () => _openDetails(liked),
+              ),
+              PositionedDirectional(
+                top: 0,
+                end: 0,
+                child: IconButton.filledTonal(
+                  tooltip: tooltip,
+                  onPressed: () => _remove(liked),
+                  icon: const Icon(IconsaxOutline.trash),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _LikedCarousel extends StatelessWidget {
+  const _LikedCarousel({
+    super.key,
+    required this.items,
+    required this.height,
+    required this.initialIndex,
+    required this.onIndex,
+    required this.onOpen,
+    required this.onRemove,
+  });
+
+  final List<LikedModel> items;
+  final double height;
+  final int initialIndex;
+  final ValueChanged<int> onIndex;
+  final ValueChanged<LikedModel> onOpen;
+  final ValueChanged<LikedModel> onRemove;
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    final motion = MNMotion.of(context);
+    final current = math.min(initialIndex, items.length - 1);
+    return Column(
+      children: [
+        SizedBox(
+          height: height,
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: AnimatedSwitcher(
+                  duration: motion.fade(MNDuration.medium),
+                  child: _Backdrop(
+                    key: ValueKey(current),
+                    posterPath: items[current].posterPath,
+                  ),
+                ),
+              ),
+              CarouselSlider.builder(
+                itemCount: items.length,
+                options: CarouselOptions(
+                  height: height,
+                  initialPage: current,
+                  viewportFraction: 0.72,
+                  enableInfiniteScroll: false,
+                  enlargeCenterPage: items.length > 1 && motion.allowScale,
+                  onPageChanged: (i, _) => onIndex(i),
+                ),
+                itemBuilder: (context, i, _) => Padding(
+                  padding: const EdgeInsetsDirectional.symmetric(
+                    horizontal: MNSpace.xs,
+                    vertical: MNSpace.lg,
+                  ),
+                  child: _LikedCard(
+                    liked: items[i],
+                    onTap: () => onOpen(items[i]),
+                    onRemove: () => onRemove(items[i]),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: MNSpace.sm),
+        ExcludeSemantics(
+          child: Wrap(
+            alignment: WrapAlignment.center,
+            spacing: MNSpace.sm,
+            runSpacing: MNSpace.sm,
+            children: [
+              for (var i = 0; i < items.length; i++)
+                DecoratedBox(
+                  decoration: ShapeDecoration(
+                    shape: const CircleBorder(),
+                    color: i == current
+                        ? cs.primary
+                        : cs.onSurfaceVariant.withValues(alpha: 0.4),
+                  ),
+                  child: const SizedBox.square(dimension: MNSpace.sm),
+                ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Decorative blurred-by-fade poster behind the carousel; fades into the
+/// surface at the bottom.
+class _Backdrop extends StatelessWidget {
+  const _Backdrop({super.key, required this.posterPath});
+
+  final String posterPath;
+
+  @override
+  Widget build(BuildContext context) {
+    final surface = Theme.of(context).colorScheme.surface;
+    return ExcludeSemantics(
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          if (posterPath.isNotEmpty)
+            Opacity(
+              opacity: 0.35,
+              child: CachedImageCustom('$imageUrl$posterPath'),
+            ),
+          DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [surface.withValues(alpha: 0), surface],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -156,89 +339,107 @@ class _LikedCard extends StatelessWidget {
   const _LikedCard({
     required this.liked,
     required this.onTap,
-    required this.onDelete,
+    required this.onRemove,
   });
 
   final LikedModel liked;
   final VoidCallback onTap;
-  final VoidCallback onDelete;
+  final VoidCallback onRemove;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: math.min(250, MediaQuery.sizeOf(context).width * 0.65),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(50),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(25),
-          child: Column(
-            children: [
-              Container(
-                height: math.min(300, MediaQuery.sizeOf(context).height * 0.38),
-                margin: const EdgeInsets.only(bottom: 25),
-                decoration: BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.circular(30),
-                  image: DecorationImage(
-                    image: NetworkImage('$imageUrl${liked.posterPath}'),
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+    final isTv = liked.isTvShow ?? false;
+    return Material(
+      color: cs.surfaceContainerHigh,
+      shape: const RoundedRectangleBorder(borderRadius: MNRadius.lgAll),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        children: [
+          Expanded(
+            child: Semantics(
+              button: true,
+              label: liked.title,
+              excludeSemantics: true,
+              onTap: onTap,
+              child: InkWell(
+                onTap: onTap,
+                child: Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                    MNSpace.md,
+                    MNSpace.md,
+                    MNSpace.md,
+                    0,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Hero(
+                            tag: heroTagFor(
+                              source: 'liked',
+                              isTv: isTv,
+                              id: liked.id,
+                            ),
+                            child: ClipRRect(
+                              borderRadius: MNRadius.mdAll,
+                              child: liked.posterPath.isEmpty
+                                  ? ColoredBox(
+                                      color: cs.surfaceContainer,
+                                      child: Icon(
+                                        IconsaxOutline.video,
+                                        color: cs.onSurfaceVariant,
+                                      ),
+                                    )
+                                  : CachedImageCustom(
+                                      '$imageUrl${liked.posterPath}',
+                                      decodeWidth: PosterSize.of(context).width,
+                                    ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: MNSpace.sm),
+                      Text(
+                        liked.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.titleMedium,
+                      ),
+                      Text(
+                        liked.genres,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.labelMedium!
+                            .copyWith(color: cs.onSurfaceVariant),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              Text(
-                liked.title,
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 5),
-              // Stars
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(5, (i) {
-                  return Icon(
-                    Icons.star,
-                    color: i < (liked.voteAverage / 2)
-                        ? Colors.amber
-                        : Colors.grey,
-                  );
-                }),
-              ),
-              const Spacer(),
-              Expanded(
-                child: Text(
-                  liked.genres,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    color: Colors.black87,
-                  ),
-                ),
-              ),
-              const Spacer(flex: 2),
-              Expanded(
-                child: IconButton(
-                  tooltip: S.of(context).deleteBookmark,
-                  onPressed: onDelete,
-                  icon: const Icon(
-                    Icons.delete_sweep,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+          Padding(
+            padding: const EdgeInsetsDirectional.only(
+              start: MNSpace.md,
+              end: MNSpace.xs,
+            ),
+            child: Row(
+              children: [
+                RatingBadge(score: liked.voteAverage),
+                const Spacer(),
+                IconButton(
+                  tooltip: S.of(context).deleteBookmark,
+                  onPressed: onRemove,
+                  icon: const Icon(IconsaxOutline.trash),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -249,37 +450,27 @@ class _EmptyLiked extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.heart_broken,
-              color: Colors.red,
-              size: 70,
-            ),
-            const SizedBox(width: 10),
-            Text(
-              S.of(context).ohnolabel,
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge!
-                  .copyWith(fontSize: 50),
-            ),
-          ],
-        ),
-        const SizedBox(height: 10),
-        Center(
-          child: Text(
-            S.of(context).nolikedmovies,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-        ),
-      ],
+    final s = S.of(context);
+    return SliverFillRemaining(
+      hasScrollBody: false,
+      child: EmptyState(
+        icon: IconsaxOutline.heart,
+        title: s.nolikedmovies,
+        body: s.likedEmptyBody,
+        actionLabel: s.browseMovies,
+        onAction: () => AppShell.maybeOf(context)?.selectTab(0),
+      ),
     );
+  }
+}
+
+/// Standalone Liked page, kept so older entry points keep compiling.
+/// The Library tab uses [LikedView] directly.
+class Liked extends StatelessWidget {
+  const Liked({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const CustomScrollView(slivers: [LikedView()]);
   }
 }

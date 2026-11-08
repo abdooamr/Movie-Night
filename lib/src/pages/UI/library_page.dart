@@ -12,8 +12,8 @@ enum _LibrarySection { liked, watchlist }
 
 /// The Library tab: Liked | Watchlist behind one segmented toggle.
 ///
-/// The bodies are the existing [Liked] and [UserWatchlist] pages for now;
-/// Task 11 replaces them with `LikedView` / `WatchlistView`.
+/// The bodies are [LikedView] and [WatchlistView] slivers inside this one
+/// scroll view, so there is a single header.
 class LibraryPage extends StatefulWidget {
   const LibraryPage({super.key, required this.isSignedIn});
 
@@ -58,12 +58,10 @@ class _LibraryPageState extends State<LibraryPage> {
                 ),
               ),
             ),
-            SliverFillRemaining(
-              child: switch (_section) {
-                _LibrarySection.liked => const Liked(),
-                _LibrarySection.watchlist => UserWatchlist(),
-              },
-            ),
+            switch (_section) {
+              _LibrarySection.liked => const LikedView(),
+              _LibrarySection.watchlist => const WatchlistView(),
+            },
           ],
         ],
       ),

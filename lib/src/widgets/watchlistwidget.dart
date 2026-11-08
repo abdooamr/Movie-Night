@@ -1,163 +1,141 @@
-import 'dart:math' as math;
-import 'package:Movie_Night/generated/l10n.dart';
-import 'package:Movie_Night/src/components/cached_image.dart';
-import 'package:Movie_Night/src/components/stars.dart';
-import 'package:Movie_Night/src/models/moviedetails.dart';
-import 'package:Movie_Night/src/pages/UI/detail_page.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
-
-import 'package:Movie_Night/src/utils/utils.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
+import '../../generated/l10n.dart';
+import '../components/cached_image.dart';
+import '../components/poster_card.dart';
+import '../components/rating_badge.dart';
+import '../design/tokens.dart';
+import '../models/moviedetails.dart';
+import '../navigation/routes.dart';
+import '../utils/utils.dart' show imageUrl;
+
+/// One Watchlist row: poster thumbnail, title, year and rating, with a
+/// trailing remove button. Removal is immediate (the caller offers Undo, B4);
+/// swipe-to-remove and a screen-reader "Delete" action do the same.
 class BookmarkWidget extends StatelessWidget {
   final MovieModel movieDetails;
   final bool isTvShow;
-  final VoidCallback onPressDelete;
+  final VoidCallback onRemove;
 
   const BookmarkWidget({
     super.key,
     required this.movieDetails,
     required this.isTvShow,
-    required this.onPressDelete,
+    required this.onRemove,
   });
+
+  String get _title =>
+      (isTvShow ? movieDetails.name : movieDetails.title) ?? '';
+
+  int? get _year =>
+      (isTvShow ? movieDetails.firstAirDate : movieDetails.releaseDate)?.year;
 
   @override
   Widget build(BuildContext context) {
-    var genress = movieDetails.genres;
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+    final s = S.of(context);
+    final year = _year;
+    final heroTag = heroTagFor(
+      source: 'watchlist',
+      isTv: isTvShow,
+      id: movieDetails.id,
+    );
+    final posterPath = movieDetails.posterPath;
+    const thumbWidth = MNSize.avatar;
+    const thumbHeight = thumbWidth * 3 / 2;
 
-    return Column(
-      children: [
-        const SizedBox(height: 15),
-        Slidable(
-          endActionPane: ActionPane(
-            motion: const ScrollMotion(),
-            children: [
-              SlidableAction(
-                onPressed: (_) async {
-                  final confirmed = await showDialog<bool>(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      title: Text(S.of(context).deleteBookmark),
-                      content: Text(
-                        S.of(context).deleteBookmarkConfirmation,
-                      ),
-                      actionsPadding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 10,
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, false),
-                          child: Text(S.of(context).cancelLabel,
-                              style: TextStyle(color: Colors.white)),
-                        ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          onPressed: () => Navigator.pop(context, true),
-                          child: Text(S.of(context).delete,
-                              style: TextStyle(color: Colors.white)),
-                        ),
-                      ],
-                    ),
-                  );
-
-                  if (confirmed == true) {
-                    onPressDelete();
-                  }
-                },
-                backgroundColor: Colors.red,
-                foregroundColor: Colors.white,
-                icon: IconsaxBold.trash,
-                label: S.of(context).delete,
-              ),
-            ],
+    return Slidable(
+      key: ValueKey('${isTvShow ? 'tv' : 'movie'}/${movieDetails.id}'),
+      endActionPane: ActionPane(
+        motion: const ScrollMotion(),
+        dismissible: DismissiblePane(onDismissed: onRemove),
+        children: [
+          SlidableAction(
+            onPressed: (_) => onRemove(),
+            backgroundColor: cs.errorContainer,
+            foregroundColor: cs.onErrorContainer,
+            icon: IconsaxOutline.trash,
+            label: s.delete,
           ),
-          child: GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DetailPage(
-                    id: movieDetails.id,
-                    isTvShow: isTvShow,
-                  ),
-                ),
-              );
-            },
+        ],
+      ),
+      child: Semantics(
+        customSemanticsActions: {
+          CustomSemanticsAction(label: s.delete): onRemove,
+        },
+        child: InkWell(
+          onTap: () => openTitle(
+            context,
+            id: movieDetails.id,
+            isTv: isTvShow,
+            heroTag: heroTag,
+          ),
+          child: Padding(
+            padding: const EdgeInsetsDirectional.symmetric(
+              horizontal: MNSpace.lg,
+              vertical: MNSpace.sm,
+            ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  width: math.min(150, MediaQuery.sizeOf(context).width * 0.35),
-                  height:
-                      math.min(150, MediaQuery.sizeOf(context).width * 0.35) *
-                          230 /
-                          150,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+                Hero(
+                  tag: heroTag,
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: CachedImageCustom(
-                      decodeWidth: 150,
-                      movieDetails.posterPath == null
-                          ? 'images/placeholder.png'
-                          : '$imageUrl${movieDetails.posterPath!}',
+                    borderRadius: MNRadius.smAll,
+                    child: SizedBox(
+                      width: thumbWidth,
+                      height: thumbHeight,
+                      child: posterPath == null
+                          ? ColoredBox(
+                              color: cs.surfaceContainer,
+                              child: Icon(
+                                IconsaxOutline.video,
+                                color: cs.onSurfaceVariant,
+                              ),
+                            )
+                          : CachedImageCustom(
+                              '$imageUrl$posterPath',
+                              width: thumbWidth,
+                              height: thumbHeight,
+                            ),
                     ),
                   ),
                 ),
-                SizedBox(
-                  width: math.min(200, MediaQuery.sizeOf(context).width * 0.45),
+                const SizedBox(width: MNSpace.md),
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        isTvShow ? movieDetails.name! : movieDetails.title!,
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            "${movieDetails.voteAverage.toStringAsFixed(1)}  ",
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                          StarRating(movieDetails.voteAverage),
-                        ],
-                      ),
-                      Text(
-                        genress.map((genre) => genre.name).join(' , '),
-                        style: Theme.of(context).textTheme.labelLarge!,
-                      ),
-                      Text(
-                        movieDetails.overview,
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                              color: Theme.of(context).brightness ==
-                                      Brightness.dark
-                                  ? Colors.grey.shade400
-                                  : Colors.grey.shade700,
-                            ),
-                        maxLines: 4,
+                        _title,
+                        maxLines: 2,
                         overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.titleMedium,
                       ),
+                      if (year != null)
+                        Text(
+                          '$year',
+                          style: theme.textTheme.labelMedium!
+                              .copyWith(color: cs.onSurfaceVariant),
+                        ),
+                      const SizedBox(height: MNSpace.xs),
+                      RatingBadge(score: movieDetails.voteAverage),
                     ],
                   ),
+                ),
+                IconButton(
+                  tooltip: s.deleteBookmark,
+                  onPressed: onRemove,
+                  icon: const Icon(IconsaxOutline.trash),
                 ),
               ],
             ),
           ),
         ),
-        const SizedBox(height: 15),
-      ],
+      ),
     );
   }
 }
