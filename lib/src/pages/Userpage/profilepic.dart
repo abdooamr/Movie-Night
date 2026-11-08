@@ -123,8 +123,7 @@ class _ProfilePicState extends State<ProfilePic> {
                 end: -MNSpace.xs,
                 bottom: -MNSpace.xs,
                 child: IconButton.filledTonal(
-                  // NEEDS_STRING changeProfilePhoto: Change Profile Photo
-                  tooltip: s.editprofilelabel,
+                  tooltip: s.changeProfilePhoto,
                   constraints: const BoxConstraints(
                     minWidth: MNSize.minTap,
                     minHeight: MNSize.minTap,

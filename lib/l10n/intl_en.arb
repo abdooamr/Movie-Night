@@ -75,7 +75,7 @@
     "soaptvlabel": "Soap TV Shows",
     "talktvlabel": "Talk TV Shows",
     "wartvlabel": "War & Politics TV Shows",
-    "Seealloptions": "See all",
+    "Seealloptions": "See All",
     "darkmodelabel": "Dark Mode",
     "adminpanellabel": "Admin Panel",
     "watchlistlabel": "Watchlist",
@@ -300,5 +300,20 @@
     "close": "Close",
     "liked": "Liked",
     "showPassword": "Show password",
-    "hidePassword": "Hide password"
+    "hidePassword": "Hide password",
+    "readLess": "Read less",
+    "deleteUserTitle": "Delete {name}?",
+    "@deleteUserTitle": {
+        "placeholders": {
+            "name": {}
+        }
+    },
+    "backOnline": "You're back online.",
+    "changeProfilePhoto": "Change Profile Photo",
+    "reportDescriptionRequired": "Add a description.",
+    "rateMovieNight": "Rate Movie Night",
+    "accountGroupLabel": "Account",
+    "removeFromHistory": "Remove",
+    "mediaMovie": "Movie",
+    "mediaTvShow": "TV Show"
 }

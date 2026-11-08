@@ -640,9 +640,9 @@ class S {
     );
   }
 
-  /// `See all`
+  /// `See All`
   String get Seealloptions {
-    return Intl.message('See all', name: 'Seealloptions', desc: '', args: []);
+    return Intl.message('See All', name: 'Seealloptions', desc: '', args: []);
   }
 
   /// `Dark Mode`
@@ -2218,6 +2218,91 @@ class S {
       desc: '',
       args: [],
     );
+  }
+
+  /// `Read less`
+  String get readLess {
+    return Intl.message('Read less', name: 'readLess', desc: '', args: []);
+  }
+
+  /// `Delete {name}?`
+  String deleteUserTitle(Object name) {
+    return Intl.message(
+      'Delete $name?',
+      name: 'deleteUserTitle',
+      desc: '',
+      args: [name],
+    );
+  }
+
+  /// `You're back online.`
+  String get backOnline {
+    return Intl.message(
+      'You\'re back online.',
+      name: 'backOnline',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change Profile Photo`
+  String get changeProfilePhoto {
+    return Intl.message(
+      'Change Profile Photo',
+      name: 'changeProfilePhoto',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add a description.`
+  String get reportDescriptionRequired {
+    return Intl.message(
+      'Add a description.',
+      name: 'reportDescriptionRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rate Movie Night`
+  String get rateMovieNight {
+    return Intl.message(
+      'Rate Movie Night',
+      name: 'rateMovieNight',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Account`
+  String get accountGroupLabel {
+    return Intl.message(
+      'Account',
+      name: 'accountGroupLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove`
+  String get removeFromHistory {
+    return Intl.message(
+      'Remove',
+      name: 'removeFromHistory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Movie`
+  String get mediaMovie {
+    return Intl.message('Movie', name: 'mediaMovie', desc: '', args: []);
+  }
+
+  /// `TV Show`
+  String get mediaTvShow {
+    return Intl.message('TV Show', name: 'mediaTvShow', desc: '', args: []);
   }
 }
 

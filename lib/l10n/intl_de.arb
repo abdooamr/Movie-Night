@@ -265,5 +265,15 @@
     "close": "Schließen",
     "liked": "Gemocht",
     "showPassword": "Passwort anzeigen",
-    "hidePassword": "Passwort ausblenden"
+    "hidePassword": "Passwort ausblenden",
+    "readLess": "Weniger anzeigen",
+    "deleteUserTitle": "{name} löschen?",
+    "backOnline": "Du bist wieder online.",
+    "changeProfilePhoto": "Profilbild Ändern",
+    "reportDescriptionRequired": "Füge eine Beschreibung hinzu.",
+    "rateMovieNight": "Movie Night Bewerten",
+    "accountGroupLabel": "Konto",
+    "removeFromHistory": "Entfernen",
+    "mediaMovie": "Film",
+    "mediaTvShow": "Serie"
 }

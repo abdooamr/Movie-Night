@@ -62,10 +62,9 @@ class _adminpanelState extends State<adminpanel> {
   Future<void> _confirmDelete(BuildContext context, Users user) async {
     final l10n = S.of(context);
     final name = '${user.firstName} ${user.lastName}'.trim();
-    // NEEDS_STRING deleteUserTitle: Delete {name}? (generic label for now)
     final ok = await AppFeedback.confirmDestructive(
       context,
-      title: l10n.delete,
+      title: l10n.deleteUserTitle(name),
       message: '$name (${user.email})',
       confirmLabel: l10n.delete,
     );

@@ -170,16 +170,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     SettingsRow(
                       icon: IconsaxOutline.star,
-                      // NEEDS_STRING rateMovieNight: Rate Movie Night
-                      title: s.sendfeedbacklabel,
+                      title: s.rateMovieNight,
                       onTap: _openStoreReview,
                     ),
                   ],
                 ),
                 gap,
                 SettingsSection(
-                  // NEEDS_STRING accountGroupLabel: Account
-                  title: s.accountsettingslabel,
+                  title: s.accountGroupLabel,
                   children: [
                     const EditProfileRow(),
                     const ResetPasswordRow(),

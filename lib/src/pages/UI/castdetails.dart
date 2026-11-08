@@ -312,7 +312,7 @@ class _PersonInfoState extends State<_PersonInfo> {
 
 /// Biography text clamped to [collapsedLines] with a "Read more" button that
 /// appears whenever the text actually overflows at the current width and text
-/// scale. Once expanded the button goes away (no "Read less" string exists).
+/// scale; once expanded it reads "Read less".
 class PersonBio extends StatefulWidget {
   const PersonBio({super.key, required this.text});
 
@@ -352,11 +352,12 @@ class _PersonBioState extends State<PersonBio> {
                   _expanded ? TextOverflow.visible : TextOverflow.ellipsis,
               style: style,
             ),
-            if (overflows && !_expanded)
-              // NEEDS_STRING readLess: "Read less" (not offered).
+            if (overflows)
               TextButton(
-                onPressed: () => setState(() => _expanded = true),
-                child: Text(S.of(context).readmorelabel),
+                onPressed: () => setState(() => _expanded = !_expanded),
+                child: Text(_expanded
+                    ? S.of(context).readLess
+                    : S.of(context).readmorelabel),
               ),
           ],
         );

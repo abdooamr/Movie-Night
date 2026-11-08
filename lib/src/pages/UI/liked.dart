@@ -463,14 +463,3 @@ class _EmptyLiked extends StatelessWidget {
     );
   }
 }
-
-/// Standalone Liked page, kept so older entry points keep compiling.
-/// The Library tab uses [LikedView] directly.
-class Liked extends StatelessWidget {
-  const Liked({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const CustomScrollView(slivers: [LikedView()]);
-  }
-}

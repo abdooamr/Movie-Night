@@ -19,6 +19,9 @@ class MNRadius {
   static const double sm = 8;
   static const double md = 12;
   static const double lg = 20;
+
+  /// Floating chrome (the iOS tab bar pill).
+  static const double chrome = 28;
   static const BorderRadius smAll = BorderRadius.all(Radius.circular(sm));
   static const BorderRadius mdAll = BorderRadius.all(Radius.circular(md));
   static const BorderRadius lgAll = BorderRadius.all(Radius.circular(lg));
@@ -30,6 +33,9 @@ class MNSize {
   static const double minTap = 48;
   static const double buttonHeight = 50;
   static const double avatar = 72;
+
+  /// Hairline stroke on chrome.
+  static const double hairline = 0.5;
 }
 
 /// Motion durations (spec section 9).

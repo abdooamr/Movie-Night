@@ -29,7 +29,6 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  awesome_snackbar_content: ^0.1.0
   cached_network_image: ^3.2.3
   carousel_slider: ^5.0.0
   cloud_firestore: ^6.1.2
@@ -45,7 +44,6 @@ dependencies:
   flutter_email_sender: ^8.0.0
 
   flutter_slidable: ^4.0.3
-  fluttertoast: ^9.0.0
   google_sign_in: 6.2.1
   hive: ^2.2.3
   hive_flutter: ^1.1.0
@@ -115,10 +113,6 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Pacifico
-      fonts:
-        - asset: fonts/Pacifico-Regular.ttf
-          weight: 700
     - family: poppins
       fonts:
         - asset: fonts/Poppins-Bold.ttf

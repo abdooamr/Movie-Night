@@ -530,10 +530,12 @@ class _StorylineState extends State<_Storyline> {
                     ),
                   ),
                 ),
-                if (overflows && !_expanded)
+                if (overflows)
                   TextButton(
-                    onPressed: () => setState(() => _expanded = true),
-                    child: Text(S.of(context).readmorelabel),
+                    onPressed: () => setState(() => _expanded = !_expanded),
+                    child: Text(_expanded
+                        ? S.of(context).readLess
+                        : S.of(context).readmorelabel),
                   ),
               ],
             );

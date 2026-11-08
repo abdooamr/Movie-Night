@@ -265,5 +265,15 @@
     "close": "إغلاق",
     "liked": "في المفضلة",
     "showPassword": "إظهار كلمة المرور",
-    "hidePassword": "إخفاء كلمة المرور"
+    "hidePassword": "إخفاء كلمة المرور",
+    "readLess": "عرض أقل",
+    "deleteUserTitle": "حذف {name}؟",
+    "backOnline": "عدت متصلاً بالإنترنت.",
+    "changeProfilePhoto": "تغيير صورة الملف الشخصي",
+    "reportDescriptionRequired": "أضف وصفًا.",
+    "rateMovieNight": "قيّم Movie Night",
+    "accountGroupLabel": "الحساب",
+    "removeFromHistory": "إزالة",
+    "mediaMovie": "فيلم",
+    "mediaTvShow": "مسلسل"
 }

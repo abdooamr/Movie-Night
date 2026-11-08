@@ -68,18 +68,4 @@ void main() {
     await p.setAppearance(AppAppearance.light);
     expect(p.themeMode, ThemeMode.light);
   });
-
-  test('deprecated toggleTheme maps to dark/light', () async {
-    SharedPreferences.setMockInitialValues({});
-    final p = ThemeProvider();
-    await settle();
-    // ignore: deprecated_member_use_from_same_package
-    await p.toggleTheme(true);
-    expect(p.appearance, AppAppearance.dark);
-    expect(p.isDarkMode, isTrue);
-    // ignore: deprecated_member_use_from_same_package
-    await p.toggleTheme(false);
-    expect(p.appearance, AppAppearance.light);
-    expect(p.isDarkMode, isFalse);
-  });
 }

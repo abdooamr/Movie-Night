@@ -32,7 +32,6 @@ class SectionHeader extends StatelessWidget {
               icon: Icon(
                 rtl ? IconsaxOutline.arrow_left_3 : IconsaxOutline.arrow_right_3,
               ),
-              // NEEDS_STRING seeAll: "See All" (closest existing key).
               label: Text(S.of(context).Seealloptions),
             ),
         ],

@@ -76,7 +76,7 @@
     "soaptvlabel": "साबुन टीवी शो",
     "talktvlabel": "बातचीत टीवी शो",
     "wartvlabel": "युद्ध और राजनीति टीवी शो",
-    "Seealloptions": "सभी विकल्प देखें",
+    "Seealloptions": "सभी देखें",
     "darkmodelabel": "डार्क मोड",
     "adminpanellabel": "एडमिन पैनल",
     "watchlistlabel": "देखें",
@@ -265,5 +265,15 @@
     "close": "बंद करें",
     "liked": "पसंदीदा",
     "showPassword": "पासवर्ड दिखाएं",
-    "hidePassword": "पासवर्ड छिपाएं"
+    "hidePassword": "पासवर्ड छिपाएं",
+    "readLess": "कम पढ़ें",
+    "deleteUserTitle": "{name} को हटाएं?",
+    "backOnline": "आप फिर से ऑनलाइन हैं।",
+    "changeProfilePhoto": "प्रोफ़ाइल फ़ोटो बदलें",
+    "reportDescriptionRequired": "विवरण जोड़ें।",
+    "rateMovieNight": "Movie Night को रेट करें",
+    "accountGroupLabel": "खाता",
+    "removeFromHistory": "हटाएं",
+    "mediaMovie": "फ़िल्म",
+    "mediaTvShow": "टीवी शो"
 }

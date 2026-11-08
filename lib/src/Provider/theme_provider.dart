@@ -58,8 +58,4 @@ class ThemeProvider extends ChangeNotifier {
       await prefs.setString(_appearanceKey, a.name);
     } catch (_) {}
   }
-
-  @Deprecated('Use setAppearance; removed with the legacy switch widgets.')
-  Future<void> toggleTheme(bool isOn) =>
-      setAppearance(isOn ? AppAppearance.dark : AppAppearance.light);
 }

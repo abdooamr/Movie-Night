@@ -183,12 +183,11 @@ class Search extends SearchDelegate<Model> {
     );
   }
 
-  /// "Movie · 2023". NEEDS_STRING: singular media-type labels; the plural
-  /// segment labels stand in until they exist.
+  /// "Movie · 2023".
   String? _subtitle(BuildContext context, Result item) {
     if (item.mediaType == MediaType.person) return null;
     final s = S.of(context);
-    final kind = item.mediaType == MediaType.tv ? s.tvswitch : s.movieswitch;
+    final kind = item.mediaType == MediaType.tv ? s.mediaTvShow : s.mediaMovie;
     final date = item.releaseDate ?? item.firstAirDate ?? '';
     final year = date.length >= 4 ? date.substring(0, 4) : '';
     return year.isEmpty ? kind : '$kind · $year';
@@ -235,9 +234,8 @@ class Search extends SearchDelegate<Model> {
             },
             leading: const Icon(IconsaxOutline.clock),
             title: Text(q),
-            // NEEDS_STRING removeFromHistory: "Remove"; Delete stands in.
             trailing: IconButton(
-              tooltip: S.of(context).delete,
+              tooltip: S.of(context).removeFromHistory,
               icon: const Icon(IconsaxOutline.close_circle),
               onPressed: () => remove(q),
             ),

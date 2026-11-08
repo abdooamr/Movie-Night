@@ -141,9 +141,8 @@ class _SendReportState extends State<SendReport> {
                       label: s.descriptionlabel,
                       kind: AppFieldKind.multiline,
                       icon: IconsaxOutline.document_text,
-                      // NEEDS_STRING reportDescriptionRequired: Add a description.
                       validator: (v) => (v == null || v.trim().isEmpty)
-                          ? s.reportSummaryRequired
+                          ? s.reportDescriptionRequired
                           : null,
                     ),
                     const SizedBox(height: MNSpace.xl),

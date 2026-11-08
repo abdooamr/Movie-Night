@@ -24,19 +24,21 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m1(section) => "No se pudo cargar ${section}.";
 
-  static String m2(query) =>
+  static String m2(name) => "¿Eliminar a ${name}?";
+
+  static String m3(query) =>
       "Sin resultados para «${query}». Revisa la ortografía o prueba con otro título.";
 
-  static String m3(title) => "Reproducir ${title}";
+  static String m4(title) => "Reproducir ${title}";
 
-  static String m4(score) => "${score} de 10";
+  static String m5(score) => "${score} de 10";
 
-  static String m5(email) =>
+  static String m6(email) =>
       "Revisa tu correo. Enviamos un enlace de restablecimiento a ${email}.";
 
-  static String m6(count) => "Ver todas las reseñas (${count})";
+  static String m7(count) => "Ver todas las reseñas (${count})";
 
-  static String m7(title, url) => "Mira ${title} en Movie Night\n${url}";
+  static String m8(title, url) => "Mira ${title} en Movie Night\n${url}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -68,6 +70,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Usernamelabel": MessageLookupByLibrary.simpleMessage("Nombre de Usuario"),
     "Wargenre": MessageLookupByLibrary.simpleMessage("Guerra"),
     "Westerngenre": MessageLookupByLibrary.simpleMessage("Oeste"),
+    "accountGroupLabel": MessageLookupByLibrary.simpleMessage("Cuenta"),
     "accountinfolabel": MessageLookupByLibrary.simpleMessage(
       "Información de la Cuenta",
     ),
@@ -140,6 +143,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "authErrorWeakPassword": MessageLookupByLibrary.simpleMessage(
       "Elige una contraseña más segura.",
     ),
+    "backOnline": MessageLookupByLibrary.simpleMessage(
+      "Vuelves a estar en línea.",
+    ),
     "backToLogIn": MessageLookupByLibrary.simpleMessage(
       "Volver a Iniciar Sesión",
     ),
@@ -148,6 +154,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "buyon": MessageLookupByLibrary.simpleMessage("Comprar en"),
     "cancelLabel": MessageLookupByLibrary.simpleMessage("Cancelar"),
     "castAs": m0,
+    "changeProfilePhoto": MessageLookupByLibrary.simpleMessage(
+      "Cambiar Foto de Perfil",
+    ),
     "changelanguagelabel": MessageLookupByLibrary.simpleMessage(
       "Cambiar Idioma",
     ),
@@ -208,6 +217,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteUserConfirmation": MessageLookupByLibrary.simpleMessage(
       "¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.",
     ),
+    "deleteUserTitle": m2,
     "deleteaccountlabel": MessageLookupByLibrary.simpleMessage(
       "Eliminar Cuenta",
     ),
@@ -314,6 +324,8 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "logoutlabel": MessageLookupByLibrary.simpleMessage("Cerrar Sesión"),
     "managesettingslabel": MessageLookupByLibrary.simpleMessage("Administrar"),
+    "mediaMovie": MessageLookupByLibrary.simpleMessage("Película"),
+    "mediaTvShow": MessageLookupByLibrary.simpleMessage("Serie"),
     "mediatypemoviess": MessageLookupByLibrary.simpleMessage("Películas"),
     "minute": MessageLookupByLibrary.simpleMessage("min"),
     "moviesKnownFor": MessageLookupByLibrary.simpleMessage(
@@ -343,7 +355,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "noReport": MessageLookupByLibrary.simpleMessage("Sin reportes"),
     "noResults": MessageLookupByLibrary.simpleMessage("Sin Resultados"),
-    "noResultsFor": m2,
+    "noResultsFor": m3,
     "noResultsMessage": MessageLookupByLibrary.simpleMessage(
       "No se encontraron resultados para tu búsqueda",
     ),
@@ -395,7 +407,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "passwordvalidationtext": MessageLookupByLibrary.simpleMessage(
       "Usa al menos 8 caracteres, con una mayúscula, una minúscula, un número y un símbolo.",
     ),
-    "playVideo": m3,
+    "playVideo": m4,
     "pleasecheckinternetconnection": MessageLookupByLibrary.simpleMessage(
       "Comprueba tu conexión a Internet e inténtalo de nuevo",
     ),
@@ -414,12 +426,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "No se pudo subir la foto de perfil. Inténtalo de nuevo.",
     ),
     "profilenavbar": MessageLookupByLibrary.simpleMessage("Perfil"),
-    "ratingOutOf10": m4,
+    "rateMovieNight": MessageLookupByLibrary.simpleMessage(
+      "Calificar Movie Night",
+    ),
+    "ratingOutOf10": m5,
+    "readLess": MessageLookupByLibrary.simpleMessage("Leer menos"),
     "readmorelabel": MessageLookupByLibrary.simpleMessage("Leer más"),
     "realitytvlabel": MessageLookupByLibrary.simpleMessage(
       "Programas de Realidad",
     ),
     "registarnowlabel": MessageLookupByLibrary.simpleMessage("Crear Cuenta"),
+    "removeFromHistory": MessageLookupByLibrary.simpleMessage("Quitar"),
     "removedFromLiked": MessageLookupByLibrary.simpleMessage(
       "Quitado de Me gusta",
     ),
@@ -430,6 +447,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Eliminar de la Lista de Reproducción",
     ),
     "report": MessageLookupByLibrary.simpleMessage("Reporte"),
+    "reportDescriptionRequired": MessageLookupByLibrary.simpleMessage(
+      "Añade una descripción.",
+    ),
     "reportFailed": MessageLookupByLibrary.simpleMessage(
       "No se pudo enviar el reporte. Inténtalo de nuevo.",
     ),
@@ -446,7 +466,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "reportpagelabel": MessageLookupByLibrary.simpleMessage(
       "Por favor, envíanos un informe si encuentras algún error o tienes sugerencias para la aplicación.",
     ),
-    "resetLinkSent": m5,
+    "resetLinkSent": m6,
     "resetPassword": MessageLookupByLibrary.simpleMessage(
       "Restablecer Contraseña",
     ),
@@ -467,7 +487,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "searchhint": MessageLookupByLibrary.simpleMessage(
       "Películas, series, personas",
     ),
-    "seeAllReviews": m6,
+    "seeAllReviews": m7,
     "sendEmail": MessageLookupByLibrary.simpleMessage("Enviar correo"),
     "sendReviewTooltip": MessageLookupByLibrary.simpleMessage("Enviar reseña"),
     "sendfeedbacklabel": MessageLookupByLibrary.simpleMessage(
@@ -475,7 +495,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "sendreportlabel": MessageLookupByLibrary.simpleMessage("Enviar Informe"),
     "share": MessageLookupByLibrary.simpleMessage("Compartir"),
-    "shareText": m7,
+    "shareText": m8,
     "showPassword": MessageLookupByLibrary.simpleMessage("Mostrar contraseña"),
     "signInPromptBody": MessageLookupByLibrary.simpleMessage(
       "Inicia sesión para tener una lista de seguimiento, dar me gusta y escribir reseñas.",

@@ -1,9 +1,7 @@
 import 'package:Movie_Night/generated/l10n.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 const imageUrl = 'https://image.tmdb.org/t/p/w500';
-const kBackgoundColor = Color(0xFF171823);
 
 String? _cachedLocale;
 Map<int, String>? _cachedGenres;

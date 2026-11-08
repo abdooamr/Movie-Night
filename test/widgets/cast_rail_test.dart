@@ -84,6 +84,11 @@ void main() {
     await tester.tap(find.text('Read more'));
     await tester.pump();
     expect(find.text('Read more'), findsNothing);
+    await tester.ensureVisible(find.text('Read less'));
+    await tester.pump();
+    await tester.tap(find.text('Read less'));
+    await tester.pump();
+    expect(find.text('Read more'), findsOneWidget);
   });
 
   testWidgets('short bio at normal scale has no Read more', (tester) async {

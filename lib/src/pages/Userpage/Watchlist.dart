@@ -187,22 +187,3 @@ class _WatchlistViewState extends State<WatchlistView> {
     );
   }
 }
-
-/// Standalone Watchlist page (pushed from Settings until Task 13 removes
-/// that row). The Library tab uses [WatchlistView] directly.
-class UserWatchlist extends StatelessWidget {
-  const UserWatchlist({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Semantics(
-          header: true,
-          child: Text(S.of(context).watchlistlabel),
-        ),
-      ),
-      body: const CustomScrollView(slivers: [WatchlistView()]),
-    );
-  }
-}
