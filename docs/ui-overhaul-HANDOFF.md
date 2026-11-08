@@ -1,4 +1,6 @@
-# UI Overhaul — Handoff (paused 2026-11-07)
+# UI Overhaul — Handoff
+
+> **Update 2026-11-08:** Wave 3 (T6–T14) and T15 are committed (`d37b546`..`c875f60`). Full gate: `flutter analyze` 0 errors / 0 warnings, `flutter test` 209/209. Only Phase 5 remains: whole-branch review, `flutter build apk --debug`, and the by-hand device pass. The sections below describe the paused state from 2026-11-07 and are kept for history.
 
 Read this first when you resume. It covers what was done, where everything is, and what to do next.
 
