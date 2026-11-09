@@ -54,5 +54,5 @@ The app code is migrated (plan: `docs/superpowers/plans/2026-11-09-supabase-migr
 - **Admin user list** refreshes on open, after each action and on pull-to-refresh, instead of updating live.
 - **"Display name"** is gone from Edit Profile; reviews show first and last name.
 - **Review dates** keep the `dd-MM-yyyy` format. Under Arabic they now use Western digits (today's `intl`); some imported Firestore dates were written with Arabic-Indic digits by an older `intl`.
-- **Movie and TV reviews still share ids** (as in Firestore): a movie and a show with the same TMDB id share reviews. A `media_type` column would fix it (not done).
-- **New strings:** the 11 new sign-in strings are machine drafts in the 6 non-English locales and need review.
+- **Movie and TV reviews are kept apart** from 2026-11-10 (`docs/sql/2026-11-10-reviews-media-type.sql`, run before installing that build). Reviews imported from Firestore have no type and still show on both pages with that TMDB id.
+- **New strings:** the 11 new sign-in strings were checked against each language's existing tone and wording (2026-11-10); a native speaker's pass is still worthwhile, Hindi and Arabic especially.

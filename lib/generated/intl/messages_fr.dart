@@ -23,7 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m0(character) => "Dans le rôle de ${character}";
 
   static String m1(email) =>
-      "Consultez vos e-mails. Nous avons envoyé un lien à ${email}. Ouvrez-le pour activer votre compte, puis connectez-vous.";
+      "Vérifiez vos e-mails. Nous avons envoyé un lien à ${email}. Ouvrez-le pour activer votre compte, puis connectez-vous.";
 
   static String m2(section) => "Impossible de charger ${section}.";
 

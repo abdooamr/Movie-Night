@@ -113,7 +113,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "इस ईमेल से पहले से एक खाता मौजूद है।",
     ),
     "authErrorEmailNotConfirmed": MessageLookupByLibrary.simpleMessage(
-      "पहले अपना ईमेल पुष्टि करें। हमारे भेजे गए लिंक को खोलें, फिर लॉग इन करें।",
+      "पहले अपने ईमेल की पुष्टि करें। हमने जो लिंक भेजा है, उसे खोलें, फिर लॉग इन करें।",
     ),
     "authErrorGeneric": MessageLookupByLibrary.simpleMessage(
       "यह पूरा नहीं हो सका। फिर कोशिश करें।",

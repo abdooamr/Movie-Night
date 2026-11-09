@@ -278,7 +278,7 @@
     "mediaTvShow": "Série",
     "authErrorEmailNotConfirmed": "Confirmez d'abord votre e-mail. Ouvrez le lien que nous vous avons envoyé, puis connectez-vous.",
     "authErrorSamePassword": "Choisissez un mot de passe différent de l'actuel.",
-    "confirmEmailSent": "Consultez vos e-mails. Nous avons envoyé un lien à {email}. Ouvrez-le pour activer votre compte, puis connectez-vous.",
+    "confirmEmailSent": "Vérifiez vos e-mails. Nous avons envoyé un lien à {email}. Ouvrez-le pour activer votre compte, puis connectez-vous.",
     "passwordMigrationTitle": "Réinitialisez votre mot de passe une fois",
     "passwordMigrationBody": "Movie Night utilise un nouveau système de connexion. Si vous aviez un compte avant cette mise à jour, votre ancien mot de passe ne fonctionne plus. Réinitialisez-le une fois pour continuer à utiliser votre compte.",
     "notNowLabel": "Plus tard",

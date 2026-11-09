@@ -415,7 +415,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Movie Night cambió a un nuevo sistema de inicio de sesión. Si tenías una cuenta antes de esta actualización, tu contraseña anterior ya no funciona. Restablécela una vez para seguir usando tu cuenta.",
     ),
     "passwordMigrationTitle": MessageLookupByLibrary.simpleMessage(
-      "Restablece Tu Contraseña Una Vez",
+      "Restablece tu Contraseña una Vez",
     ),
     "passwordUpdated": MessageLookupByLibrary.simpleMessage(
       "Tu contraseña se actualizó.",
@@ -524,7 +524,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Elige una nueva contraseña para tu cuenta.",
     ),
     "setNewPasswordTitle": MessageLookupByLibrary.simpleMessage(
-      "Nueva Contraseña",
+      "Establece una Nueva Contraseña",
     ),
     "share": MessageLookupByLibrary.simpleMessage("Compartir"),
     "shareText": m9,

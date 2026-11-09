@@ -23,7 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m0(character) => "Als ${character}";
 
   static String m1(email) =>
-      "Sieh in deinen E-Mails nach. Wir haben einen Link an ${email} gesendet. Öffne ihn, um dein Konto zu aktivieren, und melde dich dann an.";
+      "Prüfe dein Postfach. Wir haben einen Link an ${email} gesendet. Öffne ihn, um dein Konto zu aktivieren, und melde dich dann an.";
 
   static String m2(section) => "${section} konnte nicht geladen werden.";
 

@@ -276,7 +276,7 @@
     "removeFromHistory": "हटाएं",
     "mediaMovie": "फ़िल्म",
     "mediaTvShow": "टीवी शो",
-    "authErrorEmailNotConfirmed": "पहले अपना ईमेल पुष्टि करें। हमारे भेजे गए लिंक को खोलें, फिर लॉग इन करें।",
+    "authErrorEmailNotConfirmed": "पहले अपने ईमेल की पुष्टि करें। हमने जो लिंक भेजा है, उसे खोलें, फिर लॉग इन करें।",
     "authErrorSamePassword": "ऐसा पासवर्ड चुनें जो आपके मौजूदा पासवर्ड से अलग हो।",
     "confirmEmailSent": "अपना ईमेल देखें। हमने {email} पर एक लिंक भेजा है। अपना खाता सक्रिय करने के लिए उसे खोलें, फिर लॉग इन करें।",
     "passwordMigrationTitle": "अपना पासवर्ड एक बार रीसेट करें",
