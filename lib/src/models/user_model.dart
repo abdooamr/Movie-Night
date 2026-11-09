@@ -38,42 +38,23 @@ class Users {
         password: json["password"],
       );
 
-  /// Maps a `users/{uid}` Firestore document, tolerating both shapes that
-  /// exist in production (OPEN_QUESTIONS Q2 = b):
-  ///
-  /// - current: `firstName` / `lastName` (Register_provider)
-  /// - legacy:  `firstname` (full display name) / `lastname` ("")
-  ///   written by the now-deleted `services/googleauth.dart`.
-  ///
-  /// Missing strings fall back to `''` instead of throwing a TypeError on the
-  /// non-nullable fields. Nothing is renamed in the stored data.
-  factory Users.fromFirestore(Map<String, dynamic> d) => Users(
-        id: d['id'] as String?,
-        email: _str(d['email']),
-        firstName: _str(d['firstName'] ?? d['firstname']).trim(),
-        lastName: _str(d['lastName'] ?? d['lastname']).trim(),
-        ProfilePic: _str(d['ProfilePic']),
-        role: _str(d['role'], fallback: 'User'),
-        report: d['report'] as String?,
+  /// Maps a Supabase `profiles` row (snake_case columns). The email is not
+  /// stored in `profiles`: pass it from auth for the signed-in user, or it
+  /// comes in the row from `admin_list_users`. Missing strings fall back to
+  /// `''` instead of throwing on the non-nullable fields.
+  factory Users.fromRow(Map<String, dynamic> row, {String email = ''}) =>
+      Users(
+        id: row['id'] as String?,
+        email: row['email'] is String ? row['email'] as String : email,
+        firstName: _str(row['first_name']).trim(),
+        lastName: _str(row['last_name']).trim(),
+        ProfilePic: _str(row['profile_pic']),
+        role: _str(row['role'], fallback: 'User'),
+        report: row['report'] as String?,
       );
 
   static String _str(Object? v, {String fallback = ''}) =>
       v is String ? v : fallback;
-
-  /// Splits a Google display name into first / last.
-  /// "Ada" -> ("Ada", ""), "Ada King Lovelace" -> ("Ada", "King Lovelace").
-  /// The old code did `split(" ")[1]`, which threw a RangeError for one-word
-  /// names *after* the Firebase sign-in succeeded, so no user document was
-  /// ever written for those accounts.
-  static ({String first, String last}) splitDisplayName(String? displayName) {
-    final parts = (displayName ?? '')
-        .trim()
-        .split(RegExp(r'\s+'))
-        .where((p) => p.isNotEmpty)
-        .toList();
-    if (parts.isEmpty) return (first: '', last: '');
-    return (first: parts.first, last: parts.skip(1).join(' '));
-  }
 
   Map<String, dynamic> toJson() => {
         "id": id,

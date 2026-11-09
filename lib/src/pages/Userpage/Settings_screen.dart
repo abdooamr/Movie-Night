@@ -4,7 +4,6 @@ import 'package:Movie_Night/src/data/auth_repository.dart';
 import 'package:Movie_Night/src/data/user_repository.dart';
 import 'package:Movie_Night/src/design/tokens.dart';
 import 'package:Movie_Night/src/pages/Adminpages/admin_panel_vd.dart';
-import 'package:Movie_Night/src/pages/Login-Logout/auth_errors.dart';
 import 'package:Movie_Night/src/pages/Userpage/SendReports.dart';
 import 'package:Movie_Night/src/pages/Userpage/User_info_page.dart';
 import 'package:Movie_Night/src/pages/Userpage/account_setting.dart';
@@ -14,7 +13,6 @@ import 'package:Movie_Night/src/widgets/customsettingscreen.dart';
 import 'package:Movie_Night/src/widgets/themechanger.dart';
 import 'package:Movie_Night/src/widgets/userinfotile.dart';
 import 'package:ficonsax/ficonsax.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_review/in_app_review.dart';
 
@@ -40,11 +38,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _checkIsAdmin() async {
-    final uid = AuthRepository.instance.currentUserId;
-    if (uid == null) return;
+    if (!AuthRepository.instance.isSignedIn) return;
     bool admin;
     try {
-      admin = await _users.isAdmin(uid);
+      admin = await _users.isAdmin();
     } catch (_) {
       admin = false;
     }
@@ -91,9 +88,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       confirmLabel: s.deleteaccountlabel,
     );
     if (!confirmed || !mounted) return;
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) return;
-    final uid = user.uid;
+    if (!AuthRepository.instance.isSignedIn) return;
 
     // This screen is replaced (and unmounted) as soon as the auth user is
     // gone, so keep the root navigator for the dialog and the feedback.
@@ -110,21 +105,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     String? error;
     try {
-      await user.delete();
-      try {
-        await _users.deleteUserDocument(uid);
-      } catch (e, st) {
-        // The account itself is gone; only the profile document remains.
-        AppLog.error('deleteUserDocument', e, st);
-      }
-    } on FirebaseAuthException catch (e, st) {
-      AppLog.error('deleteAccount', e, st);
-      error = e.code == 'requires-recent-login'
-          ? s.authErrorRecentLogin
-          : s.genericError; // Replaced by the delete_my_account RPC next.
+      // One server call deletes the login, profile, reviews and watchlist
+      // together, so a failure never leaves half an account behind.
+      await _users.deleteMyAccount();
     } catch (e, st) {
       AppLog.error('deleteAccount', e, st);
       error = s.genericError;
+    }
+    if (error == null) {
+      // The account is gone; drop the local session (the shell then shows
+      // the signed-out tabs).
+      try {
+        await AuthRepository.instance.signOut();
+      } catch (e, st) {
+        AppLog.error('signOutAfterDelete', e, st);
+      }
     }
 
     rootNav.pop();

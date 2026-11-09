@@ -1,8 +1,9 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:Movie_Night/generated/l10n.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:Movie_Night/src/components/feedback.dart';
+import 'package:Movie_Night/src/data/user_repository.dart';
+import 'package:Movie_Night/src/utils/app_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/components/cached_image.dart';
 import 'package:Movie_Night/src/design/tokens.dart';
@@ -32,19 +33,24 @@ class Report_screen extends StatefulWidget {
 }
 
 class _Report_screenState extends State<Report_screen> {
-  final reportclear = "";
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final userx = FirebaseAuth.instance.currentUser;
+  bool _busy = false;
 
-  Future remove_report() async {
-    // add the data to fire base
-    setState(() {
-      widget.report = "user";
-      _firestore.collection("users").doc(widget.id).update({
-        "report": "",
-      });
-      widget.report = "";
-    });
+  /// Clears the report through `admin_clear_report` and shows the result.
+  Future<void> remove_report() async {
+    final id = widget.id;
+    if (id == null || _busy) return;
+    final failMsg = S.of(context).genericError;
+    setState(() => _busy = true);
+    try {
+      await UserRepository.instance.adminClearReport(id);
+      if (!mounted) return;
+      setState(() => widget.report = '');
+    } catch (e, st) {
+      AppLog.error('adminClearReport', e, st);
+      if (mounted) AppFeedback.error(context, failMsg);
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
   }
 
   @override
@@ -109,7 +115,7 @@ class _Report_screenState extends State<Report_screen> {
               ),
               const SizedBox(height: MNSpace.lg),
               FilledButton(
-                onPressed: remove_report,
+                onPressed: _busy ? null : remove_report,
                 child: Text(l10n.clearReport),
               ),
             ],

@@ -4,16 +4,15 @@ import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/allproviders.dart';
 import 'package:Movie_Night/src/components/app_text_field.dart';
 import 'package:Movie_Night/src/components/feedback.dart';
+import 'package:Movie_Night/src/data/auth_repository.dart';
 import 'package:Movie_Night/src/design/tokens.dart';
-import 'package:Movie_Night/src/pages/Login-Logout/auth_errors.dart';
 import 'package:Movie_Night/src/pages/Userpage/profilepic.dart';
 import 'package:Movie_Night/src/utils/app_logger.dart';
 import 'package:ficonsax/ficonsax.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-/// Edit Profile: picture, display name and first/last name. Saves with an
+/// Edit Profile: picture and first/last name (reviews show them). Saves with an
 /// awaited result and closes only on success.
 class User_update_info_page extends StatefulWidget {
   const User_update_info_page({super.key});
@@ -26,7 +25,6 @@ class _User_update_info_pageState extends State<User_update_info_page> {
   final _formKey = GlobalKey<FormState>();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
-  final _displayNameController = TextEditingController();
   bool _saving = false;
 
   @override
@@ -37,13 +35,12 @@ class _User_update_info_pageState extends State<User_update_info_page> {
 
   /// Fills the fields with the current values so Save never blanks them.
   Future<void> _prefill() async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) return;
-    _displayNameController.text = user.displayName ?? '';
+    final uid = AuthRepository.instance.currentUserId;
+    if (uid == null) return;
     try {
       final data = await context
           .read<UserData>()
-          .getUserDataStream(user.uid)
+          .getUserDataStream(uid)
           .first
           .timeout(const Duration(seconds: 10));
       if (!mounted || data == null) return;
@@ -62,15 +59,13 @@ class _User_update_info_pageState extends State<User_update_info_page> {
   void dispose() {
     _firstNameController.dispose();
     _lastNameController.dispose();
-    _displayNameController.dispose();
     super.dispose();
   }
 
   Future<void> _save() async {
     if (_saving || !(_formKey.currentState?.validate() ?? false)) return;
-    final user = FirebaseAuth.instance.currentUser;
     final s = S.of(context);
-    if (user == null) {
+    if (!AuthRepository.instance.isSignedIn) {
       AppFeedback.error(context, s.genericError);
       return;
     }
@@ -78,14 +73,9 @@ class _User_update_info_pageState extends State<User_update_info_page> {
     String? error;
     try {
       await context.read<UserData>().updateuser(
-            user,
-            _displayNameController.text.trim(),
             _firstNameController.text.trim(),
             _lastNameController.text.trim(),
           );
-    } on FirebaseAuthException catch (e, st) {
-      AppLog.error('updateProfile', e, st);
-      error = s.genericError; // Firestore write; moved to Supabase next.
     } catch (e, st) {
       AppLog.error('updateProfile', e, st);
       error = s.genericError;
@@ -124,14 +114,6 @@ class _User_update_info_pageState extends State<User_update_info_page> {
                     children: [
                       const Center(child: ProfilePic()),
                       const SizedBox(height: MNSpace.xl),
-                      AppTextField(
-                        controller: _displayNameController,
-                        label: s.Usernamelabel,
-                        icon: IconsaxOutline.user,
-                        autofillHints: const [AutofillHints.nickname],
-                        action: TextInputAction.next,
-                      ),
-                      gap,
                       AppTextField(
                         controller: _firstNameController,
                         label: s.firstnamelabel,

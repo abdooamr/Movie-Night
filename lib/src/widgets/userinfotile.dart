@@ -1,11 +1,11 @@
 import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/allproviders.dart';
 import 'package:Movie_Night/src/components/cached_image.dart';
+import 'package:Movie_Night/src/data/auth_repository.dart';
 import 'package:Movie_Night/src/design/tokens.dart';
 import 'package:Movie_Night/src/models/user_model.dart';
 import 'package:Movie_Night/src/widgets/shimmerWidgets/userInfoTileShimmerWidget.dart';
 import 'package:ficonsax/ficonsax.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +23,7 @@ class _userinfotileState extends State<userinfotile> {
   @override
   void initState() {
     super.initState();
-    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final uid = AuthRepository.instance.currentUserId;
     if (uid != null) {
       _stream = context.read<UserData>().getUserDataStream(uid);
     }

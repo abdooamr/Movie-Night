@@ -3,10 +3,10 @@ import 'package:Movie_Night/src/components/app_text_field.dart';
 import 'package:Movie_Night/src/components/feedback.dart';
 import 'package:Movie_Night/src/design/tokens.dart';
 import 'package:Movie_Night/src/utils/app_logger.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ficonsax/ficonsax.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:Movie_Night/src/data/auth_repository.dart';
+import 'package:Movie_Night/src/data/user_repository.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 
 /// Report a Bug: summary and description are both required; Send stays
@@ -45,11 +45,10 @@ class _SendReportState extends State<SendReport> {
     super.dispose();
   }
 
-  /// Stores the report on the user's document (read by the admin panel).
-  Future<void> _saveReport(String uid, String body) =>
-      FirebaseFirestore.instance.collection('users').doc(uid).update({
-        'report': body,
-      });
+  /// Stores the report on the user's profile (read by the admin panel)
+  /// through the `submit_report` server function.
+  Future<void> _saveReport(String body) =>
+      UserRepository.instance.submitReport(body);
 
   Future<void> _sendEmail(String subject, String body) =>
       FlutterEmailSender.send(Email(
@@ -62,8 +61,7 @@ class _SendReportState extends State<SendReport> {
   Future<void> _send() async {
     if (_sending || !(_formKey.currentState?.validate() ?? false)) return;
     final s = S.of(context);
-    final uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid == null) {
+    if (!AuthRepository.instance.isSignedIn) {
       AppFeedback.error(context, s.reportFailed);
       return;
     }
@@ -73,7 +71,7 @@ class _SendReportState extends State<SendReport> {
     setState(() => _sending = true);
     var ok = true;
     try {
-      await _saveReport(uid, body);
+      await _saveReport(body);
     } catch (e, st) {
       AppLog.error('saveReport', e, st);
       ok = false;

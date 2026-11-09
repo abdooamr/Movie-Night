@@ -1,23 +1,21 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/components/cached_image.dart';
 import 'package:Movie_Night/src/components/feedback.dart';
+import 'package:Movie_Night/src/data/auth_repository.dart';
 import 'package:Movie_Night/src/data/user_repository.dart';
 import 'package:Movie_Night/src/design/tokens.dart';
 import 'package:Movie_Night/src/models/user_model.dart';
 import 'package:Movie_Night/src/utils/app_logger.dart';
 import 'package:ficonsax/ficonsax.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../Provider/allproviders.dart';
 
-/// Editable profile picture with a determinate upload ring.
+/// Editable profile picture with an upload ring.
 class ProfilePic extends StatefulWidget {
   const ProfilePic({super.key});
 
@@ -31,54 +29,40 @@ class ProfilePic extends StatefulWidget {
 class _ProfilePicState extends State<ProfilePic> {
   Stream<Users?>? _stream;
 
-  /// Upload progress 0..1 while uploading, otherwise null.
-  double? _progress;
+  /// True while a new picture is uploading.
+  bool _uploading = false;
 
   @override
   void initState() {
     super.initState();
-    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final uid = AuthRepository.instance.currentUserId;
     if (uid != null) {
       _stream = context.read<UserData>().getUserDataStream(uid);
     }
   }
 
-  /// Same steps as `UserData.updateimage`, but keeps the [UploadTask] so the
-  /// ring can show real progress.
+  /// Picks a picture, uploads it to the `avatars` bucket and points the
+  /// profile at it. Supabase uploads report no progress, so the ring spins.
   Future<void> _changePicture() async {
-    final user = FirebaseAuth.instance.currentUser;
     final failMsg = S.of(context).profilePicUploadFailed;
-    if (user == null || _progress != null) return;
-
-    StreamSubscription<TaskSnapshot>? sub;
+    if (!AuthRepository.instance.isSignedIn || _uploading) return;
     try {
-      final file =
-          await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (file == null || !mounted) return;
-      final ref = FirebaseStorage.instance
-          .ref()
-          .child('images')
-          .child(DateTime.now().millisecondsSinceEpoch.toString());
-      final task = ref.putFile(File(file.path));
-      setState(() => _progress = 0);
-      sub = task.snapshotEvents.listen(
-        (snap) {
-          if (!mounted || snap.totalBytes <= 0) return;
-          setState(() => _progress = snap.bytesTransferred / snap.totalBytes);
-        },
-        // Failures surface through `await task` below.
-        onError: (_) {},
+      final file = await ImagePicker().pickImage(
+        source: ImageSource.gallery,
+        // A 512 px picture is plenty for a 120 pt avatar and stays far
+        // under the bucket's 2 MB limit.
+        maxWidth: 512,
+        maxHeight: 512,
+        imageQuality: 85,
       );
-      await task;
-      final url = await ref.getDownloadURL();
-      await UserRepository.instance.updateProfilePic(user.uid, url);
-      await user.updatePhotoURL(url);
+      if (file == null || !mounted) return;
+      setState(() => _uploading = true);
+      await UserRepository.instance.uploadAvatar(File(file.path));
     } catch (e, st) {
       AppLog.error('updateProfilePic', e, st);
       if (mounted) AppFeedback.error(context, failMsg);
     } finally {
-      await sub?.cancel();
-      if (mounted) setState(() => _progress = null);
+      if (mounted) setState(() => _uploading = false);
     }
   }
 
@@ -103,7 +87,7 @@ class _ProfilePicState extends State<ProfilePic> {
                 height: ProfilePic.size,
                 isPerson: true,
               );
-        final uploading = _progress != null;
+        final uploading = _uploading;
 
         return SizedBox.square(
           dimension: ProfilePic.size,
@@ -114,7 +98,6 @@ class _ProfilePicState extends State<ProfilePic> {
               if (uploading)
                 Positioned.fill(
                   child: CircularProgressIndicator(
-                    value: _progress,
                     strokeWidth: MNSpace.xs,
                     backgroundColor: cs.surfaceContainerHigh,
                   ),

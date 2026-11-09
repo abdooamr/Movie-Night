@@ -3,7 +3,8 @@ import 'package:Movie_Night/src/components/cached_image.dart';
 import 'package:Movie_Night/src/components/feedback.dart';
 import 'package:Movie_Night/src/components/state_views.dart';
 import 'package:Movie_Night/src/design/tokens.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:Movie_Night/src/data/user_repository.dart';
+import 'package:Movie_Night/src/utils/app_logger.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -18,41 +19,41 @@ class adminpanel extends StatefulWidget {
 }
 
 class _adminpanelState extends State<adminpanel> {
-  late Stream<List<QueryDocumentSnapshot<Map<String, dynamic>>>> _users =
-      _readUsers();
+  /// Every user with their email (`admin_list_users`). Not live: reloaded
+  /// on retry, after returning from a user and after a delete.
+  late Future<List<Users>> _users = _readUsers();
 
-  Stream<List<QueryDocumentSnapshot<Map<String, dynamic>>>> _readUsers() =>
-      FirebaseFirestore.instance
-          .collection('users')
-          .orderBy("email")
-          .snapshots()
-          .map((snapshot) => snapshot.docs);
+  Future<List<Users>> _readUsers() => UserRepository.instance.adminListUsers();
+
+  void _reload() => setState(() => _users = _readUsers());
 
   @override
   Widget build(BuildContext context) {
     final l10n = S.of(context);
     return Scaffold(
       appBar: AppBar(title: Text(l10n.adminPanel)),
-      body: StreamBuilder<List<QueryDocumentSnapshot<Map<String, dynamic>>>>(
-        stream: _users,
+      body: FutureBuilder<List<Users>>(
+        future: _users,
         builder: (_, snapshot) {
           if (snapshot.hasError) {
             return ErrorState(
               message: l10n.somethingwentwrong,
-              onRetry: () => setState(() => _users = _readUsers()),
+              onRetry: _reload,
             );
           }
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
           }
-          final docs = snapshot.data!;
-          return ListView.builder(
-            itemCount: docs.length,
-            itemBuilder: (context, i) {
-              // Tolerates legacy `firstname`/`lastname` docs (task 2.8).
-              final user = Users.fromFirestore(docs[i].data());
-              return buildUser(user, context);
+          final users = snapshot.data!;
+          return RefreshIndicator.adaptive(
+            onRefresh: () async {
+              _reload();
+              await _users.then((_) {}, onError: (_) {});
             },
+            child: ListView.builder(
+              itemCount: users.length,
+              itemBuilder: (context, i) => buildUser(users[i], context),
+            ),
           );
         },
       ),
@@ -68,7 +69,7 @@ class _adminpanelState extends State<adminpanel> {
       message: '$name (${user.email})',
       confirmLabel: l10n.delete,
     );
-    if (ok) await _deleteUser(user.id);
+    if (ok && context.mounted) await _deleteUser(context, user.id);
   }
 
   Widget buildUser(Users user, BuildContext context) {
@@ -87,8 +88,8 @@ class _adminpanelState extends State<adminpanel> {
       ]),
       child: ListTile(
         minVerticalPadding: MNSpace.sm,
-        onTap: () {
-          Navigator.push(
+        onTap: () async {
+          await Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => Detailscategory(
@@ -100,6 +101,8 @@ class _adminpanelState extends State<adminpanel> {
                         profilepic: user.ProfilePic,
                         report: user.report,
                       )));
+          // Role or report may have changed there.
+          if (mounted) _reload();
         },
         leading: ClipOval(
           child: user.ProfilePic == ""
@@ -134,10 +137,16 @@ class _adminpanelState extends State<adminpanel> {
     );
   }
 
-  Future _deleteUser(String? id) async {
-    return await FirebaseFirestore.instance
-        .collection('users')
-        .doc(id)
-        .delete();
+  /// Deletes the account through `admin_delete_user`, then reloads.
+  Future<void> _deleteUser(BuildContext context, String? id) async {
+    if (id == null) return;
+    final failMsg = S.of(context).genericError;
+    try {
+      await UserRepository.instance.adminDeleteUser(id);
+    } catch (e, st) {
+      AppLog.error('adminDeleteUser', e, st);
+      if (context.mounted) AppFeedback.error(context, failMsg);
+    }
+    if (mounted) _reload();
   }
 }
