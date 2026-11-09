@@ -83,8 +83,12 @@ class _HomePageState extends State<HomePage> {
 
   void _onFocus(Result item) {
     final path = item.posterPath;
-    final next =
-        path == null ? null : CachedNetworkImageProvider('$imageUrl$path');
+    final next = path == null
+        ? null
+        : CachedNetworkImageProvider(
+            // The glow is baked at 64 px, so the smallest size will do.
+            tmdbImage(path, SpillGlow.bakeWidth.toDouble()),
+          );
     if (next == _glow.value) return;
     _glow.value = next;
   }

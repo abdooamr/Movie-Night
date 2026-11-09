@@ -70,15 +70,16 @@ void main() {
     ));
 
     final trending = heroTagFor(source: 'trending', isTv: false, id: 1);
+    final sourceHero = tester.widget<Hero>(find.byType(Hero).first);
     final sourceWidth = tester.getSize(find.byType(Hero).first).width;
     await tester.tap(find.byType(PosterCard).first);
     await tester.pump(); // push
     await tester.pump(); // flight starts
     await tester.pump(MNDuration.short);
-    // Mid-flight the shuttle (the destination child) sits between the two
-    // sizes; without a HeroController on the tab navigator it would already
-    // be its full 300 pt width.
-    final midWidth = tester.getSize(find.byKey(_destKey)).width;
+    // Mid-flight the shuttle (the rail's own poster, see railHeroShuttle)
+    // sits between the two sizes; without a HeroController on the tab
+    // navigator there would be no flight and it would not be in the tree.
+    final midWidth = tester.getSize(find.byWidget(sourceHero.child)).width;
     expect(midWidth, greaterThan(sourceWidth + 1));
     expect(midWidth, lessThan(299));
     await tester.pumpAndSettle();

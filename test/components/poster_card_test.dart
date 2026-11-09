@@ -126,4 +126,28 @@ void main() {
     };
     expect(tags.length, 4);
   });
+
+  testWidgets('hero shuttle reuses the rail image', (tester) async {
+    await tester.pumpWidget(_app(SizedBox(
+      width: 170,
+      child: PosterCard(
+        posterPath: null,
+        title: 'Dune',
+        heroTag: 'poster-test',
+        onTap: () {},
+      ),
+    )));
+    final heroElement = tester.element(find.byType(Hero));
+    final other = tester.element(find.byType(Scaffold));
+    final hero = tester.widget<Hero>(find.byType(Hero));
+    expect(hero.flightShuttleBuilder, isNotNull);
+
+    // Push: the rail is the "from" side. Pop: it is the "to" side.
+    final push = hero.flightShuttleBuilder!(heroElement,
+        kAlwaysCompleteAnimation, HeroFlightDirection.push, heroElement, other);
+    final pop = hero.flightShuttleBuilder!(heroElement,
+        kAlwaysCompleteAnimation, HeroFlightDirection.pop, other, heroElement);
+    expect(push, same(hero.child));
+    expect(pop, same(hero.child));
+  });
 }

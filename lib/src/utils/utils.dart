@@ -3,6 +3,24 @@ import 'package:intl/intl.dart';
 
 const imageUrl = 'https://image.tmdb.org/t/p/w500';
 
+const _tmdbImageBase = 'https://image.tmdb.org/t/p';
+
+/// TMDB poster widths, smallest first.
+const List<int> _tmdbPosterWidths = [92, 154, 185, 342, 500, 780];
+
+/// URL of [path] at the smallest TMDB size that still covers 90% of
+/// [physicalWidth] (device pixels). Falls back to the old `w500` when the
+/// width is unknown, and caps at `w780`.
+String tmdbImage(String path, double physicalWidth) {
+  if (!physicalWidth.isFinite || physicalWidth <= 0) return '$imageUrl$path';
+  final need = physicalWidth * 0.9;
+  final width = _tmdbPosterWidths.firstWhere(
+    (w) => w >= need,
+    orElse: () => _tmdbPosterWidths.last,
+  );
+  return '$_tmdbImageBase/w$width$path';
+}
+
 String? _cachedLocale;
 Map<int, String>? _cachedGenres;
 

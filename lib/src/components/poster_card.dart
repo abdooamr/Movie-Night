@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../design/tokens.dart';
 import '../utils/poster_size.dart';
-import '../utils/utils.dart' show imageUrl;
+import '../utils/utils.dart' show tmdbImage;
 import 'cached_image.dart';
 import 'pressable.dart';
 
@@ -15,6 +15,23 @@ String heroTagFor({
   required int id,
 }) =>
     'poster-$source-${isTv ? 'tv' : 'movie'}-$id';
+
+/// Hero flight child for rail and carousel posters: always the rail's own,
+/// already decoded image (the "from" side when pushing, the "to" side when
+/// popping), so the flight never shows a placeholder while the other side's
+/// differently sized image loads.
+Widget railHeroShuttle(
+  BuildContext flightContext,
+  Animation<double> animation,
+  HeroFlightDirection flightDirection,
+  BuildContext fromHeroContext,
+  BuildContext toHeroContext,
+) {
+  final rail = flightDirection == HeroFlightDirection.push
+      ? fromHeroContext
+      : toHeroContext;
+  return (rail.widget as Hero).child;
+}
 
 /// The one poster tile: 2:3 image (radius md, light-theme shadow), a
 /// two-line titleMedium title and an optional one-line subtitle. Exposed to
@@ -42,41 +59,56 @@ class PosterCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
-    final label = subtitle == null || subtitle!.isEmpty
-        ? title
-        : '$title, $subtitle';
+    final label =
+        subtitle == null || subtitle!.isEmpty ? title : '$title, $subtitle';
 
-    Widget poster = AspectRatio(
+    // The Hero sits inside the LayoutBuilder, so its child is a fixed-size
+    // image: a flight changes the size around it, never its URL.
+    final poster = AspectRatio(
       aspectRatio: PosterSize.posterAspect,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          borderRadius: MNRadius.mdAll,
-          boxShadow: MNColors.of(context).posterShadow,
-        ),
-        child: LayoutBuilder(
-          builder: (context, constraints) => posterPath == null
-              ? ClipRRect(
-                  borderRadius: MNRadius.mdAll,
-                  child: ColoredBox(
-                    color: cs.surfaceContainer,
-                    child: Center(
-                      child: Icon(
-                        IconsaxOutline.video,
-                        color: cs.onSurfaceVariant,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final path = posterPath;
+          Widget image = DecoratedBox(
+            decoration: BoxDecoration(
+              borderRadius: MNRadius.mdAll,
+              boxShadow: MNColors.of(context).posterShadow,
+            ),
+            child: path == null
+                ? ClipRRect(
+                    borderRadius: MNRadius.mdAll,
+                    child: ColoredBox(
+                      color: cs.surfaceContainer,
+                      child: Center(
+                        child: Icon(
+                          IconsaxOutline.video,
+                          color: cs.onSurfaceVariant,
+                        ),
                       ),
                     ),
+                  )
+                : CachedImageCustom(
+                    tmdbImage(
+                      path,
+                      constraints.maxWidth *
+                          MediaQuery.devicePixelRatioOf(context),
+                    ),
+                    width: constraints.maxWidth,
+                    height: constraints.maxHeight,
+                    borderRadius: MNRadius.mdAll,
                   ),
-                )
-              : CachedImageCustom(
-                  '$imageUrl$posterPath',
-                  width: constraints.maxWidth,
-                  height: constraints.maxHeight,
-                  borderRadius: MNRadius.mdAll,
-                ),
-        ),
+          );
+          if (heroTag != null) {
+            image = Hero(
+              tag: heroTag!,
+              flightShuttleBuilder: railHeroShuttle,
+              child: image,
+            );
+          }
+          return image;
+        },
       ),
     );
-    if (heroTag != null) poster = Hero(tag: heroTag!, child: poster);
 
     Widget card = Semantics(
       container: true,

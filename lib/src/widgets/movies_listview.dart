@@ -13,7 +13,7 @@ import '../design/tokens.dart';
 import '../models/movie_model.dart';
 import '../navigation/routes.dart';
 import '../utils/poster_size.dart';
-import '../utils/utils.dart' show getGenres, imageUrl;
+import '../utils/utils.dart' show getGenres, tmdbImage;
 import 'shimmerWidgets/movieListViewShimmerWidget.dart';
 
 /// Whether [item] opens as a TV title. Trending feeds carry a media type;
@@ -292,7 +292,10 @@ class _PosterRow extends StatelessWidget {
             ),
           )
         : CachedImageCustom(
-            '$imageUrl$posterPath',
+            tmdbImage(
+              posterPath!,
+              thumbWidth * MediaQuery.devicePixelRatioOf(context),
+            ),
             width: thumbWidth,
             height: thumbHeight,
             borderRadius: MNRadius.smAll,
@@ -316,7 +319,11 @@ class _PosterRow extends StatelessWidget {
               SizedBox(
                 width: thumbWidth,
                 height: thumbHeight,
-                child: Hero(tag: heroTag, child: thumb),
+                child: Hero(
+                  tag: heroTag,
+                  flightShuttleBuilder: railHeroShuttle,
+                  child: thumb,
+                ),
               ),
               const SizedBox(width: MNSpace.md),
               Expanded(

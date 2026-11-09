@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 
 import '../../generated/l10n.dart';
 import '../components/cached_image.dart';
-import '../components/poster_card.dart' show heroTagFor;
+import '../components/poster_card.dart' show heroTagFor, railHeroShuttle;
 import '../components/pressable.dart';
 import '../components/section_header.dart';
 import '../components/state_views.dart';
@@ -14,7 +14,7 @@ import '../design/tokens.dart';
 import '../models/movie_model.dart';
 import '../navigation/routes.dart';
 import '../utils/poster_size.dart';
-import '../utils/utils.dart' show getGenres, imageUrl;
+import '../utils/utils.dart' show getGenres, tmdbImage;
 import 'carousel_slider.dart';
 import 'movies_listview.dart' show isTvResult;
 import 'shimmerWidgets/upcomingShimmerWidget.dart';
@@ -255,8 +255,11 @@ class _HeroPoster extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: [
+              // The Hero wraps a fixed-size image, so a flight never changes
+              // its URL.
               Hero(
                 tag: heroTag,
+                flightShuttleBuilder: railHeroShuttle,
                 child: LayoutBuilder(
                   builder: (context, constraints) => item.posterPath == null
                       ? ColoredBox(
@@ -269,9 +272,14 @@ class _HeroPoster extends StatelessWidget {
                           ),
                         )
                       : CachedImageCustom(
-                          '$imageUrl${item.posterPath}',
+                          tmdbImage(
+                            item.posterPath!,
+                            UpcomingMovies.posterWidthOf(context) *
+                                MediaQuery.devicePixelRatioOf(context),
+                          ),
                           width: constraints.maxWidth,
                           height: constraints.maxHeight,
+                          decodeWidth: UpcomingMovies.posterWidthOf(context),
                           borderRadius: MNRadius.mdAll,
                         ),
                 ),
