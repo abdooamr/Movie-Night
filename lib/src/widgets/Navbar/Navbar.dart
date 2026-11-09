@@ -18,7 +18,9 @@ typedef CustomBottomNavigationBar = AppShell;
 /// - Re-tapping the current tab pops it to its root; at the root it scrolls
 ///   the tab's primary scroll view to the top.
 /// - System back pops the current tab's navigator first.
-/// - Hidden tabs run with tickers off.
+/// - A tab is built the first time it is opened, then kept (state and
+///   scroll position survive switching away). Hidden tabs run with tickers
+///   off.
 /// - The selected tab survives sign-in / sign-out.
 class AppShell extends StatefulWidget {
   const AppShell({
@@ -54,6 +56,10 @@ class AppShellState extends State<AppShell> {
   static const int _profileTab = 3;
 
   int _index = 0;
+
+  /// Tabs opened at least once; the others are not built yet, so launch
+  /// only builds the first tab (and no unused screen loads its data).
+  final Set<int> _opened = {0};
 
   final List<GlobalKey<NavigatorState>> _navigatorKeys = List.generate(
     _tabCount,
@@ -133,7 +139,10 @@ class AppShellState extends State<AppShell> {
   void selectTab(int index) {
     assert(index >= 0 && index < _tabCount);
     if (index != _index) {
-      setState(() => _index = index);
+      setState(() {
+        _index = index;
+        _opened.add(index);
+      });
       return;
     }
     final navigator = _navigatorKeys[index].currentState;
@@ -195,7 +204,10 @@ class AppShellState extends State<AppShell> {
       extendBody: ChromeBar.floats(context),
       body: IndexedStack(
         index: _index,
-        children: [for (var i = 0; i < _tabCount; i++) _tab(i)],
+        children: [
+          for (var i = 0; i < _tabCount; i++)
+            if (_opened.contains(i)) _tab(i) else const SizedBox.shrink(),
+        ],
       ),
       bottomNavigationBar: ChromeBar(
         selectedIndex: _index,

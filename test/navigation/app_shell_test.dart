@@ -228,4 +228,57 @@ void main() {
     // Reset before the framework's end-of-test invariant check.
     debugDefaultTargetPlatformOverride = null;
   });
+
+  testWidgets('tabs are built only when first opened, then kept',
+      (tester) async {
+    final log = <String, bool>{};
+    await tester.pumpWidget(shellApp(
+      isSignedIn: true,
+      pagesBuilder: (_) => [
+        _TickerProbe('A', log),
+        _TickerProbe('B', log),
+        _TickerProbe('C', log),
+        _TickerProbe('D', log),
+      ],
+    ));
+    await tester.pumpAndSettle();
+    expect(log.keys, ['A']);
+
+    await tester.tap(find.text('Search'));
+    await tester.pumpAndSettle();
+    expect(log.keys.toSet(), {'A', 'B'});
+
+    await tester.tap(find.text('Home'));
+    await tester.pumpAndSettle();
+    // Search stays built (keeps its state); Library and Profile still unbuilt.
+    expect(find.text('B', skipOffstage: false), findsOneWidget);
+    expect(log.containsKey('C'), isFalse);
+    expect(log.containsKey('D'), isFalse);
+  });
+
+  testWidgets('signed out, the welcome screen is not built until Profile',
+      (tester) async {
+    await tester.pumpWidget(shellApp(isSignedIn: false, pagesBuilder: _pages));
+    await tester.pump();
+    expect(find.byType(LoginWelcomeScreen, skipOffstage: false), findsNothing);
+
+    await tester.tap(find.text('Profile'));
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 1));
+    expect(find.byType(LoginWelcomeScreen), findsOneWidget);
+  });
+
+  testWidgets('a pushed page survives switching tabs away and back',
+      (tester) async {
+    await tester.pumpWidget(shellApp(isSignedIn: true, pagesBuilder: _pages));
+    await tester.tap(find.text('Push'));
+    await tester.pumpAndSettle();
+    expect(find.text('Pushed'), findsOneWidget);
+
+    await tester.tap(find.text('Search'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Home'));
+    await tester.pumpAndSettle();
+    expect(find.text('Pushed'), findsOneWidget);
+  });
 }
