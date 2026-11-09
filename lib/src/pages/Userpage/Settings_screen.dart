@@ -77,8 +77,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
-  /// B1: confirm, block, delete the auth user first, then the Firestore
-  /// document. A stale session deletes nothing.
+  /// Confirm, block, then one server call (`delete_my_account`) deletes the
+  /// login, profile, reviews and watchlist together; then sign out.
   Future<void> _deleteAccount() async {
     final s = S.of(context);
     final confirmed = await AppFeedback.confirmDestructive(

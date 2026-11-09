@@ -1,6 +1,6 @@
 # Firebase → Supabase migration plan (app code only)
 
-Status: **draft, awaiting approval.** Nothing in `lib/` has been changed.
+Status: **done (2026-11-09).** Manual steps: `docs/supabase-migration-checklist.md`.
 
 Decisions (2026-11-09): 1 watchlist = new table (SQL A) · 2 report/role = RPCs (SQL B) · 3 avatars = Supabase bucket (SQL C) · 4 deletion = RPCs (SQL D). Items 5–9 use the stated defaults unless changed.
 

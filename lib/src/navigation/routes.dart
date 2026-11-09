@@ -6,7 +6,7 @@ import '../pages/UI/detail_page.dart';
 import '../pages/UI/showallmovies.dart';
 
 /// Test hook: when set, [openTitle] pushes this instead of [DetailPage]
-/// (which needs Firebase). Reset to null in `tearDown`.
+/// (which needs Supabase). Reset to null in `tearDown`.
 @visibleForTesting
 Widget Function(int id, bool isTv, String? heroTag)? debugDetailPageBuilder;
 

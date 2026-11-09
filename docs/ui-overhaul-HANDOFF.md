@@ -147,6 +147,15 @@ Each task owns disjoint files. Status when paused:
 | R17 | New `MNColors.onScrim` token for text over imagery | Theme text is dark in light mode, unreadable on the fixed dark scrim | One extra token |
 | R18 | The offline banner stays an overlay but pushes app content down while offline | The overlay hid the back button and titles | Content shifts once when going offline |
 
+## Supabase migration (2026-11-09)
+
+Auth, profiles, reviews, watchlist, avatars and admin moved from Firebase (Auth, Firestore, Storage) to Supabase. Firebase stays for Cloud Messaging and Analytics only.
+
+- Plan and SQL: `docs/superpowers/plans/2026-11-09-supabase-migration.md`. Manual steps and on-device test list: `docs/supabase-migration-checklist.md`.
+- Data access: `lib/src/data/auth_repository.dart` (Supabase Auth + native Google), `user_repository.dart` (profiles, avatars, watchlist, RPCs), `lib/src/Provider/reviewsprovider.dart` (reviews).
+- Writes RLS forbids go through server functions: `submit_report`, `admin_clear_report`, `admin_make_admin`, `admin_delete_user`, `admin_list_users`, `delete_my_account`.
+- Run with `--dart-define-from-file=env.json` (`SUPABASE_ANON_KEY`, `GOOGLE_WEB_CLIENT_ID`, `TMDB_API_KEY`).
+
 ## Home performance (2026-11-09)
 
 Plan: `docs/superpowers/plans/2026-11-09-home-performance.md`. Results: `docs/perf/home-scroll.md`.

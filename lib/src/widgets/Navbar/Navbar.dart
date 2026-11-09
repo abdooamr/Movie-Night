@@ -29,7 +29,7 @@ class AppShell extends StatefulWidget {
 
   final bool isSignedIn;
 
-  /// Test hook replacing the four real (Firebase-backed) tab roots. Index 3 is
+  /// Test hook replacing the four real (Supabase-backed) tab roots. Index 3 is
   /// the signed-in Profile page; signed out, the shell shows the
   /// [LoginWelcomeScreen] there regardless.
   @visibleForTesting
