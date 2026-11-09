@@ -23,6 +23,22 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
+            <!-- Supabase auth links: password reset and sign-up confirmation
+                 (eg.edu.miuegypt.csc422.movienight://reset-password, ://login-callback).
+                 supabase_flutter reads them itself. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="eg.edu.miuegypt.csc422.movienight" />
+            </intent-filter>
+
+            <!-- Auth links are handled by supabase_flutter (app_links), not
+                 by Flutter's router. -->
+            <meta-data
+                android:name="flutter_deeplinking_enabled"
+                android:value="false" />
         </activity>
 
         <meta-data

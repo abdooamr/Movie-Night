@@ -11,13 +11,24 @@ import 'package:Movie_Night/src/Auth/auth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'generated/l10n.dart';
 import 'src/design/app_theme.dart';
+import 'src/data/supabase_config.dart';
 import 'src/design/performance.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 const bool _forceLowPower = bool.fromEnvironment('FORCE_LOW_POWER');
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Firebase stays for Cloud Messaging only; auth and data are Supabase.
   await Firebase.initializeApp();
+  assert(
+    SupabaseConfig.anonKey.isNotEmpty,
+    'SUPABASE_ANON_KEY is missing: run with --dart-define-from-file=env.json',
+  );
+  await Supabase.initialize(
+    url: SupabaseConfig.url,
+    publishableKey: SupabaseConfig.anonKey,
+  );
   await Hive.initFlutter();
   Hive.registerAdapter<LikedModel>(LikedModelAdapter());
   await Hive.openBox<LikedModel>('liked');
