@@ -38,7 +38,7 @@ class _WatchlistViewState extends State<WatchlistView> {
   late Stream<List<int>> _movieIds = _users.watchlistStream(isTvShow: false);
   late Stream<List<int>> _tvIds = _users.watchlistStream(isTvShow: true);
 
-  // One details Future per (title, lang): a Firestore snapshot or a scroll
+  // One details Future per (title, lang): a watchlist update or a scroll
   // rebuild reuses it instead of refetching every tile (H6).
   final Map<String, Future<MovieModel>> _details = {};
 
@@ -50,8 +50,12 @@ class _WatchlistViewState extends State<WatchlistView> {
     final key = _keyFor(id, isTv, lang);
     return _details.putIfAbsent(key, () {
       final f = _tmdb.details(id, isTv, lang);
-      // Forget failures so a retry or the next snapshot refetches that row.
-      f.then<void>((_) {}, onError: (Object _) => _details.remove(key));
+      // Forget failures so a retry or the next update refetches that row.
+      // (A block body: an arrow would return the failed future and raise
+      // an unhandled error per failed row.)
+      f.then<void>((_) {}, onError: (Object _) {
+        _details.remove(key);
+      });
       return f;
     });
   }

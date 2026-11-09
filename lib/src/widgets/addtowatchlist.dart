@@ -26,6 +26,10 @@ class _WatchlistwidgetState extends State<Watchlistwidget> {
   bool isInWatchlist = false;
   bool _busy = false;
 
+  /// Set once the user taps: a slower initial read must not overwrite the
+  /// state they just chose.
+  bool _toggled = false;
+
   @override
   void initState() {
     super.initState();
@@ -36,7 +40,7 @@ class _WatchlistwidgetState extends State<Watchlistwidget> {
     try {
       final inList =
           await _users.isInWatchlist(widget.movieid, isTvShow: widget.istvshow);
-      if (mounted) setState(() => isInWatchlist = inList);
+      if (mounted && !_toggled) setState(() => isInWatchlist = inList);
     } catch (_) {
       // Leave the default (not in watchlist) if the read fails.
     }
@@ -45,6 +49,7 @@ class _WatchlistwidgetState extends State<Watchlistwidget> {
   Future<void> _toggleWatchlist() async {
     if (_busy) return;
     _busy = true;
+    _toggled = true;
     final adding = !isInWatchlist;
     // Optimistic: flip now, roll back if the write fails.
     HapticFeedback.lightImpact();
