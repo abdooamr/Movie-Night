@@ -69,14 +69,12 @@ class UpcomingMovies extends StatefulWidget {
 class _UpcomingMoviesState extends State<UpcomingMovies> {
   final ValueNotifier<int> _index = ValueNotifier(0);
 
-  /// The future whose first item has been reported to [onFocusChanged].
+  /// The future whose centred item has been reported to [onFocusChanged].
   Future<Model>? _reported;
 
-  @override
-  void didUpdateWidget(UpcomingMovies oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.future != widget.future) _index.value = 0;
-  }
+  /// The last successful result, kept on screen while a refresh is pending
+  /// or after it fails.
+  Model? _lastGood;
 
   @override
   void dispose() {
@@ -109,10 +107,12 @@ class _UpcomingMoviesState extends State<UpcomingMovies> {
     return FutureBuilder<Model>(
       future: widget.future,
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const _SectionPadding(child: upcomingShimmerWidget());
-        }
-        if (snapshot.hasError) {
+        if (snapshot.hasData) _lastGood = snapshot.data;
+        final data = snapshot.data ?? _lastGood;
+        if (data == null) {
+          if (!snapshot.hasError) {
+            return const _SectionPadding(child: upcomingShimmerWidget());
+          }
           final retry = widget.onRetry;
           if (retry == null) return const SizedBox.shrink();
           return _SectionPadding(
@@ -129,7 +129,7 @@ class _UpcomingMoviesState extends State<UpcomingMovies> {
             ),
           );
         }
-        final results = snapshot.data?.results ?? const <Result>[];
+        final results = data.results;
         if (results.isEmpty) return const SizedBox.shrink();
         final items = results.take(UpcomingMovies.maxCount).toList();
         _reportInitial(items);
@@ -187,9 +187,18 @@ class _UpcomingMoviesState extends State<UpcomingMovies> {
               const SizedBox(height: MNSpace.md),
               ValueListenableBuilder<int>(
                 valueListenable: _index,
-                builder: (context, index, _) =>
-                    _Dots(count: items.length, index: index),
+                builder: (context, index, _) => _Dots(
+                  count: items.length,
+                  index: index.clamp(0, items.length - 1),
+                ),
               ),
+              // A failed refresh keeps the carousel and offers a retry.
+              if (snapshot.hasError && widget.onRetry != null)
+                ErrorState(
+                  compact: true,
+                  message: S.of(context).somethingwentwrong,
+                  onRetry: widget.onRetry!,
+                ),
             ],
           ),
         );

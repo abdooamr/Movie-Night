@@ -19,13 +19,12 @@ import 'shimmerWidgets/movieListViewShimmerWidget.dart';
 /// Whether [item] opens as a TV title. Trending feeds carry a media type;
 /// the others fall back to the rail's own kind.
 bool isTvResult(Result item, {required bool railIsTv}) =>
-    item.mediaType == MediaType.tv ||
-    (item.mediaType == null && railIsTv);
+    item.mediaType == MediaType.tv || (item.mediaType == null && railIsTv);
 
 /// A titled poster rail: [SectionHeader] with "See All", then a horizontal
 /// list of [PosterCard]s. At very large text ([PosterSize.stackRails]) the
 /// first [stackedCount] items stack vertically as rows instead.
-class MoviesListView extends StatelessWidget {
+class MoviesListView extends StatefulWidget {
   const MoviesListView({
     required this.future,
     Key? key,
@@ -52,14 +51,27 @@ class MoviesListView extends StatelessWidget {
   static const int maxCount = 20;
 
   @override
+  State<MoviesListView> createState() => _MoviesListViewState();
+}
+
+class _MoviesListViewState extends State<MoviesListView> {
+  /// The last successful result, kept on screen while a refresh is pending
+  /// or after it fails.
+  Model? _lastGood;
+
+  @override
   Widget build(BuildContext context) {
+    final headlineText = widget.headlineText;
+    final onRetry = widget.onRetry;
     return FutureBuilder<Model>(
-      future: future,
+      future: widget.future,
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const _RailPadding(child: movieListViewShimmerWidget());
-        }
-        if (snapshot.hasError) {
+        if (snapshot.hasData) _lastGood = snapshot.data;
+        final data = snapshot.data ?? _lastGood;
+        if (data == null) {
+          if (!snapshot.hasError) {
+            return const _RailPadding(child: movieListViewShimmerWidget());
+          }
           if (onRetry == null) return const SizedBox.shrink();
           return _RailPadding(
             child: Column(
@@ -69,17 +81,18 @@ class MoviesListView extends StatelessWidget {
                 ErrorState(
                   compact: true,
                   message: S.of(context).somethingwentwrong,
-                  onRetry: onRetry!,
+                  onRetry: onRetry,
                 ),
               ],
             ),
           );
         }
-        final results = snapshot.data?.results ?? const <Result>[];
+        final results = data.results;
         if (results.isEmpty) return const SizedBox.shrink();
 
         final size = PosterSize.of(context);
-        final source = heroSource ?? headlineText;
+        final source = widget.heroSource ?? headlineText;
+        final istvshow = widget.istvshow;
         void open(Result item) {
           final isTv = isTvResult(item, railIsTv: istvshow);
           openTitle(
@@ -99,14 +112,14 @@ class MoviesListView extends StatelessWidget {
                 onSeeAll: () => openSeeAll(
                   context,
                   title: headlineText,
-                  load: () => future,
+                  load: () => widget.future,
                   isTv: istvshow,
                 ),
               ),
               const SizedBox(height: MNSpace.sm),
               if (size.stackRails)
                 _StackedRail(
-                  items: results.take(stackedCount).toList(),
+                  items: results.take(MoviesListView.stackedCount).toList(),
                   size: size,
                   railIsTv: istvshow,
                   source: source,
@@ -114,11 +127,18 @@ class MoviesListView extends StatelessWidget {
                 )
               else
                 _HorizontalRail(
-                  items: results.take(maxCount).toList(),
+                  items: results.take(MoviesListView.maxCount).toList(),
                   size: size,
                   railIsTv: istvshow,
                   source: source,
                   onTap: open,
+                ),
+              // A failed refresh keeps the rail and offers a retry.
+              if (snapshot.hasError && onRetry != null)
+                ErrorState(
+                  compact: true,
+                  message: S.of(context).somethingwentwrong,
+                  onRetry: onRetry,
                 ),
             ],
           ),
@@ -208,8 +228,7 @@ class _StackedRail extends StatelessWidget {
   Widget build(BuildContext context) {
     final thumbWidth = size.width / 2;
     final thumbHeight = thumbWidth / PosterSize.posterAspect;
-    final extent =
-        math.max(thumbHeight, size.captionHeight) + MNSpace.sm * 2;
+    final extent = math.max(thumbHeight, size.captionHeight) + MNSpace.sm * 2;
     return SizedBox(
       height: extent * items.length,
       child: ListView.builder(
