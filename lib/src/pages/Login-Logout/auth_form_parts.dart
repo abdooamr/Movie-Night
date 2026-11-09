@@ -6,14 +6,17 @@ import '../../Provider/register_provider.dart';
 import '../../design/tokens.dart';
 
 /// Closes the whole sign-in flow (Welcome, Log In / Create Account and any
-/// page above them) in one go.
+/// page above them) in one go, on the navigator that owns it: the root
+/// navigator when it was presented as a sheet (`presentSignIn`), or the
+/// Profile tab's navigator when it is shown inline there (back to the tab
+/// root, which the shell then swaps for the profile).
 ///
 /// Deliberately not `dismissSignIn()`: when the sheet is not the current
 /// route (the log-in pages sit above it) that only removes the sheet and
 /// leaves Login/Register on the stack, so the user would still see the form
 /// after being signed in.
 void closeSignInFlow(BuildContext context) =>
-    Navigator.of(context, rootNavigator: true).popUntil((r) => r.isFirst);
+    Navigator.of(context).popUntil((r) => r.isFirst);
 
 /// Outcome of [runGoogleSignIn].
 typedef GoogleSignInOutcome = ({bool signedIn, String? error});

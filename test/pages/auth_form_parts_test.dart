@@ -59,4 +59,60 @@ void main() {
     await tester.tap(find.byType(FilledButton), warnIfMissed: false);
     expect(taps, 0);
   });
+
+  group('closeSignInFlow', () {
+    Widget page(String name, {VoidCallback? onTap, String? action}) => Scaffold(
+          body: Column(children: [
+            Text(name),
+            if (onTap != null)
+              TextButton(onPressed: onTap, child: Text(action!)),
+          ]),
+        );
+
+    Route<void> route(Widget Function(BuildContext) b) =>
+        MaterialPageRoute<void>(builder: b);
+
+    /// Welcome -> Log In; Log In's button calls closeSignInFlow.
+    Widget welcome(BuildContext context) => page('Welcome',
+        action: 'Open Log In',
+        onTap: () => Navigator.of(context).push(route((c) => page('Log In',
+            action: 'Signed in', onTap: () => closeSignInFlow(c)))));
+
+    testWidgets('inside a tab navigator it returns to the tab root',
+        (tester) async {
+      await tester.pumpWidget(_app(SizedBox(
+        height: 400,
+        width: 400,
+        child: Navigator(
+          onGenerateRoute: (_) => route(welcome),
+        ),
+      )));
+      await tester.tap(find.text('Open Log In'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Signed in'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Log In'), findsNothing);
+      expect(find.text('Welcome'), findsOneWidget);
+    });
+
+    testWidgets('as a sheet on the root navigator it closes the whole flow',
+        (tester) async {
+      await tester.pumpWidget(_app(Builder(
+        builder: (context) => page('Home',
+            action: 'Sign in',
+            onTap: () => Navigator.of(context).push(route(welcome))),
+      )));
+      await tester.tap(find.text('Sign in'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Open Log In'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Signed in'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Home'), findsOneWidget);
+      expect(find.text('Welcome'), findsNothing);
+      expect(find.text('Log In'), findsNothing);
+    });
+  });
 }
