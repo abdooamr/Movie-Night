@@ -2,14 +2,12 @@ import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/reviewsprovider.dart';
 import 'package:Movie_Night/src/components/app_text_field.dart';
 import 'package:Movie_Night/src/components/feedback.dart';
+import 'package:Movie_Night/src/data/auth_repository.dart';
 import 'package:Movie_Night/src/design/tokens.dart';
-import 'package:Movie_Night/src/models/local_review_model.dart';
 import 'package:Movie_Night/src/widgets/review_list.dart';
 import 'package:Movie_Night/src/widgets/review_card.dart';
 import 'package:ficonsax/ficonsax.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class LocalReviewsWidget extends StatefulWidget {
@@ -26,13 +24,14 @@ class LocalReviewsWidget extends StatefulWidget {
 class _LocalReviewsWidgetState extends State<LocalReviewsWidget> {
   late ReviewProvider reviewProvider;
   final TextEditingController reviewController = TextEditingController();
-  final currentuser = FirebaseAuth.instance.currentUser!;
-  late DateFormat dateFormat;
+
+  /// Read when used, never cached: the user can sign out while this page
+  /// stays open.
+  String? get _me => AuthRepository.instance.currentUserId;
 
   @override
   void initState() {
     super.initState();
-    dateFormat = DateFormat('dd-MM-yyyy');
     reviewProvider = Provider.of<ReviewProvider>(context, listen: false);
   }
 
@@ -43,7 +42,7 @@ class _LocalReviewsWidgetState extends State<LocalReviewsWidget> {
   }
 
   Stream<List<ReviewCardData>> _stream() {
-    return reviewProvider.getReviews(widget.id.toString()).map(
+    return reviewProvider.getReviews(widget.id).map(
           (reviews) => [
             for (final r in reviews)
               ReviewCardData(
@@ -52,7 +51,7 @@ class _LocalReviewsWidgetState extends State<LocalReviewsWidget> {
                 date: r.createdat,
                 body: r.review ?? '',
                 avatarUrl: r.ProfilePic,
-                onDelete: currentuser.uid == r.id ? _delete : null,
+                onDelete: r.id.isNotEmpty && r.id == _me ? _delete : null,
               ),
           ],
         );
@@ -61,10 +60,7 @@ class _LocalReviewsWidgetState extends State<LocalReviewsWidget> {
   Future<void> _delete() async {
     final failMsg = S.of(context).genericError;
     try {
-      await reviewProvider.deleteReview(
-        movieId: widget.id.toString(),
-        userId: currentuser.uid,
-      );
+      await reviewProvider.deleteReview(movieId: widget.id);
     } catch (_) {
       if (mounted) AppFeedback.error(context, failMsg);
     }
@@ -74,20 +70,13 @@ class _LocalReviewsWidgetState extends State<LocalReviewsWidget> {
     final text = reviewController.text.trim();
     if (text.isEmpty) return;
     final failMsg = S.of(context).genericError;
-    final localReview = Localreviews(
-      ProfilePic: currentuser.photoURL ?? '',
-      review: text,
-      displayname: currentuser.displayName!,
-      email: currentuser.email!,
-      createdat: dateFormat.format(DateTime.now()),
-      id: currentuser.uid,
-    );
+    if (_me == null) {
+      AppFeedback.error(context, failMsg);
+      return;
+    }
     try {
-      await reviewProvider.addReview(
-        movieId: widget.id.toString(),
-        userId: currentuser.uid,
-        localReview: localReview,
-      );
+      // Name, picture and date come from the profile and the row.
+      await reviewProvider.saveReview(movieId: widget.id, text: text);
       reviewController.clear();
     } catch (_) {
       if (mounted) AppFeedback.error(context, failMsg);

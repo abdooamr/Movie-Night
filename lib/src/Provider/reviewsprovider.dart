@@ -1,68 +1,96 @@
 import 'package:Movie_Night/src/models/local_review_model.dart';
-import 'package:flutter/foundation.dart';
 import 'package:Movie_Night/src/utils/app_logger.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
+/// Movie Night reviews in the Supabase `reviews` table: one per user per
+/// title (`UNIQUE (movie_id, user_id)`). `movie_id` is the TMDB id for both
+/// movies and TV shows, as it was in Firestore.
 class ReviewProvider extends ChangeNotifier {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  ReviewProvider({SupabaseClient? client}) : _clientOverride = client;
 
-  Future<void> addReview({
-    required String movieId,
-    required String userId,
-    required Localreviews localReview,
-  }) async {
+  // Resolved lazily so creating the provider never touches Supabase before
+  // `Supabase.initialize()`.
+  final SupabaseClient? _clientOverride;
+  SupabaseClient get _db => _clientOverride ?? Supabase.instance.client;
+
+  String get _uid {
+    final id = _db.auth.currentUser?.id;
+    if (id == null) throw StateError('No signed-in user');
+    return id;
+  }
+
+  /// Saves the signed-in user's review of [movieId]: a new row the first
+  /// time, otherwise only the `review` column of their existing row (never
+  /// an upsert, which RLS rejects).
+  Future<void> saveReview({required int movieId, required String text}) async {
+    final uid = _uid;
     try {
-      final authUser = _auth.currentUser;
-      final reviewDoc = _firestore.collection('reviews').doc(movieId);
-
-      // Create the collection if it doesn't exist
-      await reviewDoc.set({});
-
-      await reviewDoc.collection('users').doc(userId).set({
-        'username': localReview.displayname,
-        'email': localReview.email,
-        'review': localReview.review,
-        'ProfilePic': authUser?.photoURL ?? localReview.ProfilePic,
-        'createdat': localReview.createdat,
-        'id': userId,
-      });
-
-      // Notify listeners that the state has changed (review added successfully).
+      try {
+        await _db
+            .from('reviews')
+            .insert({'movie_id': movieId, 'user_id': uid, 'review': text});
+      } on PostgrestException catch (e) {
+        if (e.code != '23505') rethrow; // Not "already reviewed".
+        await _db
+            .from('reviews')
+            .update({'review': text})
+            .eq('movie_id', movieId)
+            .eq('user_id', uid);
+      }
       notifyListeners();
     } catch (error, stack) {
-      AppLog.error('addReview', error, stack);
-      rethrow; // UI shows the failure
+      AppLog.error('saveReview', error, stack);
+      rethrow; // The UI shows the failure.
     }
   }
 
-  Stream<List<Localreviews>> getReviews(String movieId) {
-    final reviewDoc = _firestore.collection('reviews').doc(movieId);
-    return reviewDoc.collection('users').snapshots().map((querySnapshot) {
-      final reviews = querySnapshot.docs.map((doc) {
-        final data = doc.data();
-        return Localreviews(
-          displayname: data['username'],
-          email: data['email'],
-          review: data['review'],
-          ProfilePic: data['ProfilePic'],
-          createdat: data['createdat'],
-          id: data['id'],
-        );
-      }).toList();
-
-      return reviews;
+  /// Live reviews of [movieId], newest first (Realtime). Realtime streams
+  /// can't join, so each change looks up the authors it hasn't seen yet in
+  /// `profiles`; names and pictures are cached for the life of the stream.
+  Stream<List<Localreviews>> getReviews(int movieId) {
+    final authors = <String, Map<String, dynamic>>{};
+    final format = Localreviews.dateFormat;
+    return _db
+        .from('reviews')
+        .stream(primaryKey: const ['id'])
+        .eq('movie_id', movieId)
+        .order('created_at', ascending: false)
+        .asyncMap((rows) async {
+      final missing = {
+        for (final r in rows)
+          if (r['user_id'] is String && !authors.containsKey(r['user_id']))
+            r['user_id'] as String,
+      };
+      if (missing.isNotEmpty) {
+        try {
+          final found = await _db
+              .from('profiles')
+              .select('id, first_name, last_name, profile_pic')
+              .inFilter('id', missing.toList());
+          for (final p in found) {
+            authors['${p['id']}'] = p;
+          }
+        } catch (e, stack) {
+          // Reviews still show, without names, rather than failing.
+          AppLog.error('reviewAuthors', e, stack);
+        }
+      }
+      return [
+        for (final r in rows)
+          Localreviews.fromRow(r, author: authors[r['user_id']], format: format),
+      ];
     });
   }
 
-  Future<void> deleteReview({
-    required String movieId,
-    required String userId,
-  }) async {
+  /// Deletes the signed-in user's review of [movieId].
+  Future<void> deleteReview({required int movieId}) async {
     try {
-      final reviewDoc = _firestore.collection('reviews').doc(movieId);
-      await reviewDoc.collection('users').doc(userId).delete();
+      await _db
+          .from('reviews')
+          .delete()
+          .eq('movie_id', movieId)
+          .eq('user_id', _uid);
       notifyListeners();
     } catch (error, stack) {
       AppLog.error('deleteReview', error, stack);
