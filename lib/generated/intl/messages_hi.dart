@@ -22,23 +22,26 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(character) => "${character} के रूप में";
 
-  static String m1(section) => "${section} लोड नहीं हो सका।";
+  static String m1(email) =>
+      "अपना ईमेल देखें। हमने ${email} पर एक लिंक भेजा है। अपना खाता सक्रिय करने के लिए उसे खोलें, फिर लॉग इन करें।";
 
-  static String m2(name) => "${name} को हटाएं?";
+  static String m2(section) => "${section} लोड नहीं हो सका।";
 
-  static String m3(query) =>
+  static String m3(name) => "${name} को हटाएं?";
+
+  static String m4(query) =>
       "“${query}” के लिए कोई परिणाम नहीं। वर्तनी जाँचें या कोई दूसरा शीर्षक आज़माएँ।";
 
-  static String m4(title) => "${title} चलाएँ";
+  static String m5(title) => "${title} चलाएँ";
 
-  static String m5(score) => "10 में से ${score}";
+  static String m6(score) => "10 में से ${score}";
 
-  static String m6(email) =>
+  static String m7(email) =>
       "अपना ईमेल देखें। हमने ${email} पर रीसेट लिंक भेजा है।";
 
-  static String m7(count) => "सभी समीक्षाएँ देखें (${count})";
+  static String m8(count) => "सभी समीक्षाएँ देखें (${count})";
 
-  static String m8(title, url) => "Movie Night पर ${title} देखें\n${url}";
+  static String m9(title, url) => "Movie Night पर ${title} देखें\n${url}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -109,6 +112,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "authErrorEmailInUse": MessageLookupByLibrary.simpleMessage(
       "इस ईमेल से पहले से एक खाता मौजूद है।",
     ),
+    "authErrorEmailNotConfirmed": MessageLookupByLibrary.simpleMessage(
+      "पहले अपना ईमेल पुष्टि करें। हमारे भेजे गए लिंक को खोलें, फिर लॉग इन करें।",
+    ),
     "authErrorGeneric": MessageLookupByLibrary.simpleMessage(
       "यह पूरा नहीं हो सका। फिर कोशिश करें।",
     ),
@@ -123,6 +129,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "authErrorRecentLogin": MessageLookupByLibrary.simpleMessage(
       "आपकी सुरक्षा के लिए, खाता हटाने से पहले फिर से लॉग इन करें।",
+    ),
+    "authErrorSamePassword": MessageLookupByLibrary.simpleMessage(
+      "ऐसा पासवर्ड चुनें जो आपके मौजूदा पासवर्ड से अलग हो।",
     ),
     "authErrorTooManyRequests": MessageLookupByLibrary.simpleMessage(
       "बहुत ज़्यादा प्रयास हुए। कुछ मिनट बाद फिर कोशिश करें।",
@@ -158,10 +167,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "clearSearchTooltip": MessageLookupByLibrary.simpleMessage("खोज साफ़ करें"),
     "close": MessageLookupByLibrary.simpleMessage("बंद करें"),
     "comedymovielabel": MessageLookupByLibrary.simpleMessage("कॉमेडी फ़िल्में"),
+    "confirmEmailSent": m1,
     "continueWithGoogle": MessageLookupByLibrary.simpleMessage(
       "Google से जारी रखें",
     ),
-    "couldntLoadSection": m1,
+    "couldntLoadSection": m2,
     "couldntLoadTitle": MessageLookupByLibrary.simpleMessage(
       "यह शीर्षक लोड नहीं हो सका।",
     ),
@@ -191,7 +201,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteUserConfirmation": MessageLookupByLibrary.simpleMessage(
       "क्या आप वाकई अपना खाता हटाना चाहते हैं? यह कार्रवाई वापस नहीं ली जा सकती।",
     ),
-    "deleteUserTitle": m2,
+    "deleteUserTitle": m3,
     "deleteaccountlabel": MessageLookupByLibrary.simpleMessage("खाता हटाएं"),
     "deleteerror": MessageLookupByLibrary.simpleMessage(
       "खाता हटाने में त्रुटि. कृपया पुनः लॉग इन करें और पुनः प्रयास करें",
@@ -299,6 +309,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "musicmovielabel": MessageLookupByLibrary.simpleMessage("संगीत फ़िल्में"),
     "mysterymovielabel": MessageLookupByLibrary.simpleMessage("रहस्य फ़िल्में"),
     "name": MessageLookupByLibrary.simpleMessage("नाम"),
+    "newPasswordLabel": MessageLookupByLibrary.simpleMessage("नया पासवर्ड"),
     "newstvlabel": MessageLookupByLibrary.simpleMessage("समाचार टीवी शो"),
     "noBirthdayFound": MessageLookupByLibrary.simpleMessage(
       "जन्म तिथि नहीं मिली",
@@ -315,7 +326,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "noReport": MessageLookupByLibrary.simpleMessage("कोई रिपोर्ट नहीं"),
     "noResults": MessageLookupByLibrary.simpleMessage("कोई परिणाम नहीं"),
-    "noResultsFor": m3,
+    "noResultsFor": m4,
     "noResultsMessage": MessageLookupByLibrary.simpleMessage(
       "आपकी खोज के लिए कोई परिणाम नहीं मिले",
     ),
@@ -340,6 +351,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "nomoviesinwatchlist": MessageLookupByLibrary.simpleMessage(
       "आपकी देखी गई फ़िल्मों की सूची खाली है\nकुछ फ़िल्में अपनी देखी गई सूचि में जोड़ना शुरू करें और अपने पसंदीदा को खोजें!",
     ),
+    "notNowLabel": MessageLookupByLibrary.simpleMessage("अभी नहीं"),
     "notamemberlabel": MessageLookupByLibrary.simpleMessage("सदस्य नहीं हैं?"),
     "notvshowsinwatchlist": MessageLookupByLibrary.simpleMessage(
       "आपकी देखे गए टीवी शो की सूची खाली है\nकुछ टीवी शो अपनी देखे गए सूचि में जोड़ना शुरू करें और अपने पसंदीदा को खोजें!",
@@ -353,6 +365,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "numberofseasons": MessageLookupByLibrary.simpleMessage("सीजनों की संख्या"),
     "ohnolabel": MessageLookupByLibrary.simpleMessage("ओह नो!"),
     "okLabel": MessageLookupByLibrary.simpleMessage("ठीक है"),
+    "passwordMigrationBody": MessageLookupByLibrary.simpleMessage(
+      "Movie Night अब एक नए साइन-इन सिस्टम पर है। अगर इस अपडेट से पहले आपका खाता था, तो आपका पुराना पासवर्ड अब काम नहीं करेगा। अपना खाता इस्तेमाल करते रहने के लिए उसे एक बार रीसेट करें।",
+    ),
+    "passwordMigrationTitle": MessageLookupByLibrary.simpleMessage(
+      "अपना पासवर्ड एक बार रीसेट करें",
+    ),
+    "passwordUpdated": MessageLookupByLibrary.simpleMessage(
+      "आपका पासवर्ड अपडेट हो गया।",
+    ),
     "passwordconfirmlabel": MessageLookupByLibrary.simpleMessage(
       "पासवर्ड की पुष्टि करें",
     ),
@@ -363,7 +384,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "passwordvalidationtext": MessageLookupByLibrary.simpleMessage(
       "कम से कम 8 अक्षर रखें, जिनमें एक बड़ा अक्षर, एक छोटा अक्षर, एक अंक और एक प्रतीक हो।",
     ),
-    "playVideo": m4,
+    "playVideo": m5,
     "pleasecheckinternetconnection": MessageLookupByLibrary.simpleMessage(
       "अपने इंटरनेट कनेक्शन की जाँच करें और पुन: प्रयास करें",
     ),
@@ -385,7 +406,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateMovieNight": MessageLookupByLibrary.simpleMessage(
       "Movie Night को रेट करें",
     ),
-    "ratingOutOf10": m5,
+    "ratingOutOf10": m6,
     "readLess": MessageLookupByLibrary.simpleMessage("कम पढ़ें"),
     "readmorelabel": MessageLookupByLibrary.simpleMessage("और पढ़ें"),
     "realitytvlabel": MessageLookupByLibrary.simpleMessage(
@@ -422,7 +443,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "reportpagelabel": MessageLookupByLibrary.simpleMessage(
       "कृपया हमें यदि आपको ऐप में कोई बग मिलता है या कोई सुझाव हो, तो हमें रिपोर्ट भेजें।",
     ),
-    "resetLinkSent": m6,
+    "resetLinkSent": m7,
     "resetPassword": MessageLookupByLibrary.simpleMessage("पासवर्ड रीसेट करें"),
     "resetPasswordSubtitle": MessageLookupByLibrary.simpleMessage(
       "हम आपको रीसेट लिंक ईमेल करेंगे",
@@ -431,6 +452,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "romancemovielabel": MessageLookupByLibrary.simpleMessage(
       "रोमांस फ़िल्में",
     ),
+    "savePasswordLabel": MessageLookupByLibrary.simpleMessage("पासवर्ड सहेजें"),
     "savelabel": MessageLookupByLibrary.simpleMessage("सहेजें"),
     "sciencefictionmovielabel": MessageLookupByLibrary.simpleMessage(
       "विज्ञान-कल्पना फ़िल्में",
@@ -441,15 +463,21 @@ class MessageLookup extends MessageLookupByLibrary {
     "searchhint": MessageLookupByLibrary.simpleMessage(
       "फ़िल्में, टीवी शो, लोग",
     ),
-    "seeAllReviews": m7,
+    "seeAllReviews": m8,
     "sendEmail": MessageLookupByLibrary.simpleMessage("ईमेल भेजें"),
     "sendReviewTooltip": MessageLookupByLibrary.simpleMessage("समीक्षा भेजें"),
     "sendfeedbacklabel": MessageLookupByLibrary.simpleMessage(
       "प्रतिक्रिया भेजें",
     ),
     "sendreportlabel": MessageLookupByLibrary.simpleMessage("रिपोर्ट भेजें"),
+    "setNewPasswordSubtitle": MessageLookupByLibrary.simpleMessage(
+      "अपने खाते के लिए नया पासवर्ड चुनें।",
+    ),
+    "setNewPasswordTitle": MessageLookupByLibrary.simpleMessage(
+      "नया पासवर्ड सेट करें",
+    ),
     "share": MessageLookupByLibrary.simpleMessage("साझा करें"),
-    "shareText": m8,
+    "shareText": m9,
     "showPassword": MessageLookupByLibrary.simpleMessage("पासवर्ड दिखाएं"),
     "signInPromptBody": MessageLookupByLibrary.simpleMessage(
       "वॉचलिस्ट रखने, शीर्षकों को पसंद करने और समीक्षाएँ लिखने के लिए लॉग इन करें।",

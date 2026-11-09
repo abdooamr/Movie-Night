@@ -1,9 +1,10 @@
 import 'package:ficonsax/ficonsax.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' show AuthException;
 
 import '../../../generated/l10n.dart';
 import '../../components/app_text_field.dart';
+import '../../data/auth_repository.dart';
 import '../../design/tokens.dart';
 import '../../utils/app_logger.dart';
 import 'Login.dart' show authEmailPattern;
@@ -11,7 +12,10 @@ import 'auth_errors.dart';
 import 'auth_form_parts.dart';
 
 class ForgetNew extends StatefulWidget {
-  const ForgetNew({super.key});
+  const ForgetNew({super.key, this.initialEmail});
+
+  /// Pre-fills the email field (e.g. from a failed log-in).
+  final String? initialEmail;
 
   @override
   _ForgetNewState createState() => _ForgetNewState();
@@ -19,7 +23,8 @@ class ForgetNew extends StatefulWidget {
 
 class _ForgetNewState extends State<ForgetNew> {
   final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
+  late final _emailController =
+      TextEditingController(text: widget.initialEmail);
   bool _busy = false;
   String? _error;
 
@@ -43,12 +48,12 @@ class _ForgetNewState extends State<ForgetNew> {
     String? error;
     var ok = false;
     try {
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      await AuthRepository.instance.sendPasswordReset(email);
       ok = true;
-    } on FirebaseAuthException catch (e) {
+    } on AuthException catch (e) {
       AppLog.error('passwordReset', e);
       if (!mounted) return;
-      if (e.code == 'user-not-found') {
+      if (e.code == 'user_not_found') {
         // Show the same success state, so this form can't be used to find
         // out which emails have an account.
         ok = true;

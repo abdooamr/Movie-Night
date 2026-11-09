@@ -85,7 +85,7 @@ class _User_update_info_pageState extends State<User_update_info_page> {
           );
     } on FirebaseAuthException catch (e, st) {
       AppLog.error('updateProfile', e, st);
-      error = mounted ? authErrorText(context, e) : s.genericError;
+      error = s.genericError; // Firestore write; moved to Supabase next.
     } catch (e, st) {
       AppLog.error('updateProfile', e, st);
       error = s.genericError;

@@ -1,70 +1,38 @@
 import 'package:flutter/foundation.dart';
+import 'package:Movie_Night/src/data/auth_repository.dart';
 import 'package:Movie_Night/src/utils/app_logger.dart';
-import 'package:Movie_Night/src/data/user_repository.dart';
-import 'package:Movie_Night/src/models/user_model.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+export 'package:Movie_Night/src/data/auth_repository.dart'
+    show GoogleSignInResult, SignUpOutcome;
 
-/// The single sign-up / Google sign-in path (task 2.8 removed the duplicate
-/// `services/googleauth.dart`). Firestore writes go through [UserRepository].
-enum GoogleSignInResult { success, cancelled, failed }
-
+/// Sign-up and Google sign-in for the UI, over [AuthRepository]. The profile
+/// row is created by the database trigger from the sign-up metadata.
 class UserProvider extends ChangeNotifier {
-  Users? _user;
+  AuthRepository get _auth => AuthRepository.instance;
 
-  Users? get user => _user;
-
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  UserRepository get _users => UserRepository.instance;
-
-  Future<void> createUser({
-    required Users user,
+  /// Email sign-up. Returns [SignUpOutcome.confirmEmail] when the account
+  /// waits for the confirmation link (no session yet).
+  Future<SignUpOutcome> createUser({
+    required String email,
+    required String password,
+    required String firstName,
+    required String lastName,
   }) async {
     try {
-      // Create user in FirebaseAuth
-      UserCredential authResult = await _auth.createUserWithEmailAndPassword(
-        email: user.email,
-        password: user.password!,
+      final outcome = await _auth.signUp(
+        email: email,
+        password: password,
+        firstName: firstName,
+        lastName: lastName,
       );
-
-      User? firebaseUser = authResult.user;
-      if (firebaseUser != null) {
-        // Update display name
-        await firebaseUser.updateDisplayName(user.firstName + user.lastName);
-        await firebaseUser.updatePhotoURL(user.ProfilePic);
-
-        await _users.createUserDocument(firebaseUser.uid, user);
-
-        _user = user;
-        notifyListeners();
-      }
+      notifyListeners();
+      return outcome;
     } catch (error, stack) {
       AppLog.error('createUser', error, stack);
-      rethrow; // Rethrow the error to allow the UI to handle it
+      rethrow; // The UI shows the failure.
     }
   }
 
   /// Distinguishes a dismissed account picker from a real failure.
-  Future<GoogleSignInResult> signInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      if (googleUser == null) return GoogleSignInResult.cancelled;
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-      final credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
-
-      final UserCredential userCredential =
-          await _auth.signInWithCredential(credential);
-      final User? user = userCredential.user;
-      if (user == null) return GoogleSignInResult.failed;
-
-      await _users.ensureGoogleUserDocument(user);
-      return GoogleSignInResult.success;
-    } catch (e, stack) {
-      AppLog.error('googleSignIn', e, stack);
-      return GoogleSignInResult.failed;
-    }
-  }
+  Future<GoogleSignInResult> signInWithGoogle() => _auth.signInWithGoogle();
 }

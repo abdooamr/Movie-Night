@@ -275,5 +275,16 @@
     "accountGroupLabel": "Cuenta",
     "removeFromHistory": "Quitar",
     "mediaMovie": "Película",
-    "mediaTvShow": "Serie"
+    "mediaTvShow": "Serie",
+    "authErrorEmailNotConfirmed": "Primero confirma tu correo. Abre el enlace que te enviamos y luego inicia sesión.",
+    "authErrorSamePassword": "Elige una contraseña distinta de la actual.",
+    "confirmEmailSent": "Revisa tu correo. Enviamos un enlace a {email}. Ábrelo para activar tu cuenta y luego inicia sesión.",
+    "passwordMigrationTitle": "Restablece Tu Contraseña Una Vez",
+    "passwordMigrationBody": "Movie Night cambió a un nuevo sistema de inicio de sesión. Si tenías una cuenta antes de esta actualización, tu contraseña anterior ya no funciona. Restablécela una vez para seguir usando tu cuenta.",
+    "notNowLabel": "Ahora No",
+    "setNewPasswordTitle": "Nueva Contraseña",
+    "setNewPasswordSubtitle": "Elige una nueva contraseña para tu cuenta.",
+    "newPasswordLabel": "Nueva Contraseña",
+    "savePasswordLabel": "Guardar Contraseña",
+    "passwordUpdated": "Tu contraseña se actualizó."
 }

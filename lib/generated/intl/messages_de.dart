@@ -22,23 +22,26 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(character) => "Als ${character}";
 
-  static String m1(section) => "${section} konnte nicht geladen werden.";
+  static String m1(email) =>
+      "Sieh in deinen E-Mails nach. Wir haben einen Link an ${email} gesendet. Öffne ihn, um dein Konto zu aktivieren, und melde dich dann an.";
 
-  static String m2(name) => "${name} löschen?";
+  static String m2(section) => "${section} konnte nicht geladen werden.";
 
-  static String m3(query) =>
+  static String m3(name) => "${name} löschen?";
+
+  static String m4(query) =>
       "Keine Ergebnisse für „${query}“. Prüfe die Schreibweise oder versuche einen anderen Titel.";
 
-  static String m4(title) => "${title} abspielen";
+  static String m5(title) => "${title} abspielen";
 
-  static String m5(score) => "${score} von 10";
+  static String m6(score) => "${score} von 10";
 
-  static String m6(email) =>
+  static String m7(email) =>
       "Prüfe dein Postfach. Wir haben einen Link zum Zurücksetzen an ${email} gesendet.";
 
-  static String m7(count) => "Alle Bewertungen ansehen (${count})";
+  static String m8(count) => "Alle Bewertungen ansehen (${count})";
 
-  static String m8(title, url) =>
+  static String m9(title, url) =>
       "Schau dir ${title} auf Movie Night an\n${url}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -112,6 +115,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "authErrorEmailInUse": MessageLookupByLibrary.simpleMessage(
       "Ein Konto mit dieser E-Mail existiert bereits.",
     ),
+    "authErrorEmailNotConfirmed": MessageLookupByLibrary.simpleMessage(
+      "Bestätige zuerst deine E-Mail-Adresse. Öffne den Link, den wir dir gesendet haben, und melde dich dann an.",
+    ),
     "authErrorGeneric": MessageLookupByLibrary.simpleMessage(
       "Das hat nicht geklappt. Versuche es erneut.",
     ),
@@ -126,6 +132,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "authErrorRecentLogin": MessageLookupByLibrary.simpleMessage(
       "Aus Sicherheitsgründen melde dich erneut an, um dein Konto zu löschen.",
+    ),
+    "authErrorSamePassword": MessageLookupByLibrary.simpleMessage(
+      "Wähle ein Passwort, das sich von deinem aktuellen unterscheidet.",
     ),
     "authErrorTooManyRequests": MessageLookupByLibrary.simpleMessage(
       "Zu viele Versuche. Versuche es in ein paar Minuten erneut.",
@@ -165,10 +174,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "clearSearchTooltip": MessageLookupByLibrary.simpleMessage("Suche löschen"),
     "close": MessageLookupByLibrary.simpleMessage("Schließen"),
     "comedymovielabel": MessageLookupByLibrary.simpleMessage("Komödienfilme"),
+    "confirmEmailSent": m1,
     "continueWithGoogle": MessageLookupByLibrary.simpleMessage(
       "Weiter mit Google",
     ),
-    "couldntLoadSection": m1,
+    "couldntLoadSection": m2,
     "couldntLoadTitle": MessageLookupByLibrary.simpleMessage(
       "Dieser Titel konnte nicht geladen werden.",
     ),
@@ -206,7 +216,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteUserConfirmation": MessageLookupByLibrary.simpleMessage(
       "Bist du sicher, dass du dein Konto löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
     ),
-    "deleteUserTitle": m2,
+    "deleteUserTitle": m3,
     "deleteaccountlabel": MessageLookupByLibrary.simpleMessage("Konto löschen"),
     "deleteerror": MessageLookupByLibrary.simpleMessage(
       "Fehler beim Löschen des Kontos. Bitte melden Sie sich erneut an und versuchen Sie es erneut",
@@ -310,6 +320,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "musicmovielabel": MessageLookupByLibrary.simpleMessage("Musikfilme"),
     "mysterymovielabel": MessageLookupByLibrary.simpleMessage("Mysterienfilme"),
     "name": MessageLookupByLibrary.simpleMessage("Name"),
+    "newPasswordLabel": MessageLookupByLibrary.simpleMessage("Neues Passwort"),
     "newstvlabel": MessageLookupByLibrary.simpleMessage(
       "Nachrichten Fernsehsendungen",
     ),
@@ -326,7 +337,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "noReport": MessageLookupByLibrary.simpleMessage("Keine Meldungen"),
     "noResults": MessageLookupByLibrary.simpleMessage("Keine Ergebnisse"),
-    "noResultsFor": m3,
+    "noResultsFor": m4,
     "noResultsMessage": MessageLookupByLibrary.simpleMessage(
       "Keine Ergebnisse für Ihre Suche gefunden",
     ),
@@ -351,6 +362,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "nomoviesinwatchlist": MessageLookupByLibrary.simpleMessage(
       "Ihre Merkliste ist leer.\nBeginnen Sie damit, einige Filme zur Merkliste hinzuzufügen und entdecken Sie Ihre Favoriten!",
     ),
+    "notNowLabel": MessageLookupByLibrary.simpleMessage("Nicht jetzt"),
     "notamemberlabel": MessageLookupByLibrary.simpleMessage(
       "Noch kein Mitglied?",
     ),
@@ -368,6 +380,15 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "ohnolabel": MessageLookupByLibrary.simpleMessage("Oh Nein!"),
     "okLabel": MessageLookupByLibrary.simpleMessage("OK"),
+    "passwordMigrationBody": MessageLookupByLibrary.simpleMessage(
+      "Movie Night verwendet jetzt ein neues Anmeldesystem. Wenn du vor diesem Update ein Konto hattest, funktioniert dein altes Passwort nicht mehr. Setze es einmal zurück, um dein Konto weiter zu nutzen.",
+    ),
+    "passwordMigrationTitle": MessageLookupByLibrary.simpleMessage(
+      "Passwort einmal zurücksetzen",
+    ),
+    "passwordUpdated": MessageLookupByLibrary.simpleMessage(
+      "Dein Passwort wurde aktualisiert.",
+    ),
     "passwordconfirmlabel": MessageLookupByLibrary.simpleMessage(
       "Passwort bestätigen",
     ),
@@ -378,7 +399,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "passwordvalidationtext": MessageLookupByLibrary.simpleMessage(
       "Verwende mindestens 8 Zeichen, darunter einen Großbuchstaben, einen Kleinbuchstaben, eine Zahl und ein Sonderzeichen.",
     ),
-    "playVideo": m4,
+    "playVideo": m5,
     "pleasecheckinternetconnection": MessageLookupByLibrary.simpleMessage(
       "Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut",
     ),
@@ -400,7 +421,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateMovieNight": MessageLookupByLibrary.simpleMessage(
       "Movie Night Bewerten",
     ),
-    "ratingOutOf10": m5,
+    "ratingOutOf10": m6,
     "readLess": MessageLookupByLibrary.simpleMessage("Weniger anzeigen"),
     "readmorelabel": MessageLookupByLibrary.simpleMessage("Mehr lesen"),
     "realitytvlabel": MessageLookupByLibrary.simpleMessage(
@@ -437,7 +458,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "reportpagelabel": MessageLookupByLibrary.simpleMessage(
       "Bitte senden Sie uns einen Bericht, wenn Sie Fehler finden oder Vorschläge für die App haben.",
     ),
-    "resetLinkSent": m6,
+    "resetLinkSent": m7,
     "resetPassword": MessageLookupByLibrary.simpleMessage(
       "Passwort zurücksetzen",
     ),
@@ -446,6 +467,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "role": MessageLookupByLibrary.simpleMessage("Rolle"),
     "romancemovielabel": MessageLookupByLibrary.simpleMessage("Liebesfilme"),
+    "savePasswordLabel": MessageLookupByLibrary.simpleMessage(
+      "Passwort speichern",
+    ),
     "savelabel": MessageLookupByLibrary.simpleMessage("Speichern"),
     "sciencefictionmovielabel": MessageLookupByLibrary.simpleMessage(
       "Science-Fiction-Filme",
@@ -456,7 +480,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "searchhint": MessageLookupByLibrary.simpleMessage(
       "Filme, Serien, Personen",
     ),
-    "seeAllReviews": m7,
+    "seeAllReviews": m8,
     "sendEmail": MessageLookupByLibrary.simpleMessage("E-Mail senden"),
     "sendReviewTooltip": MessageLookupByLibrary.simpleMessage(
       "Rezension senden",
@@ -465,8 +489,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "Feedback senden",
     ),
     "sendreportlabel": MessageLookupByLibrary.simpleMessage("Bericht senden"),
+    "setNewPasswordSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Wähle ein neues Passwort für dein Konto.",
+    ),
+    "setNewPasswordTitle": MessageLookupByLibrary.simpleMessage(
+      "Neues Passwort festlegen",
+    ),
     "share": MessageLookupByLibrary.simpleMessage("Teilen"),
-    "shareText": m8,
+    "shareText": m9,
     "showPassword": MessageLookupByLibrary.simpleMessage("Passwort anzeigen"),
     "signInPromptBody": MessageLookupByLibrary.simpleMessage(
       "Melde dich an, um eine Merkliste zu führen, Titel zu mögen und Bewertungen zu schreiben.",

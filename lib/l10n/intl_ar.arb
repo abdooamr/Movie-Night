@@ -275,5 +275,16 @@
     "accountGroupLabel": "الحساب",
     "removeFromHistory": "إزالة",
     "mediaMovie": "فيلم",
-    "mediaTvShow": "مسلسل"
+    "mediaTvShow": "مسلسل",
+    "authErrorEmailNotConfirmed": "أكّد بريدك الإلكتروني أولًا. افتح الرابط الذي أرسلناه إليك، ثم سجّل الدخول.",
+    "authErrorSamePassword": "اختر كلمة مرور مختلفة عن كلمة مرورك الحالية.",
+    "confirmEmailSent": "تحقق من بريدك الإلكتروني. أرسلنا رابطًا إلى {email}. افتحه لتفعيل حسابك، ثم سجّل الدخول.",
+    "passwordMigrationTitle": "أعد تعيين كلمة المرور مرة واحدة",
+    "passwordMigrationBody": "انتقل Movie Night إلى نظام تسجيل دخول جديد. إذا كان لديك حساب قبل هذا التحديث، فلن تعمل كلمة مرورك القديمة. أعد تعيينها مرة واحدة لمتابعة استخدام حسابك.",
+    "notNowLabel": "ليس الآن",
+    "setNewPasswordTitle": "تعيين كلمة مرور جديدة",
+    "setNewPasswordSubtitle": "اختر كلمة مرور جديدة لحسابك.",
+    "newPasswordLabel": "كلمة المرور الجديدة",
+    "savePasswordLabel": "حفظ كلمة المرور",
+    "passwordUpdated": "تم تحديث كلمة المرور."
 }

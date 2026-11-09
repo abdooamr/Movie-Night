@@ -22,23 +22,26 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(character) => "Como ${character}";
 
-  static String m1(section) => "No se pudo cargar ${section}.";
+  static String m1(email) =>
+      "Revisa tu correo. Enviamos un enlace a ${email}. Ábrelo para activar tu cuenta y luego inicia sesión.";
 
-  static String m2(name) => "¿Eliminar a ${name}?";
+  static String m2(section) => "No se pudo cargar ${section}.";
 
-  static String m3(query) =>
+  static String m3(name) => "¿Eliminar a ${name}?";
+
+  static String m4(query) =>
       "Sin resultados para «${query}». Revisa la ortografía o prueba con otro título.";
 
-  static String m4(title) => "Reproducir ${title}";
+  static String m5(title) => "Reproducir ${title}";
 
-  static String m5(score) => "${score} de 10";
+  static String m6(score) => "${score} de 10";
 
-  static String m6(email) =>
+  static String m7(email) =>
       "Revisa tu correo. Enviamos un enlace de restablecimiento a ${email}.";
 
-  static String m7(count) => "Ver todas las reseñas (${count})";
+  static String m8(count) => "Ver todas las reseñas (${count})";
 
-  static String m8(title, url) => "Mira ${title} en Movie Night\n${url}";
+  static String m9(title, url) => "Mira ${title} en Movie Night\n${url}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -119,6 +122,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "authErrorEmailInUse": MessageLookupByLibrary.simpleMessage(
       "Ya existe una cuenta con este correo.",
     ),
+    "authErrorEmailNotConfirmed": MessageLookupByLibrary.simpleMessage(
+      "Primero confirma tu correo. Abre el enlace que te enviamos y luego inicia sesión.",
+    ),
     "authErrorGeneric": MessageLookupByLibrary.simpleMessage(
       "No se pudo completar. Inténtalo de nuevo.",
     ),
@@ -133,6 +139,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "authErrorRecentLogin": MessageLookupByLibrary.simpleMessage(
       "Por tu seguridad, inicia sesión de nuevo para eliminar tu cuenta.",
+    ),
+    "authErrorSamePassword": MessageLookupByLibrary.simpleMessage(
+      "Elige una contraseña distinta de la actual.",
     ),
     "authErrorTooManyRequests": MessageLookupByLibrary.simpleMessage(
       "Demasiados intentos. Inténtalo de nuevo en unos minutos.",
@@ -178,10 +187,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "comedymovielabel": MessageLookupByLibrary.simpleMessage(
       "Películas de Comedia",
     ),
+    "confirmEmailSent": m1,
     "continueWithGoogle": MessageLookupByLibrary.simpleMessage(
       "Continuar con Google",
     ),
-    "couldntLoadSection": m1,
+    "couldntLoadSection": m2,
     "couldntLoadTitle": MessageLookupByLibrary.simpleMessage(
       "No se pudo cargar este título.",
     ),
@@ -217,7 +227,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteUserConfirmation": MessageLookupByLibrary.simpleMessage(
       "¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.",
     ),
-    "deleteUserTitle": m2,
+    "deleteUserTitle": m3,
     "deleteaccountlabel": MessageLookupByLibrary.simpleMessage(
       "Eliminar Cuenta",
     ),
@@ -339,6 +349,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Películas de Misterio",
     ),
     "name": MessageLookupByLibrary.simpleMessage("Nombre"),
+    "newPasswordLabel": MessageLookupByLibrary.simpleMessage(
+      "Nueva Contraseña",
+    ),
     "newstvlabel": MessageLookupByLibrary.simpleMessage(
       "Programas de Noticias",
     ),
@@ -355,7 +368,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "noReport": MessageLookupByLibrary.simpleMessage("Sin reportes"),
     "noResults": MessageLookupByLibrary.simpleMessage("Sin Resultados"),
-    "noResultsFor": m3,
+    "noResultsFor": m4,
     "noResultsMessage": MessageLookupByLibrary.simpleMessage(
       "No se encontraron resultados para tu búsqueda",
     ),
@@ -380,6 +393,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "nomoviesinwatchlist": MessageLookupByLibrary.simpleMessage(
       "Tu Lista de Reproducción está Vacía\n¡Comienza a agregar algunas películas a tu lista y descubre tus favoritas!",
     ),
+    "notNowLabel": MessageLookupByLibrary.simpleMessage("Ahora No"),
     "notamemberlabel": MessageLookupByLibrary.simpleMessage(
       "¿No eres miembro?",
     ),
@@ -397,6 +411,15 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "ohnolabel": MessageLookupByLibrary.simpleMessage("¡Oh No!"),
     "okLabel": MessageLookupByLibrary.simpleMessage("OK"),
+    "passwordMigrationBody": MessageLookupByLibrary.simpleMessage(
+      "Movie Night cambió a un nuevo sistema de inicio de sesión. Si tenías una cuenta antes de esta actualización, tu contraseña anterior ya no funciona. Restablécela una vez para seguir usando tu cuenta.",
+    ),
+    "passwordMigrationTitle": MessageLookupByLibrary.simpleMessage(
+      "Restablece Tu Contraseña Una Vez",
+    ),
+    "passwordUpdated": MessageLookupByLibrary.simpleMessage(
+      "Tu contraseña se actualizó.",
+    ),
     "passwordconfirmlabel": MessageLookupByLibrary.simpleMessage(
       "Confirmar Contraseña",
     ),
@@ -407,7 +430,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "passwordvalidationtext": MessageLookupByLibrary.simpleMessage(
       "Usa al menos 8 caracteres, con una mayúscula, una minúscula, un número y un símbolo.",
     ),
-    "playVideo": m4,
+    "playVideo": m5,
     "pleasecheckinternetconnection": MessageLookupByLibrary.simpleMessage(
       "Comprueba tu conexión a Internet e inténtalo de nuevo",
     ),
@@ -429,7 +452,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateMovieNight": MessageLookupByLibrary.simpleMessage(
       "Calificar Movie Night",
     ),
-    "ratingOutOf10": m5,
+    "ratingOutOf10": m6,
     "readLess": MessageLookupByLibrary.simpleMessage("Leer menos"),
     "readmorelabel": MessageLookupByLibrary.simpleMessage("Leer más"),
     "realitytvlabel": MessageLookupByLibrary.simpleMessage(
@@ -466,7 +489,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "reportpagelabel": MessageLookupByLibrary.simpleMessage(
       "Por favor, envíanos un informe si encuentras algún error o tienes sugerencias para la aplicación.",
     ),
-    "resetLinkSent": m6,
+    "resetLinkSent": m7,
     "resetPassword": MessageLookupByLibrary.simpleMessage(
       "Restablecer Contraseña",
     ),
@@ -476,6 +499,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "role": MessageLookupByLibrary.simpleMessage("Rol"),
     "romancemovielabel": MessageLookupByLibrary.simpleMessage(
       "Películas de Romance",
+    ),
+    "savePasswordLabel": MessageLookupByLibrary.simpleMessage(
+      "Guardar Contraseña",
     ),
     "savelabel": MessageLookupByLibrary.simpleMessage("Guardar"),
     "sciencefictionmovielabel": MessageLookupByLibrary.simpleMessage(
@@ -487,15 +513,21 @@ class MessageLookup extends MessageLookupByLibrary {
     "searchhint": MessageLookupByLibrary.simpleMessage(
       "Películas, series, personas",
     ),
-    "seeAllReviews": m7,
+    "seeAllReviews": m8,
     "sendEmail": MessageLookupByLibrary.simpleMessage("Enviar correo"),
     "sendReviewTooltip": MessageLookupByLibrary.simpleMessage("Enviar reseña"),
     "sendfeedbacklabel": MessageLookupByLibrary.simpleMessage(
       "Enviar Comentarios",
     ),
     "sendreportlabel": MessageLookupByLibrary.simpleMessage("Enviar Informe"),
+    "setNewPasswordSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Elige una nueva contraseña para tu cuenta.",
+    ),
+    "setNewPasswordTitle": MessageLookupByLibrary.simpleMessage(
+      "Nueva Contraseña",
+    ),
     "share": MessageLookupByLibrary.simpleMessage("Compartir"),
-    "shareText": m8,
+    "shareText": m9,
     "showPassword": MessageLookupByLibrary.simpleMessage("Mostrar contraseña"),
     "signInPromptBody": MessageLookupByLibrary.simpleMessage(
       "Inicia sesión para tener una lista de seguimiento, dar me gusta y escribir reseñas.",

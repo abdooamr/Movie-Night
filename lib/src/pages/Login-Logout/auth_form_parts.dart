@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../../generated/l10n.dart';
-import '../../Provider/register_provider.dart';
+import '../../data/auth_repository.dart';
 import '../../design/tokens.dart';
+
+/// Password rule for new passwords (sign-up and reset): 8+ characters with
+/// an upper- and lower-case letter, a digit and one of `!@#$&*~`.
+final RegExp strongPasswordPattern =
+    RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
 
 /// Closes the whole sign-in flow (Welcome, Log In / Create Account and any
 /// page above them) in one go, on the navigator that owns it: the root
@@ -25,9 +29,8 @@ typedef GoogleSignInOutcome = ({bool signedIn, String? error});
 /// picker is silent; a real failure returns a localized [error].
 /// The caller owns the busy state and must check `mounted` afterwards.
 Future<GoogleSignInOutcome> runGoogleSignIn(BuildContext context) async {
-  final provider = context.read<UserProvider>();
   final failed = S.of(context).authErrorGeneric;
-  final result = await provider.signInWithGoogle();
+  final result = await AuthRepository.instance.signInWithGoogle();
   if (!context.mounted) return (signedIn: false, error: null);
   switch (result) {
     case GoogleSignInResult.success:

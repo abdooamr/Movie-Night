@@ -1,10 +1,11 @@
 import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/components/feedback.dart';
+import 'package:Movie_Night/src/data/auth_repository.dart';
 import 'package:Movie_Night/src/pages/Login-Logout/auth_errors.dart';
 import 'package:Movie_Night/src/utils/app_logger.dart';
 import 'package:Movie_Night/src/widgets/customsettingscreen.dart';
 import 'package:ficonsax/ficonsax.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' show AuthException;
 import 'package:flutter/material.dart';
 
 /// Account > Reset Password: emails the signed-in user a reset link and
@@ -21,7 +22,7 @@ class _ResetPasswordRowState extends State<ResetPasswordRow> {
 
   Future<void> _send() async {
     final s = S.of(context);
-    final email = FirebaseAuth.instance.currentUser?.email;
+    final email = AuthRepository.instance.currentEmail;
     if (email == null || email.isEmpty) {
       AppFeedback.error(context, s.changepassworderror);
       return;
@@ -29,8 +30,9 @@ class _ResetPasswordRowState extends State<ResetPasswordRow> {
     setState(() => _busy = true);
     String? error;
     try {
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-    } on FirebaseAuthException catch (e, st) {
+      // The link opens the app's Set New Password screen.
+      await AuthRepository.instance.sendPasswordReset(email);
+    } on AuthException catch (e, st) {
       AppLog.error('sendPasswordResetEmail', e, st);
       error = mounted ? authErrorText(context, e) : s.changepassworderror;
     } catch (e, st) {

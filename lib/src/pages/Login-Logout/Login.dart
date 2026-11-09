@@ -1,18 +1,20 @@
 import 'package:ficonsax/ficonsax.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_icons/simple_icons.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' show AuthException;
 
 import '../../../generated/l10n.dart';
 import '../../components/app_text_field.dart';
+import '../../data/auth_repository.dart';
 import '../../design/tokens.dart';
 import '../../utils/app_logger.dart';
 import 'Forget_password.dart';
 import 'Register.dart';
 import 'auth_errors.dart';
 import 'auth_form_parts.dart';
+import 'password_migration_notice.dart';
 
-/// Loose "something@something.tld" check; Firebase has the final say.
+/// Loose "something@something.tld" check; Supabase has the final say.
 final RegExp authEmailPattern = RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$');
 
 class Login extends StatefulWidget {
@@ -45,15 +47,19 @@ class _LoginState extends State<Login> {
     });
     String? error;
     var ok = false;
+    var wrongPassword = false;
+    final email = _emailController.text.trim();
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
+      // The password is sent exactly as typed: sign-up never trims it.
+      await AuthRepository.instance.signInWithPassword(
+        email: email,
+        password: _passwordController.text,
       );
       ok = true;
-    } on FirebaseAuthException catch (e) {
+    } on AuthException catch (e) {
       AppLog.error('logIn', e);
       if (!mounted) return;
+      wrongPassword = isInvalidCredentials(e);
       // Don't reveal whether an account exists for this email.
       error = authErrorText(context, e, hideAccountExistence: true);
     } catch (e, stack) {
@@ -70,6 +76,11 @@ class _LoginState extends State<Login> {
       _busy = false;
       _error = error;
     });
+    // Accounts moved to a new sign-in system and old passwords did not move
+    // with them: explain that once, the first time a password is rejected.
+    if (wrongPassword && await PasswordMigrationNotice.claim() && mounted) {
+      await PasswordMigrationNotice.show(context, email: email);
+    }
   }
 
   Future<void> _google() async {

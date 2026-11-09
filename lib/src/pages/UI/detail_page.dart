@@ -8,6 +8,7 @@ import 'package:Movie_Night/src/components/section_header.dart';
 import 'package:Movie_Night/src/components/sign_in_prompt.dart';
 import 'package:Movie_Night/src/components/spill_glow.dart';
 import 'package:Movie_Night/src/components/state_views.dart';
+import 'package:Movie_Night/src/data/auth_repository.dart';
 import 'package:Movie_Night/src/design/motion.dart';
 import 'package:Movie_Night/src/design/tokens.dart';
 import 'package:Movie_Night/src/models/credit_model.dart';
@@ -27,7 +28,8 @@ import 'package:Movie_Night/src/widgets/shimmerWidgets/detailPageShimmerWidget.d
 import 'package:Movie_Night/src/widgets/similar.dart';
 import 'package:Movie_Night/src/widgets/watch_provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
@@ -59,14 +61,31 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-  late final bool _isLoggedIn;
+  /// Follows sign-in and sign-out while the page is open (e.g. signing in
+  /// from this page's own prompt, or out from the Profile tab).
+  bool _isLoggedIn = AuthRepository.instance.isSignedIn;
+  StreamSubscription<Object?>? _authSub;
   late Future<MovieModel> _details;
 
   @override
   void initState() {
     super.initState();
-    _isLoggedIn = FirebaseAuth.instance.currentUser != null;
+    _authSub = AuthRepository.instance.authStateChanges.listen(
+      (state) {
+        final signedIn = state.session != null;
+        if (mounted && signedIn != _isLoggedIn) {
+          setState(() => _isLoggedIn = signedIn);
+        }
+      },
+      onError: (Object _) {}, // Link errors are shown by AuthPage.
+    );
     _details = _load();
+  }
+
+  @override
+  void dispose() {
+    _authSub?.cancel();
+    super.dispose();
   }
 
   Future<MovieModel> _load() {

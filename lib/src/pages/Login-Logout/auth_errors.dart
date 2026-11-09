@@ -1,38 +1,55 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../generated/l10n.dart';
 
-/// Maps a [FirebaseAuthException] to localized, user-facing copy. Never shows
-/// the raw exception message.
+/// Whether [e] is a wrong email or password.
 ///
-/// With [hideAccountExistence] (log-in forms), `user-not-found` reads as a
+/// Newer Auth servers send the `invalid_credentials` code; older ones only the
+/// "Invalid login credentials" message with HTTP 400.
+bool isInvalidCredentials(AuthException e) =>
+    e.code == 'invalid_credentials' ||
+    (e.code == null &&
+        e.statusCode == '400' &&
+        e.message.toLowerCase().contains('invalid login credentials'));
+
+/// Maps a Supabase [AuthException] to localized, user-facing copy. Never
+/// shows the raw exception message.
+///
+/// With [hideAccountExistence] (log-in forms), "user not found" reads as a
 /// wrong email or password, so the form can't be used to probe for accounts.
 String authErrorText(
   BuildContext context,
-  FirebaseAuthException e, {
+  AuthException e, {
   bool hideAccountExistence = false,
 }) {
   final s = S.of(context);
+  if (e is AuthRetryableFetchException) return s.authErrorNetwork;
+  if (e is AuthWeakPasswordException) return s.authErrorWeakPassword;
+  if (isInvalidCredentials(e)) return s.authErrorInvalidCredential;
   switch (e.code) {
-    case 'invalid-credential':
-    case 'wrong-password':
-      return s.authErrorInvalidCredential;
-    case 'user-not-found':
+    case 'user_not_found':
       return hideAccountExistence
           ? s.authErrorInvalidCredential
           : s.authErrorUserNotFound;
-    case 'email-already-in-use':
+    case 'user_already_exists':
+    case 'email_exists':
       return s.authErrorEmailInUse;
-    case 'weak-password':
+    case 'weak_password':
       return s.authErrorWeakPassword;
-    case 'invalid-email':
+    case 'email_address_invalid':
+    case 'validation_failed':
       return s.authErrorInvalidEmail;
-    case 'network-request-failed':
-      return s.authErrorNetwork;
-    case 'too-many-requests':
+    case 'email_not_confirmed':
+      return s.authErrorEmailNotConfirmed;
+    case 'same_password':
+      return s.authErrorSamePassword;
+    case 'over_request_rate_limit':
+    case 'over_email_send_rate_limit':
       return s.authErrorTooManyRequests;
-    case 'requires-recent-login':
+    case 'reauthentication_needed':
+    case 'session_expired':
+    case 'session_not_found':
       return s.authErrorRecentLogin;
     default:
       return s.authErrorGeneric;

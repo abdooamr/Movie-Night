@@ -88,7 +88,7 @@ class MyApp extends StatelessWidget {
         builder: (context, child) => OfflineBanner(
             child: applyAccessibilityTheme(
                 context, child ?? const SizedBox.shrink())),
-        home: AuthPage(),
+        home: const AuthPage(),
       );
     });
   }

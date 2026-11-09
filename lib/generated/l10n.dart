@@ -2304,6 +2304,111 @@ class S {
   String get mediaTvShow {
     return Intl.message('TV Show', name: 'mediaTvShow', desc: '', args: []);
   }
+
+  /// `Confirm your email first. Open the link we sent you, then log in.`
+  String get authErrorEmailNotConfirmed {
+    return Intl.message(
+      'Confirm your email first. Open the link we sent you, then log in.',
+      name: 'authErrorEmailNotConfirmed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose a password that's different from your current one.`
+  String get authErrorSamePassword {
+    return Intl.message(
+      'Choose a password that\'s different from your current one.',
+      name: 'authErrorSamePassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check your email. We sent a link to {email}. Open it to activate your account, then log in.`
+  String confirmEmailSent(Object email) {
+    return Intl.message(
+      'Check your email. We sent a link to $email. Open it to activate your account, then log in.',
+      name: 'confirmEmailSent',
+      desc: '',
+      args: [email],
+    );
+  }
+
+  /// `Reset Your Password Once`
+  String get passwordMigrationTitle {
+    return Intl.message(
+      'Reset Your Password Once',
+      name: 'passwordMigrationTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Movie Night moved to a new sign-in system. If you had an account before this update, your old password no longer works. Reset it once to keep using your account.`
+  String get passwordMigrationBody {
+    return Intl.message(
+      'Movie Night moved to a new sign-in system. If you had an account before this update, your old password no longer works. Reset it once to keep using your account.',
+      name: 'passwordMigrationBody',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not Now`
+  String get notNowLabel {
+    return Intl.message('Not Now', name: 'notNowLabel', desc: '', args: []);
+  }
+
+  /// `Set a New Password`
+  String get setNewPasswordTitle {
+    return Intl.message(
+      'Set a New Password',
+      name: 'setNewPasswordTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose a new password for your account.`
+  String get setNewPasswordSubtitle {
+    return Intl.message(
+      'Choose a new password for your account.',
+      name: 'setNewPasswordSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New Password`
+  String get newPasswordLabel {
+    return Intl.message(
+      'New Password',
+      name: 'newPasswordLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save Password`
+  String get savePasswordLabel {
+    return Intl.message(
+      'Save Password',
+      name: 'savePasswordLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your password was updated.`
+  String get passwordUpdated {
+    return Intl.message(
+      'Your password was updated.',
+      name: 'passwordUpdated',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

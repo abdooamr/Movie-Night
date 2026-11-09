@@ -315,5 +315,21 @@
     "accountGroupLabel": "Account",
     "removeFromHistory": "Remove",
     "mediaMovie": "Movie",
-    "mediaTvShow": "TV Show"
+    "mediaTvShow": "TV Show",
+    "authErrorEmailNotConfirmed": "Confirm your email first. Open the link we sent you, then log in.",
+    "authErrorSamePassword": "Choose a password that's different from your current one.",
+    "confirmEmailSent": "Check your email. We sent a link to {email}. Open it to activate your account, then log in.",
+    "@confirmEmailSent": {
+        "placeholders": {
+            "email": {}
+        }
+    },
+    "passwordMigrationTitle": "Reset Your Password Once",
+    "passwordMigrationBody": "Movie Night moved to a new sign-in system. If you had an account before this update, your old password no longer works. Reset it once to keep using your account.",
+    "notNowLabel": "Not Now",
+    "setNewPasswordTitle": "Set a New Password",
+    "setNewPasswordSubtitle": "Choose a new password for your account.",
+    "newPasswordLabel": "New Password",
+    "savePasswordLabel": "Save Password",
+    "passwordUpdated": "Your password was updated."
 }

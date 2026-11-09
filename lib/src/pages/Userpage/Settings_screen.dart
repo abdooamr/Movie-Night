@@ -1,5 +1,6 @@
 import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/components/feedback.dart';
+import 'package:Movie_Night/src/data/auth_repository.dart';
 import 'package:Movie_Night/src/data/user_repository.dart';
 import 'package:Movie_Night/src/design/tokens.dart';
 import 'package:Movie_Night/src/pages/Adminpages/admin_panel_vd.dart';
@@ -39,7 +40,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _checkIsAdmin() async {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final uid = AuthRepository.instance.currentUserId;
     if (uid == null) return;
     bool admin;
     try {
@@ -69,7 +70,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     setState(() => _signingOut = true);
     try {
       // The shell swaps this tab to the sign-in prompt via the auth stream.
-      await FirebaseAuth.instance.signOut();
+      await AuthRepository.instance.signOut();
     } catch (e, st) {
       AppLog.error('signOut', e, st);
       if (mounted) {
@@ -120,7 +121,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       AppLog.error('deleteAccount', e, st);
       error = e.code == 'requires-recent-login'
           ? s.authErrorRecentLogin
-          : authErrorText(mounted ? context : rootNav.context, e);
+          : s.genericError; // Replaced by the delete_my_account RPC next.
     } catch (e, st) {
       AppLog.error('deleteAccount', e, st);
       error = s.genericError;

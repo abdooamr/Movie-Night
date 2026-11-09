@@ -1,14 +1,13 @@
 import 'package:ficonsax/ficonsax.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_icons/simple_icons.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' show AuthException;
 
 import '../../../generated/l10n.dart';
 import '../../Provider/register_provider.dart';
 import '../../components/app_text_field.dart';
 import '../../design/tokens.dart';
-import '../../models/user_model.dart';
 import '../../utils/app_logger.dart';
 import 'Login.dart';
 import 'auth_errors.dart';
@@ -22,10 +21,6 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  static const _userRole = 'User';
-  static final RegExp _strongPassword =
-      RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-
   final _formKey = GlobalKey<FormState>();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
@@ -34,6 +29,9 @@ class _RegisterState extends State<Register> {
   final _confirmController = TextEditingController();
   bool _busy = false;
   String? _error;
+
+  /// The address the confirmation link went to; non-null once sent.
+  String? _confirmSentTo;
 
   @override
   void dispose() {
@@ -49,26 +47,21 @@ class _RegisterState extends State<Register> {
     if (_busy) return;
     if (!_formKey.currentState!.validate()) return;
     final provider = context.read<UserProvider>();
-    final first = _firstNameController.text.trim();
-    final last = _lastNameController.text.trim();
-    final user = Users(
-      password: _passwordController.text,
-      role: _userRole,
-      ProfilePic: 'https://ui-avatars.com/api/?name=$first+$last',
-      firstName: first,
-      lastName: last,
-      email: _emailController.text.trim(),
-    );
+    final email = _emailController.text.trim();
     setState(() {
       _busy = true;
       _error = null;
     });
     String? error;
-    var ok = false;
+    SignUpOutcome? outcome;
     try {
-      await provider.createUser(user: user);
-      ok = true;
-    } on FirebaseAuthException catch (e) {
+      outcome = await provider.createUser(
+        email: email,
+        password: _passwordController.text,
+        firstName: _firstNameController.text.trim(),
+        lastName: _lastNameController.text.trim(),
+      );
+    } on AuthException catch (e) {
       AppLog.error('register', e);
       if (!mounted) return;
       error = authErrorText(context, e);
@@ -78,13 +71,14 @@ class _RegisterState extends State<Register> {
       error = S.of(context).authErrorGeneric;
     }
     if (!mounted) return;
-    if (ok) {
+    if (outcome == SignUpOutcome.signedIn) {
       closeSignInFlow(context);
       return;
     }
     setState(() {
       _busy = false;
       _error = error;
+      if (outcome == SignUpOutcome.confirmEmail) _confirmSentTo = email;
     });
   }
 
@@ -106,6 +100,48 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     final s = S.of(context);
     final text = Theme.of(context).textTheme;
+
+    final confirmSentTo = _confirmSentTo;
+    if (confirmSentTo != null) {
+      // "Confirm email" is on: the account waits for the link.
+      return Scaffold(
+        appBar: AppBar(),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsetsDirectional.all(MNSpace.xl),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: MNSpace.xxl),
+                ExcludeSemantics(
+                  child: Icon(
+                    IconsaxBold.sms_tracking,
+                    size: MNSize.avatar,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+                const SizedBox(height: MNSpace.lg),
+                Semantics(
+                  liveRegion: true,
+                  child: Text(
+                    s.confirmEmailSent(confirmSentTo),
+                    textAlign: TextAlign.center,
+                    style: text.bodyLarge,
+                  ),
+                ),
+                const SizedBox(height: MNSpace.xl),
+                FilledButton(
+                  onPressed: () => Navigator.of(context).pushReplacement(
+                    MaterialPageRoute<void>(builder: (_) => const Login()),
+                  ),
+                  child: Text(s.backToLogIn),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(),
@@ -165,7 +201,7 @@ class _RegisterState extends State<Register> {
                         kind: AppFieldKind.newPassword,
                         icon: IconsaxOutline.lock,
                         action: TextInputAction.next,
-                        validator: (v) => _strongPassword.hasMatch(v ?? '')
+                        validator: (v) => strongPasswordPattern.hasMatch(v ?? '')
                             ? null
                             : s.passwordvalidationtext,
                       ),

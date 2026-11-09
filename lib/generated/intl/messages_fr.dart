@@ -22,23 +22,26 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(character) => "Dans le rôle de ${character}";
 
-  static String m1(section) => "Impossible de charger ${section}.";
+  static String m1(email) =>
+      "Consultez vos e-mails. Nous avons envoyé un lien à ${email}. Ouvrez-le pour activer votre compte, puis connectez-vous.";
 
-  static String m2(name) => "Supprimer ${name} ?";
+  static String m2(section) => "Impossible de charger ${section}.";
 
-  static String m3(query) =>
+  static String m3(name) => "Supprimer ${name} ?";
+
+  static String m4(query) =>
       "Aucun résultat pour « ${query} ». Vérifiez l\'orthographe ou essayez un autre titre.";
 
-  static String m4(title) => "Lire ${title}";
+  static String m5(title) => "Lire ${title}";
 
-  static String m5(score) => "${score} sur 10";
+  static String m6(score) => "${score} sur 10";
 
-  static String m6(email) =>
+  static String m7(email) =>
       "Vérifiez vos e-mails. Nous avons envoyé un lien de réinitialisation à ${email}.";
 
-  static String m7(count) => "Voir tous les avis (${count})";
+  static String m8(count) => "Voir tous les avis (${count})";
 
-  static String m8(title, url) => "Découvrez ${title} sur Movie Night\n${url}";
+  static String m9(title, url) => "Découvrez ${title} sur Movie Night\n${url}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -117,6 +120,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "authErrorEmailInUse": MessageLookupByLibrary.simpleMessage(
       "Un compte existe déjà avec cet e-mail.",
     ),
+    "authErrorEmailNotConfirmed": MessageLookupByLibrary.simpleMessage(
+      "Confirmez d\'abord votre e-mail. Ouvrez le lien que nous vous avons envoyé, puis connectez-vous.",
+    ),
     "authErrorGeneric": MessageLookupByLibrary.simpleMessage(
       "Impossible de terminer. Réessayez.",
     ),
@@ -131,6 +137,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "authErrorRecentLogin": MessageLookupByLibrary.simpleMessage(
       "Pour votre sécurité, reconnectez-vous afin de supprimer votre compte.",
+    ),
+    "authErrorSamePassword": MessageLookupByLibrary.simpleMessage(
+      "Choisissez un mot de passe différent de l\'actuel.",
     ),
     "authErrorTooManyRequests": MessageLookupByLibrary.simpleMessage(
       "Trop de tentatives. Réessayez dans quelques minutes.",
@@ -178,10 +187,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "comedymovielabel": MessageLookupByLibrary.simpleMessage(
       "Films de Comédie",
     ),
+    "confirmEmailSent": m1,
     "continueWithGoogle": MessageLookupByLibrary.simpleMessage(
       "Continuer avec Google",
     ),
-    "couldntLoadSection": m1,
+    "couldntLoadSection": m2,
     "couldntLoadTitle": MessageLookupByLibrary.simpleMessage(
       "Impossible de charger ce titre.",
     ),
@@ -219,7 +229,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteUserConfirmation": MessageLookupByLibrary.simpleMessage(
       "Es-tu sûr de vouloir supprimer ton compte ? Cette action est irréversible.",
     ),
-    "deleteUserTitle": m2,
+    "deleteUserTitle": m3,
     "deleteaccountlabel": MessageLookupByLibrary.simpleMessage(
       "Supprimer le Compte",
     ),
@@ -335,6 +345,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Films de Mystère",
     ),
     "name": MessageLookupByLibrary.simpleMessage("Nom"),
+    "newPasswordLabel": MessageLookupByLibrary.simpleMessage(
+      "Nouveau mot de passe",
+    ),
     "newstvlabel": MessageLookupByLibrary.simpleMessage(
       "Séries TV d\'Actualités",
     ),
@@ -351,7 +364,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "noReport": MessageLookupByLibrary.simpleMessage("Aucun signalement"),
     "noResults": MessageLookupByLibrary.simpleMessage("Pas de Résultats"),
-    "noResultsFor": m3,
+    "noResultsFor": m4,
     "noResultsMessage": MessageLookupByLibrary.simpleMessage(
       "Aucun résultat trouvé pour votre recherche",
     ),
@@ -376,6 +389,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "nomoviesinwatchlist": MessageLookupByLibrary.simpleMessage(
       "Votre Liste de Surveillance est Vide\nCommencez à ajouter des films à votre liste de surveillance et découvrez vos préférés !",
     ),
+    "notNowLabel": MessageLookupByLibrary.simpleMessage("Plus tard"),
     "notamemberlabel": MessageLookupByLibrary.simpleMessage(
       "Pas encore membre?",
     ),
@@ -393,6 +407,15 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "ohnolabel": MessageLookupByLibrary.simpleMessage("Oh Non !"),
     "okLabel": MessageLookupByLibrary.simpleMessage("OK"),
+    "passwordMigrationBody": MessageLookupByLibrary.simpleMessage(
+      "Movie Night utilise un nouveau système de connexion. Si vous aviez un compte avant cette mise à jour, votre ancien mot de passe ne fonctionne plus. Réinitialisez-le une fois pour continuer à utiliser votre compte.",
+    ),
+    "passwordMigrationTitle": MessageLookupByLibrary.simpleMessage(
+      "Réinitialisez votre mot de passe une fois",
+    ),
+    "passwordUpdated": MessageLookupByLibrary.simpleMessage(
+      "Votre mot de passe a été mis à jour.",
+    ),
     "passwordconfirmlabel": MessageLookupByLibrary.simpleMessage(
       "Confirmer le Mot de Passe",
     ),
@@ -403,7 +426,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "passwordvalidationtext": MessageLookupByLibrary.simpleMessage(
       "Utilisez au moins 8 caractères, dont une majuscule, une minuscule, un chiffre et un symbole.",
     ),
-    "playVideo": m4,
+    "playVideo": m5,
     "pleasecheckinternetconnection": MessageLookupByLibrary.simpleMessage(
       "S\'il vous plaît, vérifiez votre connexion à internet et réessayez",
     ),
@@ -423,7 +446,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "profilenavbar": MessageLookupByLibrary.simpleMessage("Profil"),
     "rateMovieNight": MessageLookupByLibrary.simpleMessage("Noter Movie Night"),
-    "ratingOutOf10": m5,
+    "ratingOutOf10": m6,
     "readLess": MessageLookupByLibrary.simpleMessage("Lire moins"),
     "readmorelabel": MessageLookupByLibrary.simpleMessage("Lire la suite"),
     "realitytvlabel": MessageLookupByLibrary.simpleMessage(
@@ -460,7 +483,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "reportpagelabel": MessageLookupByLibrary.simpleMessage(
       "Veuillez nous envoyer un rapport si vous trouvez des bugs ou avez des suggestions pour l\'application.",
     ),
-    "resetLinkSent": m6,
+    "resetLinkSent": m7,
     "resetPassword": MessageLookupByLibrary.simpleMessage(
       "Réinitialiser le mot de passe",
     ),
@@ -470,6 +493,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "role": MessageLookupByLibrary.simpleMessage("Rôle"),
     "romancemovielabel": MessageLookupByLibrary.simpleMessage(
       "Films Romantiques",
+    ),
+    "savePasswordLabel": MessageLookupByLibrary.simpleMessage(
+      "Enregistrer le mot de passe",
     ),
     "savelabel": MessageLookupByLibrary.simpleMessage("Enregistrer"),
     "sciencefictionmovielabel": MessageLookupByLibrary.simpleMessage(
@@ -481,7 +507,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "searchhint": MessageLookupByLibrary.simpleMessage(
       "Films, séries, personnes",
     ),
-    "seeAllReviews": m7,
+    "seeAllReviews": m8,
     "sendEmail": MessageLookupByLibrary.simpleMessage("Envoyer l’e-mail"),
     "sendReviewTooltip": MessageLookupByLibrary.simpleMessage(
       "Envoyer l\'avis",
@@ -492,8 +518,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "sendreportlabel": MessageLookupByLibrary.simpleMessage(
       "Envoyer le Rapport",
     ),
+    "setNewPasswordSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Choisissez un nouveau mot de passe pour votre compte.",
+    ),
+    "setNewPasswordTitle": MessageLookupByLibrary.simpleMessage(
+      "Définir un nouveau mot de passe",
+    ),
     "share": MessageLookupByLibrary.simpleMessage("Partager"),
-    "shareText": m8,
+    "shareText": m9,
     "showPassword": MessageLookupByLibrary.simpleMessage(
       "Afficher le mot de passe",
     ),
