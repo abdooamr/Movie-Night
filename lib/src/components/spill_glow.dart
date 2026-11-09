@@ -1,25 +1,29 @@
-import 'dart:ui' show ImageFilter;
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 
 import '../design/motion.dart';
 import '../design/tokens.dart';
+import 'glow_baker.dart';
 
 /// The signature (spec section 8): a soft field of the film's own colour
 /// spilling from the top of the screen behind [child].
 ///
-/// A 16:9 band at the top holds [source] decoded at 200 px wide, blurred
-/// (sigma 60), at [MNColors.glowOpacity], fading into `surface`. Cross-fades
-/// over [MNDuration.long] when [source] changes (instant under Reduce
-/// Motion). Off under High Contrast or with no source.
+/// A 16:9 band at the top holds [source] baked once by [bakeGlow] into a
+/// small blurred image (cached), stretched to the band at
+/// [MNColors.glowOpacity] and fading into `surface`. No filter runs while
+/// scrolling. Cross-fades over [MNDuration.long] when [source] changes
+/// (instant under Reduce Motion). Off under High Contrast, with no source,
+/// or when the image fails.
 class SpillGlow extends StatelessWidget {
   const SpillGlow({super.key, required this.source, required this.child});
 
   final ImageProvider? source;
   final Widget child;
 
-  static const int decodeWidth = 200;
-  static const double blurSigma = 60;
+  static const int bakeWidth = GlowBake.width;
+  static const int bakeHeight = GlowBake.height;
+  static const double bakeSigma = GlowBake.sigma;
 
   @override
   Widget build(BuildContext context) {
@@ -51,8 +55,7 @@ class SpillGlow extends StatelessWidget {
                         ),
                         child: _Glow(
                           key: ValueKey(src),
-                          image: ResizeImage.resizeIfNeeded(
-                              decodeWidth, null, src),
+                          source: src,
                           opacity: opacity,
                         ),
                       ),
@@ -78,28 +81,73 @@ class SpillGlow extends StatelessWidget {
   }
 }
 
-class _Glow extends StatelessWidget {
-  const _Glow({super.key, required this.image, required this.opacity});
+/// One baked glow. Shows nothing until the bake lands (or if it fails).
+class _Glow extends StatefulWidget {
+  const _Glow({super.key, required this.source, required this.opacity});
 
-  final ImageProvider image;
+  final ImageProvider source;
   final double opacity;
 
   @override
+  State<_Glow> createState() => _GlowState();
+}
+
+class _GlowState extends State<_Glow> {
+  /// This widget's own clone; disposed when replaced or unmounted.
+  ui.Image? _image;
+  ImageProvider? _requested;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _resolve();
+  }
+
+  @override
+  void didUpdateWidget(_Glow oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.source != widget.source) _resolve();
+  }
+
+  void _resolve() {
+    final source = widget.source;
+    if (source == _requested) return;
+    _requested = source;
+    final cached = peekGlow(source);
+    if (cached != null) {
+      _replace(cached);
+      return;
+    }
+    _replace(null);
+    bakeGlow(source, createLocalImageConfiguration(context)).then((image) {
+      if (!mounted || _requested != source) {
+        image?.dispose();
+        return;
+      }
+      setState(() => _replace(image));
+    });
+  }
+
+  void _replace(ui.Image? image) {
+    _image?.dispose();
+    _image = image;
+  }
+
+  @override
+  void dispose() {
+    _replace(null);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ImageFiltered(
-      imageFilter: ImageFilter.blur(
-        sigmaX: SpillGlow.blurSigma,
-        sigmaY: SpillGlow.blurSigma,
-        tileMode: TileMode.clamp,
-      ),
-      child: Image(
-        image: image,
-        fit: BoxFit.cover,
-        opacity: AlwaysStoppedAnimation(opacity),
-        excludeFromSemantics: true,
-        gaplessPlayback: true,
-        errorBuilder: (context, error, stack) => const SizedBox.shrink(),
-      ),
+    final image = _image;
+    if (image == null) return const SizedBox.shrink();
+    return RawImage(
+      image: image,
+      fit: BoxFit.fill,
+      filterQuality: FilterQuality.medium,
+      opacity: AlwaysStoppedAnimation(widget.opacity),
     );
   }
 }

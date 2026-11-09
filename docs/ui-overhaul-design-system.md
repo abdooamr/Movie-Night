@@ -166,7 +166,7 @@ HOME — compact (390pt)                    HOME — regular (≥600pt)
 **Why it belongs to this product.** The icon is a light source in a dark room, and so is a cinema. Brand color moves into the content layer, where the Branding guidelines say it belongs ("consider moving it into the content layer"). The UI chrome stays monochrome.
 
 **How it's built.**
-- The poster is decoded at 200 px wide (cached provider) and wrapped in `ImageFiltered(blur σ 60)`. This is a static blur of a tiny image, not a `BackdropFilter`.
+- The source is baked once into a 64 × 36 image (decoded small, centre cover-cropped to 16:9, blur σ 8 at that size ≈ σ 60 across the band), cached (24 entries), and stretched to the band with medium filtering (`glow_baker.dart`). No live filter runs while scrolling. Earlier builds used `ImageFiltered(blur σ 60)`, which re-ran at full device resolution on every scroll frame.
 - It is clipped to a 16:9 band anchored at the top. Opacity is 0.55 in dark, 0.30 in light.
 - A gradient fades it into `surface` by 100% of the band height.
 - It is wrapped in a `RepaintBoundary`.

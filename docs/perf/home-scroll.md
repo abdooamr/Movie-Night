@@ -44,3 +44,21 @@ Frame budget at 60 Hz: 16.7 ms.
   down 70%" result. Compare average, p90 and p99 raster time instead.
 - Still to record: the same run on a ~2 GB RAM phone and on a high-end
   phone.
+
+## After Task 2 (baked spill glow)
+
+Same device and script, 3 runs, median.
+
+| Metric | Baseline | Task 2 | Change |
+| --- | --- | --- | --- |
+| average build ms | 2.62 | 2.78 | noise |
+| p90 build ms | 5.34 | 5.49 | noise |
+| average raster ms | 7.79 | 6.53 | -16% |
+| p90 raster ms | 10.45 | 10.22 | noise |
+| p99 raster ms | 12.15 | 12.76 | noise |
+| missed raster budget | 0 | 0 | none |
+
+The glow is only on screen near the top of Home, so the saving shows in
+the average rather than the tail. Visual check on the A50 (dark): close to
+the old look, slightly less bright at the very top. The hard line the old
+blur left at the bottom edge of the band is gone.
