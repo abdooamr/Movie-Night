@@ -156,6 +156,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "backOnline": MessageLookupByLibrary.simpleMessage("आप फिर से ऑनलाइन हैं।"),
     "backToLogIn": MessageLookupByLibrary.simpleMessage("लॉग इन पर वापस जाएँ"),
+    "beFirstToReview": MessageLookupByLibrary.simpleMessage(
+      "अभी कोई समीक्षा नहीं है। पहली समीक्षा आप लिखें।",
+    ),
     "biography": MessageLookupByLibrary.simpleMessage("जीवनी"),
     "browseMovies": MessageLookupByLibrary.simpleMessage("फ़िल्में देखें"),
     "buyon": MessageLookupByLibrary.simpleMessage("खरीदें:"),
@@ -304,6 +307,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "likednavbar": MessageLookupByLibrary.simpleMessage("लाइब्रेरी"),
     "localreviewswitch": MessageLookupByLibrary.simpleMessage(
       "स्थानीय समीक्षा",
+    ),
+    "logInToReview": MessageLookupByLibrary.simpleMessage(
+      "समीक्षा लिखने के लिए लॉग इन करें",
     ),
     "loginbuttonlabel": MessageLookupByLibrary.simpleMessage("लॉग इन करें"),
     "logintocontinue": MessageLookupByLibrary.simpleMessage(
@@ -462,6 +468,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "resetPasswordSubtitle": MessageLookupByLibrary.simpleMessage(
       "हम आपको रीसेट लिंक ईमेल करेंगे",
     ),
+    "reviewsTitle": MessageLookupByLibrary.simpleMessage("समीक्षाएँ"),
     "role": MessageLookupByLibrary.simpleMessage("भूमिका"),
     "romancemovielabel": MessageLookupByLibrary.simpleMessage(
       "रोमांस फ़िल्में",

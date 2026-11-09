@@ -2468,6 +2468,31 @@ class S {
       args: [minutes],
     );
   }
+
+  /// `Reviews`
+  String get reviewsTitle {
+    return Intl.message('Reviews', name: 'reviewsTitle', desc: '', args: []);
+  }
+
+  /// `No reviews yet. Be the first to write one.`
+  String get beFirstToReview {
+    return Intl.message(
+      'No reviews yet. Be the first to write one.',
+      name: 'beFirstToReview',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Log In to Write a Review`
+  String get logInToReview {
+    return Intl.message(
+      'Log In to Write a Review',
+      name: 'logInToReview',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

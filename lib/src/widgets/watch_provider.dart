@@ -122,6 +122,7 @@ class _ProviderRailState extends State<ProviderRail> {
             SectionHeader(title: widget.title),
             const SizedBox(height: MNSpace.sm),
             body,
+            const SizedBox(height: MNSpace.xl),
           ],
         );
       },

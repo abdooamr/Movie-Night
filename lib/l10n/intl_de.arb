@@ -292,5 +292,8 @@
     "episodesCount": "{count, plural, =1{1 Folge} other{{count} Folgen}}",
     "runtimeHoursMinutes": "{hours} Std. {minutes} Min.",
     "runtimeHoursOnly": "{hours} Std.",
-    "runtimeMinutesOnly": "{minutes} Min."
+    "runtimeMinutesOnly": "{minutes} Min.",
+    "reviewsTitle": "Bewertungen",
+    "beFirstToReview": "Noch keine Bewertungen. Schreib die erste.",
+    "logInToReview": "Anmelden, um zu bewerten"
 }

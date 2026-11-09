@@ -168,6 +168,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "backToLogIn": MessageLookupByLibrary.simpleMessage(
       "Retour à la connexion",
     ),
+    "beFirstToReview": MessageLookupByLibrary.simpleMessage(
+      "Aucun avis pour l\'instant. Écrivez le premier.",
+    ),
     "biography": MessageLookupByLibrary.simpleMessage("Biographie"),
     "browseMovies": MessageLookupByLibrary.simpleMessage("Parcourir les films"),
     "buyon": MessageLookupByLibrary.simpleMessage("Acheter sur"),
@@ -339,6 +342,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "likednavbar": MessageLookupByLibrary.simpleMessage("Bibliothèque"),
     "localreviewswitch": MessageLookupByLibrary.simpleMessage("Avis Local"),
+    "logInToReview": MessageLookupByLibrary.simpleMessage(
+      "Connectez-vous pour écrire un avis",
+    ),
     "loginbuttonlabel": MessageLookupByLibrary.simpleMessage("Se Connecter"),
     "logintocontinue": MessageLookupByLibrary.simpleMessage(
       "Veuillez vous connecter pour continuer",
@@ -504,6 +510,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "resetPasswordSubtitle": MessageLookupByLibrary.simpleMessage(
       "Nous vous enverrons un lien de réinitialisation par e-mail",
     ),
+    "reviewsTitle": MessageLookupByLibrary.simpleMessage("Avis"),
     "role": MessageLookupByLibrary.simpleMessage("Rôle"),
     "romancemovielabel": MessageLookupByLibrary.simpleMessage(
       "Films Romantiques",

@@ -1,20 +1,22 @@
 import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/reviewsprovider.dart';
-import 'package:Movie_Night/src/components/app_text_field.dart';
 import 'package:Movie_Night/src/components/feedback.dart';
 import 'package:Movie_Night/src/data/auth_repository.dart';
 import 'package:Movie_Night/src/design/tokens.dart';
 import 'package:Movie_Night/src/widgets/review_list.dart';
 import 'package:Movie_Night/src/widgets/review_card.dart';
-import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+/// Movie Night's own reviews of a title: the composer first (or a log-in
+/// button when signed out), then the live list.
 class LocalReviewsWidget extends StatefulWidget {
   const LocalReviewsWidget({
     super.key,
     required this.id,
     required this.isTvShow,
+    required this.isLoggedIn,
+    required this.onRequireSignIn,
     this.seeAllBuilder,
   });
 
@@ -25,6 +27,12 @@ class LocalReviewsWidget extends StatefulWidget {
   /// reviews show on both).
   final bool isTvShow;
 
+  /// Signed-in users get the composer; everyone can read.
+  final bool isLoggedIn;
+
+  /// Opens the sign-in flow.
+  final VoidCallback onRequireSignIn;
+
   final AllReviewsBuilder? seeAllBuilder;
 
   @override
@@ -34,6 +42,7 @@ class LocalReviewsWidget extends StatefulWidget {
 class _LocalReviewsWidgetState extends State<LocalReviewsWidget> {
   late ReviewProvider reviewProvider;
   final TextEditingController reviewController = TextEditingController();
+  bool _sending = false;
 
   /// Read when used, never cached: the user can sign out while this page
   /// stays open.
@@ -79,49 +88,106 @@ class _LocalReviewsWidgetState extends State<LocalReviewsWidget> {
 
   Future<void> _send() async {
     final text = reviewController.text.trim();
-    if (text.isEmpty) return;
+    if (text.isEmpty || _sending) return;
     final failMsg = S.of(context).genericError;
     if (_me == null) {
       AppFeedback.error(context, failMsg);
       return;
     }
+    setState(() => _sending = true);
     try {
       // Name, picture and date come from the profile and the row.
       await reviewProvider.saveReview(
           movieId: widget.id, isTv: widget.isTvShow, text: text);
       reviewController.clear();
+      if (mounted) FocusScope.of(context).unfocus();
     } catch (_) {
       if (mounted) AppFeedback.error(context, failMsg);
+    } finally {
+      if (mounted) setState(() => _sending = false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        ReviewList(seeAllBuilder: widget.seeAllBuilder!, streamFactory: _stream),
+        if (widget.isLoggedIn)
+          _Composer(
+            controller: reviewController,
+            sending: _sending,
+            onSend: _send,
+          )
+        else
+          OutlinedButton(
+            onPressed: widget.onRequireSignIn,
+            child: Text(s.logInToReview),
+          ),
         const SizedBox(height: MNSpace.md),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: AppTextField(
-                controller: reviewController,
-                label: S.of(context).writeReview,
-                kind: AppFieldKind.multiline,
+        ReviewList(
+          seeAllBuilder: widget.seeAllBuilder!,
+          streamFactory: _stream,
+          emptyText: s.beFirstToReview,
+        ),
+      ],
+    );
+  }
+}
+
+/// A borderless filled field that grows to four lines, with a round send
+/// button that lights up once there is text.
+class _Composer extends StatelessWidget {
+  const _Composer({
+    required this.controller,
+    required this.sending,
+    required this.onSend,
+  });
+
+  final TextEditingController controller;
+  final bool sending;
+  final VoidCallback onSend;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = S.of(context);
+    final theme = Theme.of(context);
+    const noBorder = OutlineInputBorder(
+      borderRadius: MNRadius.mdAll,
+      borderSide: BorderSide.none,
+    );
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Expanded(
+          child: TextField(
+            controller: controller,
+            minLines: 1,
+            maxLines: 4,
+            textCapitalization: TextCapitalization.sentences,
+            style: theme.textTheme.bodyLarge,
+            decoration: InputDecoration(
+              hintText: s.writeReview,
+              isDense: true,
+              contentPadding: const EdgeInsetsDirectional.symmetric(
+                horizontal: MNSpace.lg,
+                vertical: MNSpace.md,
               ),
+              border: noBorder,
+              enabledBorder: noBorder,
+              focusedBorder: noBorder,
             ),
-            const SizedBox(width: MNSpace.sm),
-            ValueListenableBuilder<TextEditingValue>(
-              valueListenable: reviewController,
-              builder: (context, value, _) => IconButton.filled(
-                tooltip: S.of(context).sendReviewTooltip,
-                onPressed: value.text.trim().isEmpty ? null : _send,
-                icon: const Icon(IconsaxOutline.send_2),
-              ),
-            ),
-          ],
+          ),
+        ),
+        const SizedBox(width: MNSpace.sm),
+        ValueListenableBuilder<TextEditingValue>(
+          valueListenable: controller,
+          builder: (context, value, _) => IconButton.filled(
+            tooltip: s.sendReviewTooltip,
+            onPressed: value.text.trim().isEmpty || sending ? null : onSend,
+            icon: const Icon(Icons.arrow_upward_rounded),
+          ),
         ),
       ],
     );

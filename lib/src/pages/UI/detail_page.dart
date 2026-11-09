@@ -8,7 +8,6 @@ import 'package:Movie_Night/src/components/poster_card.dart' show heroTagFor;
 import 'package:Movie_Night/src/components/poster_viewer.dart';
 import 'package:Movie_Night/src/components/rating_badge.dart';
 import 'package:Movie_Night/src/components/section_header.dart';
-import 'package:Movie_Night/src/components/sign_in_prompt.dart';
 import 'package:Movie_Night/src/components/spill_glow.dart';
 import 'package:Movie_Night/src/components/state_views.dart';
 import 'package:Movie_Night/src/data/auth_repository.dart';
@@ -214,13 +213,15 @@ class _DetailBody extends StatelessWidget {
                 child: _Storyline(text: details.overview),
               ),
             _KeepAlive(child: CastWidget(id: id, isTvShow: isTv)),
-            if (isLoggedIn)
-              _KeepAlive(child: ReviewsPage(id: id, isTvShow: isTv))
-            else
-              Padding(
-                padding: const EdgeInsetsDirectional.all(MNSpace.lg),
-                child: SignInPrompt(onLogIn: () => presentSignIn(context)),
+            // Everyone can read reviews; writing asks for an account.
+            _KeepAlive(
+              child: ReviewsPage(
+                id: id,
+                isTvShow: isTv,
+                isLoggedIn: isLoggedIn,
+                onRequireSignIn: () => presentSignIn(context),
               ),
+            ),
             _KeepAlive(child: SimilarWidget(id: id, isTvShow: isTv)),
           ];
 
@@ -274,7 +275,13 @@ class _DetailBody extends StatelessWidget {
                     const SizedBox(height: MNSpace.lg),
                   ],
                   if (header.genres.isNotEmpty) ...[
-                    _GenreChips(genres: header.genres),
+                    Text(
+                      header.genres.join(' · '),
+                      style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
+                    ),
                     const SizedBox(height: MNSpace.lg),
                   ],
                   below,
@@ -371,6 +378,7 @@ class _HeaderBar extends StatelessWidget {
       ],
       flexibleSpace: FlexibleSpaceBar(
         collapseMode: CollapseMode.parallax,
+        centerTitle: true,
         titlePadding: const EdgeInsetsDirectional.only(
           start: MNSpace.xxxl + MNSpace.lg,
           end: MNSpace.xxxl + MNSpace.lg,
@@ -578,43 +586,6 @@ class _TitleBlock extends StatelessWidget {
           const SizedBox(height: MNSpace.sm),
           RatingBadge(score: score, showSource: true),
         ],
-      ],
-    );
-  }
-}
-
-/// Genres as quiet, non-interactive labels (they aren't filters here).
-class _GenreChips extends StatelessWidget {
-  const _GenreChips({required this.genres});
-
-  final List<String> genres;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final cs = theme.colorScheme;
-    return Wrap(
-      spacing: MNSpace.xs,
-      runSpacing: MNSpace.xs,
-      children: [
-        for (final g in genres)
-          DecoratedBox(
-            decoration: ShapeDecoration(
-              color: cs.surfaceContainerHigh,
-              shape: const StadiumBorder(),
-            ),
-            child: Padding(
-              padding: const EdgeInsetsDirectional.symmetric(
-                horizontal: MNSpace.md,
-                vertical: MNSpace.xs,
-              ),
-              child: Text(
-                g,
-                style: theme.textTheme.labelMedium!
-                    .copyWith(color: cs.onSurfaceVariant),
-              ),
-            ),
-          ),
       ],
     );
   }
@@ -833,6 +804,10 @@ class _StorylineState extends State<_Storyline> {
                 ),
                 if (overflows)
                   TextButton(
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsetsDirectional.zero,
+                      alignment: AlignmentDirectional.centerStart,
+                    ),
                     onPressed: () => setState(() => _expanded = !_expanded),
                     child: Text(_expanded
                         ? S.of(context).readLess

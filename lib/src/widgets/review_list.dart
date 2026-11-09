@@ -18,12 +18,16 @@ class ReviewList extends StatefulWidget {
     super.key,
     required this.seeAllBuilder,
     required this.streamFactory,
+    this.emptyText,
   });
 
   static const int previewCount = 3;
 
   final AllReviewsBuilder seeAllBuilder;
   final Stream<List<ReviewCardData>> Function() streamFactory;
+
+  /// Shown when there are no reviews; defaults to "No Reviews".
+  final String? emptyText;
 
   @override
   State<ReviewList> createState() => _ReviewListState();
@@ -38,7 +42,9 @@ class _ReviewListState extends State<ReviewList> {
     _stream = widget.streamFactory();
   }
 
-  void _retry() => setState(() => _stream = widget.streamFactory());
+  void _retry() => setState(() {
+        _stream = widget.streamFactory();
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +72,8 @@ class _ReviewListState extends State<ReviewList> {
             ),
             child: Center(
               child: Text(
-                S.of(context).noReviews,
+                widget.emptyText ?? S.of(context).noReviews,
+                textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),

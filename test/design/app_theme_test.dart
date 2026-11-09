@@ -66,7 +66,7 @@ void main() {
     final b = theme.pageTransitionsTheme.builders;
     expect(b[TargetPlatform.iOS], isA<CupertinoPageTransitionsBuilder>());
     expect(
-        b[TargetPlatform.android], isA<PredictiveBackPageTransitionsBuilder>());
+        b[TargetPlatform.android], isA<CupertinoPageTransitionsBuilder>());
   });
 
   test('component themes', () {

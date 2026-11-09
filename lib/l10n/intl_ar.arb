@@ -292,5 +292,8 @@
     "episodesCount": "{count, plural, =1{حلقة واحدة} =2{حلقتان} few{{count} حلقات} many{{count} حلقة} other{{count} حلقة}}",
     "runtimeHoursMinutes": "{hours} س {minutes} د",
     "runtimeHoursOnly": "{hours} س",
-    "runtimeMinutesOnly": "{minutes} د"
+    "runtimeMinutesOnly": "{minutes} د",
+    "reviewsTitle": "المراجعات",
+    "beFirstToReview": "لا توجد مراجعات بعد. كن أول من يكتب مراجعة.",
+    "logInToReview": "سجّل الدخول لكتابة مراجعة"
 }

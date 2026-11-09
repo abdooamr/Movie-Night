@@ -61,7 +61,10 @@ ThemeData buildAppTheme(
   final plain = buildTextTheme(cs.onSurface);
   final text = boldText ? emboldenTextTheme(plain) : plain;
   const minTap = Size(MNSize.minTap, MNSize.minTap);
-  const pill = StadiumBorder();
+  // Controls are rounded rectangles, not capsules: capsule buttons, a pill
+  // tab indicator and outlined pill toggles read as Material defaults.
+  const control = RoundedRectangleBorder(borderRadius: MNRadius.mdAll);
+  const textControl = RoundedRectangleBorder(borderRadius: MNRadius.smAll);
 
   final base = ThemeData(
     useMaterial3: true,
@@ -74,18 +77,29 @@ ThemeData buildAppTheme(
     extensions: [mn],
     pageTransitionsTheme: const PageTransitionsTheme(builders: {
       TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-      TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
+      // The iOS push: slide in from the side, swipe from the edge to go back.
+      TargetPlatform.android: CupertinoPageTransitionsBuilder(),
     }),
+    // A chevron for Back, as on iOS (it mirrors itself in RTL).
+    actionIconTheme: ActionIconThemeData(
+      backButtonIconBuilder: (_) =>
+          const Icon(Icons.arrow_back_ios_new_rounded),
+    ),
+    searchBarTheme: SearchBarThemeData(
+      shape: const WidgetStatePropertyAll(control),
+      backgroundColor: WidgetStatePropertyAll(cs.surfaceContainer),
+      elevation: const WidgetStatePropertyAll(0),
+    ),
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
-        shape: pill,
+        shape: control,
         minimumSize: const Size(MNSize.minTap, MNSize.buttonHeight),
         textStyle: text.labelLarge,
       ),
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
-        shape: pill,
+        shape: control,
         minimumSize: minTap,
         textStyle: text.labelLarge,
         side: BorderSide(color: cs.outline),
@@ -93,7 +107,7 @@ ThemeData buildAppTheme(
     ),
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
-        shape: pill,
+        shape: textControl,
         minimumSize: minTap,
         textStyle: text.labelLarge,
       ),
@@ -142,14 +156,28 @@ ThemeData buildAppTheme(
     navigationBarTheme: NavigationBarThemeData(
       backgroundColor: cs.surfaceContainer,
       surfaceTintColor: Colors.transparent,
-      indicatorColor: cs.primaryContainer,
-      indicatorShape: pill,
+      // The selected tab is tinted (icon and label); no pill behind it.
+      indicatorColor: Colors.transparent,
+      overlayColor: const WidgetStatePropertyAll(Colors.transparent),
       elevation: 0,
-      labelTextStyle: WidgetStatePropertyAll(text.labelMedium),
+      iconTheme: WidgetStateProperty.resolveWith(
+        (states) => IconThemeData(
+          color: states.contains(WidgetState.selected)
+              ? cs.primary
+              : cs.onSurfaceVariant,
+        ),
+      ),
+      labelTextStyle: WidgetStateProperty.resolveWith(
+        (states) => text.labelMedium!.copyWith(
+          color: states.contains(WidgetState.selected)
+              ? cs.primary
+              : cs.onSurfaceVariant,
+        ),
+      ),
     ),
     segmentedButtonTheme: SegmentedButtonThemeData(
       style: SegmentedButton.styleFrom(
-        shape: pill,
+        shape: control,
         minimumSize: minTap,
         textStyle: text.labelLarge,
         selectedBackgroundColor: cs.primaryContainer,

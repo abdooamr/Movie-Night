@@ -154,6 +154,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "backOnline": MessageLookupByLibrary.simpleMessage("You\'re back online."),
     "backToLogIn": MessageLookupByLibrary.simpleMessage("Back to Log In"),
+    "beFirstToReview": MessageLookupByLibrary.simpleMessage(
+      "No reviews yet. Be the first to write one.",
+    ),
     "biography": MessageLookupByLibrary.simpleMessage("Biography"),
     "browseMovies": MessageLookupByLibrary.simpleMessage("Browse Movies"),
     "buyon": MessageLookupByLibrary.simpleMessage("Buy on"),
@@ -299,6 +302,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "likednavbar": MessageLookupByLibrary.simpleMessage("Library"),
     "localreviewswitch": MessageLookupByLibrary.simpleMessage("Local Review"),
+    "logInToReview": MessageLookupByLibrary.simpleMessage(
+      "Log In to Write a Review",
+    ),
     "loginbuttonlabel": MessageLookupByLibrary.simpleMessage("Log In"),
     "logintocontinue": MessageLookupByLibrary.simpleMessage(
       "Please login to continue",
@@ -448,6 +454,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "resetPasswordSubtitle": MessageLookupByLibrary.simpleMessage(
       "We\'ll email you a reset link",
     ),
+    "reviewsTitle": MessageLookupByLibrary.simpleMessage("Reviews"),
     "role": MessageLookupByLibrary.simpleMessage("Role"),
     "romancemovielabel": MessageLookupByLibrary.simpleMessage("Romance Movies"),
     "runtimeHoursMinutes": m9,

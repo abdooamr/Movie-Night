@@ -292,5 +292,8 @@
     "episodesCount": "{count, plural, =1{1 एपिसोड} other{{count} एपिसोड}}",
     "runtimeHoursMinutes": "{hours} घं {minutes} मि",
     "runtimeHoursOnly": "{hours} घं",
-    "runtimeMinutesOnly": "{minutes} मि"
+    "runtimeMinutesOnly": "{minutes} मि",
+    "reviewsTitle": "समीक्षाएँ",
+    "beFirstToReview": "अभी कोई समीक्षा नहीं है। पहली समीक्षा आप लिखें।",
+    "logInToReview": "समीक्षा लिखने के लिए लॉग इन करें"
 }

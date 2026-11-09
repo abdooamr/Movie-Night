@@ -160,6 +160,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "backOnline": MessageLookupByLibrary.simpleMessage("Sei di nuovo online."),
     "backToLogIn": MessageLookupByLibrary.simpleMessage("Torna ad Accedi"),
+    "beFirstToReview": MessageLookupByLibrary.simpleMessage(
+      "Ancora nessuna recensione. Scrivi la prima.",
+    ),
     "biography": MessageLookupByLibrary.simpleMessage("Biografia"),
     "browseMovies": MessageLookupByLibrary.simpleMessage("Sfoglia i film"),
     "buyon": MessageLookupByLibrary.simpleMessage("Acquista su"),
@@ -321,6 +324,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "localreviewswitch": MessageLookupByLibrary.simpleMessage(
       "Revisione Locale",
     ),
+    "logInToReview": MessageLookupByLibrary.simpleMessage(
+      "Accedi per Scrivere una Recensione",
+    ),
     "loginbuttonlabel": MessageLookupByLibrary.simpleMessage("Accedi"),
     "logintocontinue": MessageLookupByLibrary.simpleMessage(
       "Per favore accedi per continuare",
@@ -474,6 +480,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "resetPasswordSubtitle": MessageLookupByLibrary.simpleMessage(
       "Ti invieremo un link di reimpostazione via email",
     ),
+    "reviewsTitle": MessageLookupByLibrary.simpleMessage("Recensioni"),
     "role": MessageLookupByLibrary.simpleMessage("Ruolo"),
     "romancemovielabel": MessageLookupByLibrary.simpleMessage("Film Romance"),
     "runtimeHoursMinutes": m9,

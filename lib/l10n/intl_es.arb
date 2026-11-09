@@ -292,5 +292,8 @@
     "episodesCount": "{count, plural, =1{1 episodio} other{{count} episodios}}",
     "runtimeHoursMinutes": "{hours} h {minutes} min",
     "runtimeHoursOnly": "{hours} h",
-    "runtimeMinutesOnly": "{minutes} min"
+    "runtimeMinutesOnly": "{minutes} min",
+    "reviewsTitle": "Reseñas",
+    "beFirstToReview": "Aún no hay reseñas. Escribe la primera.",
+    "logInToReview": "Inicia Sesión para Escribir una Reseña"
 }

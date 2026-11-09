@@ -13,7 +13,7 @@ class MNSpace {
   static const double xxxl = 48;
 }
 
-/// Corner radii. Pill shapes use [StadiumBorder].
+/// Corner radii. Buttons and fields use [md]; text buttons [sm].
 class MNRadius {
   const MNRadius._();
   static const double sm = 8;

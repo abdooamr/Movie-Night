@@ -154,6 +154,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "backToLogIn": MessageLookupByLibrary.simpleMessage(
       "العودة إلى تسجيل الدخول",
     ),
+    "beFirstToReview": MessageLookupByLibrary.simpleMessage(
+      "لا توجد مراجعات بعد. كن أول من يكتب مراجعة.",
+    ),
     "biography": MessageLookupByLibrary.simpleMessage("نبذة عنه"),
     "browseMovies": MessageLookupByLibrary.simpleMessage("تصفّح الأفلام"),
     "buyon": MessageLookupByLibrary.simpleMessage("شراء على"),
@@ -283,6 +286,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "likednavbar": MessageLookupByLibrary.simpleMessage("المكتبة"),
     "localreviewswitch": MessageLookupByLibrary.simpleMessage("مراجعة محلية"),
+    "logInToReview": MessageLookupByLibrary.simpleMessage(
+      "سجّل الدخول لكتابة مراجعة",
+    ),
     "loginbuttonlabel": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "logintocontinue": MessageLookupByLibrary.simpleMessage(
       "الرجاء تسجيل الدخول للمتابعة",
@@ -426,6 +432,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "resetPasswordSubtitle": MessageLookupByLibrary.simpleMessage(
       "سنرسل إليك رابط إعادة التعيين بالبريد الإلكتروني",
     ),
+    "reviewsTitle": MessageLookupByLibrary.simpleMessage("المراجعات"),
     "role": MessageLookupByLibrary.simpleMessage("الدور"),
     "romancemovielabel": MessageLookupByLibrary.simpleMessage("أفلام رومانسية"),
     "runtimeHoursMinutes": m9,

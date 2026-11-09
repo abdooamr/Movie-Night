@@ -375,5 +375,8 @@
                 "type": "int"
             }
         }
-    }
+    },
+    "reviewsTitle": "Reviews",
+    "beFirstToReview": "No reviews yet. Be the first to write one.",
+    "logInToReview": "Log In to Write a Review"
 }

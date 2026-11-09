@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:Movie_Night/src/Provider/langprovider.dart';
+import 'package:Movie_Night/src/Provider/reviewsprovider.dart';
+import 'package:Movie_Night/src/models/local_review_model.dart';
 import 'package:Movie_Night/src/data/auth_repository.dart';
 import 'package:Movie_Night/src/data/tmdb_client.dart';
 import 'package:Movie_Night/src/data/tmdb_repository.dart';
@@ -18,6 +20,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' show AuthState;
 
 import '../components/_harness.dart';
+
+/// No reviews, no Supabase.
+class _NoReviews extends ReviewProvider {
+  @override
+  Stream<List<Localreviews>> getReviews(int movieId, {required bool isTv}) =>
+      Stream.value(const []);
+}
 
 /// Signed out, no Supabase.
 class _SignedOut extends AuthRepository {
@@ -51,8 +60,11 @@ Widget _page({
   required Future<MovieModel> Function(int, bool, String) fetch,
   double textScale = 1,
 }) =>
-    ChangeNotifierProvider(
-      create: (_) => DropdownProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => DropdownProvider()),
+        ChangeNotifierProvider<ReviewProvider>(create: (_) => _NoReviews()),
+      ],
       child: harness(Builder(
         builder: (context) => MediaQuery(
           data: MediaQuery.of(context)
@@ -135,7 +147,7 @@ void main() {
 
     expect(find.text('Watch Trailers'), findsOneWidget);
     expect(find.text('1999 · 2h 16m'), findsOneWidget);
-    expect(find.text('Science Fiction'), findsOneWidget);
+    expect(find.text('Action · Science Fiction'), findsOneWidget);
     expect(find.text('Share'), findsOneWidget); // the third tile
   });
 
