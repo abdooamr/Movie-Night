@@ -1,5 +1,6 @@
 import 'dart:ui' show FrameTiming, PlatformDispatcher;
 
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 
@@ -12,6 +13,15 @@ import 'package:flutter/widgets.dart';
 Duration frameBudgetFor(double refreshRate) {
   final hz = refreshRate > 0 ? refreshRate : 60;
   return Duration(microseconds: (Duration.microsecondsPerSecond / hz).round());
+}
+
+/// Budget a frame is judged against: the display's own budget, but never
+/// tighter than 60 fps. A 120 Hz phone that holds 60 fps is not struggling,
+/// and low power lasts the whole session.
+Duration jankBudgetFor(double refreshRate) {
+  final own = frameBudgetFor(refreshRate);
+  final sixty = frameBudgetFor(60);
+  return own > sixty ? own : sixty;
 }
 
 /// Whether at least [ratio] of [frames] blew [budget] in either the build
@@ -28,7 +38,8 @@ bool isJankyWindow(
   return slow >= frames.length * ratio;
 }
 
-/// Watches real frame timings and turns [lowPower] on after
+/// Watches real frame timings (profile and release builds) and turns
+/// [lowPower] on after
 /// [windowsToDegrade] consecutive janky windows of [windowSize] frames. Once
 /// on, it stays on for the session and stops listening.
 ///
@@ -66,9 +77,15 @@ class PerformanceMonitor extends ChangeNotifier {
   /// Whether decorative work should be dropped.
   bool get lowPower => _lowPower;
 
-  /// Starts listening to frame timings. A no-op once in low power.
+  /// Whether frame timings are being watched.
+  @visibleForTesting
+  bool get isListening => _listening;
+
+  /// Starts listening to frame timings. A no-op once in low power, and in
+  /// debug builds, whose JIT frames are always slow and would switch every
+  /// developer's session to low power.
   void start() {
-    if (_lowPower || _listening) return;
+    if (kDebugMode || _lowPower || _listening) return;
     SchedulerBinding.instance.addTimingsCallback(_onTimings);
     _listening = true;
   }
@@ -89,7 +106,7 @@ class PerformanceMonitor extends ChangeNotifier {
     if (fixed != null) return fixed;
     final views = PlatformDispatcher.instance.views;
     final rate = views.isEmpty ? 60.0 : views.first.display.refreshRate;
-    return frameBudgetFor(rate);
+    return jankBudgetFor(rate);
   }
 
   void _onTimings(List<FrameTiming> timings) {

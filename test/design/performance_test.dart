@@ -98,6 +98,20 @@ void main() {
       m.dispose();
     });
 
+    test('jankBudgetFor never asks for more than 60 fps', () {
+      // A 120 Hz phone holding 60 fps is not struggling.
+      expect(jankBudgetFor(120), const Duration(microseconds: 16667));
+      expect(jankBudgetFor(60), const Duration(microseconds: 16667));
+      expect(jankBudgetFor(30), const Duration(microseconds: 33333));
+    });
+
+    test('start is a no-op in debug builds (JIT frames are always slow)', () {
+      final m = PerformanceMonitor();
+      m.start();
+      expect(m.isListening, isFalse);
+      m.dispose();
+    });
+
     test('frameBudgetFor follows the refresh rate', () {
       expect(frameBudgetFor(60), const Duration(microseconds: 16667));
       expect(frameBudgetFor(120), const Duration(microseconds: 8333));
