@@ -75,11 +75,9 @@ class _HomePageState extends State<HomePage> {
     _glow.value = null;
     final controller = PrimaryScrollController.maybeOf(context);
     if (controller != null && controller.hasClients) {
-      controller.animateTo(
-        0,
-        duration: MNMotion.of(context)(MNDuration.medium),
-        curve: MNCurves.standard,
-      );
+      // Instant: a scroll animation plus a rebuild in the same frames is
+      // what stutters, and the new mode starts at its top anyway.
+      controller.jumpTo(0);
     }
   }
 
@@ -100,7 +98,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final s = S.of(context);
-    final motion = MNMotion.of(context);
     return Scaffold(
       body: RefreshIndicator.adaptive(
         onRefresh: _reload,
@@ -121,20 +118,18 @@ class _HomePageState extends State<HomePage> {
                 onChanged: _setMode,
               ),
             ),
-            SliverToBoxAdapter(
-              child: ValueListenableBuilder<ImageProvider?>(
+            // Swapped instantly: a cross-fade would hold two full trees.
+            Home_page_listview(
+              key: ValueKey(_isMovie),
+              movie: _isMovie,
+              futureOf: _futureOf,
+              onRetry: _retry,
+              onFocusChanged: _onFocus,
+              // The notifier child is built once per Home rebuild, not per
+              // glow change.
+              wrapHero: (hero) => ValueListenableBuilder<ImageProvider?>(
                 valueListenable: _glow,
-                // Built once per Home rebuild, not per glow change.
-                child: AnimatedSwitcher(
-                  duration: motion.fade(MNDuration.short),
-                  child: Home_page_listview(
-                    key: ValueKey(_isMovie),
-                    movie: _isMovie,
-                    futureOf: _futureOf,
-                    onRetry: _retry,
-                    onFocusChanged: _onFocus,
-                  ),
-                ),
+                child: hero,
                 builder: (context, source, child) =>
                     SpillGlow(source: source, child: child!),
               ),

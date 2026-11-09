@@ -3,6 +3,7 @@ import 'package:Movie_Night/src/models/movie_model.dart';
 import 'package:Movie_Night/src/pages/UI/home_page.dart';
 import 'package:Movie_Night/src/widgets/Home_page_listview.dart';
 import 'package:Movie_Night/src/widgets/movies_listview.dart';
+import 'package:Movie_Night/src/widgets/upcoming.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -25,13 +26,27 @@ Model _model(HomeFeed feed, int count) => Model(results: [
         ),
     ]);
 
-Widget _home({Future<Model> Function(HomeFeed, String)? fetch}) =>
-    ChangeNotifierProvider(
-      create: (_) => DropdownProvider(),
-      child: harness(
-        HomePage(fetch: fetch ?? (feed, _) async => _model(feed, 10)),
-      ),
-    );
+/// Home under a [PrimaryScrollController], as the app shell provides.
+Widget _home({
+  Future<Model> Function(HomeFeed, String)? fetch,
+  ScrollController? controller,
+}) {
+  Widget home = HomePage(fetch: fetch ?? (feed, _) async => _model(feed, 10));
+  if (controller != null) {
+    home = PrimaryScrollController(controller: controller, child: home);
+  }
+  return ChangeNotifierProvider(
+    create: (_) => DropdownProvider(),
+    child: harness(home),
+  );
+}
+
+/// Feeds resolve, then the sections swap their skeletons for content.
+Future<void> _load(WidgetTester tester) async {
+  for (var i = 0; i < 4; i++) {
+    await tester.pump(const Duration(seconds: 1));
+  }
+}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -49,10 +64,7 @@ void main() {
 
   testWidgets('carousel swipe does not rebuild the rails', (tester) async {
     await tester.pumpWidget(_home());
-    // Feeds resolve, then the sections swap their skeletons for content.
-    for (var i = 0; i < 4; i++) {
-      await tester.pump(const Duration(seconds: 1));
-    }
+    await _load(tester);
 
     final before = tester.widget(find.byType(MoviesListView).first);
     await tester.fling(
@@ -62,5 +74,49 @@ void main() {
 
     expect(identical(before, tester.widget(find.byType(MoviesListView).first)),
         isTrue);
+  });
+
+  testWidgets('rails below the fold are not built', (tester) async {
+    await tester.pumpWidget(_home());
+    await _load(tester);
+
+    expect(
+      find.byType(MoviesListView, skipOffstage: false).evaluate().length,
+      lessThan(3),
+    );
+
+    await tester.scrollUntilVisible(
+      find.text('Egyptian Movies'),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('Egyptian Movies'), findsOneWidget);
+  });
+
+  testWidgets('mode switch jumps to top and builds only the new mode',
+      (tester) async {
+    final controller = ScrollController();
+    addTearDown(controller.dispose);
+    final fetched = <HomeFeed>[];
+    await tester.pumpWidget(_home(
+      controller: controller,
+      fetch: (feed, _) async {
+        fetched.add(feed);
+        return _model(feed, 10);
+      },
+    ));
+    await _load(tester);
+
+    await tester.drag(find.byType(CustomScrollView), const Offset(0, -800));
+    await tester.pump(const Duration(seconds: 1));
+    expect(controller.offset, greaterThan(0));
+
+    await tester.tap(find.text('TV Shows'));
+    await tester.pump();
+
+    expect(controller.offset, 0);
+    expect(fetched, contains(HomeFeed.airingToday));
+    // One hero section, not two cross-fading trees.
+    expect(find.byType(UpcomingMovies, skipOffstage: false), findsOneWidget);
   });
 }

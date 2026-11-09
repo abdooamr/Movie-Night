@@ -62,3 +62,12 @@ The glow is only on screen near the top of Home, so the saving shows in
 the average rather than the tail. Visual check on the A50 (dark): close to
 the old look, slightly less bright at the very top. The hard line the old
 blur left at the bottom edge of the band is gone.
+
+## After Task 4 (lazy sections, instant mode switch)
+
+Same device and script, 3 runs, median: build avg 2.78 / p90 5.78 ms, raster
+avg 6.61 / p90 9.84 / p99 12.34 ms, no missed frames. Within noise of Task 2
+(raster p90 10.22 -> 9.84). The script scrolls only within the first screens
+and never switches mode, so the gain from not building off-screen rails is
+mainly at startup and on weaker devices; the unit tests
+(`test/pages/home_page_test.dart`) are what pin the behaviour.

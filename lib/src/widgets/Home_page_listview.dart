@@ -23,13 +23,15 @@ enum HomeFeed {
 }
 
 /// Home's sections for one mode (Movies or TV): the hero carousel, then
-/// three poster rails. A plain column; Home places it in a sliver.
+/// three poster rails, as a sliver. The rails sit in a lazy [SliverList], so
+/// only the ones near the viewport are built.
 class Home_page_listview extends StatelessWidget {
   const Home_page_listview({
     super.key,
     required this.movie,
     required this.futureOf,
     required this.onRetry,
+    required this.wrapHero,
     this.onFocusChanged,
   });
 
@@ -41,6 +43,10 @@ class Home_page_listview extends StatelessWidget {
 
   /// Reloads one feed.
   final ValueChanged<HomeFeed> onRetry;
+
+  /// Wraps the hero section (Home puts the spill glow behind it, so the glow
+  /// covers the hero only and never the rails).
+  final Widget Function(Widget hero) wrapHero;
 
   /// The centred carousel item (spill-glow source).
   final ValueChanged<Result>? onFocusChanged;
@@ -61,25 +67,32 @@ class Home_page_listview extends StatelessWidget {
         };
 
     final hero = feeds.first;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        UpcomingMovies(
-          future: futureOf(hero),
-          headlineText: title(hero),
-          istvshow: hero.isTv,
-          heroSource: hero.name,
-          onRetry: () => onRetry(hero),
-          onFocusChanged: onFocusChanged,
-        ),
-        for (final feed in feeds.skip(1))
-          MoviesListView(
-            future: futureOf(feed),
-            headlineText: title(feed),
-            istvshow: feed.isTv,
-            heroSource: feed.name,
-            onRetry: () => onRetry(feed),
+    return SliverMainAxisGroup(
+      slivers: [
+        SliverToBoxAdapter(
+          child: wrapHero(
+            UpcomingMovies(
+              future: futureOf(hero),
+              headlineText: title(hero),
+              istvshow: hero.isTv,
+              heroSource: hero.name,
+              onRetry: () => onRetry(hero),
+              onFocusChanged: onFocusChanged,
+            ),
           ),
+        ),
+        SliverList.list(
+          children: [
+            for (final feed in feeds.skip(1))
+              MoviesListView(
+                future: futureOf(feed),
+                headlineText: title(feed),
+                istvshow: feed.isTv,
+                heroSource: feed.name,
+                onRetry: () => onRetry(feed),
+              ),
+          ],
+        ),
       ],
     );
   }
