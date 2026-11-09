@@ -2409,6 +2409,65 @@ class S {
       args: [],
     );
   }
+
+  /// `Open in IMDb`
+  String get openInImdb {
+    return Intl.message('Open in IMDb', name: 'openInImdb', desc: '', args: []);
+  }
+
+  /// `{count, plural, =1{1 season} other{{count} seasons}}`
+  String seasonsCount(int count) {
+    return Intl.plural(
+      count,
+      one: '1 season',
+      other: '$count seasons',
+      name: 'seasonsCount',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `{count, plural, =1{1 episode} other{{count} episodes}}`
+  String episodesCount(int count) {
+    return Intl.plural(
+      count,
+      one: '1 episode',
+      other: '$count episodes',
+      name: 'episodesCount',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `{hours}h {minutes}m`
+  String runtimeHoursMinutes(int hours, int minutes) {
+    return Intl.message(
+      '${hours}h ${minutes}m',
+      name: 'runtimeHoursMinutes',
+      desc: '',
+      args: [hours, minutes],
+    );
+  }
+
+  /// `{hours}h`
+  String runtimeHoursOnly(int hours) {
+    return Intl.message(
+      '${hours}h',
+      name: 'runtimeHoursOnly',
+      desc: '',
+      args: [hours],
+    );
+  }
+
+  /// `{minutes}m`
+  String runtimeMinutesOnly(int minutes) {
+    return Intl.message(
+      '${minutes}m',
+      name: 'runtimeMinutesOnly',
+      desc: '',
+      args: [minutes],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

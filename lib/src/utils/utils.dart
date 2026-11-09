@@ -21,6 +21,23 @@ String tmdbImage(String path, double physicalWidth) {
   return '$_tmdbImageBase/w$width$path';
 }
 
+/// TMDB backdrop widths, smallest first.
+const List<int> _tmdbBackdropWidths = [300, 780, 1280];
+
+/// URL of backdrop [path] at the smallest TMDB size that still covers 90% of
+/// [physicalWidth]. A stretched `w500` looked soft on full-width headers.
+String tmdbBackdrop(String path, double physicalWidth) {
+  if (!physicalWidth.isFinite || physicalWidth <= 0) {
+    return '$_tmdbImageBase/w780$path';
+  }
+  final need = physicalWidth * 0.9;
+  final width = _tmdbBackdropWidths.firstWhere(
+    (w) => w >= need,
+    orElse: () => _tmdbBackdropWidths.last,
+  );
+  return '$_tmdbImageBase/w$width$path';
+}
+
 String? _cachedLocale;
 Map<int, String>? _cachedGenres;
 

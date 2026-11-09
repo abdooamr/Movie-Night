@@ -6,6 +6,7 @@ import 'package:Movie_Night/src/components/state_views.dart';
 import 'package:Movie_Night/src/design/motion.dart';
 import 'package:Movie_Night/src/design/tokens.dart';
 import 'package:Movie_Night/src/navigation/routes.dart';
+import 'package:Movie_Night/src/pages/UI/detail_preview.dart';
 import 'package:Movie_Night/src/utils/poster_size.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/services/services.dart';
@@ -41,7 +42,9 @@ class _SimilarWidgetState extends State<SimilarWidget> {
     return getrecommendations(widget.id, widget.isTvShow, lang);
   }
 
-  void _retry() => setState(() => _future = _load());
+  void _retry() => setState(() {
+        _future = _load();
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +136,13 @@ class _Rail extends StatelessWidget {
               heroTag: heroTag,
               onTap: () {
                 if (id == null) return;
-                openTitle(context, id: id, isTv: isTv, heroTag: heroTag);
+                openTitle(
+                  context,
+                  id: id,
+                  isTv: isTv,
+                  heroTag: heroTag,
+                  preview: DetailPreview.fromResult(item, isTv: isTv),
+                );
               },
             ),
           );

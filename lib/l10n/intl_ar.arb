@@ -286,5 +286,11 @@
     "setNewPasswordSubtitle": "اختر كلمة مرور جديدة لحسابك.",
     "newPasswordLabel": "كلمة المرور الجديدة",
     "savePasswordLabel": "حفظ كلمة المرور",
-    "passwordUpdated": "تم تحديث كلمة المرور."
+    "passwordUpdated": "تم تحديث كلمة المرور.",
+    "openInImdb": "فتح في IMDb",
+    "seasonsCount": "{count, plural, =1{موسم واحد} =2{موسمان} few{{count} مواسم} many{{count} موسمًا} other{{count} موسم}}",
+    "episodesCount": "{count, plural, =1{حلقة واحدة} =2{حلقتان} few{{count} حلقات} many{{count} حلقة} other{{count} حلقة}}",
+    "runtimeHoursMinutes": "{hours} س {minutes} د",
+    "runtimeHoursOnly": "{hours} س",
+    "runtimeMinutesOnly": "{minutes} د"
 }

@@ -29,19 +29,31 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m3(name) => "${name} को हटाएं?";
 
-  static String m4(query) =>
+  static String m4(count) =>
+      "${Intl.plural(count, one: '1 एपिसोड', other: '${count} एपिसोड')}";
+
+  static String m5(query) =>
       "“${query}” के लिए कोई परिणाम नहीं। वर्तनी जाँचें या कोई दूसरा शीर्षक आज़माएँ।";
 
-  static String m5(title) => "${title} चलाएँ";
+  static String m6(title) => "${title} चलाएँ";
 
-  static String m6(score) => "10 में से ${score}";
+  static String m7(score) => "10 में से ${score}";
 
-  static String m7(email) =>
+  static String m8(email) =>
       "अपना ईमेल देखें। हमने ${email} पर रीसेट लिंक भेजा है।";
 
-  static String m8(count) => "सभी समीक्षाएँ देखें (${count})";
+  static String m9(hours, minutes) => "${hours} घं ${minutes} मि";
 
-  static String m9(title, url) => "Movie Night पर ${title} देखें\n${url}";
+  static String m10(hours) => "${hours} घं";
+
+  static String m11(minutes) => "${minutes} मि";
+
+  static String m12(count) =>
+      "${Intl.plural(count, one: '1 सीज़न', other: '${count} सीज़न')}";
+
+  static String m13(count) => "सभी समीक्षाएँ देखें (${count})";
+
+  static String m14(title, url) => "Movie Night पर ${title} देखें\n${url}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -237,6 +249,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "enterValidEmail": MessageLookupByLibrary.simpleMessage(
       "एक मान्य ईमेल पता दर्ज करें।",
     ),
+    "episodesCount": m4,
     "error": MessageLookupByLibrary.simpleMessage("त्रुटि"),
     "errorLoginAgain": MessageLookupByLibrary.simpleMessage(
       "त्रुटि, कृपया फिर से लॉग इन करें और दोबारा प्रयास करें",
@@ -326,7 +339,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "noReport": MessageLookupByLibrary.simpleMessage("कोई रिपोर्ट नहीं"),
     "noResults": MessageLookupByLibrary.simpleMessage("कोई परिणाम नहीं"),
-    "noResultsFor": m4,
+    "noResultsFor": m5,
     "noResultsMessage": MessageLookupByLibrary.simpleMessage(
       "आपकी खोज के लिए कोई परिणाम नहीं मिले",
     ),
@@ -365,6 +378,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "numberofseasons": MessageLookupByLibrary.simpleMessage("सीजनों की संख्या"),
     "ohnolabel": MessageLookupByLibrary.simpleMessage("ओह नो!"),
     "okLabel": MessageLookupByLibrary.simpleMessage("ठीक है"),
+    "openInImdb": MessageLookupByLibrary.simpleMessage("IMDb में खोलें"),
     "passwordMigrationBody": MessageLookupByLibrary.simpleMessage(
       "Movie Night अब एक नए साइन-इन सिस्टम पर है। अगर इस अपडेट से पहले आपका खाता था, तो आपका पुराना पासवर्ड अब काम नहीं करेगा। अपना खाता इस्तेमाल करते रहने के लिए उसे एक बार रीसेट करें।",
     ),
@@ -384,7 +398,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "passwordvalidationtext": MessageLookupByLibrary.simpleMessage(
       "कम से कम 8 अक्षर रखें, जिनमें एक बड़ा अक्षर, एक छोटा अक्षर, एक अंक और एक प्रतीक हो।",
     ),
-    "playVideo": m5,
+    "playVideo": m6,
     "pleasecheckinternetconnection": MessageLookupByLibrary.simpleMessage(
       "अपने इंटरनेट कनेक्शन की जाँच करें और पुन: प्रयास करें",
     ),
@@ -406,7 +420,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateMovieNight": MessageLookupByLibrary.simpleMessage(
       "Movie Night को रेट करें",
     ),
-    "ratingOutOf10": m6,
+    "ratingOutOf10": m7,
     "readLess": MessageLookupByLibrary.simpleMessage("कम पढ़ें"),
     "readmorelabel": MessageLookupByLibrary.simpleMessage("और पढ़ें"),
     "realitytvlabel": MessageLookupByLibrary.simpleMessage(
@@ -443,7 +457,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "reportpagelabel": MessageLookupByLibrary.simpleMessage(
       "कृपया हमें यदि आपको ऐप में कोई बग मिलता है या कोई सुझाव हो, तो हमें रिपोर्ट भेजें।",
     ),
-    "resetLinkSent": m7,
+    "resetLinkSent": m8,
     "resetPassword": MessageLookupByLibrary.simpleMessage("पासवर्ड रीसेट करें"),
     "resetPasswordSubtitle": MessageLookupByLibrary.simpleMessage(
       "हम आपको रीसेट लिंक ईमेल करेंगे",
@@ -452,6 +466,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "romancemovielabel": MessageLookupByLibrary.simpleMessage(
       "रोमांस फ़िल्में",
     ),
+    "runtimeHoursMinutes": m9,
+    "runtimeHoursOnly": m10,
+    "runtimeMinutesOnly": m11,
     "savePasswordLabel": MessageLookupByLibrary.simpleMessage("पासवर्ड सहेजें"),
     "savelabel": MessageLookupByLibrary.simpleMessage("सहेजें"),
     "sciencefictionmovielabel": MessageLookupByLibrary.simpleMessage(
@@ -463,7 +480,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "searchhint": MessageLookupByLibrary.simpleMessage(
       "फ़िल्में, टीवी शो, लोग",
     ),
-    "seeAllReviews": m8,
+    "seasonsCount": m12,
+    "seeAllReviews": m13,
     "sendEmail": MessageLookupByLibrary.simpleMessage("ईमेल भेजें"),
     "sendReviewTooltip": MessageLookupByLibrary.simpleMessage("समीक्षा भेजें"),
     "sendfeedbacklabel": MessageLookupByLibrary.simpleMessage(
@@ -477,7 +495,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "नया पासवर्ड सेट करें",
     ),
     "share": MessageLookupByLibrary.simpleMessage("साझा करें"),
-    "shareText": m9,
+    "shareText": m14,
     "showPassword": MessageLookupByLibrary.simpleMessage("पासवर्ड दिखाएं"),
     "signInPromptBody": MessageLookupByLibrary.simpleMessage(
       "वॉचलिस्ट रखने, शीर्षकों को पसंद करने और समीक्षाएँ लिखने के लिए लॉग इन करें।",

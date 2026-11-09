@@ -331,5 +331,49 @@
     "setNewPasswordSubtitle": "Choose a new password for your account.",
     "newPasswordLabel": "New Password",
     "savePasswordLabel": "Save Password",
-    "passwordUpdated": "Your password was updated."
+    "passwordUpdated": "Your password was updated.",
+    "openInImdb": "Open in IMDb",
+    "seasonsCount": "{count, plural, =1{1 season} other{{count} seasons}}",
+    "@seasonsCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "episodesCount": "{count, plural, =1{1 episode} other{{count} episodes}}",
+    "@episodesCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "runtimeHoursMinutes": "{hours}h {minutes}m",
+    "@runtimeHoursMinutes": {
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            },
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "runtimeHoursOnly": "{hours}h",
+    "@runtimeHoursOnly": {
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "runtimeMinutesOnly": "{minutes}m",
+    "@runtimeMinutesOnly": {
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    }
 }

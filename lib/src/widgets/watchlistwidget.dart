@@ -10,6 +10,7 @@ import '../components/rating_badge.dart';
 import '../design/tokens.dart';
 import '../models/moviedetails.dart';
 import '../navigation/routes.dart';
+import '../pages/UI/detail_preview.dart';
 import '../utils/utils.dart' show imageUrl;
 
 /// One Watchlist row: poster thumbnail, title, year and rating, with a
@@ -73,6 +74,7 @@ class BookmarkWidget extends StatelessWidget {
             id: movieDetails.id,
             isTv: isTvShow,
             heroTag: heroTag,
+            preview: DetailPreview.fromDetails(movieDetails, isTv: isTvShow),
           ),
           child: Padding(
             padding: const EdgeInsetsDirectional.symmetric(

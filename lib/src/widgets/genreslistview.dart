@@ -6,6 +6,7 @@ import '../components/state_views.dart';
 import '../design/tokens.dart';
 import '../models/movie_model.dart';
 import '../navigation/routes.dart';
+import '../pages/UI/detail_preview.dart';
 import '../utils/poster_size.dart';
 import '../utils/utils.dart';
 import 'package:ficonsax/ficonsax.dart';
@@ -117,6 +118,7 @@ class GenresListView extends StatelessWidget {
                     id: id,
                     isTv: istvshow,
                     heroTag: heroTagFor(source: source, isTv: istvshow, id: id),
+                    preview: DetailPreview.fromResult(item, isTv: istvshow),
                   ),
                 );
               },

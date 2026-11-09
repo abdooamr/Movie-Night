@@ -19,14 +19,14 @@ Widget _actions(_Calls c, {required bool loggedIn, Widget? watchlist}) {
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        DetailShareButton(onShare: () => c.share++),
+        DetailMoreMenu(onShare: () => c.share++, onOpenImdb: () => c.imdb++),
         DetailActions(
           isLoggedIn: loggedIn,
           isLiked: false,
           onToggleLike: () => c.like++,
           onRequireSignIn: () => c.signIn++,
           onWatchTrailers: () => c.trailers++,
-          onOpenImdb: () => c.imdb++,
+          onShare: () => c.share++,
           watchlist: watchlist,
         ),
       ],
@@ -35,7 +35,7 @@ Widget _actions(_Calls c, {required bool loggedIn, Widget? watchlist}) {
 }
 
 void main() {
-  testWidgets('signed out: Like and Watchlist ask to sign in; Share and IMDb work',
+  testWidgets('signed out: Like and Watchlist ask to sign in; Share works',
       (tester) async {
     final c = _Calls();
     await tester.pumpWidget(_actions(c, loggedIn: false));
@@ -47,14 +47,9 @@ void main() {
     await tester.tap(find.widgetWithText(ActionTile, 'Add to Watchlist'));
     expect(c.signIn, 2);
 
-    await tester.tap(find.widgetWithText(ActionTile, 'IMDb'));
-    expect(c.imdb, 1);
-    expect(c.signIn, 2);
-
-    final share = tester.widget<IconButton>(find.byType(IconButton));
-    expect(share.onPressed, isNotNull);
-    await tester.tap(find.byType(IconButton));
+    await tester.tap(find.widgetWithText(ActionTile, 'Share'));
     expect(c.share, 1);
+    expect(c.signIn, 2);
   });
 
   testWidgets('signed in: Like toggles and the watchlist slot is shown',
@@ -81,16 +76,36 @@ void main() {
     expect(c.trailers, 1);
   });
 
-  testWidgets('no IMDb tile without an IMDb id', (tester) async {
-    await tester.pumpWidget(harness(DetailActions(
-      isLoggedIn: false,
-      isLiked: false,
-      onToggleLike: () {},
-      onRequireSignIn: () {},
-      onWatchTrailers: () {},
-    )));
+  testWidgets('three tiles: Like, Watchlist, Share; IMDb is not a tile',
+      (tester) async {
+    await tester.pumpWidget(_actions(_Calls(), loggedIn: false));
+    expect(find.byType(ActionTile), findsNWidgets(3));
     expect(find.widgetWithText(ActionTile, 'IMDb'), findsNothing);
-    expect(find.byType(ActionTile), findsNWidgets(2));
+  });
+
+  testWidgets('the ⋯ menu offers Share and Open in IMDb', (tester) async {
+    final c = _Calls();
+    await tester.pumpWidget(_actions(c, loggedIn: false));
+    await tester.tap(find.byType(DetailMoreMenu));
+    await tester.pumpAndSettle();
+    expect(find.text('Open in IMDb'), findsOneWidget);
+    await tester.tap(find.text('Open in IMDb'));
+    await tester.pumpAndSettle();
+    expect(c.imdb, 1);
+
+    await tester.tap(find.byType(DetailMoreMenu));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Share').last);
+    await tester.pumpAndSettle();
+    expect(c.share, 1);
+  });
+
+  testWidgets('without an IMDb id the menu has only Share', (tester) async {
+    await tester.pumpWidget(harness(DetailMoreMenu(onShare: () {})));
+    await tester.tap(find.byType(DetailMoreMenu));
+    await tester.pumpAndSettle();
+    expect(find.text('Share'), findsOneWidget);
+    expect(find.text('Open in IMDb'), findsNothing);
   });
 
   testWidgets('every action meets the tap target and label guidelines',

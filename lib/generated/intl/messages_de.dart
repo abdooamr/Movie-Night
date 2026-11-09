@@ -29,19 +29,31 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m3(name) => "${name} löschen?";
 
-  static String m4(query) =>
+  static String m4(count) =>
+      "${Intl.plural(count, one: '1 Folge', other: '${count} Folgen')}";
+
+  static String m5(query) =>
       "Keine Ergebnisse für „${query}“. Prüfe die Schreibweise oder versuche einen anderen Titel.";
 
-  static String m5(title) => "${title} abspielen";
+  static String m6(title) => "${title} abspielen";
 
-  static String m6(score) => "${score} von 10";
+  static String m7(score) => "${score} von 10";
 
-  static String m7(email) =>
+  static String m8(email) =>
       "Prüfe dein Postfach. Wir haben einen Link zum Zurücksetzen an ${email} gesendet.";
 
-  static String m8(count) => "Alle Bewertungen ansehen (${count})";
+  static String m9(hours, minutes) => "${hours} Std. ${minutes} Min.";
 
-  static String m9(title, url) =>
+  static String m10(hours) => "${hours} Std.";
+
+  static String m11(minutes) => "${minutes} Min.";
+
+  static String m12(count) =>
+      "${Intl.plural(count, one: '1 Staffel', other: '${count} Staffeln')}";
+
+  static String m13(count) => "Alle Bewertungen ansehen (${count})";
+
+  static String m14(title, url) =>
       "Schau dir ${title} auf Movie Night an\n${url}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -254,6 +266,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "enterValidEmail": MessageLookupByLibrary.simpleMessage(
       "Gib eine gültige E-Mail-Adresse ein.",
     ),
+    "episodesCount": m4,
     "error": MessageLookupByLibrary.simpleMessage("Fehler"),
     "errorLoginAgain": MessageLookupByLibrary.simpleMessage(
       "Fehler, bitte melden Sie sich erneut an und versuchen Sie es noch einmal",
@@ -337,7 +350,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "noReport": MessageLookupByLibrary.simpleMessage("Keine Meldungen"),
     "noResults": MessageLookupByLibrary.simpleMessage("Keine Ergebnisse"),
-    "noResultsFor": m4,
+    "noResultsFor": m5,
     "noResultsMessage": MessageLookupByLibrary.simpleMessage(
       "Keine Ergebnisse für Ihre Suche gefunden",
     ),
@@ -380,6 +393,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "ohnolabel": MessageLookupByLibrary.simpleMessage("Oh Nein!"),
     "okLabel": MessageLookupByLibrary.simpleMessage("OK"),
+    "openInImdb": MessageLookupByLibrary.simpleMessage("In IMDb öffnen"),
     "passwordMigrationBody": MessageLookupByLibrary.simpleMessage(
       "Movie Night verwendet jetzt ein neues Anmeldesystem. Wenn du vor diesem Update ein Konto hattest, funktioniert dein altes Passwort nicht mehr. Setze es einmal zurück, um dein Konto weiter zu nutzen.",
     ),
@@ -399,7 +413,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "passwordvalidationtext": MessageLookupByLibrary.simpleMessage(
       "Verwende mindestens 8 Zeichen, darunter einen Großbuchstaben, einen Kleinbuchstaben, eine Zahl und ein Sonderzeichen.",
     ),
-    "playVideo": m5,
+    "playVideo": m6,
     "pleasecheckinternetconnection": MessageLookupByLibrary.simpleMessage(
       "Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut",
     ),
@@ -421,7 +435,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateMovieNight": MessageLookupByLibrary.simpleMessage(
       "Movie Night Bewerten",
     ),
-    "ratingOutOf10": m6,
+    "ratingOutOf10": m7,
     "readLess": MessageLookupByLibrary.simpleMessage("Weniger anzeigen"),
     "readmorelabel": MessageLookupByLibrary.simpleMessage("Mehr lesen"),
     "realitytvlabel": MessageLookupByLibrary.simpleMessage(
@@ -458,7 +472,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "reportpagelabel": MessageLookupByLibrary.simpleMessage(
       "Bitte senden Sie uns einen Bericht, wenn Sie Fehler finden oder Vorschläge für die App haben.",
     ),
-    "resetLinkSent": m7,
+    "resetLinkSent": m8,
     "resetPassword": MessageLookupByLibrary.simpleMessage(
       "Passwort zurücksetzen",
     ),
@@ -467,6 +481,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "role": MessageLookupByLibrary.simpleMessage("Rolle"),
     "romancemovielabel": MessageLookupByLibrary.simpleMessage("Liebesfilme"),
+    "runtimeHoursMinutes": m9,
+    "runtimeHoursOnly": m10,
+    "runtimeMinutesOnly": m11,
     "savePasswordLabel": MessageLookupByLibrary.simpleMessage(
       "Passwort speichern",
     ),
@@ -480,7 +497,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "searchhint": MessageLookupByLibrary.simpleMessage(
       "Filme, Serien, Personen",
     ),
-    "seeAllReviews": m8,
+    "seasonsCount": m12,
+    "seeAllReviews": m13,
     "sendEmail": MessageLookupByLibrary.simpleMessage("E-Mail senden"),
     "sendReviewTooltip": MessageLookupByLibrary.simpleMessage(
       "Rezension senden",
@@ -496,7 +514,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Neues Passwort festlegen",
     ),
     "share": MessageLookupByLibrary.simpleMessage("Teilen"),
-    "shareText": m9,
+    "shareText": m14,
     "showPassword": MessageLookupByLibrary.simpleMessage("Passwort anzeigen"),
     "signInPromptBody": MessageLookupByLibrary.simpleMessage(
       "Melde dich an, um eine Merkliste zu führen, Titel zu mögen und Bewertungen zu schreiben.",

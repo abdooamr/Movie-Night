@@ -6,6 +6,7 @@ import 'package:Movie_Night/src/components/poster_card.dart';
 import 'package:Movie_Night/src/components/state_views.dart';
 import 'package:Movie_Night/src/design/tokens.dart';
 import 'package:Movie_Night/src/navigation/routes.dart';
+import 'package:Movie_Night/src/pages/UI/detail_preview.dart';
 import 'package:Movie_Night/src/widgets/shimmerWidgets/searchResultShimmerWidget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:Movie_Night/src/pages/UI/castdetails.dart';
@@ -148,6 +149,7 @@ class Search extends SearchDelegate<Model> {
                   id: item.id!,
                   isTv: isTv,
                   heroTag: heroTagFor(source: 'search', isTv: isTv, id: item.id!),
+                  preview: DetailPreview.fromResult(item, isTv: isTv),
                 );
               }
             },

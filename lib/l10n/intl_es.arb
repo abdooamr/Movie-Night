@@ -286,5 +286,11 @@
     "setNewPasswordSubtitle": "Elige una nueva contraseña para tu cuenta.",
     "newPasswordLabel": "Nueva Contraseña",
     "savePasswordLabel": "Guardar Contraseña",
-    "passwordUpdated": "Tu contraseña se actualizó."
+    "passwordUpdated": "Tu contraseña se actualizó.",
+    "openInImdb": "Abrir en IMDb",
+    "seasonsCount": "{count, plural, =1{1 temporada} other{{count} temporadas}}",
+    "episodesCount": "{count, plural, =1{1 episodio} other{{count} episodios}}",
+    "runtimeHoursMinutes": "{hours} h {minutes} min",
+    "runtimeHoursOnly": "{hours} h",
+    "runtimeMinutesOnly": "{minutes} min"
 }

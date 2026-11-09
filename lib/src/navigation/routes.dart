@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/movie_model.dart';
 import '../pages/Login-Logout/Login_welcome_screen.dart';
 import '../pages/UI/detail_page.dart';
+import '../pages/UI/detail_preview.dart';
 import '../pages/UI/showallmovies.dart';
 
 /// Test hook: when set, [openTitle] pushes this instead of [DetailPage]
@@ -17,12 +18,18 @@ Future<void> openTitle(
   required int id,
   required bool isTv,
   String? heroTag,
+  DetailPreview? preview,
 }) {
   return Navigator.of(context).push<void>(
     MaterialPageRoute<void>(
       builder: (_) =>
           debugDetailPageBuilder?.call(id, isTv, heroTag) ??
-          DetailPage(id: id, isTvShow: isTv, heroTag: heroTag),
+          DetailPage(
+            id: id,
+            isTvShow: isTv,
+            heroTag: heroTag,
+            preview: preview,
+          ),
     ),
   );
 }

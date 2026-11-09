@@ -13,6 +13,7 @@ import '../design/motion.dart';
 import '../design/tokens.dart';
 import '../models/movie_model.dart';
 import '../navigation/routes.dart';
+import '../pages/UI/detail_preview.dart';
 import '../utils/poster_size.dart';
 import '../utils/utils.dart' show getGenres, tmdbImage;
 import 'carousel_slider.dart';
@@ -99,6 +100,7 @@ class _UpcomingMoviesState extends State<UpcomingMovies> {
       id: item.id!,
       isTv: isTv,
       heroTag: heroTagFor(source: source, isTv: isTv, id: item.id!),
+      preview: DetailPreview.fromResult(item, isTv: isTv),
     );
   }
 

@@ -18,6 +18,7 @@ import '../../design/tokens.dart';
 import '../../models/liked_model.dart';
 import '../../models/movie_model.dart';
 import '../../navigation/routes.dart';
+import '../../pages/UI/detail_preview.dart';
 import '../../services/services.dart';
 import '../../utils/poster_size.dart';
 import '../../utils/utils.dart' show imageUrl;
@@ -96,6 +97,11 @@ class _LikedViewState extends State<LikedView> {
       id: liked.id,
       isTv: isTv,
       heroTag: heroTagFor(source: 'liked', isTv: isTv, id: liked.id),
+      preview: DetailPreview(
+        title: liked.title,
+        posterPath: liked.posterPath.isEmpty ? null : liked.posterPath,
+        voteAverage: liked.voteAverage,
+      ),
     );
   }
 

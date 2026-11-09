@@ -1,20 +1,17 @@
 import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:simple_icons/simple_icons.dart';
 
 import '../../generated/l10n.dart';
 import '../components/action_tile.dart';
 import '../design/tokens.dart';
 
-/// Brand name of the external link; a trademark, not translated.
-const String _imdbLabel = 'IMDb';
-
 /// Detail's action block: the one primary action ("Watch Trailers") and a row
-/// of tonal [ActionTile]s (Like, Watchlist, IMDb).
+/// of three tonal [ActionTile]s: Like, Watchlist, Share. (IMDb, an external
+/// link, lives in [DetailMoreMenu].)
 ///
 /// Signed out, Like and Watchlist call [onRequireSignIn] instead of acting;
-/// IMDb always works. Data access stays with the caller: [onToggleLike]
+/// Share always works. Data access stays with the caller: [onToggleLike]
 /// writes the like, and [watchlist] is the signed-in watchlist tile (it owns
 /// its own reads and writes).
 class DetailActions extends StatelessWidget {
@@ -25,7 +22,7 @@ class DetailActions extends StatelessWidget {
     required this.onToggleLike,
     required this.onRequireSignIn,
     required this.onWatchTrailers,
-    this.onOpenImdb,
+    required this.onShare,
     this.watchlist,
   });
 
@@ -35,8 +32,8 @@ class DetailActions extends StatelessWidget {
   final VoidCallback onRequireSignIn;
   final VoidCallback onWatchTrailers;
 
-  /// Opens the title on IMDb; null (no IMDb id) hides the tile.
-  final VoidCallback? onOpenImdb;
+  /// Opens the share sheet.
+  final VoidCallback onShare;
 
   /// Signed-in watchlist tile. When null, or signed out, a tile that asks
   /// the user to sign in is shown instead.
@@ -67,12 +64,11 @@ class DetailActions extends StatelessWidget {
           label: s.addtowatchlist,
           onTap: onRequireSignIn,
         ),
-      if (onOpenImdb != null)
-        ActionTile(
-          icon: SimpleIcons.imdb,
-          label: _imdbLabel,
-          onTap: onOpenImdb!,
-        ),
+      ActionTile(
+        icon: IconsaxOutline.export_1,
+        label: s.share,
+        onTap: onShare,
+      ),
     ];
 
     return Column(
@@ -102,18 +98,46 @@ class DetailActions extends StatelessWidget {
   }
 }
 
-/// The app bar's Share action. Available signed in or out.
-class DetailShareButton extends StatelessWidget {
-  const DetailShareButton({super.key, required this.onShare});
+enum _MoreAction { share, imdb }
+
+/// The app bar's "⋯" menu: Share (also reachable once the tiles have
+/// scrolled away) and Open in IMDb when the title has an IMDb id.
+class DetailMoreMenu extends StatelessWidget {
+  const DetailMoreMenu({super.key, required this.onShare, this.onOpenImdb});
 
   final VoidCallback onShare;
 
+  /// Null (no IMDb id) leaves the item out.
+  final VoidCallback? onOpenImdb;
+
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      tooltip: S.of(context).share,
-      onPressed: onShare,
-      icon: const Icon(IconsaxOutline.export_1),
+    final s = S.of(context);
+    return PopupMenuButton<_MoreAction>(
+      icon: const Icon(IconsaxOutline.more),
+      onSelected: (a) => switch (a) {
+        _MoreAction.share => onShare(),
+        _MoreAction.imdb => onOpenImdb?.call(),
+      },
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          value: _MoreAction.share,
+          child: ListTile(
+            contentPadding: EdgeInsetsDirectional.zero,
+            leading: const Icon(IconsaxOutline.export_1),
+            title: Text(s.share),
+          ),
+        ),
+        if (onOpenImdb != null)
+          PopupMenuItem(
+            value: _MoreAction.imdb,
+            child: ListTile(
+              contentPadding: EdgeInsetsDirectional.zero,
+              leading: const Icon(IconsaxOutline.export_3),
+              title: Text(s.openInImdb),
+            ),
+          ),
+      ],
     );
   }
 }

@@ -286,5 +286,11 @@
     "setNewPasswordSubtitle": "अपने खाते के लिए नया पासवर्ड चुनें।",
     "newPasswordLabel": "नया पासवर्ड",
     "savePasswordLabel": "पासवर्ड सहेजें",
-    "passwordUpdated": "आपका पासवर्ड अपडेट हो गया।"
+    "passwordUpdated": "आपका पासवर्ड अपडेट हो गया।",
+    "openInImdb": "IMDb में खोलें",
+    "seasonsCount": "{count, plural, =1{1 सीज़न} other{{count} सीज़न}}",
+    "episodesCount": "{count, plural, =1{1 एपिसोड} other{{count} एपिसोड}}",
+    "runtimeHoursMinutes": "{hours} घं {minutes} मि",
+    "runtimeHoursOnly": "{hours} घं",
+    "runtimeMinutesOnly": "{minutes} मि"
 }

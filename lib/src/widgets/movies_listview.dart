@@ -12,6 +12,7 @@ import '../components/state_views.dart';
 import '../design/tokens.dart';
 import '../models/movie_model.dart';
 import '../navigation/routes.dart';
+import '../pages/UI/detail_preview.dart';
 import '../utils/poster_size.dart';
 import '../utils/utils.dart' show getGenres, tmdbImage;
 import 'shimmerWidgets/movieListViewShimmerWidget.dart';
@@ -100,6 +101,7 @@ class _MoviesListViewState extends State<MoviesListView> {
             id: item.id!,
             isTv: isTv,
             heroTag: heroTagFor(source: source, isTv: isTv, id: item.id!),
+            preview: DetailPreview.fromResult(item, isTv: isTv),
           );
         }
 
