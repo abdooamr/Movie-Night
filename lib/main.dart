@@ -13,6 +13,8 @@ import 'generated/l10n.dart';
 import 'src/design/app_theme.dart';
 import 'src/design/performance.dart';
 
+const bool _forceLowPower = bool.fromEnvironment('FORCE_LOW_POWER');
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -21,8 +23,11 @@ void main() async {
   await Hive.openBox<LikedModel>('liked');
 
   // Watches frame timings; drops decorative motion on devices that can't
-  // keep up (see PerformanceMonitor).
-  final performance = PerformanceMonitor()..start();
+  // keep up (see PerformanceMonitor). `--dart-define=FORCE_LOW_POWER=true`
+  // starts in low power, for testing and benchmarks.
+  final performance = PerformanceMonitor(
+    debugForceLowPower: _forceLowPower ? true : null,
+  )..start();
 
   runApp(PerformanceScope(
     notifier: performance,

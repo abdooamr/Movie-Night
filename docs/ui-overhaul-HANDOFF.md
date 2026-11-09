@@ -147,6 +147,20 @@ Each task owns disjoint files. Status when paused:
 | R17 | New `MNColors.onScrim` token for text over imagery | Theme text is dark in light mode, unreadable on the fixed dark scrim | One extra token |
 | R18 | The offline banner stays an overlay but pushes app content down while offline | The overlay hid the back button and titles | Content shifts once when going offline |
 
+## Home performance (2026-11-09)
+
+Plan: `docs/superpowers/plans/2026-11-09-home-performance.md`. Results: `docs/perf/home-scroll.md`.
+
+- **Spill glow is baked**, not live-blurred: `lib/src/components/glow_baker.dart` (64 × 36, cached 24). Design doc § 8 is updated.
+- **Home** rebuilds only the glow on a carousel swipe, builds rails lazily (`SliverMainAxisGroup` + `SliverList`), switches Movies/TV instantly, and keeps content and carousel page through refreshes and failed refreshes.
+- **Posters** use `tmdbImage(path, physicalWidth)` (smallest TMDB size covering 90%). Rail and carousel Heroes use `railHeroShuttle` so the flight shows the already-loaded image.
+- **Low-power mode** (`lib/src/design/performance.dart`):
+  - Turns on after 2 consecutive 120-frame windows where at least 25% of frames miss the budget (1 s / refresh rate). The first 120 frames are ignored. It stays on for the session.
+  - Turns off: carousel zoom, card press-scale, image fade-ins, shimmer sweeps, and Home's one-screen pre-build (`cacheExtent`). Read it as `MNMotion.of(context).allowRichMotion` (or `.lowPower`).
+  - Leaves alone: Reduce Motion rules, Hero flights, the spill glow.
+  - Force it: `flutter run --dart-define=FORCE_LOW_POWER=true` (the benchmark accepts the same define).
+- **Benchmark:** `flutter drive --no-dds --profile -d <device> --dart-define-from-file=env.json --driver=test_driver/perf_driver.dart --target=integration_test/home_scroll_perf_test.dart`. Needs network.
+
 ## Known follow-ups (deferred, not blocking)
 
 - **Translations:** the 6 non-English locales are machine drafts and need native review. Spanish and French Title Case is inconsistent, German "Gemocht" reads awkwardly, and the Hindi "शीर्षक" wording should be checked.

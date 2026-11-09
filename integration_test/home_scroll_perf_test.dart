@@ -1,6 +1,7 @@
 import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/langprovider.dart';
 import 'package:Movie_Night/src/design/app_theme.dart';
+import 'package:Movie_Night/src/design/performance.dart';
 import 'package:Movie_Night/src/pages/UI/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -12,11 +13,15 @@ import 'package:shimmer/shimmer.dart';
 
 /// Home scroll benchmark. Run in profile mode on a real device:
 ///
-///   flutter drive --profile --dart-define-from-file=env.json \
+///   flutter drive --no-dds --profile --dart-define-from-file=env.json \
 ///     --driver=test_driver/perf_driver.dart \
 ///     --target=integration_test/home_scroll_perf_test.dart
 ///
 /// Needs network (TMDB). Results: build/home_scroll.timeline_summary.json.
+///
+/// Add `--dart-define=FORCE_LOW_POWER=true` to measure the low-power tier.
+/// The automatic monitor is not started here, so a normal run never
+/// switches tiers mid-benchmark.
 void main() {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
@@ -24,19 +29,28 @@ void main() {
     // The TMDB disk cache needs Hive, as in main().
     await Hive.initFlutter();
 
+    final performance = PerformanceMonitor(
+      debugForceLowPower:
+          const bool.fromEnvironment('FORCE_LOW_POWER') ? true : null,
+    );
+    addTearDown(performance.dispose);
+
     await tester.pumpWidget(
-      ChangeNotifierProvider(
-        create: (_) => DropdownProvider(),
-        child: MaterialApp(
-          theme: buildAppTheme(Brightness.dark),
-          localizationsDelegates: const [
-            S.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: S.delegate.supportedLocales,
-          home: const HomePage(),
+      PerformanceScope(
+        notifier: performance,
+        child: ChangeNotifierProvider(
+          create: (_) => DropdownProvider(),
+          child: MaterialApp(
+            theme: buildAppTheme(Brightness.dark),
+            localizationsDelegates: const [
+              S.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: S.delegate.supportedLocales,
+            home: const HomePage(),
+          ),
         ),
       ),
     );
