@@ -24,6 +24,9 @@ export 'package:Movie_Night/src/data/tmdb_client.dart'
 
 TmdbRepository get _repo => TmdbRepository.instance;
 
+/// Runs [fetch] with the TMDB caches bypassed (pull-to-refresh).
+Future<T> refreshing<T>(Future<T> Function() fetch) => _repo.refresh(fetch);
+
 Future<movie.Model> getUpcomingMovies(String lang) =>
     _repo.upcomingMovies(lang);
 

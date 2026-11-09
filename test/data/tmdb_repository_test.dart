@@ -142,4 +142,42 @@ void main() {
     expect(TmdbRepository.cacheKey('movie/1', {'b': '2', 'a': '1'}),
         'movie/1?a=1&b=2');
   });
+
+  group('refresh', () {
+    test('goes back to the network despite fresh memory and disk', () async {
+      final r = repo(feedPages: 1);
+      await r.trending(false, 'en');
+      await r.trending(false, 'en'); // cached
+      expect(requests, hasLength(1));
+
+      await r.refresh(() => r.trending(false, 'en'));
+      expect(requests, hasLength(2));
+    });
+
+    test('later normal calls reuse the refreshed result', () async {
+      final r = repo(feedPages: 1);
+      await r.trending(false, 'en');
+      final refreshed = r.refresh(() => r.trending(false, 'en'));
+      await refreshed;
+      expect(identical(r.trending(false, 'en'), refreshed), isTrue);
+      expect(requests, hasLength(2));
+    });
+
+    test('offline refresh falls back to the cached copy', () async {
+      final r = repo(feedPages: 1);
+      await r.trending(false, 'en');
+      respond = (_) => throw http.ClientException('offline');
+      final m = await r.refresh(() => r.trending(false, 'en'));
+      expect(m.results.single.id, 1);
+    });
+
+    test('calls outside refresh keep using the cache', () async {
+      final r = repo(feedPages: 1);
+      await r.trending(false, 'en');
+      await r.refresh(() => r.trending(false, 'en'));
+      await r.popular(false, 'en'); // new key: one request
+      await r.trending(false, 'en'); // cached again
+      expect(requests, hasLength(3));
+    });
+  });
 }

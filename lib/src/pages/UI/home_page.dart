@@ -22,12 +22,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late final DropdownProvider _lang =
-      Provider.of<DropdownProvider>(context, listen: false);
-
   /// Fetched lazily per feed (TV feeds only once the TV tab is shown), then
-  /// cached until a retry or pull-to-refresh replaces them.
+  /// cached until a retry, a pull-to-refresh or a language change replaces
+  /// them.
   final Map<HomeFeed, Future<Model>> _futures = {};
+
+  /// Language the cached [_futures] were fetched in.
+  late String _feedLang;
+  bool _hasLang = false;
 
   bool _isMovie = true;
 
@@ -35,8 +37,22 @@ class _HomePageState extends State<HomePage> {
   /// carousel swipe repaints only the glow instead of rebuilding Home.
   final ValueNotifier<ImageProvider?> _glow = ValueNotifier(null);
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Listens: the saved language arrives after the first frame on launch,
+    // and the user can change it in Settings. Either way, refetch in it.
+    final lang = Provider.of<DropdownProvider>(context).selectedValue;
+    if (_hasLang && lang != _feedLang) {
+      _futures.clear();
+      _glow.value = null;
+    }
+    _feedLang = lang;
+    _hasLang = true;
+  }
+
   Future<Model> _fetch(HomeFeed feed) {
-    final lang = _lang.selectedValue;
+    final lang = _feedLang;
     final override = widget.fetch;
     if (override != null) return override(feed, lang);
     return switch (feed) {
@@ -60,7 +76,8 @@ class _HomePageState extends State<HomePage> {
     final feeds = _isMovie ? HomeFeed.movieFeeds : HomeFeed.tvFeeds;
     setState(() {
       for (final f in feeds) {
-        _futures[f] = _fetch(f);
+        // Bypasses the TMDB caches, so a pull really fetches new data.
+        _futures[f] = refreshing(() => _fetch(f));
       }
     });
     await Future.wait(

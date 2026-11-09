@@ -198,6 +198,16 @@ class TmdbRepository {
   /// Drops the memory layer (e.g. after a language change, or for tests).
   void clearMemory() => _memory.clear();
 
+  /// Runs [fetch] with both caches bypassed, for pull-to-refresh: every
+  /// request it makes goes to the network, and the results replace the
+  /// cached ones. A transient failure still falls back to the cached copy.
+  Future<T> refresh<T>(Future<T> Function() fetch) =>
+      runZoned(fetch, zoneValues: {_refreshZoneKey: true});
+
+  static final Object _refreshZoneKey = Object();
+
+  static bool get _refreshing => Zone.current[_refreshZoneKey] == true;
+
   Future<void> clearAll() async {
     _memory.clear();
     await _disk.clear();
@@ -267,7 +277,7 @@ class TmdbRepository {
   ) {
     final now = _now();
     final hit = _memory.remove(key);
-    if (hit != null && hit.expiresAt.isAfter(now)) {
+    if (hit != null && hit.expiresAt.isAfter(now) && !_refreshing) {
       _memory[key] = hit; // move to most-recently-used
       return hit.future as Future<T>;
     }
@@ -305,7 +315,9 @@ class TmdbRepository {
     CachedBody? cached;
     if (useDisk) {
       cached = await _disk.read(key);
-      if (cached != null && _now().difference(cached.storedAt) < policy.disk!) {
+      if (cached != null &&
+          !_refreshing &&
+          _now().difference(cached.storedAt) < policy.disk!) {
         return (body: cached.body, stale: false);
       }
     }

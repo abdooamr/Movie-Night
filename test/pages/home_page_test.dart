@@ -30,10 +30,14 @@ Model _model(HomeFeed feed, int count) => Model(results: [
 Widget _home({
   Future<Model> Function(HomeFeed, String)? fetch,
   ScrollController? controller,
+  DropdownProvider? lang,
 }) {
   Widget home = HomePage(fetch: fetch ?? (feed, _) async => _model(feed, 10));
   if (controller != null) {
     home = PrimaryScrollController(controller: controller, child: home);
+  }
+  if (lang != null) {
+    return ChangeNotifierProvider.value(value: lang, child: harness(home));
   }
   return ChangeNotifierProvider(
     create: (_) => DropdownProvider(),
@@ -118,5 +122,26 @@ void main() {
     expect(fetched, contains(HomeFeed.airingToday));
     // One hero section, not two cross-fading trees.
     expect(find.byType(UpcomingMovies, skipOffstage: false), findsOneWidget);
+  });
+
+  testWidgets('a language change reloads the feeds in the new language',
+      (tester) async {
+    final langs = DropdownProvider();
+    final seen = <String>[];
+    await tester.pumpWidget(_home(
+      lang: langs,
+      fetch: (feed, lang) async {
+        seen.add('${feed.name}/$lang');
+        return _model(feed, 10);
+      },
+    ));
+    await _load(tester);
+    expect(seen, contains('upcoming/en'));
+    expect(seen, isNot(contains('upcoming/ar')));
+
+    langs.setSelectedValue('ar');
+    await _load(tester);
+    expect(seen, contains('upcoming/ar'));
+    expect(seen, contains('trending/ar'));
   });
 }
