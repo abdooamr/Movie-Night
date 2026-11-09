@@ -1,9 +1,8 @@
 import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/Provider/langprovider.dart';
-import 'package:Movie_Night/src/design/tokens.dart';
+import 'package:Movie_Night/src/widgets/explore_search_header.dart';
 import 'package:Movie_Night/src/widgets/genreslistview.dart';
 import 'package:Movie_Night/src/widgets/search.dart';
-import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
 import 'package:Movie_Night/src/services/services.dart';
 import 'package:provider/provider.dart';
@@ -84,65 +83,26 @@ class _ExplorePageState extends State<ExplorePage>
   @override
   Widget build(BuildContext context) {
     final s = S.of(context);
-    final cs = Theme.of(context).colorScheme;
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           SliverOverlapAbsorber(
             handle: _overlapHandle,
-            sliver: SliverAppBar.large(
+            // No title row: the search field sits right under the status
+            // bar, the genre tabs under it. The header carries the page name
+            // for assistive tech.
+            sliver: SliverAppBar(
               pinned: true,
-              title: Text(s.explorenavbar),
+              automaticallyImplyLeading: false,
               forceElevated: innerBoxIsScrolled,
-              // Search field (56) + gap + tab row.
-              bottom: PreferredSize(
-                preferredSize:
-                    const Size.fromHeight(56 + MNSpace.sm + kTextTabBarHeight),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsetsDirectional.only(
-                        start: MNSpace.lg,
-                        end: MNSpace.lg,
-                        bottom: MNSpace.sm,
-                      ),
-                      // A launcher for the search delegate: the field itself
-                      // never takes input, so it is one button to assistive
-                      // tech.
-                      child: Semantics(
-                        button: true,
-                        label: s.searchhint,
-                        excludeSemantics: true,
-                        onTap: () => _openSearch(context),
-                        child: GestureDetector(
-                          behavior: HitTestBehavior.opaque,
-                          onTap: () => _openSearch(context),
-                          child: IgnorePointer(
-                            child: ExcludeFocus(
-                              child: SearchBar(
-                                hintText: s.searchhint,
-                                leading: Icon(
-                                  IconsaxOutline.search_normal,
-                                  color: cs.onSurfaceVariant,
-                                ),
-                                elevation: const WidgetStatePropertyAll(0),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    TabBar(
-                      controller: _tabController,
-                      isScrollable: true,
-                      tabAlignment: TabAlignment.start,
-                      tabs: [
-                        for (final (_, label) in _genreTabs)
-                          Tab(text: label(s)),
-                      ],
-                    ),
-                  ],
-                ),
+              toolbarHeight: 0,
+              bottom: ExploreSearchHeader(
+                title: s.explorenavbar,
+                hint: s.searchhint,
+                tabs: [for (final (_, label) in _genreTabs) label(s)],
+                controller: _tabController,
+                onSearch: () => _openSearch(context),
+                textScaler: MediaQuery.textScalerOf(context),
               ),
             ),
           ),

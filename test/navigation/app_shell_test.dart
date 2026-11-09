@@ -1,4 +1,4 @@
-import 'package:Movie_Night/src/components/sign_in_prompt.dart';
+import 'package:Movie_Night/src/pages/Login-Logout/Login_welcome_screen.dart';
 import 'package:Movie_Night/src/widgets/Navbar/Navbar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -75,15 +75,17 @@ int _selected(WidgetTester tester) =>
     tester.widget<NavigationBar>(find.byType(NavigationBar)).selectedIndex;
 
 void main() {
-  testWidgets('four destinations, signed-out Profile shows SignInPrompt',
+  testWidgets('four destinations, signed-out Profile shows the sign-in screen',
       (tester) async {
     await tester.pumpWidget(shellApp(isSignedIn: false, pagesBuilder: _pages));
     expect(find.byType(NavigationDestination), findsNWidgets(4));
 
     await tester.tap(find.text('Profile'));
-    await tester.pumpAndSettle();
+    // The welcome screen's Lottie loops, so the tree never settles.
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 1));
     expect(_selected(tester), 3);
-    expect(find.byType(SignInPrompt), findsOneWidget);
+    expect(find.byType(LoginWelcomeScreen), findsOneWidget);
     expect(find.text('ProfileRoot'), findsNothing);
   });
 
@@ -92,7 +94,7 @@ void main() {
     await tester.tap(find.text('Profile'));
     await tester.pumpAndSettle();
     expect(find.text('ProfileRoot'), findsOneWidget);
-    expect(find.byType(SignInPrompt), findsNothing);
+    expect(find.byType(LoginWelcomeScreen), findsNothing);
   });
 
   testWidgets('toggling isSignedIn keeps the current index', (tester) async {

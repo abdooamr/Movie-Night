@@ -1,5 +1,4 @@
 import 'package:Movie_Night/generated/l10n.dart';
-import 'package:Movie_Night/src/components/sign_in_prompt.dart';
 import 'package:Movie_Night/src/design/motion.dart';
 import 'package:Movie_Night/src/design/tokens.dart';
 import 'package:Movie_Night/src/navigation/routes.dart';
@@ -31,8 +30,8 @@ class AppShell extends StatefulWidget {
   final bool isSignedIn;
 
   /// Test hook replacing the four real (Firebase-backed) tab roots. Index 3 is
-  /// the signed-in Profile page; signed out, the shell shows [SignInPrompt]
-  /// there regardless.
+  /// the signed-in Profile page; signed out, the shell shows the
+  /// [LoginWelcomeScreen] there regardless.
   @visibleForTesting
   final List<Widget> Function(bool signedIn)? pagesBuilder;
 
@@ -228,28 +227,15 @@ class AppShellState extends State<AppShell> {
   }
 }
 
-/// Profile tab while signed out.
+/// Profile tab while signed out: the Log In / Create Account screen itself,
+/// inline in the tab. Log In and Register push on the tab's navigator; the
+/// shell pops back to the root once the user is signed in.
 class _SignedOutProfile extends StatelessWidget {
   const _SignedOutProfile();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            pinned: true,
-            title: Semantics(
-              header: true,
-              child: Text(S.of(context).profilenavbar),
-            ),
-          ),
-          SliverFillRemaining(
-            hasScrollBody: false,
-            child: SignInPrompt(onLogIn: () => presentSignIn(context)),
-          ),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => LoginWelcomeScreen(
+        inSheet: false,
+        title: S.of(context).profilenavbar,
+      );
 }
