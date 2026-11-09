@@ -107,6 +107,11 @@ class _HomePageState extends State<HomePage> {
         onRefresh: _reload,
         child: CustomScrollView(
           primary: true,
+          // Sections a screen ahead are built early so their posters are in
+          // place on arrival; in low power only what is visible is built.
+          cacheExtent: MNMotion.of(context).lowPower
+              ? 0
+              : MediaQuery.sizeOf(context).height,
           slivers: [
             SliverAppBar(
               pinned: true,

@@ -46,7 +46,7 @@ class UserInfoTileShimmerWidget extends StatelessWidget {
       ),
     );
 
-    if (MNMotion.of(context).reduce) return placeholder;
+    if (!MNMotion.of(context).allowRichMotion) return placeholder;
     return Shimmer.fromColors(
       period: MNDuration.long * 3.5,
       baseColor: base,

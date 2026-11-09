@@ -25,7 +25,7 @@ class searchResultShimmerWidget extends StatelessWidget {
 
     return ExcludeSemantics(
       child: Shimmer.fromColors(
-        enabled: !MNMotion.of(context).reduce,
+        enabled: MNMotion.of(context).allowRichMotion,
         baseColor: base,
         highlightColor: highlight,
         child: ListView.builder(

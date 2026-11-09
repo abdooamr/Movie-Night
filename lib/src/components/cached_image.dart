@@ -40,6 +40,7 @@ class CachedImageCustom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final motion = MNMotion.of(context);
     final logicalWidth = decodeWidth ?? width;
     final memCacheWidth = logicalWidth == null || !logicalWidth.isFinite
         ? null
@@ -60,8 +61,9 @@ class CachedImageCustom extends StatelessWidget {
       memCacheWidth: memCacheWidth,
       fit: BoxFit.cover,
       // Spec section 9: fade-ins are `short`; fades stay on under Reduce
-      // Motion.
-      fadeInDuration: MNMotion.of(context).fade(MNDuration.short),
+      // Motion. Low power skips them (one animation per image).
+      fadeInDuration:
+          motion.lowPower ? Duration.zero : motion.fade(MNDuration.short),
       fadeOutDuration: Duration.zero,
       placeholder: (context, url) => box(),
       errorWidget: (context, url, error) => box(

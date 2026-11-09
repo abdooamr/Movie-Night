@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:Movie_Night/src/design/performance.dart';
 import 'package:Movie_Night/src/models/movie_model.dart';
 import 'package:Movie_Night/src/widgets/upcoming.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -73,5 +75,24 @@ void main() {
 
     expect(find.byType(PageView), findsOneWidget);
     expect(find.text('Try Again'), findsOneWidget);
+  });
+
+  testWidgets('low power turns off carousel enlarge', (tester) async {
+    Future<bool> enlargeWith({required bool lowPower}) async {
+      final monitor = PerformanceMonitor(debugForceLowPower: lowPower);
+      addTearDown(monitor.dispose);
+      await tester.pumpWidget(PerformanceScope(
+        notifier: monitor,
+        child: _hero(Future.value(_model(10)), (_) {}),
+      ));
+      await _settle(tester);
+      return tester
+          .widget<CarouselSlider>(find.byType(CarouselSlider))
+          .options
+          .enlargeCenterPage!;
+    }
+
+    expect(await enlargeWith(lowPower: false), isTrue);
+    expect(await enlargeWith(lowPower: true), isFalse);
   });
 }

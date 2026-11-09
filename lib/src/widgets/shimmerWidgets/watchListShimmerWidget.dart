@@ -59,7 +59,7 @@ class WatchlistShimmerTile extends StatelessWidget {
 
     // Decorative placeholder.
     content = ExcludeSemantics(child: content);
-    if (MNMotion.of(context).reduce) return content;
+    if (!MNMotion.of(context).allowRichMotion) return content;
     return Shimmer.fromColors(
       baseColor: base,
       highlightColor: highlight,

@@ -30,7 +30,7 @@ class detailPageShimmerWidget extends StatelessWidget {
 
     return ExcludeSemantics(
       child: Shimmer.fromColors(
-        enabled: !MNMotion.of(context).reduce,
+        enabled: MNMotion.of(context).allowRichMotion,
         baseColor: base,
         highlightColor: cs.surfaceContainerHighest,
         child: SingleChildScrollView(

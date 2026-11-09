@@ -155,7 +155,7 @@ class _RailSkeleton extends StatelessWidget {
       child: SizedBox(
         height: size.cardHeight,
         child: Shimmer.fromColors(
-          enabled: !MNMotion.of(context).reduce,
+          enabled: MNMotion.of(context).allowRichMotion,
           baseColor: cs.surfaceContainerHigh,
           highlightColor: cs.surfaceContainerHighest,
           child: ListView.separated(

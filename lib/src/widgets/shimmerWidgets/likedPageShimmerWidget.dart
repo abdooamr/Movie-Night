@@ -51,7 +51,7 @@ class likedPageShimmerWidget extends StatelessWidget {
       ),
     );
     card = ExcludeSemantics(child: card);
-    if (MNMotion.of(context).reduce) return card;
+    if (!MNMotion.of(context).allowRichMotion) return card;
     return Shimmer.fromColors(
       baseColor: baseColor,
       highlightColor: highlightColor,

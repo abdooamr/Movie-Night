@@ -29,7 +29,7 @@ class upcomingShimmerWidget extends StatelessWidget {
 
     return ExcludeSemantics(
       child: Shimmer.fromColors(
-        enabled: !MNMotion.of(context).reduce,
+        enabled: MNMotion.of(context).allowRichMotion,
         baseColor: base,
         highlightColor: highlightColor ?? cs.surfaceContainerHighest,
         child: Column(

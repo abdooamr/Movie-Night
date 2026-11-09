@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import '../design/motion.dart';
 
 /// Thin wrapper over [CarouselSlider.builder]. The centre page is enlarged
-/// only when scale animations are allowed (not under Reduce Motion).
+/// only when decorative motion is allowed (not under Reduce Motion or in
+/// low power).
 class MyCarouselSlider extends StatelessWidget {
   const MyCarouselSlider({
     required this.itemBuilder,
@@ -38,7 +39,7 @@ class MyCarouselSlider extends StatelessWidget {
         onPageChanged: onPageChanged,
         enableInfiniteScroll: itemCount > 2,
         viewportFraction: viewportFraction,
-        enlargeCenterPage: itemCount != 1 && MNMotion.of(context).allowScale,
+        enlargeCenterPage: itemCount != 1 && MNMotion.of(context).allowRichMotion,
         height: height,
         aspectRatio: aspectRatio,
       ),

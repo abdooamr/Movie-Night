@@ -18,7 +18,7 @@ class genreListViewShimmerWidget extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
     final base = cs.surfaceContainerHighest;
     final highlight = cs.surfaceContainerHigh;
-    final animate = !MNMotion.of(context).reduce;
+    final animate = MNMotion.of(context).allowRichMotion;
 
     Widget block(double height, {double? width, BorderRadius? radius}) =>
         Container(

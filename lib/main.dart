@@ -11,6 +11,7 @@ import 'package:Movie_Night/src/Auth/auth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'generated/l10n.dart';
 import 'src/design/app_theme.dart';
+import 'src/design/performance.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,13 +20,20 @@ void main() async {
   Hive.registerAdapter<LikedModel>(LikedModelAdapter());
   await Hive.openBox<LikedModel>('liked');
 
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (context) => ReviewProvider()),
-    ChangeNotifierProvider(create: (context) => ThemeProvider()),
-    ChangeNotifierProvider(create: (context) => UserProvider()),
-    ChangeNotifierProvider(create: (context) => UserData()),
-    ChangeNotifierProvider(create: (context) => DropdownProvider()),
-  ], child: const MyApp()));
+  // Watches frame timings; drops decorative motion on devices that can't
+  // keep up (see PerformanceMonitor).
+  final performance = PerformanceMonitor()..start();
+
+  runApp(PerformanceScope(
+    notifier: performance,
+    child: MultiProvider(providers: [
+      ChangeNotifierProvider(create: (context) => ReviewProvider()),
+      ChangeNotifierProvider(create: (context) => ThemeProvider()),
+      ChangeNotifierProvider(create: (context) => UserProvider()),
+      ChangeNotifierProvider(create: (context) => UserData()),
+      ChangeNotifierProvider(create: (context) => DropdownProvider()),
+    ], child: const MyApp()),
+  ));
 }
 
 final _lightTheme = buildAppTheme(Brightness.light);

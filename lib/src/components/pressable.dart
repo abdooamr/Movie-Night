@@ -6,8 +6,8 @@ import '../design/tokens.dart';
 
 /// Press feedback for cards: scales to 0.97 on tap-down and springs back
 /// ([MNSprings.press]) on release, with an [InkWell] highlight drawn over
-/// [child]. Only the transform animates. Under Reduce Motion there is no
-/// scale, just the ink.
+/// [child]. Only the transform animates. Under Reduce Motion or in low power
+/// there is no scale, just the ink.
 ///
 /// This adds no accessible name: the [InkWell] exposes an unlabeled tap
 /// action. Callers must provide one, e.g. wrap in
@@ -73,7 +73,7 @@ class _PressableScaleState extends State<PressableScale>
 
   @override
   Widget build(BuildContext context) {
-    _allowScale = MNMotion.of(context).allowScale;
+    _allowScale = MNMotion.of(context).allowRichMotion;
     final enabled = widget.onTap != null || widget.onLongPress != null;
     final content = Stack(
       children: [
