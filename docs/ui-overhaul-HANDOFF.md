@@ -159,6 +159,7 @@ Plan: `docs/superpowers/plans/2026-11-09-home-performance.md`. Results: `docs/pe
   - Turns off: carousel zoom, card press-scale, image fade-ins, shimmer sweeps, and Home's one-screen pre-build (`cacheExtent`). Read it as `MNMotion.of(context).allowRichMotion` (or `.lowPower`).
   - Leaves alone: Reduce Motion rules, Hero flights, the spill glow.
   - Force it: `flutter run --dart-define=FORCE_LOW_POWER=true` (the benchmark accepts the same define).
+- **Results:** normal tier vs baseline on the A50: raster average -15%, p90 -8%; low power is fastest (p90 raster 8.8 ms). A full-screen `cacheExtent` was measured slower and rejected.
 - **Benchmark:** `flutter drive --no-dds --profile -d <device> --dart-define-from-file=env.json --driver=test_driver/perf_driver.dart --target=integration_test/home_scroll_perf_test.dart`. Needs network.
 
 ## Known follow-ups (deferred, not blocking)
@@ -167,6 +168,9 @@ Plan: `docs/superpowers/plans/2026-11-09-home-performance.md`. Results: `docs/pe
 - **Out of scope here:**
   - Register partial failure (pre-existing, provider-side): if the Firestore write fails after the auth account is created, the user is left signed in on the Register screen.
   - The forced immediate update at launch is a product decision.
+- **Detail Hero on first visit:** the detail page shows a skeleton until its data loads, so a poster tap on a title not seen before has no Hero flight. Putting the poster Hero in the skeleton (the path is known from the rail) would fix it.
+- **One slow build frame on Home:** in the final benchmark one frame per run (~19 ms build) missed the budget, probably a rail built as it scrolls into view. See `docs/perf/home-scroll.md`.
+- **Low-end measurement:** the Home benchmark has only run on a mid-range A50; a ~2 GB phone is still to be measured.
 - **Layout:** `NavigationRail` for wide screens (spec §6) is left for later.
 - **Tests:** golden tests are left for later, since they need pinned fonts in CI.
 - **Smaller items** are listed in the ledger, for example the `ActionTile` reduce-motion test, the error-snackbar content colour assertion, and the PhotoView drag-to-dismiss check on a device.

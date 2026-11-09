@@ -107,11 +107,10 @@ class _HomePageState extends State<HomePage> {
         onRefresh: _reload,
         child: CustomScrollView(
           primary: true,
-          // Sections a screen ahead are built early so their posters are in
-          // place on arrival; in low power only what is visible is built.
-          cacheExtent: MNMotion.of(context).lowPower
-              ? 0
-              : MediaQuery.sizeOf(context).height,
+          // Default pre-build distance; in low power only what is visible is
+          // built. A full screen ahead was measured slower on the A50
+          // (raster p90 9.6 -> 11.4 ms, docs/perf/home-scroll.md).
+          cacheExtent: MNMotion.of(context).lowPower ? 0 : null,
           slivers: [
             SliverAppBar(
               pinned: true,
