@@ -295,5 +295,9 @@
     "runtimeMinutesOnly": "{minutes} min",
     "reviewsTitle": "Reseñas",
     "beFirstToReview": "Aún no hay reseñas. Escribe la primera.",
-    "logInToReview": "Inicia Sesión para Escribir una Reseña"
+    "logInToReview": "Inicia Sesión para Escribir una Reseña",
+    "profileSignInTitle": "Inicia Sesión en Movie Night",
+    "profileSignInBody": "Guarda una lista de seguimiento, escribe reseñas y lleva tu perfil a cualquier dispositivo.",
+    "watchlistSignInTitle": "Inicia Sesión para Usar tu Lista de Seguimiento",
+    "watchlistSignInBody": "Tu lista se guarda en tu cuenta, así que te acompaña en cualquier dispositivo."
 }

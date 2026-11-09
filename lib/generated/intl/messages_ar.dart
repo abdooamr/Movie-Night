@@ -390,6 +390,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "profilePicUploadFailed": MessageLookupByLibrary.simpleMessage(
       "تعذر رفع صورة الملف الشخصي. حاول مرة أخرى.",
     ),
+    "profileSignInBody": MessageLookupByLibrary.simpleMessage(
+      "احتفظ بقائمة مشاهدة، واكتب مراجعات، وانقل ملفك الشخصي إلى أي جهاز.",
+    ),
+    "profileSignInTitle": MessageLookupByLibrary.simpleMessage(
+      "سجّل الدخول إلى Movie Night",
+    ),
     "profilenavbar": MessageLookupByLibrary.simpleMessage("الملف الشخصي"),
     "rateMovieNight": MessageLookupByLibrary.simpleMessage("قيّم Movie Night"),
     "ratingOutOf10": m7,
@@ -526,6 +532,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "watchlistEmptyBody": MessageLookupByLibrary.simpleMessage(
       "أضف عناوين إلى قائمة المشاهدة لتجدها هنا لاحقًا.",
+    ),
+    "watchlistSignInBody": MessageLookupByLibrary.simpleMessage(
+      "تُحفظ قائمة المشاهدة في حسابك، فتجدها على أي جهاز.",
+    ),
+    "watchlistSignInTitle": MessageLookupByLibrary.simpleMessage(
+      "سجّل الدخول لاستخدام قائمة المشاهدة",
     ),
     "watchlistUpdateFailed": MessageLookupByLibrary.simpleMessage(
       "تعذّر تحديث قائمة المشاهدة. حاول مرة أخرى.",

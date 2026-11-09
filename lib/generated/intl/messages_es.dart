@@ -468,6 +468,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "profilePicUploadFailed": MessageLookupByLibrary.simpleMessage(
       "No se pudo subir la foto de perfil. Inténtalo de nuevo.",
     ),
+    "profileSignInBody": MessageLookupByLibrary.simpleMessage(
+      "Guarda una lista de seguimiento, escribe reseñas y lleva tu perfil a cualquier dispositivo.",
+    ),
+    "profileSignInTitle": MessageLookupByLibrary.simpleMessage(
+      "Inicia Sesión en Movie Night",
+    ),
     "profilenavbar": MessageLookupByLibrary.simpleMessage("Perfil"),
     "rateMovieNight": MessageLookupByLibrary.simpleMessage(
       "Calificar Movie Night",
@@ -634,6 +640,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "watchTrailers": MessageLookupByLibrary.simpleMessage("Ver tráileres"),
     "watchlistEmptyBody": MessageLookupByLibrary.simpleMessage(
       "Añade títulos a tu lista de seguimiento para encontrarlos aquí más tarde.",
+    ),
+    "watchlistSignInBody": MessageLookupByLibrary.simpleMessage(
+      "Tu lista se guarda en tu cuenta, así que te acompaña en cualquier dispositivo.",
+    ),
+    "watchlistSignInTitle": MessageLookupByLibrary.simpleMessage(
+      "Inicia Sesión para Usar tu Lista de Seguimiento",
     ),
     "watchlistUpdateFailed": MessageLookupByLibrary.simpleMessage(
       "No se pudo actualizar la lista de seguimiento. Inténtalo de nuevo.",

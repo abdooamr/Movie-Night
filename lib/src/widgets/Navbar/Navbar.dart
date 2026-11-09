@@ -2,6 +2,7 @@ import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/design/motion.dart';
 import 'package:Movie_Night/src/design/tokens.dart';
 import 'package:Movie_Night/src/navigation/routes.dart';
+import 'package:Movie_Night/src/pages/Userpage/signed_out_profile.dart';
 import 'package:Movie_Night/src/pages/allpages.dart';
 import 'package:Movie_Night/src/services/app_update.dart';
 import 'package:ficonsax/ficonsax.dart';
@@ -32,8 +33,8 @@ class AppShell extends StatefulWidget {
   final bool isSignedIn;
 
   /// Test hook replacing the four real (Supabase-backed) tab roots. Index 3 is
-  /// the signed-in Profile page; signed out, the shell shows the
-  /// [LoginWelcomeScreen] there regardless.
+  /// the signed-in Profile page; signed out, the shell shows
+  /// [SignedOutProfile] there regardless.
   @visibleForTesting
   final List<Widget> Function(bool signedIn)? pagesBuilder;
 
@@ -93,7 +94,7 @@ class AppShellState extends State<AppShell> {
     return [
       for (var i = 0; i < _tabCount; i++)
         if (i == _profileTab && !signedIn)
-          const _SignedOutProfile()
+          const SignedOutProfile()
         else
           pages[i],
     ];
@@ -237,17 +238,4 @@ class AppShellState extends State<AppShell> {
       ),
     );
   }
-}
-
-/// Profile tab while signed out: the Log In / Create Account screen itself,
-/// inline in the tab. Log In and Register push on the tab's navigator; the
-/// shell pops back to the root once the user is signed in.
-class _SignedOutProfile extends StatelessWidget {
-  const _SignedOutProfile();
-
-  @override
-  Widget build(BuildContext context) => LoginWelcomeScreen(
-        inSheet: false,
-        title: S.of(context).profilenavbar,
-      );
 }

@@ -295,5 +295,9 @@
     "runtimeMinutesOnly": "{minutes} min",
     "reviewsTitle": "Recensioni",
     "beFirstToReview": "Ancora nessuna recensione. Scrivi la prima.",
-    "logInToReview": "Accedi per Scrivere una Recensione"
+    "logInToReview": "Accedi per Scrivere una Recensione",
+    "profileSignInTitle": "Accedi a Movie Night",
+    "profileSignInBody": "Tieni una watchlist, scrivi recensioni e porta il tuo profilo su ogni dispositivo.",
+    "watchlistSignInTitle": "Accedi per Usare la Watchlist",
+    "watchlistSignInBody": "La watchlist è salvata nel tuo account, così ti segue su ogni dispositivo."
 }

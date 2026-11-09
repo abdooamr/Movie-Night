@@ -714,8 +714,6 @@ class _Actions extends StatelessWidget {
               : null,
         );
 
-    if (!isLoggedIn) return actions(false, () {});
-
     final box = Hive.box<LikedModel>('liked');
     // Rebuilds only when this title's entry changes.
     return ValueListenableBuilder<Box<LikedModel>>(

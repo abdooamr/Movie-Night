@@ -35,21 +35,22 @@ Widget _actions(_Calls c, {required bool loggedIn, Widget? watchlist}) {
 }
 
 void main() {
-  testWidgets('signed out: Like and Watchlist ask to sign in; Share works',
+  testWidgets('signed out: Like and Share work; Watchlist asks to sign in',
       (tester) async {
     final c = _Calls();
     await tester.pumpWidget(_actions(c, loggedIn: false));
 
+    // Likes are stored on the device: no account needed.
     await tester.tap(find.widgetWithText(ActionTile, 'Like'));
-    expect(c.signIn, 1);
-    expect(c.like, 0);
+    expect(c.like, 1);
+    expect(c.signIn, 0);
 
     await tester.tap(find.widgetWithText(ActionTile, 'Add to Watchlist'));
-    expect(c.signIn, 2);
+    expect(c.signIn, 1);
 
     await tester.tap(find.widgetWithText(ActionTile, 'Share'));
     expect(c.share, 1);
-    expect(c.signIn, 2);
+    expect(c.signIn, 1);
   });
 
   testWidgets('signed in: Like toggles and the watchlist slot is shown',

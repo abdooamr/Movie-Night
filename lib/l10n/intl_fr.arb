@@ -295,5 +295,9 @@
     "runtimeMinutesOnly": "{minutes} min",
     "reviewsTitle": "Avis",
     "beFirstToReview": "Aucun avis pour l'instant. Écrivez le premier.",
-    "logInToReview": "Connectez-vous pour écrire un avis"
+    "logInToReview": "Connectez-vous pour écrire un avis",
+    "profileSignInTitle": "Connectez-vous à Movie Night",
+    "profileSignInBody": "Gardez une liste de suivi, écrivez des avis et retrouvez votre profil sur tous vos appareils.",
+    "watchlistSignInTitle": "Connectez-vous pour utiliser votre liste de suivi",
+    "watchlistSignInBody": "Votre liste est enregistrée dans votre compte et vous suit sur tous vos appareils."
 }

@@ -422,6 +422,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "profilePicUploadFailed": MessageLookupByLibrary.simpleMessage(
       "प्रोफ़ाइल फ़ोटो अपलोड नहीं हो सकी। कृपया पुनः प्रयास करें।",
     ),
+    "profileSignInBody": MessageLookupByLibrary.simpleMessage(
+      "वॉचलिस्ट रखें, समीक्षाएँ लिखें और अपनी प्रोफ़ाइल किसी भी डिवाइस पर पाएँ।",
+    ),
+    "profileSignInTitle": MessageLookupByLibrary.simpleMessage(
+      "Movie Night में लॉग इन करें",
+    ),
     "profilenavbar": MessageLookupByLibrary.simpleMessage("प्रोफ़ाइल"),
     "rateMovieNight": MessageLookupByLibrary.simpleMessage(
       "Movie Night को रेट करें",
@@ -576,6 +582,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "watchTrailers": MessageLookupByLibrary.simpleMessage("ट्रेलर देखें"),
     "watchlistEmptyBody": MessageLookupByLibrary.simpleMessage(
       "अपनी वॉचलिस्ट में शीर्षक जोड़ें, ताकि बाद में वे यहाँ मिलें।",
+    ),
+    "watchlistSignInBody": MessageLookupByLibrary.simpleMessage(
+      "आपकी वॉचलिस्ट आपके खाते में सहेजी जाती है, इसलिए वह हर डिवाइस पर मिलती है।",
+    ),
+    "watchlistSignInTitle": MessageLookupByLibrary.simpleMessage(
+      "वॉचलिस्ट के लिए लॉग इन करें",
     ),
     "watchlistUpdateFailed": MessageLookupByLibrary.simpleMessage(
       "वॉचलिस्ट अपडेट नहीं हो सकी। फिर कोशिश करें।",

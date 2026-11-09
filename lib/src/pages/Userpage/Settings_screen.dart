@@ -8,13 +8,13 @@ import 'package:Movie_Night/src/pages/Userpage/SendReports.dart';
 import 'package:Movie_Night/src/pages/Userpage/User_info_page.dart';
 import 'package:Movie_Night/src/pages/Userpage/account_setting.dart';
 import 'package:Movie_Night/src/pages/Userpage/changepassword.dart';
+import 'package:Movie_Night/src/pages/Userpage/rate_app_row.dart';
 import 'package:Movie_Night/src/utils/app_logger.dart';
 import 'package:Movie_Night/src/widgets/customsettingscreen.dart';
 import 'package:Movie_Night/src/widgets/themechanger.dart';
 import 'package:Movie_Night/src/widgets/userinfotile.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
-import 'package:in_app_review/in_app_review.dart';
 
 /// The Profile tab (signed in): user tile, Appearance, General, Account and
 /// the spaced-apart Delete Account row.
@@ -27,7 +27,6 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   final UserRepository _users = UserRepository.instance;
-  final InAppReview _inAppReview = InAppReview.instance;
   bool _isAdmin = false;
   bool _signingOut = false;
 
@@ -46,20 +45,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       admin = false;
     }
     if (mounted) setState(() => _isAdmin = admin);
-  }
-
-  Future<void> _openStoreReview() async {
-    final failMsg = S.of(context).genericError;
-    try {
-      if (await _inAppReview.isAvailable()) {
-        await _inAppReview.requestReview();
-      }
-      // In-app review may show nothing (quota, emulator): open the store too.
-      await _inAppReview.openStoreListing();
-    } catch (e, st) {
-      AppLog.error('openStoreListing', e, st);
-      if (mounted) AppFeedback.error(context, failMsg);
-    }
   }
 
   Future<void> _logOut() async {
@@ -164,11 +149,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       opensScreen: true,
                       onTap: () => _push(const SendReport()),
                     ),
-                    SettingsRow(
-                      icon: IconsaxOutline.star,
-                      title: s.rateMovieNight,
-                      onTap: _openStoreReview,
-                    ),
+                    const RateAppRow(),
                   ],
                 ),
                 gap,

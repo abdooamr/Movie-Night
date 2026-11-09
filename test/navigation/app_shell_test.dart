@@ -1,8 +1,10 @@
-import 'package:Movie_Night/src/pages/Login-Logout/Login_welcome_screen.dart';
+import 'package:Movie_Night/src/pages/Userpage/signed_out_profile.dart';
 import 'package:Movie_Night/src/widgets/Navbar/Navbar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '_shell_harness.dart';
 
@@ -74,18 +76,25 @@ List<Widget> _pages(bool signedIn) => [
 int _selected(WidgetTester tester) =>
     tester.widget<NavigationBar>(find.byType(NavigationBar)).selectedIndex;
 
+const _localeChannel = MethodChannel('uk.spiralarm.flutter/devicelocale');
+
 void main() {
-  testWidgets('four destinations, signed-out Profile shows the sign-in screen',
+  setUp(() {
+    SharedPreferences.setMockInitialValues({});
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(_localeChannel, (_) async => 'en_US');
+  });
+
+  testWidgets('four destinations, signed-out Profile shows the log-in card and settings',
       (tester) async {
     await tester.pumpWidget(shellApp(isSignedIn: false, pagesBuilder: _pages));
     expect(find.byType(NavigationDestination), findsNWidgets(4));
 
     await tester.tap(find.text('Profile'));
-    // The welcome screen's Lottie loops, so the tree never settles.
     await tester.pump();
     await tester.pump(const Duration(seconds: 1));
     expect(_selected(tester), 3);
-    expect(find.byType(LoginWelcomeScreen), findsOneWidget);
+    expect(find.byType(SignedOutProfile), findsOneWidget);
     expect(find.text('ProfileRoot'), findsNothing);
   });
 
@@ -94,7 +103,7 @@ void main() {
     await tester.tap(find.text('Profile'));
     await tester.pumpAndSettle();
     expect(find.text('ProfileRoot'), findsOneWidget);
-    expect(find.byType(LoginWelcomeScreen), findsNothing);
+    expect(find.byType(SignedOutProfile), findsNothing);
   });
 
   testWidgets('toggling isSignedIn keeps the current index', (tester) async {
@@ -256,16 +265,16 @@ void main() {
     expect(log.containsKey('D'), isFalse);
   });
 
-  testWidgets('signed out, the welcome screen is not built until Profile',
+  testWidgets('signed out, the Profile page is not built until opened',
       (tester) async {
     await tester.pumpWidget(shellApp(isSignedIn: false, pagesBuilder: _pages));
     await tester.pump();
-    expect(find.byType(LoginWelcomeScreen, skipOffstage: false), findsNothing);
+    expect(find.byType(SignedOutProfile, skipOffstage: false), findsNothing);
 
     await tester.tap(find.text('Profile'));
     await tester.pump();
     await tester.pump(const Duration(seconds: 1));
-    expect(find.byType(LoginWelcomeScreen), findsOneWidget);
+    expect(find.byType(SignedOutProfile), findsOneWidget);
   });
 
   testWidgets('a pushed page survives switching tabs away and back',

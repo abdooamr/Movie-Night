@@ -10,8 +10,8 @@ import '../design/tokens.dart';
 /// of three tonal [ActionTile]s: Like, Watchlist, Share. (IMDb, an external
 /// link, lives in [DetailMoreMenu].)
 ///
-/// Signed out, Like and Watchlist call [onRequireSignIn] instead of acting;
-/// Share always works. Data access stays with the caller: [onToggleLike]
+/// Like and Share work signed in or out (likes are stored on the device).
+/// Signed out, Watchlist calls [onRequireSignIn] instead of acting. Data access stays with the caller: [onToggleLike]
 /// writes the like, and [watchlist] is the signed-in watchlist tile (it owns
 /// its own reads and writes).
 class DetailActions extends StatelessWidget {
@@ -51,9 +51,9 @@ class DetailActions extends StatelessWidget {
       ActionTile(
         icon: IconsaxOutline.heart,
         selectedIcon: IconsaxBold.heart,
-        label: isLoggedIn && isLiked ? s.liked : s.like,
-        selected: isLoggedIn && isLiked,
-        onTap: isLoggedIn ? _like : onRequireSignIn,
+        label: isLiked ? s.liked : s.like,
+        selected: isLiked,
+        onTap: _like,
       ),
       if (isLoggedIn && watchlist != null)
         watchlist!

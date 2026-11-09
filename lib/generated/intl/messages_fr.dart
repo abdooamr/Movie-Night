@@ -464,6 +464,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "profilePicUploadFailed": MessageLookupByLibrary.simpleMessage(
       "Impossible d\'envoyer la photo de profil. Veuillez réessayer.",
     ),
+    "profileSignInBody": MessageLookupByLibrary.simpleMessage(
+      "Gardez une liste de suivi, écrivez des avis et retrouvez votre profil sur tous vos appareils.",
+    ),
+    "profileSignInTitle": MessageLookupByLibrary.simpleMessage(
+      "Connectez-vous à Movie Night",
+    ),
     "profilenavbar": MessageLookupByLibrary.simpleMessage("Profil"),
     "rateMovieNight": MessageLookupByLibrary.simpleMessage("Noter Movie Night"),
     "ratingOutOf10": m7,
@@ -638,6 +644,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "watchlistEmptyBody": MessageLookupByLibrary.simpleMessage(
       "Ajoutez des titres à votre liste de suivi pour les retrouver ici plus tard.",
+    ),
+    "watchlistSignInBody": MessageLookupByLibrary.simpleMessage(
+      "Votre liste est enregistrée dans votre compte et vous suit sur tous vos appareils.",
+    ),
+    "watchlistSignInTitle": MessageLookupByLibrary.simpleMessage(
+      "Connectez-vous pour utiliser votre liste de suivi",
     ),
     "watchlistUpdateFailed": MessageLookupByLibrary.simpleMessage(
       "Impossible de mettre à jour la liste de suivi. Réessayez.",

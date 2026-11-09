@@ -437,6 +437,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "profilePicUploadFailed": MessageLookupByLibrary.simpleMessage(
       "Profilbild konnte nicht hochgeladen werden. Bitte erneut versuchen.",
     ),
+    "profileSignInBody": MessageLookupByLibrary.simpleMessage(
+      "Führe eine Merkliste, schreibe Bewertungen und nimm dein Profil auf jedes Gerät mit.",
+    ),
+    "profileSignInTitle": MessageLookupByLibrary.simpleMessage(
+      "Bei Movie Night anmelden",
+    ),
     "profilenavbar": MessageLookupByLibrary.simpleMessage("Profil"),
     "rateMovieNight": MessageLookupByLibrary.simpleMessage(
       "Movie Night Bewerten",
@@ -603,6 +609,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "watchTrailers": MessageLookupByLibrary.simpleMessage("Trailer ansehen"),
     "watchlistEmptyBody": MessageLookupByLibrary.simpleMessage(
       "Füge Titel zu deiner Merkliste hinzu, um sie später hier zu finden.",
+    ),
+    "watchlistSignInBody": MessageLookupByLibrary.simpleMessage(
+      "Deine Merkliste wird in deinem Konto gespeichert und ist so auf jedem Gerät verfügbar.",
+    ),
+    "watchlistSignInTitle": MessageLookupByLibrary.simpleMessage(
+      "Anmelden, um die Merkliste zu nutzen",
     ),
     "watchlistUpdateFailed": MessageLookupByLibrary.simpleMessage(
       "Die Merkliste konnte nicht aktualisiert werden. Versuche es erneut.",

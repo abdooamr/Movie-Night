@@ -414,6 +414,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "profilePicUploadFailed": MessageLookupByLibrary.simpleMessage(
       "Could not upload profile picture. Please try again.",
     ),
+    "profileSignInBody": MessageLookupByLibrary.simpleMessage(
+      "Keep a watchlist, write reviews and take your profile to any device.",
+    ),
+    "profileSignInTitle": MessageLookupByLibrary.simpleMessage(
+      "Log In to Movie Night",
+    ),
     "profilenavbar": MessageLookupByLibrary.simpleMessage("Profile"),
     "rateMovieNight": MessageLookupByLibrary.simpleMessage("Rate Movie Night"),
     "ratingOutOf10": m7,
@@ -560,6 +566,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "watchTrailers": MessageLookupByLibrary.simpleMessage("Watch Trailers"),
     "watchlistEmptyBody": MessageLookupByLibrary.simpleMessage(
       "Add titles to your Watchlist to find them here later.",
+    ),
+    "watchlistSignInBody": MessageLookupByLibrary.simpleMessage(
+      "Your watchlist is saved to your account, so it follows you to any device.",
+    ),
+    "watchlistSignInTitle": MessageLookupByLibrary.simpleMessage(
+      "Log In to Use Your Watchlist",
     ),
     "watchlistUpdateFailed": MessageLookupByLibrary.simpleMessage(
       "Couldn\'t update Watchlist. Try again.",

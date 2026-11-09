@@ -378,5 +378,9 @@
     },
     "reviewsTitle": "Reviews",
     "beFirstToReview": "No reviews yet. Be the first to write one.",
-    "logInToReview": "Log In to Write a Review"
+    "logInToReview": "Log In to Write a Review",
+    "profileSignInTitle": "Log In to Movie Night",
+    "profileSignInBody": "Keep a watchlist, write reviews and take your profile to any device.",
+    "watchlistSignInTitle": "Log In to Use Your Watchlist",
+    "watchlistSignInBody": "Your watchlist is saved to your account, so it follows you to any device."
 }

@@ -295,5 +295,9 @@
     "runtimeMinutesOnly": "{minutes} د",
     "reviewsTitle": "المراجعات",
     "beFirstToReview": "لا توجد مراجعات بعد. كن أول من يكتب مراجعة.",
-    "logInToReview": "سجّل الدخول لكتابة مراجعة"
+    "logInToReview": "سجّل الدخول لكتابة مراجعة",
+    "profileSignInTitle": "سجّل الدخول إلى Movie Night",
+    "profileSignInBody": "احتفظ بقائمة مشاهدة، واكتب مراجعات، وانقل ملفك الشخصي إلى أي جهاز.",
+    "watchlistSignInTitle": "سجّل الدخول لاستخدام قائمة المشاهدة",
+    "watchlistSignInBody": "تُحفظ قائمة المشاهدة في حسابك، فتجدها على أي جهاز."
 }

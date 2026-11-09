@@ -295,5 +295,9 @@
     "runtimeMinutesOnly": "{minutes} Min.",
     "reviewsTitle": "Bewertungen",
     "beFirstToReview": "Noch keine Bewertungen. Schreib die erste.",
-    "logInToReview": "Anmelden, um zu bewerten"
+    "logInToReview": "Anmelden, um zu bewerten",
+    "profileSignInTitle": "Bei Movie Night anmelden",
+    "profileSignInBody": "Führe eine Merkliste, schreibe Bewertungen und nimm dein Profil auf jedes Gerät mit.",
+    "watchlistSignInTitle": "Anmelden, um die Merkliste zu nutzen",
+    "watchlistSignInBody": "Deine Merkliste wird in deinem Konto gespeichert und ist so auf jedem Gerät verfügbar."
 }

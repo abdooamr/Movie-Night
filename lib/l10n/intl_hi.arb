@@ -295,5 +295,9 @@
     "runtimeMinutesOnly": "{minutes} मि",
     "reviewsTitle": "समीक्षाएँ",
     "beFirstToReview": "अभी कोई समीक्षा नहीं है। पहली समीक्षा आप लिखें।",
-    "logInToReview": "समीक्षा लिखने के लिए लॉग इन करें"
+    "logInToReview": "समीक्षा लिखने के लिए लॉग इन करें",
+    "profileSignInTitle": "Movie Night में लॉग इन करें",
+    "profileSignInBody": "वॉचलिस्ट रखें, समीक्षाएँ लिखें और अपनी प्रोफ़ाइल किसी भी डिवाइस पर पाएँ।",
+    "watchlistSignInTitle": "वॉचलिस्ट के लिए लॉग इन करें",
+    "watchlistSignInBody": "आपकी वॉचलिस्ट आपके खाते में सहेजी जाती है, इसलिए वह हर डिवाइस पर मिलती है।"
 }

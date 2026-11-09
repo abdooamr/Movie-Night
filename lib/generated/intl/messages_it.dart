@@ -438,6 +438,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "profilePicUploadFailed": MessageLookupByLibrary.simpleMessage(
       "Impossibile caricare la foto del profilo. Riprova.",
     ),
+    "profileSignInBody": MessageLookupByLibrary.simpleMessage(
+      "Tieni una watchlist, scrivi recensioni e porta il tuo profilo su ogni dispositivo.",
+    ),
+    "profileSignInTitle": MessageLookupByLibrary.simpleMessage(
+      "Accedi a Movie Night",
+    ),
     "profilenavbar": MessageLookupByLibrary.simpleMessage("Profilo"),
     "rateMovieNight": MessageLookupByLibrary.simpleMessage(
       "Valuta Movie Night",
@@ -590,6 +596,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "watchTrailers": MessageLookupByLibrary.simpleMessage("Guarda i trailer"),
     "watchlistEmptyBody": MessageLookupByLibrary.simpleMessage(
       "Aggiungi titoli alla tua Watchlist per ritrovarli qui più tardi.",
+    ),
+    "watchlistSignInBody": MessageLookupByLibrary.simpleMessage(
+      "La watchlist è salvata nel tuo account, così ti segue su ogni dispositivo.",
+    ),
+    "watchlistSignInTitle": MessageLookupByLibrary.simpleMessage(
+      "Accedi per Usare la Watchlist",
     ),
     "watchlistUpdateFailed": MessageLookupByLibrary.simpleMessage(
       "Impossibile aggiornare la Watchlist. Riprova.",

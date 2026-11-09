@@ -2493,6 +2493,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Log In to Movie Night`
+  String get profileSignInTitle {
+    return Intl.message(
+      'Log In to Movie Night',
+      name: 'profileSignInTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Keep a watchlist, write reviews and take your profile to any device.`
+  String get profileSignInBody {
+    return Intl.message(
+      'Keep a watchlist, write reviews and take your profile to any device.',
+      name: 'profileSignInBody',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Log In to Use Your Watchlist`
+  String get watchlistSignInTitle {
+    return Intl.message(
+      'Log In to Use Your Watchlist',
+      name: 'watchlistSignInTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your watchlist is saved to your account, so it follows you to any device.`
+  String get watchlistSignInBody {
+    return Intl.message(
+      'Your watchlist is saved to your account, so it follows you to any device.',
+      name: 'watchlistSignInBody',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:Movie_Night/src/Provider/langprovider.dart';
 import 'package:Movie_Night/src/Provider/reviewsprovider.dart';
+import 'package:Movie_Night/src/models/liked_model.dart';
 import 'package:Movie_Night/src/models/local_review_model.dart';
 import 'package:Movie_Night/src/data/auth_repository.dart';
 import 'package:Movie_Night/src/data/tmdb_client.dart';
@@ -13,6 +16,7 @@ import 'package:Movie_Night/src/widgets/shimmerWidgets/detailPageShimmerWidget.d
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:provider/provider.dart';
@@ -97,6 +101,21 @@ void _phone(WidgetTester tester) {
 }
 
 void main() {
+  // The Like tile reads the on-device `liked` box, signed in or out.
+  late Directory hiveDir;
+  setUpAll(() async {
+    hiveDir = Directory.systemTemp.createTempSync('detail_page_test');
+    Hive.init(hiveDir.path);
+    Hive.registerAdapter(LikedModelAdapter());
+    await Hive.openBox<LikedModel>('liked', bytes: Uint8List(0));
+  });
+  tearDownAll(() async {
+    await Hive.close();
+    try {
+      hiveDir.deleteSync(recursive: true);
+    } catch (_) {}
+  });
+
   setUp(() {
     AuthRepository.instance = _SignedOut();
     // Sections below the header ask TMDB too: answer 404, never the network.
