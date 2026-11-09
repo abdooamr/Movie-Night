@@ -258,7 +258,7 @@ class _LikedCarousel extends StatelessWidget {
                   initialPage: current,
                   viewportFraction: 0.72,
                   enableInfiniteScroll: false,
-                  enlargeCenterPage: items.length > 1 && motion.allowScale,
+                  enlargeCenterPage: items.length > 1 && motion.allowRichMotion,
                   onPageChanged: (i, _) => onIndex(i),
                 ),
                 itemBuilder: (context, i, _) => Padding(

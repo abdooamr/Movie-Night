@@ -367,14 +367,14 @@ class _PersonBioState extends State<PersonBio> {
 }
 
 /// Loading placeholder shaped like the page: headshot block, name, bio lines
-/// and a rail. Static under Reduce Motion.
+/// and a rail. Static under Reduce Motion and in low power.
 class _PersonSkeleton extends StatelessWidget {
   const _PersonSkeleton();
 
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    final animate = MNMotion.of(context).allowScale;
+    final animate = MNMotion.of(context).allowRichMotion;
     Widget block(double h, {double? w, BorderRadius? r}) => Container(
           height: h,
           width: w,
