@@ -4,8 +4,12 @@ import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// Movie Night reviews in the Supabase `reviews` table: one per user per
-/// title (`UNIQUE (movie_id, user_id)`). `movie_id` is the TMDB id for both
-/// movies and TV shows, as it was in Firestore.
+/// title and type (`UNIQUE NULLS NOT DISTINCT (movie_id, media_type,
+/// user_id)`, see `docs/sql/2026-11-10-reviews-media-type.sql`).
+///
+/// `media_type` is 'movie' or 'tv' for new reviews. Reviews imported from
+/// Firestore have none (NULL): Firestore keyed reviews by TMDB id only, so
+/// they keep showing on both the movie and the TV page with that id.
 class ReviewProvider extends ChangeNotifier {
   ReviewProvider({SupabaseClient? client}) : _clientOverride = client;
 
@@ -20,23 +24,59 @@ class ReviewProvider extends ChangeNotifier {
     return id;
   }
 
-  /// Saves the signed-in user's review of [movieId]: a new row the first
-  /// time, otherwise only the `review` column of their existing row (never
-  /// an upsert, which RLS rejects).
-  Future<void> saveReview({required int movieId, required String text}) async {
+  /// The `media_type` value for a page.
+  static String mediaTypeOf({required bool isTv}) => isTv ? 'tv' : 'movie';
+
+  /// Whether a `reviews` row belongs on the movie or TV page: its own type,
+  /// or a legacy row with no type.
+  @visibleForTesting
+  static bool visibleOn(Map<String, dynamic> row, {required bool isTv}) {
+    final type = row['media_type'];
+    return type == null || type == mediaTypeOf(isTv: isTv);
+  }
+
+  /// Saves the signed-in user's review of [movieId] on the [isTv] page.
+  ///
+  /// - A legacy (untyped) review of this id is the user's review on both
+  ///   pages, so it is edited in place.
+  /// - Otherwise a new row the first time, then only its `review` column
+  ///   (never an upsert, which RLS rejects).
+  Future<void> saveReview({
+    required int movieId,
+    required bool isTv,
+    required String text,
+  }) async {
     final uid = _uid;
+    final type = mediaTypeOf(isTv: isTv);
     try {
-      try {
+      final legacy = await _db
+          .from('reviews')
+          .select('id')
+          .eq('movie_id', movieId)
+          .eq('user_id', uid)
+          .isFilter('media_type', null)
+          .maybeSingle();
+      if (legacy != null) {
         await _db
             .from('reviews')
-            .insert({'movie_id': movieId, 'user_id': uid, 'review': text});
-      } on PostgrestException catch (e) {
-        if (e.code != '23505') rethrow; // Not "already reviewed".
-        await _db
-            .from('reviews')
-            .update({'review': text})
-            .eq('movie_id', movieId)
-            .eq('user_id', uid);
+            .update({'review': text}).eq('id', legacy['id'] as Object);
+      } else {
+        try {
+          await _db.from('reviews').insert({
+            'movie_id': movieId,
+            'media_type': type,
+            'user_id': uid,
+            'review': text,
+          });
+        } on PostgrestException catch (e) {
+          if (e.code != '23505') rethrow; // Not "already reviewed".
+          await _db
+              .from('reviews')
+              .update({'review': text})
+              .eq('movie_id', movieId)
+              .eq('media_type', type)
+              .eq('user_id', uid);
+        }
       }
       notifyListeners();
     } catch (error, stack) {
@@ -45,10 +85,11 @@ class ReviewProvider extends ChangeNotifier {
     }
   }
 
-  /// Live reviews of [movieId], newest first (Realtime). Realtime streams
-  /// can't join, so each change looks up the authors it hasn't seen yet in
-  /// `profiles`; names and pictures are cached for the life of the stream.
-  Stream<List<Localreviews>> getReviews(int movieId) {
+  /// Live reviews of [movieId] for the [isTv] page, newest first (Realtime).
+  /// Realtime streams can't join, so each change looks up the authors it
+  /// hasn't seen yet in `profiles`; names and pictures are cached for the
+  /// life of the stream.
+  Stream<List<Localreviews>> getReviews(int movieId, {required bool isTv}) {
     final authors = <String, Map<String, dynamic>>{};
     final format = Localreviews.dateFormat;
     return _db
@@ -56,7 +97,9 @@ class ReviewProvider extends ChangeNotifier {
         .stream(primaryKey: const ['id'])
         .eq('movie_id', movieId)
         .order('created_at', ascending: false)
-        .asyncMap((rows) async {
+        .asyncMap((all) async {
+      // A stream takes one filter; the type is filtered here.
+      final rows = all.where((r) => visibleOn(r, isTv: isTv)).toList();
       final missing = {
         for (final r in rows)
           if (r['user_id'] is String && !authors.containsKey(r['user_id']))
@@ -83,14 +126,16 @@ class ReviewProvider extends ChangeNotifier {
     });
   }
 
-  /// Deletes the signed-in user's review of [movieId].
-  Future<void> deleteReview({required int movieId}) async {
+  /// Deletes the signed-in user's review shown on the [isTv] page of
+  /// [movieId]: their typed review, or their legacy one.
+  Future<void> deleteReview({required int movieId, required bool isTv}) async {
     try {
       await _db
           .from('reviews')
           .delete()
           .eq('movie_id', movieId)
-          .eq('user_id', _uid);
+          .eq('user_id', _uid)
+          .or('media_type.eq.${mediaTypeOf(isTv: isTv)},media_type.is.null');
       notifyListeners();
     } catch (error, stack) {
       AppLog.error('deleteReview', error, stack);

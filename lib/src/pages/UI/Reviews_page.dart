@@ -43,7 +43,11 @@ class _ReviewsPageState extends State<ReviewsPage> {
         ),
         const SizedBox(height: MNSpace.md),
         if (_local)
-          LocalReviewsWidget(id: widget.id, seeAllBuilder: seeAll)
+          LocalReviewsWidget(
+            id: widget.id,
+            isTvShow: widget.isTvShow,
+            seeAllBuilder: seeAll,
+          )
         else
           GlobalReviewsWidget(
             isTvShow: widget.isTvShow,

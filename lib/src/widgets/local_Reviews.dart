@@ -11,9 +11,19 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class LocalReviewsWidget extends StatefulWidget {
-  const LocalReviewsWidget({super.key, required this.id, this.seeAllBuilder});
+  const LocalReviewsWidget({
+    super.key,
+    required this.id,
+    required this.isTvShow,
+    this.seeAllBuilder,
+  });
 
+  /// TMDB id of the title.
   final int id;
+
+  /// Which page this is: TV and movie reviews are kept apart (old, untyped
+  /// reviews show on both).
+  final bool isTvShow;
 
   final AllReviewsBuilder? seeAllBuilder;
 
@@ -42,7 +52,7 @@ class _LocalReviewsWidgetState extends State<LocalReviewsWidget> {
   }
 
   Stream<List<ReviewCardData>> _stream() {
-    return reviewProvider.getReviews(widget.id).map(
+    return reviewProvider.getReviews(widget.id, isTv: widget.isTvShow).map(
           (reviews) => [
             for (final r in reviews)
               ReviewCardData(
@@ -60,7 +70,8 @@ class _LocalReviewsWidgetState extends State<LocalReviewsWidget> {
   Future<void> _delete() async {
     final failMsg = S.of(context).genericError;
     try {
-      await reviewProvider.deleteReview(movieId: widget.id);
+      await reviewProvider.deleteReview(
+          movieId: widget.id, isTv: widget.isTvShow);
     } catch (_) {
       if (mounted) AppFeedback.error(context, failMsg);
     }
@@ -76,7 +87,8 @@ class _LocalReviewsWidgetState extends State<LocalReviewsWidget> {
     }
     try {
       // Name, picture and date come from the profile and the row.
-      await reviewProvider.saveReview(movieId: widget.id, text: text);
+      await reviewProvider.saveReview(
+          movieId: widget.id, isTv: widget.isTvShow, text: text);
       reviewController.clear();
     } catch (_) {
       if (mounted) AppFeedback.error(context, failMsg);
