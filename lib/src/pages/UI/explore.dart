@@ -123,8 +123,9 @@ class _ExplorePageState extends State<ExplorePage>
                       istvshow: false,
                       genreId: genreId,
                       overlapHandle: _overlapHandle,
-                      onRetry: () =>
-                          setState(() => _genreFutures.remove(genreId)),
+                      onRetry: () => setState(() {
+                        _genreFutures.remove(genreId);
+                      }),
                     ),
                   ),
               ],

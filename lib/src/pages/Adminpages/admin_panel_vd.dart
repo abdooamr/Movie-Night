@@ -25,7 +25,9 @@ class _adminpanelState extends State<adminpanel> {
 
   Future<List<Users>> _readUsers() => UserRepository.instance.adminListUsers();
 
-  void _reload() => setState(() => _users = _readUsers());
+  void _reload() => setState(() {
+        _users = _readUsers();
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -108,8 +110,7 @@ class _adminpanelState extends State<adminpanel> {
           child: user.ProfilePic == ""
               ? SizedBox.square(
                   dimension: MNSize.minTap,
-                  child: Icon(IconsaxOutline.user,
-                      color: cs.onSurfaceVariant),
+                  child: Icon(IconsaxOutline.user, color: cs.onSurfaceVariant),
                 )
               : CachedImageCustom(
                   user.ProfilePic,

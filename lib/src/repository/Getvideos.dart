@@ -31,7 +31,9 @@ class _Videos_pageState extends State<VideosPage> {
     return getyoutubeid(widget.movieid!, widget.isTvShow, lang);
   }
 
-  void _retry() => setState(() => _videos = _load());
+  void _retry() => setState(() {
+        _videos = _load();
+      });
 
   @override
   Widget build(BuildContext context) {

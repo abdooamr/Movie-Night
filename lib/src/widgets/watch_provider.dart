@@ -81,7 +81,9 @@ class _ProviderRailState extends State<ProviderRail> {
     return getprovider(widget.id, widget.isTvShow, lang);
   }
 
-  void _retry() => setState(() => _future = _load());
+  void _retry() => setState(() {
+        _future = _load();
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -100,16 +102,24 @@ class _ProviderRailState extends State<ProviderRail> {
         } else {
           final us = snapshot.data?.results?.us;
           final items = us == null ? const <Ad>[] : widget.pick(us) ?? const [];
+          // JustWatch is credited only beside the logos it supplied.
           body = items.isEmpty
               ? _EmptyLine(text: widget.emptyText)
-              : _LogoRail(items: items);
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const _PoweredBy(),
+                    const SizedBox(height: MNSpace.sm),
+                    _LogoRail(items: items),
+                  ],
+                );
         }
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
             SectionHeader(title: widget.title),
-            const _PoweredBy(),
             const SizedBox(height: MNSpace.sm),
             body,
           ],
@@ -138,6 +148,8 @@ class _PoweredBy extends StatelessWidget {
             ProviderRail._justWatchLogo,
             height: logoHeight,
             semanticsLabel: 'JustWatch',
+            // Offline or blocked: keep the attribution as text.
+            errorBuilder: (context, _, __) => Text('JustWatch', style: style),
           ),
         ],
       ),

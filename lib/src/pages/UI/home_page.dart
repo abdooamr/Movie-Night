@@ -70,7 +70,10 @@ class _HomePageState extends State<HomePage> {
   Future<Model> _futureOf(HomeFeed feed) =>
       _futures.putIfAbsent(feed, () => _fetch(feed));
 
-  void _retry(HomeFeed feed) => setState(() => _futures[feed] = _fetch(feed));
+  // A block body: an arrow would hand setState the Future.
+  void _retry(HomeFeed feed) => setState(() {
+        _futures[feed] = _fetch(feed);
+      });
 
   Future<void> _reload() async {
     final feeds = _isMovie ? HomeFeed.movieFeeds : HomeFeed.tvFeeds;

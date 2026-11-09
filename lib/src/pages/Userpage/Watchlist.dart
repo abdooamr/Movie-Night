@@ -62,7 +62,9 @@ class _WatchlistViewState extends State<WatchlistView> {
 
   void _retryRow(int id, bool isTv) {
     final lang = context.read<DropdownProvider>().selectedValue;
-    setState(() => _details.remove(_keyFor(id, isTv, lang)));
+    setState(() {
+      _details.remove(_keyFor(id, isTv, lang));
+    });
   }
 
   void _retryStream() => setState(() {
@@ -135,8 +137,7 @@ class _WatchlistViewState extends State<WatchlistView> {
                 hasScrollBody: false,
                 child: EmptyState(
                   icon: IconsaxOutline.bookmark,
-                  title:
-                      isTv ? s.notvshowsinwatchlist : s.nomoviesinwatchlist,
+                  title: isTv ? s.notvshowsinwatchlist : s.nomoviesinwatchlist,
                   body: s.watchlistEmptyBody,
                   actionLabel: s.browseMovies,
                   onAction: () => AppShell.maybeOf(context)?.selectTab(0),
