@@ -1,3 +1,5 @@
+import 'dart:io' show HandshakeException;
+
 import 'package:Movie_Night/src/data/tmdb_client.dart';
 import 'package:Movie_Night/src/data/tmdb_disk_cache.dart';
 import 'package:Movie_Night/src/data/tmdb_repository.dart';
@@ -104,6 +106,14 @@ void main() {
 
     final r = repo(); // new instance: empty memory layer
     final m = await r.details(603, false, 'en');
+    expect(m.id, 603);
+  });
+
+  test('stale disk entry is served on a TLS handshake failure', () async {
+    await repo().details(603, false, 'en');
+    clock = clock.add(const Duration(days: 2));
+    respond = (_) => throw const HandshakeException('captive portal');
+    final m = await repo().details(603, false, 'en');
     expect(m.id, 603);
   });
 

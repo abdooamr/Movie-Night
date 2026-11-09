@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io' show TlsException;
 
 import 'package:http/http.dart' as http;
 
@@ -103,10 +104,18 @@ class TmdbClient {
           throw TmdbException(TmdbErrorKind.timeout, 'Timed out loading $path');
         }
       } on http.ClientException catch (e) {
-        // http 1.x wraps SocketException / HandshakeException in this.
+        // http's IOClient wraps SocketException and HttpException in this.
         if (attempt >= maxRetries) {
           throw TmdbException(
               TmdbErrorKind.offline, 'Network error loading $path: ${e.message}');
+        }
+      } on TlsException catch (e) {
+        // HandshakeException is *not* wrapped (e.g. a captive-portal Wi-Fi
+        // intercepting TLS). Treat it as offline so the repository can
+        // serve the cached copy.
+        if (attempt >= maxRetries) {
+          throw TmdbException(
+              TmdbErrorKind.offline, 'TLS error loading $path: ${e.message}');
         }
       }
       await _sleep(baseBackoff * (1 << attempt));

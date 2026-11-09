@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io' show HandshakeException;
 
 import 'package:Movie_Night/src/data/tmdb_client.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -91,5 +92,21 @@ void main() {
         throwsA(isA<TmdbException>()
             .having((e) => e.kind, 'kind', TmdbErrorKind.offline)
             .having((e) => e.isTransient, 'isTransient', true)));
+  });
+
+  test('TLS handshake failures (captive portal Wi-Fi) are offline too',
+      () async {
+    final sleeps = <Duration>[];
+    var calls = 0;
+    final c = _client((_) async {
+      calls++;
+      throw const HandshakeException('CERTIFICATE_VERIFY_FAILED');
+    }, sleeps: sleeps);
+    await expectLater(
+        c.get('movie/1'),
+        throwsA(isA<TmdbException>()
+            .having((e) => e.kind, 'kind', TmdbErrorKind.offline)
+            .having((e) => e.isTransient, 'isTransient', true)));
+    expect(calls, greaterThan(1)); // retried like other network errors
   });
 }
