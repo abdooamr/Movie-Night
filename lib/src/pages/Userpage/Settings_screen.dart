@@ -1,5 +1,6 @@
 import 'package:Movie_Night/generated/l10n.dart';
 import 'package:Movie_Night/src/components/feedback.dart';
+import 'package:Movie_Night/src/components/large_title_bar.dart';
 import 'package:Movie_Night/src/data/auth_repository.dart';
 import 'package:Movie_Night/src/data/user_repository.dart';
 import 'package:Movie_Night/src/design/tokens.dart';
@@ -127,9 +128,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverAppBar.large(
-            title: Semantics(header: true, child: Text(s.profilenavbar)),
-          ),
+          LargeTitleBar(title: s.profilenavbar),
           SliverPadding(
             padding:
                 const EdgeInsetsDirectional.symmetric(horizontal: MNSpace.lg),

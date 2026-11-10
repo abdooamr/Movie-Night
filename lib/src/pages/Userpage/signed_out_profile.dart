@@ -1,4 +1,5 @@
 import 'package:Movie_Night/generated/l10n.dart';
+import 'package:Movie_Night/src/components/large_title_bar.dart';
 import 'package:Movie_Night/src/design/tokens.dart';
 import 'package:Movie_Night/src/pages/Login-Logout/Login.dart';
 import 'package:Movie_Night/src/pages/Login-Logout/Register.dart';
@@ -22,9 +23,7 @@ class SignedOutProfile extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverAppBar.large(
-            title: Semantics(header: true, child: Text(s.profilenavbar)),
-          ),
+          LargeTitleBar(title: s.profilenavbar),
           SliverPadding(
             padding:
                 const EdgeInsetsDirectional.symmetric(horizontal: MNSpace.lg),
