@@ -299,5 +299,12 @@
     "profileSignInTitle": "Inicia Sesión en Movie Night",
     "profileSignInBody": "Guarda una lista de seguimiento, escribe reseñas y lleva tu perfil a cualquier dispositivo.",
     "watchlistSignInTitle": "Inicia Sesión para Usar tu Lista de Seguimiento",
-    "watchlistSignInBody": "Tu lista se guarda en tu cuenta, así que te acompaña en cualquier dispositivo."
+    "watchlistSignInBody": "Tu lista se guarda en tu cuenta, así que te acompaña en cualquier dispositivo.",
+    "filterLabel": "Filtrar",
+    "filterAll": "Todo",
+    "titlesCount": "{count, plural, =1{1 título} other{{count} títulos}}",
+    "removeFromLiked": "Quitar de Favoritos",
+    "watchlistEmptyTitle": "Tu Lista de Seguimiento Está Vacía",
+    "libraryNoMatches": "Ningún título coincide con este filtro.",
+    "showAll": "Mostrar Todo"
 }

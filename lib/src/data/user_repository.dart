@@ -1,8 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:Movie_Night/src/models/user_model.dart';
 import 'package:Movie_Night/src/utils/app_logger.dart';
-import 'package:flutter/foundation.dart' show visibleForTesting;
+import 'package:flutter/foundation.dart' show immutable, visibleForTesting;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// All reads and writes of a user's data in Supabase: the `profiles` row,
@@ -35,28 +36,103 @@ class UserRepository {
 
   // ------------------------------------------------------------ watchlist
 
-  /// Ids for one kind ([isTvShow]) from `watchlist` rows, oldest first (the
-  /// order the old Firestore arrays kept).
+  /// Fires after this app adds to or removes from the watchlist, so open
+  /// lists refresh at once (with or without Realtime).
+  final StreamController<void> _watchlistChanged =
+      StreamController<void>.broadcast();
+
+  int _channelSeq = 0;
+
+  /// `watchlist` rows as entries, most recently added first.
   @visibleForTesting
-  static List<int> watchlistFromRows(
-    List<Map<String, dynamic>> rows, {
-    required bool isTvShow,
-  }) {
-    final mine = rows.where((r) => r['is_tv'] == isTvShow).toList()
-      ..sort((a, b) => '${a['created_at'] ?? ''}'
-          .compareTo('${b['created_at'] ?? ''}'));
-    return [
-      for (final r in mine)
-        if (r['tmdb_id'] is num) (r['tmdb_id'] as num).toInt(),
+  static List<WatchlistEntry> watchlistEntriesFromRows(
+    List<Map<String, dynamic>> rows,
+  ) {
+    final entries = [
+      for (final r in rows)
+        if (r['tmdb_id'] is num && r['is_tv'] is bool)
+          WatchlistEntry(
+            tmdbId: (r['tmdb_id'] as num).toInt(),
+            isTv: r['is_tv'] as bool,
+            addedAt: DateTime.tryParse('${r['created_at'] ?? ''}'),
+          ),
     ];
+    entries.sort((a, b) {
+      final x = a.addedAt, y = b.addedAt;
+      if (x == null && y == null) return 0;
+      if (x == null) return 1;
+      if (y == null) return -1;
+      return y.compareTo(x);
+    });
+    return entries;
   }
 
-  /// Live watchlist ids for the signed-in user (Realtime).
-  Stream<List<int>> watchlistStream({required bool isTvShow}) => _db
-      .from('watchlist')
-      .stream(primaryKey: const ['user_id', 'tmdb_id', 'is_tv'])
-      .eq('user_id', currentUid)
-      .map((rows) => watchlistFromRows(rows, isTvShow: isTvShow));
+  /// The signed-in user's watchlist (movies and TV), newest first.
+  ///
+  /// Loads with one request, then reloads after every change: this app's own
+  /// adds and removes, and other devices' through Realtime. Realtime is a
+  /// bonus: if its channel fails the error is logged and the list stays.
+  /// Only a failed load reaches the listener as an error.
+  Stream<List<WatchlistEntry>> watchlistEntries() {
+    late final StreamController<List<WatchlistEntry>> controller;
+    StreamSubscription<void>? localChanges;
+    RealtimeChannel? channel;
+
+    Future<void> load() async {
+      try {
+        final rows = await _db
+            .from('watchlist')
+            .select('tmdb_id, is_tv, created_at')
+            .eq('user_id', currentUid);
+        if (!controller.isClosed) {
+          controller.add(watchlistEntriesFromRows(rows));
+        }
+      } catch (e, stack) {
+        AppLog.error('watchlistLoad', e, stack);
+        if (!controller.isClosed) controller.addError(e, stack);
+      }
+    }
+
+    controller = StreamController<List<WatchlistEntry>>(
+      onListen: () {
+        unawaited(load());
+        localChanges = _watchlistChanged.stream.listen((_) => load());
+        try {
+          channel = _db
+              .channel('watchlist-${_channelSeq++}')
+              .onPostgresChanges(
+                event: PostgresChangeEvent.all,
+                schema: 'public',
+                table: 'watchlist',
+                filter: PostgresChangeFilter(
+                  type: PostgresChangeFilterType.eq,
+                  column: 'user_id',
+                  value: currentUid,
+                ),
+                callback: (_) => load(),
+              )
+              .subscribe((status, [error]) {
+            if (status == RealtimeSubscribeStatus.channelError ||
+                status == RealtimeSubscribeStatus.timedOut) {
+              AppLog.error('watchlistRealtime', error ?? status);
+            }
+          });
+        } catch (e, stack) {
+          AppLog.error('watchlistRealtime', e, stack);
+        }
+      },
+      onCancel: () async {
+        await localChanges?.cancel();
+        final c = channel;
+        if (c != null) {
+          try {
+            await _db.removeChannel(c);
+          } catch (_) {}
+        }
+      },
+    );
+    return controller.stream;
+  }
 
   Future<bool> isInWatchlist(int id, {required bool isTvShow}) async {
     final row = await _db
@@ -78,17 +154,20 @@ class UserRepository {
         'is_tv': isTvShow,
       });
     } on PostgrestException catch (e) {
-      if (e.code == '23505') return; // Already in the watchlist.
-      rethrow;
+      if (e.code != '23505') rethrow; // 23505: already in the watchlist.
     }
+    _watchlistChanged.add(null);
   }
 
-  Future<void> removeFromWatchlist(int id, {required bool isTvShow}) => _db
-      .from('watchlist')
-      .delete()
-      .eq('user_id', currentUid)
-      .eq('tmdb_id', id)
-      .eq('is_tv', isTvShow);
+  Future<void> removeFromWatchlist(int id, {required bool isTvShow}) async {
+    await _db
+        .from('watchlist')
+        .delete()
+        .eq('user_id', currentUid)
+        .eq('tmdb_id', id)
+        .eq('is_tv', isTvShow);
+    _watchlistChanged.add(null);
+  }
 
   // -------------------------------------------------------------- profile
 
@@ -202,4 +281,28 @@ class UserRepository {
   /// Deletes another user's account and data (`admin_delete_user`).
   Future<void> adminDeleteUser(String userId) =>
       _db.rpc<void>('admin_delete_user', params: {'target': userId});
+}
+
+/// One title on the watchlist.
+@immutable
+class WatchlistEntry {
+  const WatchlistEntry({
+    required this.tmdbId,
+    required this.isTv,
+    this.addedAt,
+  });
+
+  final int tmdbId;
+  final bool isTv;
+  final DateTime? addedAt;
+
+  @override
+  bool operator ==(Object other) =>
+      other is WatchlistEntry &&
+      other.tmdbId == tmdbId &&
+      other.isTv == isTv &&
+      other.addedAt == addedAt;
+
+  @override
+  int get hashCode => Object.hash(tmdbId, isTv, addedAt);
 }

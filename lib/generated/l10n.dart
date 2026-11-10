@@ -2533,6 +2533,63 @@ class S {
       args: [],
     );
   }
+
+  /// `Filter`
+  String get filterLabel {
+    return Intl.message('Filter', name: 'filterLabel', desc: '', args: []);
+  }
+
+  /// `All`
+  String get filterAll {
+    return Intl.message('All', name: 'filterAll', desc: '', args: []);
+  }
+
+  /// `{count, plural, =1{1 title} other{{count} titles}}`
+  String titlesCount(int count) {
+    return Intl.plural(
+      count,
+      one: '1 title',
+      other: '$count titles',
+      name: 'titlesCount',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `Remove from Liked`
+  String get removeFromLiked {
+    return Intl.message(
+      'Remove from Liked',
+      name: 'removeFromLiked',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your Watchlist Is Empty`
+  String get watchlistEmptyTitle {
+    return Intl.message(
+      'Your Watchlist Is Empty',
+      name: 'watchlistEmptyTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No titles match this filter.`
+  String get libraryNoMatches {
+    return Intl.message(
+      'No titles match this filter.',
+      name: 'libraryNoMatches',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Show All`
+  String get showAll {
+    return Intl.message('Show All', name: 'showAll', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

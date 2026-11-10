@@ -299,5 +299,12 @@
     "profileSignInTitle": "Bei Movie Night anmelden",
     "profileSignInBody": "Führe eine Merkliste, schreibe Bewertungen und nimm dein Profil auf jedes Gerät mit.",
     "watchlistSignInTitle": "Anmelden, um die Merkliste zu nutzen",
-    "watchlistSignInBody": "Deine Merkliste wird in deinem Konto gespeichert und ist so auf jedem Gerät verfügbar."
+    "watchlistSignInBody": "Deine Merkliste wird in deinem Konto gespeichert und ist so auf jedem Gerät verfügbar.",
+    "filterLabel": "Filtern",
+    "filterAll": "Alle",
+    "titlesCount": "{count, plural, =1{1 Titel} other{{count} Titel}}",
+    "removeFromLiked": "Aus „Gefällt mir“ entfernen",
+    "watchlistEmptyTitle": "Deine Merkliste ist leer",
+    "libraryNoMatches": "Keine Titel passen zu diesem Filter.",
+    "showAll": "Alle anzeigen"
 }

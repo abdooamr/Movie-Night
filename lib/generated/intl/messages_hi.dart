@@ -55,6 +55,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m14(title, url) => "Movie Night पर ${title} देखें\n${url}";
 
+  static String m15(count) =>
+      "${Intl.plural(count, one: '1 शीर्षक', other: '${count} शीर्षक')}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "Actiongenre": MessageLookupByLibrary.simpleMessage("क्रिया"),
@@ -263,6 +266,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "fantasymovielabel": MessageLookupByLibrary.simpleMessage(
       "काल्पनिक फ़िल्में",
     ),
+    "filterAll": MessageLookupByLibrary.simpleMessage("सभी"),
+    "filterLabel": MessageLookupByLibrary.simpleMessage("फ़िल्टर"),
     "firstnamelabel": MessageLookupByLibrary.simpleMessage("पहला नाम"),
     "forgetPasswordPageQuestion": MessageLookupByLibrary.simpleMessage(
       "अपने खाते से जुड़ा ईमेल दर्ज करें",
@@ -298,6 +303,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "lastnamelabel": MessageLookupByLibrary.simpleMessage("अंतिम नाम"),
     "libraryLiked": MessageLookupByLibrary.simpleMessage("पसंदीदा"),
+    "libraryNoMatches": MessageLookupByLibrary.simpleMessage(
+      "इस फ़िल्टर से कोई शीर्षक मेल नहीं खाता।",
+    ),
     "libraryWatchlist": MessageLookupByLibrary.simpleMessage("वॉचलिस्ट"),
     "like": MessageLookupByLibrary.simpleMessage("पसंद"),
     "liked": MessageLookupByLibrary.simpleMessage("पसंदीदा"),
@@ -440,6 +448,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "registarnowlabel": MessageLookupByLibrary.simpleMessage("खाता बनाएँ"),
     "removeFromHistory": MessageLookupByLibrary.simpleMessage("हटाएं"),
+    "removeFromLiked": MessageLookupByLibrary.simpleMessage("पसंद से हटाएँ"),
     "removedFromLiked": MessageLookupByLibrary.simpleMessage(
       "पसंदीदा से हटाया गया",
     ),
@@ -509,6 +518,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "share": MessageLookupByLibrary.simpleMessage("साझा करें"),
     "shareText": m14,
+    "showAll": MessageLookupByLibrary.simpleMessage("सभी दिखाएँ"),
     "showPassword": MessageLookupByLibrary.simpleMessage("पासवर्ड दिखाएं"),
     "signInPromptBody": MessageLookupByLibrary.simpleMessage(
       "वॉचलिस्ट रखने, शीर्षकों को पसंद करने और समीक्षाएँ लिखने के लिए लॉग इन करें।",
@@ -536,6 +546,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "thrillermovielabel": MessageLookupByLibrary.simpleMessage(
       "थ्रिलर फ़िल्में",
     ),
+    "titlesCount": m15,
     "tmdbLabel": MessageLookupByLibrary.simpleMessage("TMDB"),
     "trendingmovieswidget_title": MessageLookupByLibrary.simpleMessage(
       "लोकप्रिय फ़िल्में",
@@ -582,6 +593,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "watchTrailers": MessageLookupByLibrary.simpleMessage("ट्रेलर देखें"),
     "watchlistEmptyBody": MessageLookupByLibrary.simpleMessage(
       "अपनी वॉचलिस्ट में शीर्षक जोड़ें, ताकि बाद में वे यहाँ मिलें।",
+    ),
+    "watchlistEmptyTitle": MessageLookupByLibrary.simpleMessage(
+      "आपकी वॉचलिस्ट खाली है",
     ),
     "watchlistSignInBody": MessageLookupByLibrary.simpleMessage(
       "आपकी वॉचलिस्ट आपके खाते में सहेजी जाती है, इसलिए वह हर डिवाइस पर मिलती है।",

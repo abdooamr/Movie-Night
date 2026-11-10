@@ -299,5 +299,12 @@
     "profileSignInTitle": "Accedi a Movie Night",
     "profileSignInBody": "Tieni una watchlist, scrivi recensioni e porta il tuo profilo su ogni dispositivo.",
     "watchlistSignInTitle": "Accedi per Usare la Watchlist",
-    "watchlistSignInBody": "La watchlist è salvata nel tuo account, così ti segue su ogni dispositivo."
+    "watchlistSignInBody": "La watchlist è salvata nel tuo account, così ti segue su ogni dispositivo.",
+    "filterLabel": "Filtra",
+    "filterAll": "Tutti",
+    "titlesCount": "{count, plural, =1{1 titolo} other{{count} titoli}}",
+    "removeFromLiked": "Rimuovi dai Preferiti",
+    "watchlistEmptyTitle": "La Tua Watchlist È Vuota",
+    "libraryNoMatches": "Nessun titolo corrisponde a questo filtro.",
+    "showAll": "Mostra Tutti"
 }

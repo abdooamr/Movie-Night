@@ -299,5 +299,12 @@
     "profileSignInTitle": "Movie Night में लॉग इन करें",
     "profileSignInBody": "वॉचलिस्ट रखें, समीक्षाएँ लिखें और अपनी प्रोफ़ाइल किसी भी डिवाइस पर पाएँ।",
     "watchlistSignInTitle": "वॉचलिस्ट के लिए लॉग इन करें",
-    "watchlistSignInBody": "आपकी वॉचलिस्ट आपके खाते में सहेजी जाती है, इसलिए वह हर डिवाइस पर मिलती है।"
+    "watchlistSignInBody": "आपकी वॉचलिस्ट आपके खाते में सहेजी जाती है, इसलिए वह हर डिवाइस पर मिलती है।",
+    "filterLabel": "फ़िल्टर",
+    "filterAll": "सभी",
+    "titlesCount": "{count, plural, =1{1 शीर्षक} other{{count} शीर्षक}}",
+    "removeFromLiked": "पसंद से हटाएँ",
+    "watchlistEmptyTitle": "आपकी वॉचलिस्ट खाली है",
+    "libraryNoMatches": "इस फ़िल्टर से कोई शीर्षक मेल नहीं खाता।",
+    "showAll": "सभी दिखाएँ"
 }

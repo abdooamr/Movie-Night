@@ -56,6 +56,9 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m14(title, url) =>
       "Schau dir ${title} auf Movie Night an\n${url}";
 
+  static String m15(count) =>
+      "${Intl.plural(count, one: '1 Titel', other: '${count} Titel')}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "Actiongenre": MessageLookupByLibrary.simpleMessage("Action"),
@@ -278,6 +281,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "explorenavbar": MessageLookupByLibrary.simpleMessage("Suche"),
     "familymovielabel": MessageLookupByLibrary.simpleMessage("Familienfilme"),
     "fantasymovielabel": MessageLookupByLibrary.simpleMessage("Fantasiefilme"),
+    "filterAll": MessageLookupByLibrary.simpleMessage("Alle"),
+    "filterLabel": MessageLookupByLibrary.simpleMessage("Filtern"),
     "firstnamelabel": MessageLookupByLibrary.simpleMessage("Vorname"),
     "forgetPasswordPageQuestion": MessageLookupByLibrary.simpleMessage(
       "Gib die mit deinem Konto verknüpfte E-Mail-Adresse ein",
@@ -311,6 +316,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "lastnamelabel": MessageLookupByLibrary.simpleMessage("Nachname"),
     "libraryLiked": MessageLookupByLibrary.simpleMessage("Gemocht"),
+    "libraryNoMatches": MessageLookupByLibrary.simpleMessage(
+      "Keine Titel passen zu diesem Filter.",
+    ),
     "libraryWatchlist": MessageLookupByLibrary.simpleMessage("Merkliste"),
     "like": MessageLookupByLibrary.simpleMessage("Gefällt mir"),
     "liked": MessageLookupByLibrary.simpleMessage("Gemocht"),
@@ -455,6 +463,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "registarnowlabel": MessageLookupByLibrary.simpleMessage("Konto erstellen"),
     "removeFromHistory": MessageLookupByLibrary.simpleMessage("Entfernen"),
+    "removeFromLiked": MessageLookupByLibrary.simpleMessage(
+      "Aus „Gefällt mir“ entfernen",
+    ),
     "removedFromLiked": MessageLookupByLibrary.simpleMessage(
       "Aus Gemocht entfernt",
     ),
@@ -528,6 +539,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "share": MessageLookupByLibrary.simpleMessage("Teilen"),
     "shareText": m14,
+    "showAll": MessageLookupByLibrary.simpleMessage("Alle anzeigen"),
     "showPassword": MessageLookupByLibrary.simpleMessage("Passwort anzeigen"),
     "signInPromptBody": MessageLookupByLibrary.simpleMessage(
       "Melde dich an, um eine Merkliste zu führen, Titel zu mögen und Bewertungen zu schreiben.",
@@ -561,6 +573,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "thecast": MessageLookupByLibrary.simpleMessage("Die Besetzung"),
     "thrillermovielabel": MessageLookupByLibrary.simpleMessage("Thrillerfilme"),
+    "titlesCount": m15,
     "tmdbLabel": MessageLookupByLibrary.simpleMessage("TMDB"),
     "trendingmovieswidget_title": MessageLookupByLibrary.simpleMessage(
       "Trendfilme",
@@ -609,6 +622,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "watchTrailers": MessageLookupByLibrary.simpleMessage("Trailer ansehen"),
     "watchlistEmptyBody": MessageLookupByLibrary.simpleMessage(
       "Füge Titel zu deiner Merkliste hinzu, um sie später hier zu finden.",
+    ),
+    "watchlistEmptyTitle": MessageLookupByLibrary.simpleMessage(
+      "Deine Merkliste ist leer",
     ),
     "watchlistSignInBody": MessageLookupByLibrary.simpleMessage(
       "Deine Merkliste wird in deinem Konto gespeichert und ist so auf jedem Gerät verfügbar.",

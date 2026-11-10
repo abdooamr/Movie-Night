@@ -1,5 +1,6 @@
 import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart' show CustomSemanticsAction;
 
 import '../design/tokens.dart';
 import '../utils/poster_size.dart';
@@ -45,6 +46,8 @@ class PosterCard extends StatelessWidget {
     required this.onTap,
     this.heroTag,
     this.width,
+    this.onLongPress,
+    this.semanticsActions,
   });
 
   /// TMDB poster path (e.g. `/abc.jpg`); null shows the placeholder glyph.
@@ -54,6 +57,13 @@ class PosterCard extends StatelessWidget {
   final VoidCallback onTap;
   final String? heroTag;
   final double? width;
+
+  /// Long-press action (e.g. the Library's remove sheet).
+  final VoidCallback? onLongPress;
+
+  /// Extra screen-reader actions (the long-press options, reachable without
+  /// a long press).
+  final Map<CustomSemanticsAction, VoidCallback>? semanticsActions;
 
   @override
   Widget build(BuildContext context) {
@@ -116,8 +126,10 @@ class PosterCard extends StatelessWidget {
       label: label,
       excludeSemantics: true,
       onTap: onTap,
+      customSemanticsActions: semanticsActions,
       child: PressableScale(
         onTap: onTap,
+        onLongPress: onLongPress,
         borderRadius: MNRadius.mdAll,
         child: Column(
           mainAxisSize: MainAxisSize.min,

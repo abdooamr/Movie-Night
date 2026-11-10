@@ -299,5 +299,12 @@
     "profileSignInTitle": "سجّل الدخول إلى Movie Night",
     "profileSignInBody": "احتفظ بقائمة مشاهدة، واكتب مراجعات، وانقل ملفك الشخصي إلى أي جهاز.",
     "watchlistSignInTitle": "سجّل الدخول لاستخدام قائمة المشاهدة",
-    "watchlistSignInBody": "تُحفظ قائمة المشاهدة في حسابك، فتجدها على أي جهاز."
+    "watchlistSignInBody": "تُحفظ قائمة المشاهدة في حسابك، فتجدها على أي جهاز.",
+    "filterLabel": "تصفية",
+    "filterAll": "الكل",
+    "titlesCount": "{count, plural, =0{لا عناوين} =1{عنوان واحد} =2{عنوانان} few{{count} عناوين} many{{count} عنوانًا} other{{count} عنوان}}",
+    "removeFromLiked": "إزالة من الإعجابات",
+    "watchlistEmptyTitle": "قائمة المشاهدة فارغة",
+    "libraryNoMatches": "لا توجد عناوين تطابق هذا التصفية.",
+    "showAll": "عرض الكل"
 }

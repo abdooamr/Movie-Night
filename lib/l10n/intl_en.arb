@@ -382,5 +382,19 @@
     "profileSignInTitle": "Log In to Movie Night",
     "profileSignInBody": "Keep a watchlist, write reviews and take your profile to any device.",
     "watchlistSignInTitle": "Log In to Use Your Watchlist",
-    "watchlistSignInBody": "Your watchlist is saved to your account, so it follows you to any device."
+    "watchlistSignInBody": "Your watchlist is saved to your account, so it follows you to any device.",
+    "filterLabel": "Filter",
+    "filterAll": "All",
+    "titlesCount": "{count, plural, =1{1 title} other{{count} titles}}",
+    "@titlesCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "removeFromLiked": "Remove from Liked",
+    "watchlistEmptyTitle": "Your Watchlist Is Empty",
+    "libraryNoMatches": "No titles match this filter.",
+    "showAll": "Show All"
 }

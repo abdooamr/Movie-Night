@@ -55,6 +55,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m14(title, url) => "شاهد ${title} على Movie Night\n${url}";
 
+  static String m15(count) =>
+      "${Intl.plural(count, zero: 'لا عناوين', one: 'عنوان واحد', two: 'عنوانان', few: '${count} عناوين', many: '${count} عنوانًا', other: '${count} عنوان')}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "Actiongenre": MessageLookupByLibrary.simpleMessage("أكشن"),
@@ -251,6 +254,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "explorenavbar": MessageLookupByLibrary.simpleMessage("بحث"),
     "familymovielabel": MessageLookupByLibrary.simpleMessage("أفلام عائلية"),
     "fantasymovielabel": MessageLookupByLibrary.simpleMessage("أفلام خيال"),
+    "filterAll": MessageLookupByLibrary.simpleMessage("الكل"),
+    "filterLabel": MessageLookupByLibrary.simpleMessage("تصفية"),
     "firstnamelabel": MessageLookupByLibrary.simpleMessage("الاسم الأول"),
     "forgetPasswordPageQuestion": MessageLookupByLibrary.simpleMessage(
       "اكتب الإيميل المرتبط بحسابك",
@@ -278,6 +283,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "kidstvlabel": MessageLookupByLibrary.simpleMessage("برامج أطفال"),
     "lastnamelabel": MessageLookupByLibrary.simpleMessage("الاسم الأخير"),
     "libraryLiked": MessageLookupByLibrary.simpleMessage("المفضلة"),
+    "libraryNoMatches": MessageLookupByLibrary.simpleMessage(
+      "لا توجد عناوين تطابق هذا التصفية.",
+    ),
     "libraryWatchlist": MessageLookupByLibrary.simpleMessage("قائمة المشاهدة"),
     "like": MessageLookupByLibrary.simpleMessage("إعجاب"),
     "liked": MessageLookupByLibrary.simpleMessage("في المفضلة"),
@@ -404,6 +412,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "realitytvlabel": MessageLookupByLibrary.simpleMessage("برامج واقع"),
     "registarnowlabel": MessageLookupByLibrary.simpleMessage("إنشاء حساب"),
     "removeFromHistory": MessageLookupByLibrary.simpleMessage("إزالة"),
+    "removeFromLiked": MessageLookupByLibrary.simpleMessage(
+      "إزالة من الإعجابات",
+    ),
     "removedFromLiked": MessageLookupByLibrary.simpleMessage(
       "تمت الإزالة من المفضلة",
     ),
@@ -469,6 +480,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "share": MessageLookupByLibrary.simpleMessage("مشاركة"),
     "shareText": m14,
+    "showAll": MessageLookupByLibrary.simpleMessage("عرض الكل"),
     "showPassword": MessageLookupByLibrary.simpleMessage("إظهار كلمة المرور"),
     "signInPromptBody": MessageLookupByLibrary.simpleMessage(
       "سجّل الدخول للاحتفاظ بقائمة مشاهدة والإعجاب بالعناوين وكتابة المراجعات.",
@@ -492,6 +504,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "talktvlabel": MessageLookupByLibrary.simpleMessage("برامج حوارية"),
     "thecast": MessageLookupByLibrary.simpleMessage("أبطال العمل"),
     "thrillermovielabel": MessageLookupByLibrary.simpleMessage("أفلام إثارة"),
+    "titlesCount": m15,
     "tmdbLabel": MessageLookupByLibrary.simpleMessage("TMDB"),
     "trendingmovieswidget_title": MessageLookupByLibrary.simpleMessage(
       "أفلام رائجة",
@@ -532,6 +545,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "watchlistEmptyBody": MessageLookupByLibrary.simpleMessage(
       "أضف عناوين إلى قائمة المشاهدة لتجدها هنا لاحقًا.",
+    ),
+    "watchlistEmptyTitle": MessageLookupByLibrary.simpleMessage(
+      "قائمة المشاهدة فارغة",
     ),
     "watchlistSignInBody": MessageLookupByLibrary.simpleMessage(
       "تُحفظ قائمة المشاهدة في حسابك، فتجدها على أي جهاز.",

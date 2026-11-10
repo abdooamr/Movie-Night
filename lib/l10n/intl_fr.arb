@@ -299,5 +299,12 @@
     "profileSignInTitle": "Connectez-vous à Movie Night",
     "profileSignInBody": "Gardez une liste de suivi, écrivez des avis et retrouvez votre profil sur tous vos appareils.",
     "watchlistSignInTitle": "Connectez-vous pour utiliser votre liste de suivi",
-    "watchlistSignInBody": "Votre liste est enregistrée dans votre compte et vous suit sur tous vos appareils."
+    "watchlistSignInBody": "Votre liste est enregistrée dans votre compte et vous suit sur tous vos appareils.",
+    "filterLabel": "Filtrer",
+    "filterAll": "Tout",
+    "titlesCount": "{count, plural, =1{1 titre} other{{count} titres}}",
+    "removeFromLiked": "Retirer des favoris",
+    "watchlistEmptyTitle": "Votre liste de suivi est vide",
+    "libraryNoMatches": "Aucun titre ne correspond à ce filtre.",
+    "showAll": "Tout afficher"
 }

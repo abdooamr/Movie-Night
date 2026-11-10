@@ -55,6 +55,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m14(title, url) => "Découvrez ${title} sur Movie Night\n${url}";
 
+  static String m15(count) =>
+      "${Intl.plural(count, one: '1 titre', other: '${count} titres')}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "Actiongenre": MessageLookupByLibrary.simpleMessage("Action"),
@@ -297,6 +300,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "fantasymovielabel": MessageLookupByLibrary.simpleMessage(
       "Films Fantastiques",
     ),
+    "filterAll": MessageLookupByLibrary.simpleMessage("Tout"),
+    "filterLabel": MessageLookupByLibrary.simpleMessage("Filtrer"),
     "firstnamelabel": MessageLookupByLibrary.simpleMessage("Prénom"),
     "forgetPasswordPageQuestion": MessageLookupByLibrary.simpleMessage(
       "Entre l’adresse e-mail associée à ton compte",
@@ -334,6 +339,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "lastnamelabel": MessageLookupByLibrary.simpleMessage("Nom de Famille"),
     "libraryLiked": MessageLookupByLibrary.simpleMessage("Aimés"),
+    "libraryNoMatches": MessageLookupByLibrary.simpleMessage(
+      "Aucun titre ne correspond à ce filtre.",
+    ),
     "libraryWatchlist": MessageLookupByLibrary.simpleMessage("Liste de suivi"),
     "like": MessageLookupByLibrary.simpleMessage("J\'aime"),
     "liked": MessageLookupByLibrary.simpleMessage("Aimé"),
@@ -480,6 +488,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "registarnowlabel": MessageLookupByLibrary.simpleMessage("Créer un Compte"),
     "removeFromHistory": MessageLookupByLibrary.simpleMessage("Retirer"),
+    "removeFromLiked": MessageLookupByLibrary.simpleMessage(
+      "Retirer des favoris",
+    ),
     "removedFromLiked": MessageLookupByLibrary.simpleMessage(
       "Retiré des titres aimés",
     ),
@@ -557,6 +568,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "share": MessageLookupByLibrary.simpleMessage("Partager"),
     "shareText": m14,
+    "showAll": MessageLookupByLibrary.simpleMessage("Tout afficher"),
     "showPassword": MessageLookupByLibrary.simpleMessage(
       "Afficher le mot de passe",
     ),
@@ -592,6 +604,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "thrillermovielabel": MessageLookupByLibrary.simpleMessage(
       "Films à Suspense",
     ),
+    "titlesCount": m15,
     "tmdbLabel": MessageLookupByLibrary.simpleMessage("TMDB"),
     "trendingmovieswidget_title": MessageLookupByLibrary.simpleMessage(
       "Films Tendances",
@@ -644,6 +657,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "watchlistEmptyBody": MessageLookupByLibrary.simpleMessage(
       "Ajoutez des titres à votre liste de suivi pour les retrouver ici plus tard.",
+    ),
+    "watchlistEmptyTitle": MessageLookupByLibrary.simpleMessage(
+      "Votre liste de suivi est vide",
     ),
     "watchlistSignInBody": MessageLookupByLibrary.simpleMessage(
       "Votre liste est enregistrée dans votre compte et vous suit sur tous vos appareils.",
