@@ -64,8 +64,25 @@ class _LibraryPageState extends State<LibraryPage> {
       body: CustomScrollView(
         primary: true,
         slivers: [
-          SliverAppBar.large(
-            title: Semantics(header: true, child: Text(s.likednavbar)),
+          // One row: the large title and the filter share it, so the shelf
+          // starts high on the screen instead of under an empty bar.
+          SliverAppBar(
+            pinned: true,
+            automaticallyImplyLeading: false,
+            centerTitle: false,
+            titleSpacing: MNSpace.lg,
+            toolbarHeight: MediaQuery.textScalerOf(context)
+                .scale(kToolbarHeight)
+                .clamp(kToolbarHeight, double.infinity),
+            title: Semantics(
+              header: true,
+              child: Text(
+                s.likednavbar,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+            ),
             actions: [
               _FilterButton(
                 filter: _filter,
