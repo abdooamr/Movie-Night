@@ -12,18 +12,10 @@ import 'Register.dart';
 /// Brand name; not translatable.
 const String _brandName = 'Movie Night';
 
-/// First screen of the sign-in flow. Presented modally by `presentSignIn`,
-/// which adds the Close button at the top end, and shown inline as the
-/// signed-out Profile tab ([inSheet] false, no Close button).
+/// First screen of the sign-in flow, presented modally by `presentSignIn`,
+/// which overlays the Close button at the top end.
 class LoginWelcomeScreen extends StatelessWidget {
-  const LoginWelcomeScreen({super.key, this.inSheet = true, this.title});
-
-  /// Whether a Close button is overlaid at the top end.
-  final bool inSheet;
-
-  /// App bar title, announced as the page heading (the tab name when shown
-  /// inline). The sheet has none.
-  final String? title;
+  const LoginWelcomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,12 +27,9 @@ class LoginWelcomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        // As a sheet, the Close button comes from presentSignIn; inline, the
-        // tab is a root. Either way the app bar adds no button of its own.
+        // The Close button comes from presentSignIn; the app bar adds no
+        // button of its own.
         automaticallyImplyLeading: false,
-        title: title == null
-            ? null
-            : Semantics(header: true, child: Text(title!)),
         actions: [
           TextButton.icon(
             onPressed: () => Navigator.of(context).push(
@@ -52,7 +41,7 @@ class LoginWelcomeScreen extends StatelessWidget {
             label: Text(s.changelanguagelabel),
           ),
           // Keeps clear of the Close button overlaid at the top end.
-          if (inSheet) const SizedBox(width: MNSize.minTap),
+          const SizedBox(width: MNSize.minTap),
         ],
       ),
       body: SafeArea(

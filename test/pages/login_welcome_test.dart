@@ -39,19 +39,11 @@ void main() {
     expect(_animates(tester), isFalse);
   });
 
-  testWidgets('inline title is announced as a heading', (tester) async {
-    final handle = tester.ensureSemantics();
-    await tester.pumpWidget(
-        _app(const LoginWelcomeScreen(inSheet: false, title: 'Profile')));
-    expect(
-      tester.getSemantics(find.text('Profile')),
-      containsSemantics(label: 'Profile', isHeader: true),
-    );
-    handle.dispose();
-  });
-
-  testWidgets('the sheet has no title', (tester) async {
+  testWidgets('no app bar title; room is kept for the Close button',
+      (tester) async {
     await tester.pumpWidget(_app(const LoginWelcomeScreen()));
-    expect(find.text('Profile'), findsNothing);
+    expect(tester.widget<AppBar>(find.byType(AppBar)).title, isNull);
+    final actions = tester.widget<AppBar>(find.byType(AppBar)).actions!;
+    expect(actions.last, isA<SizedBox>());
   });
 }
