@@ -306,5 +306,22 @@
     "removeFromLiked": "إزالة من الإعجابات",
     "watchlistEmptyTitle": "قائمة المشاهدة فارغة",
     "libraryNoMatches": "لا توجد عناوين تطابق هذا التصفية.",
-    "showAll": "عرض الكل"
+    "showAll": "عرض الكل",
+    "adminSearchHint": "ابحث بالاسم أو البريد الإلكتروني",
+    "adminFilterReported": "مُبلَّغ عنهم",
+    "adminFilterAdmins": "المشرفون",
+    "adminNoUsersFound": "لا يوجد مستخدمون",
+    "adminNoUsersHint": "جرّب اسمًا أو بريدًا إلكترونيًا آخر.",
+    "adminUserTitle": "المستخدم",
+    "adminDetails": "التفاصيل",
+    "adminActions": "الإجراءات",
+    "adminRoleUser": "مستخدم",
+    "adminUserId": "معرّف المستخدم",
+    "adminCopyId": "نسخ معرّف المستخدم",
+    "adminIdCopied": "تم نسخ معرّف المستخدم",
+    "adminMakeAdmin": "تعيين كمشرف",
+    "adminMakeAdminHint": "يمكنه فتح هذه اللوحة وإدارة المستخدمين",
+    "adminNowAdmin": "أصبح {name} مشرفًا",
+    "adminReportCleared": "تم مسح البلاغ",
+    "adminStatus": "الحالة"
 }

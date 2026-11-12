@@ -306,5 +306,22 @@
     "removeFromLiked": "Retirer des favoris",
     "watchlistEmptyTitle": "Votre liste de suivi est vide",
     "libraryNoMatches": "Aucun titre ne correspond à ce filtre.",
-    "showAll": "Tout afficher"
+    "showAll": "Tout afficher",
+    "adminSearchHint": "Rechercher par nom ou e-mail",
+    "adminFilterReported": "Signalés",
+    "adminFilterAdmins": "Admins",
+    "adminNoUsersFound": "Aucun utilisateur trouvé",
+    "adminNoUsersHint": "Essayez un autre nom ou e-mail.",
+    "adminUserTitle": "Utilisateur",
+    "adminDetails": "Détails",
+    "adminActions": "Actions",
+    "adminRoleUser": "Utilisateur",
+    "adminUserId": "ID utilisateur",
+    "adminCopyId": "Copier l’ID utilisateur",
+    "adminIdCopied": "ID utilisateur copié",
+    "adminMakeAdmin": "Nommer admin",
+    "adminMakeAdminHint": "Peut ouvrir ce panneau et gérer les utilisateurs",
+    "adminNowAdmin": "{name} est maintenant admin",
+    "adminReportCleared": "Signalement effacé",
+    "adminStatus": "Statut"
 }

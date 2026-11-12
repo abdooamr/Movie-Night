@@ -2590,6 +2590,146 @@ class S {
   String get showAll {
     return Intl.message('Show All', name: 'showAll', desc: '', args: []);
   }
+
+  /// `Search by name or email`
+  String get adminSearchHint {
+    return Intl.message(
+      'Search by name or email',
+      name: 'adminSearchHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reported`
+  String get adminFilterReported {
+    return Intl.message(
+      'Reported',
+      name: 'adminFilterReported',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Admins`
+  String get adminFilterAdmins {
+    return Intl.message(
+      'Admins',
+      name: 'adminFilterAdmins',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No users found`
+  String get adminNoUsersFound {
+    return Intl.message(
+      'No users found',
+      name: 'adminNoUsersFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Try another name or email.`
+  String get adminNoUsersHint {
+    return Intl.message(
+      'Try another name or email.',
+      name: 'adminNoUsersHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `User`
+  String get adminUserTitle {
+    return Intl.message('User', name: 'adminUserTitle', desc: '', args: []);
+  }
+
+  /// `Details`
+  String get adminDetails {
+    return Intl.message('Details', name: 'adminDetails', desc: '', args: []);
+  }
+
+  /// `Actions`
+  String get adminActions {
+    return Intl.message('Actions', name: 'adminActions', desc: '', args: []);
+  }
+
+  /// `User`
+  String get adminRoleUser {
+    return Intl.message('User', name: 'adminRoleUser', desc: '', args: []);
+  }
+
+  /// `User ID`
+  String get adminUserId {
+    return Intl.message('User ID', name: 'adminUserId', desc: '', args: []);
+  }
+
+  /// `Copy user ID`
+  String get adminCopyId {
+    return Intl.message(
+      'Copy user ID',
+      name: 'adminCopyId',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `User ID copied`
+  String get adminIdCopied {
+    return Intl.message(
+      'User ID copied',
+      name: 'adminIdCopied',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Make Admin`
+  String get adminMakeAdmin {
+    return Intl.message(
+      'Make Admin',
+      name: 'adminMakeAdmin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Can open this panel and manage users`
+  String get adminMakeAdminHint {
+    return Intl.message(
+      'Can open this panel and manage users',
+      name: 'adminMakeAdminHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{name} is now an admin`
+  String adminNowAdmin(String name) {
+    return Intl.message(
+      '$name is now an admin',
+      name: 'adminNowAdmin',
+      desc: '',
+      args: [name],
+    );
+  }
+
+  /// `Report cleared`
+  String get adminReportCleared {
+    return Intl.message(
+      'Report cleared',
+      name: 'adminReportCleared',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Status`
+  String get adminStatus {
+    return Intl.message('Status', name: 'adminStatus', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

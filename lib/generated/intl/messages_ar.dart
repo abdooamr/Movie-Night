@@ -20,42 +20,44 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'ar';
 
-  static String m0(character) => "بدور ${character}";
+  static String m0(name) => "أصبح ${name} مشرفًا";
 
-  static String m1(email) =>
+  static String m1(character) => "بدور ${character}";
+
+  static String m2(email) =>
       "تحقق من بريدك الإلكتروني. أرسلنا رابطًا إلى ${email}. افتحه لتفعيل حسابك، ثم سجّل الدخول.";
 
-  static String m2(section) => "تعذّر تحميل ${section}.";
+  static String m3(section) => "تعذّر تحميل ${section}.";
 
-  static String m3(name) => "حذف ${name}؟";
+  static String m4(name) => "حذف ${name}؟";
 
-  static String m4(count) =>
+  static String m5(count) =>
       "${Intl.plural(count, one: 'حلقة واحدة', two: 'حلقتان', few: '${count} حلقات', many: '${count} حلقة', other: '${count} حلقة')}";
 
-  static String m5(query) =>
+  static String m6(query) =>
       "لا توجد نتائج لـ «${query}». تحقق من الإملاء أو جرّب عنوانًا آخر.";
 
-  static String m6(title) => "تشغيل ${title}";
+  static String m7(title) => "تشغيل ${title}";
 
-  static String m7(score) => "${score} من 10";
+  static String m8(score) => "${score} من 10";
 
-  static String m8(email) =>
+  static String m9(email) =>
       "تحقق من بريدك الإلكتروني. أرسلنا رابط إعادة التعيين إلى ${email}.";
 
-  static String m9(hours, minutes) => "${hours} س ${minutes} د";
+  static String m10(hours, minutes) => "${hours} س ${minutes} د";
 
-  static String m10(hours) => "${hours} س";
+  static String m11(hours) => "${hours} س";
 
-  static String m11(minutes) => "${minutes} د";
+  static String m12(minutes) => "${minutes} د";
 
-  static String m12(count) =>
+  static String m13(count) =>
       "${Intl.plural(count, one: 'موسم واحد', two: 'موسمان', few: '${count} مواسم', many: '${count} موسمًا', other: '${count} موسم')}";
 
-  static String m13(count) => "عرض كل المراجعات (${count})";
+  static String m14(count) => "عرض كل المراجعات (${count})";
 
-  static String m14(title, url) => "شاهد ${title} على Movie Night\n${url}";
+  static String m15(title, url) => "شاهد ${title} على Movie Night\n${url}";
 
-  static String m15(count) =>
+  static String m16(count) =>
       "${Intl.plural(count, zero: 'لا عناوين', one: 'عنوان واحد', two: 'عنوانان', few: '${count} عناوين', many: '${count} عنوانًا', other: '${count} عنوان')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -102,7 +104,34 @@ class MessageLookup extends MessageLookupByLibrary {
     "addtowatchlist": MessageLookupByLibrary.simpleMessage(
       "إضافة إلى قائمة المشاهدة",
     ),
+    "adminActions": MessageLookupByLibrary.simpleMessage("الإجراءات"),
+    "adminCopyId": MessageLookupByLibrary.simpleMessage("نسخ معرّف المستخدم"),
+    "adminDetails": MessageLookupByLibrary.simpleMessage("التفاصيل"),
+    "adminFilterAdmins": MessageLookupByLibrary.simpleMessage("المشرفون"),
+    "adminFilterReported": MessageLookupByLibrary.simpleMessage("مُبلَّغ عنهم"),
+    "adminIdCopied": MessageLookupByLibrary.simpleMessage(
+      "تم نسخ معرّف المستخدم",
+    ),
+    "adminMakeAdmin": MessageLookupByLibrary.simpleMessage("تعيين كمشرف"),
+    "adminMakeAdminHint": MessageLookupByLibrary.simpleMessage(
+      "يمكنه فتح هذه اللوحة وإدارة المستخدمين",
+    ),
+    "adminNoUsersFound": MessageLookupByLibrary.simpleMessage(
+      "لا يوجد مستخدمون",
+    ),
+    "adminNoUsersHint": MessageLookupByLibrary.simpleMessage(
+      "جرّب اسمًا أو بريدًا إلكترونيًا آخر.",
+    ),
+    "adminNowAdmin": m0,
     "adminPanel": MessageLookupByLibrary.simpleMessage("لوحة الأدمن"),
+    "adminReportCleared": MessageLookupByLibrary.simpleMessage("تم مسح البلاغ"),
+    "adminRoleUser": MessageLookupByLibrary.simpleMessage("مستخدم"),
+    "adminSearchHint": MessageLookupByLibrary.simpleMessage(
+      "ابحث بالاسم أو البريد الإلكتروني",
+    ),
+    "adminStatus": MessageLookupByLibrary.simpleMessage("الحالة"),
+    "adminUserId": MessageLookupByLibrary.simpleMessage("معرّف المستخدم"),
+    "adminUserTitle": MessageLookupByLibrary.simpleMessage("المستخدم"),
     "adminpanellabel": MessageLookupByLibrary.simpleMessage("لوحة الإدارة"),
     "adminsettingslabel": MessageLookupByLibrary.simpleMessage("إدارة"),
     "adventuremovielabel": MessageLookupByLibrary.simpleMessage("أفلام مغامرة"),
@@ -164,7 +193,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "browseMovies": MessageLookupByLibrary.simpleMessage("تصفّح الأفلام"),
     "buyon": MessageLookupByLibrary.simpleMessage("شراء على"),
     "cancelLabel": MessageLookupByLibrary.simpleMessage("إلغاء"),
-    "castAs": m0,
+    "castAs": m1,
     "changeProfilePhoto": MessageLookupByLibrary.simpleMessage(
       "تغيير صورة الملف الشخصي",
     ),
@@ -183,11 +212,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "clearSearchTooltip": MessageLookupByLibrary.simpleMessage("مسح البحث"),
     "close": MessageLookupByLibrary.simpleMessage("إغلاق"),
     "comedymovielabel": MessageLookupByLibrary.simpleMessage("أفلام كوميدية"),
-    "confirmEmailSent": m1,
+    "confirmEmailSent": m2,
     "continueWithGoogle": MessageLookupByLibrary.simpleMessage(
       "المتابعة باستخدام Google",
     ),
-    "couldntLoadSection": m2,
+    "couldntLoadSection": m3,
     "couldntLoadTitle": MessageLookupByLibrary.simpleMessage(
       "تعذّر تحميل هذا العنوان.",
     ),
@@ -213,7 +242,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteUserConfirmation": MessageLookupByLibrary.simpleMessage(
       "متأكد إنك عايز تحذف حسابك؟ مش هتقدر ترجّعه بعد كده.",
     ),
-    "deleteUserTitle": m3,
+    "deleteUserTitle": m4,
     "deleteaccountlabel": MessageLookupByLibrary.simpleMessage("حذف الحساب"),
     "deleteerror": MessageLookupByLibrary.simpleMessage(
       "خطأ في حذف الحساب. يرجى تسجيل الدخول مرة أخرى والمحاولة مرة أخرى",
@@ -245,7 +274,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "enterValidEmail": MessageLookupByLibrary.simpleMessage(
       "أدخل عنوان بريد إلكتروني صالحًا.",
     ),
-    "episodesCount": m4,
+    "episodesCount": m5,
     "error": MessageLookupByLibrary.simpleMessage("خطأ"),
     "errorLoginAgain": MessageLookupByLibrary.simpleMessage(
       "حدث خطأ، يرجى تسجيل الدخول مرة أخرى والمحاولة مجددًا",
@@ -327,7 +356,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "noReport": MessageLookupByLibrary.simpleMessage("لا توجد بلاغات"),
     "noResults": MessageLookupByLibrary.simpleMessage("لا توجد نتائج"),
-    "noResultsFor": m5,
+    "noResultsFor": m6,
     "noResultsMessage": MessageLookupByLibrary.simpleMessage(
       "لم يتم العثور على نتائج لبحثك",
     ),
@@ -380,7 +409,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "passwordvalidationtext": MessageLookupByLibrary.simpleMessage(
       "استخدم 8 أحرف على الأقل، تشمل حرفًا كبيرًا وحرفًا صغيرًا ورقمًا ورمزًا.",
     ),
-    "playVideo": m6,
+    "playVideo": m7,
     "pleasecheckinternetconnection": MessageLookupByLibrary.simpleMessage(
       "يرجى التحقق من اتصالك بالإنترنت وحاول مرة أخرى",
     ),
@@ -406,7 +435,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "profilenavbar": MessageLookupByLibrary.simpleMessage("الملف الشخصي"),
     "rateMovieNight": MessageLookupByLibrary.simpleMessage("قيّم Movie Night"),
-    "ratingOutOf10": m7,
+    "ratingOutOf10": m8,
     "readLess": MessageLookupByLibrary.simpleMessage("عرض أقل"),
     "readmorelabel": MessageLookupByLibrary.simpleMessage("اقرأ المزيد"),
     "realitytvlabel": MessageLookupByLibrary.simpleMessage("برامج واقع"),
@@ -442,7 +471,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "reportpagelabel": MessageLookupByLibrary.simpleMessage(
       "يرجى إرسال تقرير إلينا إذا وجدت أي أخطاء أو لديك أي اقتراحات للتطبيق.",
     ),
-    "resetLinkSent": m8,
+    "resetLinkSent": m9,
     "resetPassword": MessageLookupByLibrary.simpleMessage(
       "إعادة تعيين كلمة المرور",
     ),
@@ -452,9 +481,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "reviewsTitle": MessageLookupByLibrary.simpleMessage("المراجعات"),
     "role": MessageLookupByLibrary.simpleMessage("الدور"),
     "romancemovielabel": MessageLookupByLibrary.simpleMessage("أفلام رومانسية"),
-    "runtimeHoursMinutes": m9,
-    "runtimeHoursOnly": m10,
-    "runtimeMinutesOnly": m11,
+    "runtimeHoursMinutes": m10,
+    "runtimeHoursOnly": m11,
+    "runtimeMinutesOnly": m12,
     "savePasswordLabel": MessageLookupByLibrary.simpleMessage(
       "حفظ كلمة المرور",
     ),
@@ -466,8 +495,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "مسلسلات خيال علمي وفانتازيا",
     ),
     "searchhint": MessageLookupByLibrary.simpleMessage("أفلام، مسلسلات، أشخاص"),
-    "seasonsCount": m12,
-    "seeAllReviews": m13,
+    "seasonsCount": m13,
+    "seeAllReviews": m14,
     "sendEmail": MessageLookupByLibrary.simpleMessage("إرسال الإيميل"),
     "sendReviewTooltip": MessageLookupByLibrary.simpleMessage("إرسال المراجعة"),
     "sendfeedbacklabel": MessageLookupByLibrary.simpleMessage("إرسال ملاحظات"),
@@ -479,7 +508,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "تعيين كلمة مرور جديدة",
     ),
     "share": MessageLookupByLibrary.simpleMessage("مشاركة"),
-    "shareText": m14,
+    "shareText": m15,
     "showAll": MessageLookupByLibrary.simpleMessage("عرض الكل"),
     "showPassword": MessageLookupByLibrary.simpleMessage("إظهار كلمة المرور"),
     "signInPromptBody": MessageLookupByLibrary.simpleMessage(
@@ -504,7 +533,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "talktvlabel": MessageLookupByLibrary.simpleMessage("برامج حوارية"),
     "thecast": MessageLookupByLibrary.simpleMessage("أبطال العمل"),
     "thrillermovielabel": MessageLookupByLibrary.simpleMessage("أفلام إثارة"),
-    "titlesCount": m15,
+    "titlesCount": m16,
     "tmdbLabel": MessageLookupByLibrary.simpleMessage("TMDB"),
     "trendingmovieswidget_title": MessageLookupByLibrary.simpleMessage(
       "أفلام رائجة",

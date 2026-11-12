@@ -20,42 +20,44 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'it';
 
-  static String m0(character) => "Nel ruolo di ${character}";
+  static String m0(name) => "${name} ora è admin";
 
-  static String m1(email) =>
+  static String m1(character) => "Nel ruolo di ${character}";
+
+  static String m2(email) =>
       "Controlla la tua email. Abbiamo inviato un link a ${email}. Aprilo per attivare il tuo account, poi accedi.";
 
-  static String m2(section) => "Impossibile caricare ${section}.";
+  static String m3(section) => "Impossibile caricare ${section}.";
 
-  static String m3(name) => "Eliminare ${name}?";
+  static String m4(name) => "Eliminare ${name}?";
 
-  static String m4(count) =>
+  static String m5(count) =>
       "${Intl.plural(count, one: '1 episodio', other: '${count} episodi')}";
 
-  static String m5(query) =>
+  static String m6(query) =>
       "Nessun risultato per “${query}”. Controlla l\'ortografia o prova un altro titolo.";
 
-  static String m6(title) => "Riproduci ${title}";
+  static String m7(title) => "Riproduci ${title}";
 
-  static String m7(score) => "${score} su 10";
+  static String m8(score) => "${score} su 10";
 
-  static String m8(email) =>
+  static String m9(email) =>
       "Controlla la tua email. Abbiamo inviato un link di reimpostazione a ${email}.";
 
-  static String m9(hours, minutes) => "${hours} h ${minutes} min";
+  static String m10(hours, minutes) => "${hours} h ${minutes} min";
 
-  static String m10(hours) => "${hours} h";
+  static String m11(hours) => "${hours} h";
 
-  static String m11(minutes) => "${minutes} min";
+  static String m12(minutes) => "${minutes} min";
 
-  static String m12(count) =>
+  static String m13(count) =>
       "${Intl.plural(count, one: '1 stagione', other: '${count} stagioni')}";
 
-  static String m13(count) => "Vedi tutte le recensioni (${count})";
+  static String m14(count) => "Vedi tutte le recensioni (${count})";
 
-  static String m14(title, url) => "Guarda ${title} su Movie Night\n${url}";
+  static String m15(title, url) => "Guarda ${title} su Movie Night\n${url}";
 
-  static String m15(count) =>
+  static String m16(count) =>
       "${Intl.plural(count, one: '1 titolo', other: '${count} titoli')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -104,7 +106,34 @@ class MessageLookup extends MessageLookupByLibrary {
     "addtowatchlist": MessageLookupByLibrary.simpleMessage(
       "Aggiungi alla Lista dei Preferiti",
     ),
+    "adminActions": MessageLookupByLibrary.simpleMessage("Azioni"),
+    "adminCopyId": MessageLookupByLibrary.simpleMessage("Copia ID utente"),
+    "adminDetails": MessageLookupByLibrary.simpleMessage("Dettagli"),
+    "adminFilterAdmins": MessageLookupByLibrary.simpleMessage("Admin"),
+    "adminFilterReported": MessageLookupByLibrary.simpleMessage("Segnalati"),
+    "adminIdCopied": MessageLookupByLibrary.simpleMessage("ID utente copiato"),
+    "adminMakeAdmin": MessageLookupByLibrary.simpleMessage("Rendi admin"),
+    "adminMakeAdminHint": MessageLookupByLibrary.simpleMessage(
+      "Può aprire questo pannello e gestire gli utenti",
+    ),
+    "adminNoUsersFound": MessageLookupByLibrary.simpleMessage(
+      "Nessun utente trovato",
+    ),
+    "adminNoUsersHint": MessageLookupByLibrary.simpleMessage(
+      "Prova un altro nome o email.",
+    ),
+    "adminNowAdmin": m0,
     "adminPanel": MessageLookupByLibrary.simpleMessage("Pannello admin"),
+    "adminReportCleared": MessageLookupByLibrary.simpleMessage(
+      "Segnalazione rimossa",
+    ),
+    "adminRoleUser": MessageLookupByLibrary.simpleMessage("Utente"),
+    "adminSearchHint": MessageLookupByLibrary.simpleMessage(
+      "Cerca per nome o email",
+    ),
+    "adminStatus": MessageLookupByLibrary.simpleMessage("Stato"),
+    "adminUserId": MessageLookupByLibrary.simpleMessage("ID utente"),
+    "adminUserTitle": MessageLookupByLibrary.simpleMessage("Utente"),
     "adminpanellabel": MessageLookupByLibrary.simpleMessage(
       "Pannello di Amministrazione",
     ),
@@ -170,7 +199,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "browseMovies": MessageLookupByLibrary.simpleMessage("Sfoglia i film"),
     "buyon": MessageLookupByLibrary.simpleMessage("Acquista su"),
     "cancelLabel": MessageLookupByLibrary.simpleMessage("Annulla"),
-    "castAs": m0,
+    "castAs": m1,
     "changeProfilePhoto": MessageLookupByLibrary.simpleMessage(
       "Cambia Foto Profilo",
     ),
@@ -195,11 +224,11 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "close": MessageLookupByLibrary.simpleMessage("Chiudi"),
     "comedymovielabel": MessageLookupByLibrary.simpleMessage("Film Commedia"),
-    "confirmEmailSent": m1,
+    "confirmEmailSent": m2,
     "continueWithGoogle": MessageLookupByLibrary.simpleMessage(
       "Continua con Google",
     ),
-    "couldntLoadSection": m2,
+    "couldntLoadSection": m3,
     "couldntLoadTitle": MessageLookupByLibrary.simpleMessage(
       "Impossibile caricare questo titolo.",
     ),
@@ -235,7 +264,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteUserConfirmation": MessageLookupByLibrary.simpleMessage(
       "Sei sicuro di voler eliminare il tuo account? Questa azione non può essere annullata.",
     ),
-    "deleteUserTitle": m3,
+    "deleteUserTitle": m4,
     "deleteaccountlabel": MessageLookupByLibrary.simpleMessage(
       "Elimina Account",
     ),
@@ -279,7 +308,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "enterValidEmail": MessageLookupByLibrary.simpleMessage(
       "Inserisci un indirizzo email valido.",
     ),
-    "episodesCount": m4,
+    "episodesCount": m5,
     "error": MessageLookupByLibrary.simpleMessage("Errore"),
     "errorLoginAgain": MessageLookupByLibrary.simpleMessage(
       "Errore, accedi di nuovo e riprova",
@@ -365,7 +394,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "noReport": MessageLookupByLibrary.simpleMessage("Nessuna segnalazione"),
     "noResults": MessageLookupByLibrary.simpleMessage("Nessun Risultato"),
-    "noResultsFor": m5,
+    "noResultsFor": m6,
     "noResultsMessage": MessageLookupByLibrary.simpleMessage(
       "Nessun risultato trovato per la tua ricerca",
     ),
@@ -428,7 +457,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "passwordvalidationtext": MessageLookupByLibrary.simpleMessage(
       "Usa almeno 8 caratteri, tra cui una maiuscola, una minuscola, un numero e un simbolo.",
     ),
-    "playVideo": m6,
+    "playVideo": m7,
     "pleasecheckinternetconnection": MessageLookupByLibrary.simpleMessage(
       "per favore controlla la tua connessione Internet e prova di nuovo",
     ),
@@ -456,7 +485,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateMovieNight": MessageLookupByLibrary.simpleMessage(
       "Valuta Movie Night",
     ),
-    "ratingOutOf10": m7,
+    "ratingOutOf10": m8,
     "readLess": MessageLookupByLibrary.simpleMessage("Mostra meno"),
     "readmorelabel": MessageLookupByLibrary.simpleMessage("Leggi tutto"),
     "realitytvlabel": MessageLookupByLibrary.simpleMessage("Serie TV Reality"),
@@ -492,7 +521,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "reportpagelabel": MessageLookupByLibrary.simpleMessage(
       "Per favore inviaci un report se trovi dei bug o hai suggerimenti per l\'app.",
     ),
-    "resetLinkSent": m8,
+    "resetLinkSent": m9,
     "resetPassword": MessageLookupByLibrary.simpleMessage("Reimposta Password"),
     "resetPasswordSubtitle": MessageLookupByLibrary.simpleMessage(
       "Ti invieremo un link di reimpostazione via email",
@@ -500,9 +529,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "reviewsTitle": MessageLookupByLibrary.simpleMessage("Recensioni"),
     "role": MessageLookupByLibrary.simpleMessage("Ruolo"),
     "romancemovielabel": MessageLookupByLibrary.simpleMessage("Film Romance"),
-    "runtimeHoursMinutes": m9,
-    "runtimeHoursOnly": m10,
-    "runtimeMinutesOnly": m11,
+    "runtimeHoursMinutes": m10,
+    "runtimeHoursOnly": m11,
+    "runtimeMinutesOnly": m12,
     "savePasswordLabel": MessageLookupByLibrary.simpleMessage("Salva Password"),
     "savelabel": MessageLookupByLibrary.simpleMessage("Salva"),
     "sciencefictionmovielabel": MessageLookupByLibrary.simpleMessage(
@@ -514,8 +543,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "searchhint": MessageLookupByLibrary.simpleMessage(
       "Film, serie TV, persone",
     ),
-    "seasonsCount": m12,
-    "seeAllReviews": m13,
+    "seasonsCount": m13,
+    "seeAllReviews": m14,
     "sendEmail": MessageLookupByLibrary.simpleMessage("Invia email"),
     "sendReviewTooltip": MessageLookupByLibrary.simpleMessage(
       "Invia recensione",
@@ -529,7 +558,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Imposta una Nuova Password",
     ),
     "share": MessageLookupByLibrary.simpleMessage("Condividi"),
-    "shareText": m14,
+    "shareText": m15,
     "showAll": MessageLookupByLibrary.simpleMessage("Mostra Tutti"),
     "showPassword": MessageLookupByLibrary.simpleMessage("Mostra password"),
     "signInPromptBody": MessageLookupByLibrary.simpleMessage(
@@ -558,7 +587,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "talktvlabel": MessageLookupByLibrary.simpleMessage("Serie TV Talk show"),
     "thecast": MessageLookupByLibrary.simpleMessage("Il Cast"),
     "thrillermovielabel": MessageLookupByLibrary.simpleMessage("Film Thriller"),
-    "titlesCount": m15,
+    "titlesCount": m16,
     "tmdbLabel": MessageLookupByLibrary.simpleMessage("TMDB"),
     "trendingmovieswidget_title": MessageLookupByLibrary.simpleMessage(
       "Film in Tendenza",

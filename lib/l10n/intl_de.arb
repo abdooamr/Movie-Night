@@ -306,5 +306,22 @@
     "removeFromLiked": "Aus „Gefällt mir“ entfernen",
     "watchlistEmptyTitle": "Deine Merkliste ist leer",
     "libraryNoMatches": "Keine Titel passen zu diesem Filter.",
-    "showAll": "Alle anzeigen"
+    "showAll": "Alle anzeigen",
+    "adminSearchHint": "Nach Name oder E-Mail suchen",
+    "adminFilterReported": "Gemeldet",
+    "adminFilterAdmins": "Admins",
+    "adminNoUsersFound": "Keine Nutzer gefunden",
+    "adminNoUsersHint": "Versuche einen anderen Namen oder eine andere E-Mail.",
+    "adminUserTitle": "Nutzer",
+    "adminDetails": "Details",
+    "adminActions": "Aktionen",
+    "adminRoleUser": "Nutzer",
+    "adminUserId": "Nutzer-ID",
+    "adminCopyId": "Nutzer-ID kopieren",
+    "adminIdCopied": "Nutzer-ID kopiert",
+    "adminMakeAdmin": "Zum Admin machen",
+    "adminMakeAdminHint": "Kann dieses Panel öffnen und Nutzer verwalten",
+    "adminNowAdmin": "{name} ist jetzt Admin",
+    "adminReportCleared": "Meldung entfernt",
+    "adminStatus": "Status"
 }

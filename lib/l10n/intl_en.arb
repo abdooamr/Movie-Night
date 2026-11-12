@@ -396,5 +396,29 @@
     "removeFromLiked": "Remove from Liked",
     "watchlistEmptyTitle": "Your Watchlist Is Empty",
     "libraryNoMatches": "No titles match this filter.",
-    "showAll": "Show All"
+    "showAll": "Show All",
+    "adminSearchHint": "Search by name or email",
+    "adminFilterReported": "Reported",
+    "adminFilterAdmins": "Admins",
+    "adminNoUsersFound": "No users found",
+    "adminNoUsersHint": "Try another name or email.",
+    "adminUserTitle": "User",
+    "adminDetails": "Details",
+    "adminActions": "Actions",
+    "adminRoleUser": "User",
+    "adminUserId": "User ID",
+    "adminCopyId": "Copy user ID",
+    "adminIdCopied": "User ID copied",
+    "adminMakeAdmin": "Make Admin",
+    "adminMakeAdminHint": "Can open this panel and manage users",
+    "adminNowAdmin": "{name} is now an admin",
+    "adminReportCleared": "Report cleared",
+    "adminStatus": "Status",
+    "@adminNowAdmin": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    }
 }

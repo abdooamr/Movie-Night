@@ -1,18 +1,34 @@
 import 'package:Movie_Night/generated/l10n.dart';
-import 'package:Movie_Night/src/components/cached_image.dart';
-import 'package:Movie_Night/src/components/feedback.dart';
+import 'package:Movie_Night/src/components/segmented_toggle.dart';
 import 'package:Movie_Night/src/components/state_views.dart';
-import 'package:Movie_Night/src/design/tokens.dart';
 import 'package:Movie_Night/src/data/user_repository.dart';
-import 'package:Movie_Night/src/utils/app_logger.dart';
+import 'package:Movie_Night/src/design/tokens.dart';
+import 'package:Movie_Night/src/models/user_model.dart';
+import 'package:Movie_Night/src/pages/Adminpages/admin_user_page.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:Movie_Night/src/models/user_model.dart';
-import 'package:Movie_Night/src/pages/Adminpages/details_category.dart';
+
+enum AdminFilter { all, reported, admins }
+
+/// Users matching [filter] and [query] (name or email, any case).
+List<Users> filterUsers(List<Users> users, AdminFilter filter, String query) {
+  final q = query.trim().toLowerCase();
+  return [
+    for (final u in users)
+      if ((filter != AdminFilter.reported || hasReport(u)) &&
+          (filter != AdminFilter.admins || isAdminRole(u.role)) &&
+          (q.isEmpty ||
+              displayName(u).toLowerCase().contains(q) ||
+              u.email.toLowerCase().contains(q)))
+        u,
+  ];
+}
 
 class adminpanel extends StatefulWidget {
-  const adminpanel({super.key});
+  const adminpanel({super.key, this.loadUsers});
+
+  /// Replaces the database call (tests).
+  final Future<List<Users>> Function()? loadUsers;
 
   @override
   State<adminpanel> createState() => _adminpanelState();
@@ -20,14 +36,32 @@ class adminpanel extends StatefulWidget {
 
 class _adminpanelState extends State<adminpanel> {
   /// Every user with their email (`admin_list_users`). Not live: reloaded
-  /// on retry, after returning from a user and after a delete.
+  /// on retry, on pull to refresh and after returning from a user.
   late Future<List<Users>> _users = _readUsers();
+  final _search = TextEditingController();
+  AdminFilter _filter = AdminFilter.all;
 
-  Future<List<Users>> _readUsers() => UserRepository.instance.adminListUsers();
+  Future<List<Users>> _readUsers() =>
+      (widget.loadUsers ?? UserRepository.instance.adminListUsers)();
 
   void _reload() => setState(() {
         _users = _readUsers();
       });
+
+  @override
+  void dispose() {
+    _search.dispose();
+    super.dispose();
+  }
+
+  Future<void> _open(Users user) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => AdminUserPage(user: user)),
+    );
+    // Role or report may have changed there, or the user is gone.
+    if (mounted) _reload();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,108 +80,112 @@ class _adminpanelState extends State<adminpanel> {
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
           }
-          final users = snapshot.data!;
-          return RefreshIndicator.adaptive(
+          return _body(context, snapshot.data!);
+        },
+      ),
+    );
+  }
+
+  Widget _body(BuildContext context, List<Users> users) {
+    final cs = Theme.of(context).colorScheme;
+    final l10n = S.of(context);
+    final shown = filterUsers(users, _filter, _search.text);
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsetsDirectional.fromSTEB(
+              MNSpace.lg, MNSpace.sm, MNSpace.lg, MNSpace.md),
+          child: Column(
+            children: [
+              SearchBar(
+                controller: _search,
+                hintText: l10n.adminSearchHint,
+                leading: Icon(IconsaxOutline.search_normal,
+                    color: cs.onSurfaceVariant),
+                trailing: [
+                  if (_search.text.isNotEmpty)
+                    IconButton(
+                      tooltip: MaterialLocalizations.of(context)
+                          .deleteButtonTooltip,
+                      icon: Icon(IconsaxOutline.close_circle,
+                          color: cs.onSurfaceVariant),
+                      onPressed: () => setState(_search.clear),
+                    ),
+                ],
+                onChanged: (_) => setState(() {}),
+              ),
+              const SizedBox(height: MNSpace.md),
+              SegmentedToggle<AdminFilter>(
+                expand: true,
+                segments: [
+                  (AdminFilter.all, l10n.filterAll),
+                  (AdminFilter.reported, l10n.adminFilterReported),
+                  (AdminFilter.admins, l10n.adminFilterAdmins),
+                ],
+                selected: _filter,
+                onChanged: (f) => setState(() => _filter = f),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: RefreshIndicator.adaptive(
             onRefresh: () async {
               _reload();
               await _users.then((_) {}, onError: (_) {});
             },
-            child: ListView.builder(
-              itemCount: users.length,
-              itemBuilder: (context, i) => buildUser(users[i], context),
-            ),
-          );
-        },
+            child: shown.isEmpty
+                ? LayoutBuilder(
+                    builder: (context, box) => SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: SizedBox(
+                        height: box.maxHeight,
+                        child: EmptyState(
+                          icon: IconsaxOutline.search_normal,
+                          title: l10n.adminNoUsersFound,
+                          body: l10n.adminNoUsersHint,
+                        ),
+                      ),
+                    ),
+                  )
+                : ListView.builder(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    itemCount: shown.length,
+                    itemBuilder: (context, i) => _row(context, shown[i]),
+                  ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _row(BuildContext context, Users user) {
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+    final rtl = Directionality.of(context) == TextDirection.rtl;
+    return ListTile(
+      onTap: () => _open(user),
+      leading: AdminAvatar(url: user.ProfilePic, size: MNSize.minTap),
+      title: Row(
+        children: [
+          Flexible(
+            child: Text(displayName(user),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.bodyLarge),
+          ),
+          for (final badge in adminBadges(context,
+              admin: isAdminRole(user.role), reported: hasReport(user))) ...[
+            const SizedBox(width: MNSpace.sm),
+            badge,
+          ],
+        ],
+      ),
+      subtitle: Text(user.email, maxLines: 1, overflow: TextOverflow.ellipsis),
+      trailing: Icon(
+        rtl ? IconsaxOutline.arrow_left_3 : IconsaxOutline.arrow_right_3,
+        color: cs.onSurfaceVariant,
       ),
     );
-  }
-
-  Future<void> _confirmDelete(BuildContext context, Users user) async {
-    final l10n = S.of(context);
-    final name = '${user.firstName} ${user.lastName}'.trim();
-    final ok = await AppFeedback.confirmDestructive(
-      context,
-      title: l10n.deleteUserTitle(name),
-      message: '$name (${user.email})',
-      confirmLabel: l10n.delete,
-    );
-    if (ok && context.mounted) await _deleteUser(context, user.id);
-  }
-
-  Widget buildUser(Users user, BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    final l10n = S.of(context);
-    final name = '${user.firstName} ${user.lastName}'.trim();
-    return Slidable(
-      endActionPane: ActionPane(motion: const ScrollMotion(), children: [
-        SlidableAction(
-          onPressed: (ctx) => _confirmDelete(ctx, user),
-          backgroundColor: cs.error,
-          foregroundColor: cs.onError,
-          icon: IconsaxOutline.trash,
-          label: l10n.delete,
-        )
-      ]),
-      child: ListTile(
-        minVerticalPadding: MNSpace.sm,
-        onTap: () async {
-          await Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => Detailscategory(
-                        id: user.id,
-                        firstname: user.firstName,
-                        lastname: user.lastName,
-                        email: user.email,
-                        role: user.role,
-                        profilepic: user.ProfilePic,
-                        report: user.report,
-                      )));
-          // Role or report may have changed there.
-          if (mounted) _reload();
-        },
-        leading: ClipOval(
-          child: user.ProfilePic == ""
-              ? SizedBox.square(
-                  dimension: MNSize.minTap,
-                  child: Icon(IconsaxOutline.user, color: cs.onSurfaceVariant),
-                )
-              : CachedImageCustom(
-                  user.ProfilePic,
-                  width: MNSize.minTap,
-                  height: MNSize.minTap,
-                  isPerson: true,
-                ),
-        ),
-        title: Text(name, style: Theme.of(context).textTheme.bodyLarge),
-        subtitle: Text(
-          user.email,
-          style: Theme.of(context)
-              .textTheme
-              .bodyMedium
-              ?.copyWith(color: cs.onSurfaceVariant),
-        ),
-        trailing: IconButton(
-          tooltip: l10n.delete,
-          constraints: const BoxConstraints(
-              minWidth: MNSize.minTap, minHeight: MNSize.minTap),
-          icon: Icon(IconsaxOutline.trash, color: cs.error),
-          onPressed: () => _confirmDelete(context, user),
-        ),
-      ),
-    );
-  }
-
-  /// Deletes the account through `admin_delete_user`, then reloads.
-  Future<void> _deleteUser(BuildContext context, String? id) async {
-    if (id == null) return;
-    final failMsg = S.of(context).genericError;
-    try {
-      await UserRepository.instance.adminDeleteUser(id);
-    } catch (e, st) {
-      AppLog.error('adminDeleteUser', e, st);
-      if (context.mounted) AppFeedback.error(context, failMsg);
-    }
-    if (mounted) _reload();
   }
 }

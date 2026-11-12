@@ -306,5 +306,22 @@
     "removeFromLiked": "पसंद से हटाएँ",
     "watchlistEmptyTitle": "आपकी वॉचलिस्ट खाली है",
     "libraryNoMatches": "इस फ़िल्टर से कोई शीर्षक मेल नहीं खाता।",
-    "showAll": "सभी दिखाएँ"
+    "showAll": "सभी दिखाएँ",
+    "adminSearchHint": "नाम या ईमेल से खोजें",
+    "adminFilterReported": "रिपोर्ट किए गए",
+    "adminFilterAdmins": "एडमिन",
+    "adminNoUsersFound": "कोई उपयोगकर्ता नहीं मिला",
+    "adminNoUsersHint": "कोई दूसरा नाम या ईमेल आज़माएँ।",
+    "adminUserTitle": "उपयोगकर्ता",
+    "adminDetails": "विवरण",
+    "adminActions": "कार्रवाइयाँ",
+    "adminRoleUser": "उपयोगकर्ता",
+    "adminUserId": "उपयोगकर्ता ID",
+    "adminCopyId": "उपयोगकर्ता ID कॉपी करें",
+    "adminIdCopied": "उपयोगकर्ता ID कॉपी हो गई",
+    "adminMakeAdmin": "एडमिन बनाएँ",
+    "adminMakeAdminHint": "यह पैनल खोल सकता है और उपयोगकर्ताओं को प्रबंधित कर सकता है",
+    "adminNowAdmin": "{name} अब एडमिन है",
+    "adminReportCleared": "रिपोर्ट हटा दी गई",
+    "adminStatus": "स्थिति"
 }
