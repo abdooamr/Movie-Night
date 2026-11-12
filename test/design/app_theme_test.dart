@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:Movie_Night/src/design/app_theme.dart';
 import 'package:Movie_Night/src/design/typography.dart';
@@ -88,6 +89,21 @@ void main() {
         isNot(theme.listTileTheme.titleTextStyle!.fontWeight));
     expect(bold.appBarTheme.titleTextStyle!.fontWeight,
         isNot(theme.appBarTheme.titleTextStyle!.fontWeight));
+  });
+
+  testWidgets('ListTile subtitle is muted, title is not', (tester) async {
+    await tester.pumpWidget(MaterialApp(
+      theme: theme,
+      home: const Scaffold(
+        body: ListTile(title: Text('title'), subtitle: Text('subtitle')),
+      ),
+    ));
+    Color? colorOf(String s) =>
+        tester.renderObject<RenderParagraph>(find.text(s)).text.style!.color;
+    final cs = theme.colorScheme;
+    expect(cs.onSurfaceVariant, isNot(cs.onSurface));
+    expect(colorOf('title'), cs.onSurface);
+    expect(colorOf('subtitle'), cs.onSurfaceVariant);
   });
 
   testWidgets('applyAccessibilityTheme emboldens under MediaQuery.boldText',

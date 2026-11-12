@@ -204,7 +204,7 @@ ThemeData buildAppTheme(
       minVerticalPadding: MNSpace.sm,
       minTileHeight: MNSize.minTap,
       iconColor: cs.onSurfaceVariant,
-      textColor: cs.onSurface,
+      // No textColor: ListTile would paint it over the subtitle's muted colour.
       titleTextStyle: text.bodyLarge,
       subtitleTextStyle: text.bodyMedium!.copyWith(color: cs.onSurfaceVariant),
     ),
