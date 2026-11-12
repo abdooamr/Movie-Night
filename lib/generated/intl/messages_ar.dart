@@ -542,7 +542,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "مسلسلات رائجة",
     ),
     "tryAgain": MessageLookupByLibrary.simpleMessage("حاول مرة أخرى"),
+    "tvActionAdventure": MessageLookupByLibrary.simpleMessage("أكشن ومغامرة"),
+    "tvSciFiFantasy": MessageLookupByLibrary.simpleMessage(
+      "خيال علمي وفانتازيا",
+    ),
     "tvShowsKnownFor": MessageLookupByLibrary.simpleMessage("أشهر مسلسلاته"),
+    "tvWarPolitics": MessageLookupByLibrary.simpleMessage("حرب وسياسة"),
     "tvkids": MessageLookupByLibrary.simpleMessage("برامج أطفال"),
     "tvmovielabel": MessageLookupByLibrary.simpleMessage("أفلام تلفزيونية"),
     "tvnews": MessageLookupByLibrary.simpleMessage("أخبار"),

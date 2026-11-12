@@ -17,7 +17,8 @@ enum HomeFeed {
   egyptianTv;
 
   static const movieFeeds = [upcoming, trending, popular, egyptian];
-  static const tvFeeds = [airingToday, trendingTv, popularTv, egyptianTv];
+  /// Series: Trending is the carousel, then Airing Today first among rails.
+  static const tvFeeds = [trendingTv, airingToday, popularTv, egyptianTv];
 
   bool get isTv => tvFeeds.contains(this);
 }
@@ -35,7 +36,7 @@ class Home_page_listview extends StatelessWidget {
     this.onFocusChanged,
   });
 
-  /// Movies when true, TV shows otherwise.
+  /// Movies when true, series otherwise.
   final bool movie;
 
   /// The (cached) future of a feed.

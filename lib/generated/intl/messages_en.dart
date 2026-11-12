@@ -274,7 +274,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Egyptian Movies",
     ),
     "egypttvwidget_title": MessageLookupByLibrary.simpleMessage(
-      "Egyptian TV Shows",
+      "Egyptian Series",
     ),
     "email": MessageLookupByLibrary.simpleMessage("Email"),
     "emailaddresslabel": MessageLookupByLibrary.simpleMessage("Email Address"),
@@ -347,7 +347,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "logoutlabel": MessageLookupByLibrary.simpleMessage("Log Out"),
     "managesettingslabel": MessageLookupByLibrary.simpleMessage("Manage"),
     "mediaMovie": MessageLookupByLibrary.simpleMessage("Movie"),
-    "mediaTvShow": MessageLookupByLibrary.simpleMessage("TV Show"),
+    "mediaTvShow": MessageLookupByLibrary.simpleMessage("Series"),
     "mediatypemoviess": MessageLookupByLibrary.simpleMessage("Movies"),
     "minute": MessageLookupByLibrary.simpleMessage("min"),
     "moviesKnownFor": MessageLookupByLibrary.simpleMessage("Movies Known For"),
@@ -398,7 +398,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "notNowLabel": MessageLookupByLibrary.simpleMessage("Not Now"),
     "notamemberlabel": MessageLookupByLibrary.simpleMessage("Not a member?"),
     "notvshowsinwatchlist": MessageLookupByLibrary.simpleMessage(
-      "Your Watchlist is Empty\nStart adding some TV Shows to your watchlist and discover your favorites!",
+      "Your Watchlist is Empty\nStart adding some series to your watchlist and discover your favorites!",
     ),
     "nowatchmovieon": MessageLookupByLibrary.simpleMessage(
       "No streaming services available",
@@ -442,7 +442,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Popular Movies",
     ),
     "populartvwidget_title": MessageLookupByLibrary.simpleMessage(
-      "Popular TV Shows",
+      "Popular Series",
     ),
     "poweredby": MessageLookupByLibrary.simpleMessage("Powered by"),
     "privacylabel": MessageLookupByLibrary.simpleMessage("Privacy"),
@@ -513,7 +513,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Sci-Fi & Fantasy TV Shows",
     ),
     "searchhint": MessageLookupByLibrary.simpleMessage(
-      "Movies, TV shows, people",
+      "Movies, series, people",
     ),
     "seasonsCount": m13,
     "seeAllReviews": m14,
@@ -563,18 +563,21 @@ class MessageLookup extends MessageLookupByLibrary {
       "Trending Movies",
     ),
     "trendingtvwidget_title": MessageLookupByLibrary.simpleMessage(
-      "Trending TV Shows",
+      "Trending Series",
     ),
     "tryAgain": MessageLookupByLibrary.simpleMessage("Try Again"),
-    "tvShowsKnownFor": MessageLookupByLibrary.simpleMessage(
-      "TV Shows Known For",
+    "tvActionAdventure": MessageLookupByLibrary.simpleMessage(
+      "Action & Adventure",
     ),
+    "tvSciFiFantasy": MessageLookupByLibrary.simpleMessage("Sci-Fi & Fantasy"),
+    "tvShowsKnownFor": MessageLookupByLibrary.simpleMessage("Series Known For"),
+    "tvWarPolitics": MessageLookupByLibrary.simpleMessage("War & Politics"),
     "tvkids": MessageLookupByLibrary.simpleMessage("Kids"),
     "tvmovielabel": MessageLookupByLibrary.simpleMessage("TV Movies"),
     "tvnews": MessageLookupByLibrary.simpleMessage("News"),
     "tvreality": MessageLookupByLibrary.simpleMessage("Reality"),
     "tvsoap": MessageLookupByLibrary.simpleMessage("Soap"),
-    "tvswitch": MessageLookupByLibrary.simpleMessage("TV Shows"),
+    "tvswitch": MessageLookupByLibrary.simpleMessage("Series"),
     "tvtalk": MessageLookupByLibrary.simpleMessage("Talk"),
     "undo": MessageLookupByLibrary.simpleMessage("Undo"),
     "unlike": MessageLookupByLibrary.simpleMessage("Unlike"),

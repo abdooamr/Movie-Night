@@ -55,8 +55,9 @@ Future<Review> getReviews(int id, bool isTvShow, String lang) =>
 Future<movie.Model> movieSearch(String query, String lang) =>
     _repo.searchTv(query, lang);
 
-Future<movie.Model> searchData(String query, String lang) =>
-    _repo.searchMulti(query, lang);
+Future<movie.Model> searchData(String query, String lang,
+        {bool seriesOnly = true}) =>
+    _repo.searchMulti(query, lang, seriesOnly: seriesOnly);
 
 Future<Video> getyoutubeid(int id, bool isTvShow, String lang) =>
     _repo.videos(id, isTvShow, lang);

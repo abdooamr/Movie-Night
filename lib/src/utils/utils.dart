@@ -67,14 +67,14 @@ Map<int, String> _genreMap() {
       53: S.current.Thrillergenre,
       10752: S.current.Wargenre,
       37: S.current.Westerngenre,
-      10759: S.current.actiontvlabel,
-      10762: S.current.kidstvlabel,
-      10763: S.current.newstvlabel,
-      10764: S.current.realitytvlabel,
-      10765: S.current.scifitvlabel,
-      10766: S.current.soaptvlabel,
-      10767: S.current.talktvlabel,
-      10768: S.current.wartvlabel,
+      10759: S.current.tvActionAdventure,
+      10762: S.current.tvkids,
+      10763: S.current.tvnews,
+      10764: S.current.tvreality,
+      10765: S.current.tvSciFiFantasy,
+      10766: S.current.tvsoap,
+      10767: S.current.tvtalk,
+      10768: S.current.tvWarPolitics,
     };
   }
   return _cachedGenres!;

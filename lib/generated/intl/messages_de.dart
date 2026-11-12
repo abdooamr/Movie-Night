@@ -143,7 +143,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Abenteuerfilme",
     ),
     "airingtodaywidget_title": MessageLookupByLibrary.simpleMessage(
-      "Heute im Fernsehen",
+      "Heute neu",
     ),
     "alreadyhaveanaccountlabel": MessageLookupByLibrary.simpleMessage(
       "Bereits ein Konto?",
@@ -467,7 +467,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Beliebte Filme",
     ),
     "populartvwidget_title": MessageLookupByLibrary.simpleMessage(
-      "Beliebte Fernsehsendungen",
+      "Beliebte Serien",
     ),
     "poweredby": MessageLookupByLibrary.simpleMessage("Bereitgestellt von"),
     "privacylabel": MessageLookupByLibrary.simpleMessage("Datenschutz"),
@@ -611,15 +611,20 @@ class MessageLookup extends MessageLookupByLibrary {
       "Trendserien",
     ),
     "tryAgain": MessageLookupByLibrary.simpleMessage("Erneut versuchen"),
+    "tvActionAdventure": MessageLookupByLibrary.simpleMessage(
+      "Action & Abenteuer",
+    ),
+    "tvSciFiFantasy": MessageLookupByLibrary.simpleMessage("Sci-Fi & Fantasy"),
     "tvShowsKnownFor": MessageLookupByLibrary.simpleMessage(
       "Bekannt für Serien",
     ),
+    "tvWarPolitics": MessageLookupByLibrary.simpleMessage("Krieg & Politik"),
     "tvkids": MessageLookupByLibrary.simpleMessage("Kinder"),
     "tvmovielabel": MessageLookupByLibrary.simpleMessage("TV-Filme"),
     "tvnews": MessageLookupByLibrary.simpleMessage("Nachrichten"),
     "tvreality": MessageLookupByLibrary.simpleMessage("Reality"),
     "tvsoap": MessageLookupByLibrary.simpleMessage("Seifenoper"),
-    "tvswitch": MessageLookupByLibrary.simpleMessage("Fernsehsendungen"),
+    "tvswitch": MessageLookupByLibrary.simpleMessage("Serien"),
     "tvtalk": MessageLookupByLibrary.simpleMessage("Talkshow"),
     "undo": MessageLookupByLibrary.simpleMessage("Rückgängig"),
     "unlike": MessageLookupByLibrary.simpleMessage("Gefällt nicht mehr"),

@@ -104,30 +104,30 @@ class S {
     );
   }
 
-  /// `Trending TV Shows`
+  /// `Trending Series`
   String get trendingtvwidget_title {
     return Intl.message(
-      'Trending TV Shows',
+      'Trending Series',
       name: 'trendingtvwidget_title',
       desc: '',
       args: [],
     );
   }
 
-  /// `Popular TV Shows`
+  /// `Popular Series`
   String get populartvwidget_title {
     return Intl.message(
-      'Popular TV Shows',
+      'Popular Series',
       name: 'populartvwidget_title',
       desc: '',
       args: [],
     );
   }
 
-  /// `Egyptian TV Shows`
+  /// `Egyptian Series`
   String get egypttvwidget_title {
     return Intl.message(
-      'Egyptian TV Shows',
+      'Egyptian Series',
       name: 'egypttvwidget_title',
       desc: '',
       args: [],
@@ -159,15 +159,15 @@ class S {
     return Intl.message('Movies', name: 'movieswitch', desc: '', args: []);
   }
 
-  /// `TV Shows`
+  /// `Series`
   String get tvswitch {
-    return Intl.message('TV Shows', name: 'tvswitch', desc: '', args: []);
+    return Intl.message('Series', name: 'tvswitch', desc: '', args: []);
   }
 
-  /// `Movies, TV shows, people`
+  /// `Movies, series, people`
   String get searchhint {
     return Intl.message(
-      'Movies, TV shows, people',
+      'Movies, series, people',
       name: 'searchhint',
       desc: '',
       args: [],
@@ -291,6 +291,16 @@ class S {
 
   // skipped getter for the 'tvaction&adventure' key
 
+  /// `Action & Adventure`
+  String get tvActionAdventure {
+    return Intl.message(
+      'Action & Adventure',
+      name: 'tvActionAdventure',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Kids`
   String get tvkids {
     return Intl.message('Kids', name: 'tvkids', desc: '', args: []);
@@ -308,6 +318,16 @@ class S {
 
   // skipped getter for the 'tvscifi&fantasy' key
 
+  /// `Sci-Fi & Fantasy`
+  String get tvSciFiFantasy {
+    return Intl.message(
+      'Sci-Fi & Fantasy',
+      name: 'tvSciFiFantasy',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Soap`
   String get tvsoap {
     return Intl.message('Soap', name: 'tvsoap', desc: '', args: []);
@@ -319,6 +339,16 @@ class S {
   }
 
   // skipped getter for the 'tvwar&politics' key
+
+  /// `War & Politics`
+  String get tvWarPolitics {
+    return Intl.message(
+      'War & Politics',
+      name: 'tvWarPolitics',
+      desc: '',
+      args: [],
+    );
+  }
 
   /// `No Internet Connection`
   String get noInternet {
@@ -945,10 +975,10 @@ class S {
     );
   }
 
-  /// `Your Watchlist is Empty\nStart adding some TV Shows to your watchlist and discover your favorites!`
+  /// `Your Watchlist is Empty\nStart adding some series to your watchlist and discover your favorites!`
   String get notvshowsinwatchlist {
     return Intl.message(
-      'Your Watchlist is Empty\nStart adding some TV Shows to your watchlist and discover your favorites!',
+      'Your Watchlist is Empty\nStart adding some series to your watchlist and discover your favorites!',
       name: 'notvshowsinwatchlist',
       desc: '',
       args: [],
@@ -1530,10 +1560,10 @@ class S {
     );
   }
 
-  /// `TV Shows Known For`
+  /// `Series Known For`
   String get tvShowsKnownFor {
     return Intl.message(
-      'TV Shows Known For',
+      'Series Known For',
       name: 'tvShowsKnownFor',
       desc: '',
       args: [],
@@ -2300,9 +2330,9 @@ class S {
     return Intl.message('Movie', name: 'mediaMovie', desc: '', args: []);
   }
 
-  /// `TV Show`
+  /// `Series`
   String get mediaTvShow {
-    return Intl.message('TV Show', name: 'mediaTvShow', desc: '', args: []);
+    return Intl.message('Series', name: 'mediaTvShow', desc: '', args: []);
   }
 
   /// `Confirm your email first. Open the link we sent you, then log in.`

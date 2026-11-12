@@ -276,7 +276,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "मिस्र की फ़िल्में",
     ),
     "egypttvwidget_title": MessageLookupByLibrary.simpleMessage(
-      "मिस्र के टीवी शो",
+      "मिस्र की सीरीज़",
     ),
     "email": MessageLookupByLibrary.simpleMessage("ईमेल"),
     "emailaddresslabel": MessageLookupByLibrary.simpleMessage("ईमेल पता"),
@@ -361,7 +361,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "logoutlabel": MessageLookupByLibrary.simpleMessage("लॉग आउट करें"),
     "managesettingslabel": MessageLookupByLibrary.simpleMessage("प्रबंधन"),
     "mediaMovie": MessageLookupByLibrary.simpleMessage("फ़िल्म"),
-    "mediaTvShow": MessageLookupByLibrary.simpleMessage("टीवी शो"),
+    "mediaTvShow": MessageLookupByLibrary.simpleMessage("सीरीज़"),
     "mediatypemoviess": MessageLookupByLibrary.simpleMessage("फ़िल्में"),
     "minute": MessageLookupByLibrary.simpleMessage("मिनट"),
     "moviesKnownFor": MessageLookupByLibrary.simpleMessage(
@@ -458,7 +458,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "लोकप्रिय फ़िल्में",
     ),
     "populartvwidget_title": MessageLookupByLibrary.simpleMessage(
-      "लोकप्रिय टीवी शो",
+      "लोकप्रिय सीरीज़",
     ),
     "poweredby": MessageLookupByLibrary.simpleMessage("द्वारा संचालित"),
     "privacylabel": MessageLookupByLibrary.simpleMessage("गोपनीयता"),
@@ -534,9 +534,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "scifitvlabel": MessageLookupByLibrary.simpleMessage(
       "विज्ञान-कल्पना और काल्पनिकता टीवी शो",
     ),
-    "searchhint": MessageLookupByLibrary.simpleMessage(
-      "फ़िल्में, टीवी शो, लोग",
-    ),
+    "searchhint": MessageLookupByLibrary.simpleMessage("फ़िल्में, सीरीज़, लोग"),
     "seasonsCount": m13,
     "seeAllReviews": m14,
     "sendEmail": MessageLookupByLibrary.simpleMessage("ईमेल भेजें"),
@@ -587,18 +585,25 @@ class MessageLookup extends MessageLookupByLibrary {
       "लोकप्रिय फ़िल्में",
     ),
     "trendingtvwidget_title": MessageLookupByLibrary.simpleMessage(
-      "लोकप्रिय टीवी शो",
+      "ट्रेंडिंग सीरीज़",
     ),
     "tryAgain": MessageLookupByLibrary.simpleMessage("पुनः प्रयास करें"),
-    "tvShowsKnownFor": MessageLookupByLibrary.simpleMessage(
-      "इन टीवी शोज़ के लिए प्रसिद्ध",
+    "tvActionAdventure": MessageLookupByLibrary.simpleMessage(
+      "क्रिया और एडवेंचर",
     ),
+    "tvSciFiFantasy": MessageLookupByLibrary.simpleMessage(
+      "विज्ञान-कल्पना और काल्पनिकता",
+    ),
+    "tvShowsKnownFor": MessageLookupByLibrary.simpleMessage(
+      "इन सीरीज़ के लिए प्रसिद्ध",
+    ),
+    "tvWarPolitics": MessageLookupByLibrary.simpleMessage("युद्ध और राजनीति"),
     "tvkids": MessageLookupByLibrary.simpleMessage("बच्चों के लिए"),
     "tvmovielabel": MessageLookupByLibrary.simpleMessage("टीवी फ़िल्में"),
     "tvnews": MessageLookupByLibrary.simpleMessage("समाचार"),
     "tvreality": MessageLookupByLibrary.simpleMessage("वास्तविकता"),
     "tvsoap": MessageLookupByLibrary.simpleMessage("साबुन"),
-    "tvswitch": MessageLookupByLibrary.simpleMessage("टीवी शो"),
+    "tvswitch": MessageLookupByLibrary.simpleMessage("सीरीज़"),
     "tvtalk": MessageLookupByLibrary.simpleMessage("बातचीत"),
     "undo": MessageLookupByLibrary.simpleMessage("पूर्ववत करें"),
     "unlike": MessageLookupByLibrary.simpleMessage("पसंद नहीं"),

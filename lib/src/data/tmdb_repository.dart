@@ -93,19 +93,68 @@ class TmdbRepository {
   final LinkedHashMap<String, _MemEntry> _memory =
       LinkedHashMap<String, _MemEntry>();
 
+  // --------------------------------------------------------------- series
+
+  /// TMDB genres of TV that is not a series in the app's sense: News, Reality,
+  /// Soap and Talk. Every "series" list leaves out titles with any of them.
+  static const Set<int> nonSeriesGenres = {10763, 10764, 10766, 10767};
+
+  /// The same set as TMDB's `without_genres` parameter (OR-ed).
+  static final String _withoutGenres =
+      (nonSeriesGenres.toList()..sort()).join('|');
+
+  /// Whether a TV title with these genres counts as a series.
+  static bool isSeries(List<int>? genreIds) =>
+      !(genreIds ?? const <int>[]).any(nonSeriesGenres.contains);
+
+  static bool _keepResult(movie.Result r) =>
+      r.mediaType != movie.MediaType.tv || isSeries(r.genreIds);
+
+  static movie.Model _onlySeries(movie.Model m, {bool allTv = false}) {
+    final kept = [
+      for (final r in m.results)
+        if (allTv ? isSeries(r.genreIds) : _keepResult(r)) r,
+    ];
+    return movie.Model(
+      page: m.page,
+      results: kept,
+      totalPages: m.totalPages,
+      totalResults: kept.length,
+    );
+  }
+
+  static Future<movie.Model> _parseSeries(String body) async =>
+      _onlySeries(await _parseModel(body), allTv: true);
+
+  static Future<movie.Model> _parseSearch(String body) async =>
+      _onlySeries(await _parseModel(body));
+
   // ---------------------------------------------------------------- feeds
 
-  Future<movie.Model> upcomingMovies(String lang) => _feed(
-      'movie/upcoming', {'language': lang});
+  Future<movie.Model> upcomingMovies(String lang) =>
+      _feed('movie/upcoming', {'language': lang});
 
-  Future<movie.Model> trending(bool isTvShow, String lang) => _feed(
-      isTvShow ? 'trending/tv/day' : 'trending/movie/day', {'language': lang});
+  /// TMDB cannot filter trending lists, so series are filtered here.
+  Future<movie.Model> trending(bool isTvShow, String lang) => isTvShow
+      ? _feed('trending/tv/day', {'language': lang}, seriesOnly: true)
+      : _feed('trending/movie/day', {'language': lang});
 
-  Future<movie.Model> popular(bool isTvShow, String lang) =>
-      _feed(isTvShow ? 'tv/popular' : 'movie/popular', {'language': lang});
+  /// Series come from discover/tv (tv/popular cannot leave genres out),
+  /// sorted the same way.
+  Future<movie.Model> popular(bool isTvShow, String lang) => isTvShow
+      ? _feed(
+          'discover/tv',
+          {
+            'language': lang,
+            'sort_by': 'popularity.desc',
+            'without_genres': _withoutGenres,
+          },
+          seriesOnly: true)
+      : _feed('movie/popular', {'language': lang});
 
   /// Without [genreId] the request historically omitted `language`; kept.
-  Future<movie.Model> discoverMovies({int? genreId, int? pageCount, String? lang}) =>
+  Future<movie.Model> discoverMovies(
+          {int? genreId, int? pageCount, String? lang}) =>
       _feed(
         'discover/movie',
         {
@@ -117,15 +166,34 @@ class TmdbRepository {
 
   Future<movie.Model> egyptianTitles(bool isTvShow, String lang) => _feed(
         isTvShow ? 'discover/tv' : 'discover/movie',
-        {'with_origin_country': 'EG', 'language': lang},
+        {
+          'with_origin_country': 'EG',
+          'language': lang,
+          if (isTvShow) 'without_genres': _withoutGenres,
+        },
+        seriesOnly: isTvShow,
       );
 
-  Future<movie.Model> airingToday(String lang) => _single(
-        'tv/airing_today',
-        {'with_original_language': 'en', 'language': lang},
-        _parseModel,
-        CachePolicy.feed,
-      );
+  /// English-language series with an episode out today (local date), most
+  /// popular first. tv/airing_today was mostly talk and news shows.
+  Future<movie.Model> airingToday(String lang) {
+    final d = _now();
+    String two(int v) => v.toString().padLeft(2, '0');
+    final today = '${d.year}-${two(d.month)}-${two(d.day)}';
+    return _single(
+      'discover/tv',
+      {
+        'air_date.gte': today,
+        'air_date.lte': today,
+        'with_original_language': 'en',
+        'without_genres': _withoutGenres,
+        'sort_by': 'popularity.desc',
+        'language': lang,
+      },
+      _parseSeries,
+      CachePolicy.feed,
+    );
+  }
 
   // --------------------------------------------------------------- titles
 
@@ -145,7 +213,7 @@ class TmdbRepository {
       _single(
           isTvShow ? 'tv/$id/recommendations' : 'movie/$id/recommendations',
           {'language': lang},
-          _parseModel,
+          isTvShow ? _parseSeries : _parseModel,
           CachePolicy.detail);
 
   Future<Review> reviews(int id, bool isTvShow, String lang) => _single(
@@ -172,25 +240,32 @@ class TmdbRepository {
   Future<CastModel> person(int id, String lang) => _single('person/$id',
       {'language': lang}, _sync(castModelFromJson), CachePolicy.detail);
 
-  Future<KnownFor> personCredits(int id, bool isTvShow, String lang) =>
-      _single(
+  /// An actor's series credits leave out talk-show guest spots and the like.
+  Future<KnownFor> personCredits(int id, bool isTvShow, String lang) => _single(
           isTvShow ? 'person/$id/tv_credits' : 'person/$id/movie_credits',
-          {'language': lang},
-          _sync(knownForFromJson),
-          CachePolicy.detail);
+          {'language': lang}, _sync((body) {
+        final k = knownForFromJson(body);
+        if (isTvShow) {
+          k.cast.removeWhere((c) => !isSeries(c.genreIds));
+          k.crew.removeWhere((c) => !isSeries(c.genreIds));
+        }
+        return k;
+      }), CachePolicy.detail);
 
   // --------------------------------------------------------------- search
 
-  Future<movie.Model> searchMulti(String query, String lang) => _single(
-      'search/multi',
-      {'query': query, 'language': lang},
-      _parseModel,
-      CachePolicy.search);
+  /// Movies, series and people. [seriesOnly] false keeps every kind of TV
+  /// (for looking up a title already saved, whatever it is).
+  Future<movie.Model> searchMulti(String query, String lang,
+          {bool seriesOnly = true}) =>
+      _single('search/multi', {'query': query, 'language': lang},
+          seriesOnly ? _parseSearch : _parseModel, CachePolicy.search,
+          keySuffix: seriesOnly ? '' : '#all');
 
   Future<movie.Model> searchTv(String query, String lang) => _single(
       'search/tv',
       {'query': query, 'language': lang},
-      _parseModel,
+      _parseSeries,
       CachePolicy.search);
 
   // -------------------------------------------------------------- control
@@ -235,18 +310,21 @@ class TmdbRepository {
     String path,
     Map<String, String> query,
     Future<T> Function(String body) parse,
-    CachePolicy policy,
-  ) =>
-      _memo(cacheKey(path, query), policy.memory, () async {
+    CachePolicy policy, {
+    String keySuffix = '',
+  }) =>
+      _memo(cacheKey(path, query) + keySuffix, policy.memory, () async {
         final r = await _body(path, query, policy);
         return (value: await parse(r.body), stale: r.stale);
       });
 
   /// Fetches pages `1..pages` concurrently and merges them in page order.
+  /// [seriesOnly] drops non-series results (for lists TMDB cannot filter).
   Future<movie.Model> _feed(
     String path,
     Map<String, String> query, {
     int? pages,
+    bool seriesOnly = false,
   }) {
     final n = pages ?? feedPages;
     return _memo('${cacheKey(path, query)}#pages=$n', CachePolicy.feed.memory,
@@ -255,8 +333,10 @@ class TmdbRepository {
         for (int page = 1; page <= n; page++)
           _body(path, {...query, 'page': '$page'}, CachePolicy.feed),
       ]);
-      final models =
-          await Future.wait([for (final b in bodies) _parseModel(b.body)]);
+      final models = await Future.wait([
+        for (final b in bodies)
+          seriesOnly ? _parseSeries(b.body) : _parseModel(b.body),
+      ]);
       final results = [for (final m in models) ...m.results];
       return (
         value: movie.Model(

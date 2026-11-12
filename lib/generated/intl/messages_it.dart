@@ -292,7 +292,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Film egiziani",
     ),
     "egypttvwidget_title": MessageLookupByLibrary.simpleMessage(
-      "Serie TV egiziane",
+      "Serie egiziane",
     ),
     "email": MessageLookupByLibrary.simpleMessage("Email"),
     "emailaddresslabel": MessageLookupByLibrary.simpleMessage(
@@ -371,7 +371,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "logoutlabel": MessageLookupByLibrary.simpleMessage("Esci"),
     "managesettingslabel": MessageLookupByLibrary.simpleMessage("Gestione"),
     "mediaMovie": MessageLookupByLibrary.simpleMessage("Film"),
-    "mediaTvShow": MessageLookupByLibrary.simpleMessage("Serie TV"),
+    "mediaTvShow": MessageLookupByLibrary.simpleMessage("Serie"),
     "mediatypemoviess": MessageLookupByLibrary.simpleMessage("Film"),
     "minute": MessageLookupByLibrary.simpleMessage("min"),
     "moviesKnownFor": MessageLookupByLibrary.simpleMessage("Famoso per i film"),
@@ -468,7 +468,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Film Popolari",
     ),
     "populartvwidget_title": MessageLookupByLibrary.simpleMessage(
-      "Serie TV Popolari",
+      "Serie Popolari",
     ),
     "poweredby": MessageLookupByLibrary.simpleMessage("Realizzato da"),
     "privacylabel": MessageLookupByLibrary.simpleMessage("Privacy"),
@@ -540,9 +540,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "scifitvlabel": MessageLookupByLibrary.simpleMessage(
       "Serie TV Fantascienza e Fantasy",
     ),
-    "searchhint": MessageLookupByLibrary.simpleMessage(
-      "Film, serie TV, persone",
-    ),
+    "searchhint": MessageLookupByLibrary.simpleMessage("Film, serie, persone"),
     "seasonsCount": m13,
     "seeAllReviews": m14,
     "sendEmail": MessageLookupByLibrary.simpleMessage("Invia email"),
@@ -593,18 +591,25 @@ class MessageLookup extends MessageLookupByLibrary {
       "Film in Tendenza",
     ),
     "trendingtvwidget_title": MessageLookupByLibrary.simpleMessage(
-      "Serie TV in Tendenza",
+      "Serie in Tendenza",
     ),
     "tryAgain": MessageLookupByLibrary.simpleMessage("Riprova"),
-    "tvShowsKnownFor": MessageLookupByLibrary.simpleMessage(
-      "Famoso per le serie TV",
+    "tvActionAdventure": MessageLookupByLibrary.simpleMessage(
+      "Azione e Avventura",
     ),
+    "tvSciFiFantasy": MessageLookupByLibrary.simpleMessage(
+      "Fantascienza e Fantasy",
+    ),
+    "tvShowsKnownFor": MessageLookupByLibrary.simpleMessage(
+      "Famoso per le serie",
+    ),
+    "tvWarPolitics": MessageLookupByLibrary.simpleMessage("Guerra e Politica"),
     "tvkids": MessageLookupByLibrary.simpleMessage("Bambini"),
     "tvmovielabel": MessageLookupByLibrary.simpleMessage("Film TV"),
     "tvnews": MessageLookupByLibrary.simpleMessage("Notizie"),
     "tvreality": MessageLookupByLibrary.simpleMessage("Reality"),
     "tvsoap": MessageLookupByLibrary.simpleMessage("Soap"),
-    "tvswitch": MessageLookupByLibrary.simpleMessage("Serie TV"),
+    "tvswitch": MessageLookupByLibrary.simpleMessage("Serie"),
     "tvtalk": MessageLookupByLibrary.simpleMessage("Talk show"),
     "undo": MessageLookupByLibrary.simpleMessage("Annulla"),
     "unlike": MessageLookupByLibrary.simpleMessage("Non Mi Piace"),

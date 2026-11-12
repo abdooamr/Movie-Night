@@ -498,7 +498,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Films Populaires",
     ),
     "populartvwidget_title": MessageLookupByLibrary.simpleMessage(
-      "Séries TV Populaires",
+      "Séries Populaires",
     ),
     "poweredby": MessageLookupByLibrary.simpleMessage("Propulsé par"),
     "privacylabel": MessageLookupByLibrary.simpleMessage("Confidentialité"),
@@ -643,18 +643,27 @@ class MessageLookup extends MessageLookupByLibrary {
       "Films Tendances",
     ),
     "trendingtvwidget_title": MessageLookupByLibrary.simpleMessage(
-      "Séries TV Tendances",
+      "Séries Tendances",
     ),
     "tryAgain": MessageLookupByLibrary.simpleMessage("Réessayer"),
+    "tvActionAdventure": MessageLookupByLibrary.simpleMessage(
+      "Action et Aventure",
+    ),
+    "tvSciFiFantasy": MessageLookupByLibrary.simpleMessage(
+      "Science-Fiction et Fantaisie",
+    ),
     "tvShowsKnownFor": MessageLookupByLibrary.simpleMessage(
       "Connu pour ses séries",
+    ),
+    "tvWarPolitics": MessageLookupByLibrary.simpleMessage(
+      "Guerre et Politique",
     ),
     "tvkids": MessageLookupByLibrary.simpleMessage("Enfants"),
     "tvmovielabel": MessageLookupByLibrary.simpleMessage("Téléfilms"),
     "tvnews": MessageLookupByLibrary.simpleMessage("Actualités"),
     "tvreality": MessageLookupByLibrary.simpleMessage("Téléréalité"),
     "tvsoap": MessageLookupByLibrary.simpleMessage("Feuilleton"),
-    "tvswitch": MessageLookupByLibrary.simpleMessage("Séries TV"),
+    "tvswitch": MessageLookupByLibrary.simpleMessage("Séries"),
     "tvtalk": MessageLookupByLibrary.simpleMessage("Émission de Discussion"),
     "undo": MessageLookupByLibrary.simpleMessage("Annuler"),
     "unlike": MessageLookupByLibrary.simpleMessage("Je n\'aime plus"),

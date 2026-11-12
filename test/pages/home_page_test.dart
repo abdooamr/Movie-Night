@@ -115,13 +115,22 @@ void main() {
     await tester.pump(const Duration(seconds: 1));
     expect(controller.offset, greaterThan(0));
 
-    await tester.tap(find.text('TV Shows'));
+    await tester.tap(find.text('Series'));
     await tester.pump();
 
     expect(controller.offset, 0);
     expect(fetched, contains(HomeFeed.airingToday));
     // One hero section, not two cross-fading trees.
     expect(find.byType(UpcomingMovies, skipOffstage: false), findsOneWidget);
+  });
+
+  test('series: Trending is the carousel, Airing Today the first rail', () {
+    expect(HomeFeed.tvFeeds, [
+      HomeFeed.trendingTv,
+      HomeFeed.airingToday,
+      HomeFeed.popularTv,
+      HomeFeed.egyptianTv,
+    ]);
   });
 
   testWidgets('a language change reloads the feeds in the new language',

@@ -259,7 +259,7 @@ void main() {
       expect(find.text('Title 603'), findsOneWidget);
       expect(find.text('Movie · 1999'), findsOneWidget);
       expect(find.text('Title 70523'), findsOneWidget);
-      expect(find.text('TV Show · 1999'), findsOneWidget);
+      expect(find.text('Series · 1999'), findsOneWidget);
       expect(find.text('2 titles'), findsOneWidget);
     });
 

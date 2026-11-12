@@ -65,7 +65,8 @@ class _LikedViewState extends State<LikedView> {
 
   Future<bool> _resolveIsTvShow(LikedModel liked, String lang) {
     return _isTvShowCache.putIfAbsent(liked.id, () async {
-      final result = await searchData(liked.title, lang);
+      // Unfiltered: the saved title may be any kind of TV.
+      final result = await searchData(liked.title, lang, seriesOnly: false);
       final isTv = result.results.first.mediaType == MediaType.tv;
       // Back-fill so this entry never needs a lookup again.
       liked.isTvShow = isTv;

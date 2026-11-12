@@ -175,7 +175,7 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-/// TikTok-style "TV Shows | Movies" switch: two text tabs, the selected one
+/// TikTok-style "Series | Movies" switch: two text tabs, the selected one
 /// in full colour, the other dimmed.
 class _TypeSwitch extends StatelessWidget {
   const _TypeSwitch({

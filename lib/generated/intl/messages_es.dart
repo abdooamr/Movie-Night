@@ -646,15 +646,22 @@ class MessageLookup extends MessageLookupByLibrary {
       "Series en Tendencia",
     ),
     "tryAgain": MessageLookupByLibrary.simpleMessage("Intentar de Nuevo"),
+    "tvActionAdventure": MessageLookupByLibrary.simpleMessage(
+      "Acción y Aventura",
+    ),
+    "tvSciFiFantasy": MessageLookupByLibrary.simpleMessage(
+      "Ciencia Ficción y Fantasía",
+    ),
     "tvShowsKnownFor": MessageLookupByLibrary.simpleMessage(
       "Conocido por series",
     ),
+    "tvWarPolitics": MessageLookupByLibrary.simpleMessage("Guerra y Política"),
     "tvkids": MessageLookupByLibrary.simpleMessage("Niños"),
     "tvmovielabel": MessageLookupByLibrary.simpleMessage("Películas de TV"),
     "tvnews": MessageLookupByLibrary.simpleMessage("Noticias"),
     "tvreality": MessageLookupByLibrary.simpleMessage("Realidad"),
     "tvsoap": MessageLookupByLibrary.simpleMessage("Telenovela"),
-    "tvswitch": MessageLookupByLibrary.simpleMessage("Series de TV"),
+    "tvswitch": MessageLookupByLibrary.simpleMessage("Series"),
     "tvtalk": MessageLookupByLibrary.simpleMessage("Programa de Entrevistas"),
     "undo": MessageLookupByLibrary.simpleMessage("Deshacer"),
     "unlike": MessageLookupByLibrary.simpleMessage("No Me Gusta"),
