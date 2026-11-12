@@ -423,5 +423,17 @@
                 "type": "String"
             }
         }
+    },
+    "newEpisode": "New episode",
+    "rankedTitle": "Rank {rank}: {title}",
+    "@rankedTitle": {
+        "placeholders": {
+            "rank": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            }
+        }
     }
 }

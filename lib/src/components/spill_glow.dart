@@ -53,7 +53,7 @@ class SpillGlow extends StatelessWidget {
                           fit: StackFit.expand,
                           children: [...previous, if (current != null) current],
                         ),
-                        child: _Glow(
+                        child: BakedGlow(
                           key: ValueKey(src),
                           source: src,
                           opacity: opacity,
@@ -81,18 +81,19 @@ class SpillGlow extends StatelessWidget {
   }
 }
 
-/// One baked glow. Shows nothing until the bake lands (or if it fails).
-class _Glow extends StatefulWidget {
-  const _Glow({super.key, required this.source, required this.opacity});
+/// One baked glow ([bakeGlow]: a small blurred copy of [source]) at
+/// [opacity]. Shows nothing until the bake lands (or if it fails).
+class BakedGlow extends StatefulWidget {
+  const BakedGlow({super.key, required this.source, required this.opacity});
 
   final ImageProvider source;
   final double opacity;
 
   @override
-  State<_Glow> createState() => _GlowState();
+  State<BakedGlow> createState() => _BakedGlowState();
 }
 
-class _GlowState extends State<_Glow> {
+class _BakedGlowState extends State<BakedGlow> {
   /// This widget's own clone; disposed when replaced or unmounted.
   ui.Image? _image;
   ImageProvider? _requested;
@@ -104,7 +105,7 @@ class _GlowState extends State<_Glow> {
   }
 
   @override
-  void didUpdateWidget(_Glow oldWidget) {
+  void didUpdateWidget(BakedGlow oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.source != widget.source) _resolve();
   }

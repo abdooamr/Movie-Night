@@ -22,6 +22,18 @@ import 'shimmerWidgets/movieListViewShimmerWidget.dart';
 bool isTvResult(Result item, {required bool railIsTv}) =>
     item.mediaType == MediaType.tv || (item.mediaType == null && railIsTv);
 
+/// How a rail draws its items.
+enum RailStyle {
+  /// [PosterCard]s (See All, everywhere but Home).
+  standard,
+
+  /// Home v2: smaller posters with a rating chip, a one-line title and genres.
+  compact,
+
+  /// Home v2's Trending Movies: a large rank numeral behind each poster.
+  ranked,
+}
+
 /// A titled poster rail: [SectionHeader] with "See All", then a horizontal
 /// list of [PosterCard]s. At very large text ([PosterSize.stackRails]) the
 /// first [stackedCount] items stack vertically as rows instead.
@@ -33,9 +45,17 @@ class MoviesListView extends StatefulWidget {
     required this.istvshow,
     this.onRetry,
     this.heroSource,
+    this.style = RailStyle.standard,
+    this.badge,
   }) : super(key: key);
 
   final String headlineText;
+
+  /// How the items are drawn.
+  final RailStyle style;
+
+  /// A tag on every poster of a [RailStyle.compact] rail ("New episode").
+  final String? badge;
   final Future<Model> future;
   final bool istvshow;
 
@@ -50,6 +70,9 @@ class MoviesListView extends StatefulWidget {
 
   /// Items shown in the horizontal rail.
   static const int maxCount = 20;
+
+  /// Items shown in a ranked rail (a top ten).
+  static const int rankedCount = 10;
 
   @override
   State<MoviesListView> createState() => _MoviesListViewState();
@@ -127,10 +150,24 @@ class _MoviesListViewState extends State<MoviesListView> {
                   source: source,
                   onTap: open,
                 )
-              else
+              else if (widget.style == RailStyle.standard)
                 _HorizontalRail(
                   items: results.take(MoviesListView.maxCount).toList(),
                   size: size,
+                  railIsTv: istvshow,
+                  source: source,
+                  onTap: open,
+                )
+              else
+                _HomeRail(
+                  items: results
+                      .take(widget.style == RailStyle.ranked
+                          ? MoviesListView.rankedCount
+                          : MoviesListView.maxCount)
+                      .toList(),
+                  size: size,
+                  ranked: widget.style == RailStyle.ranked,
+                  badge: widget.badge,
                   railIsTv: istvshow,
                   source: source,
                   onTap: open,
@@ -352,6 +389,365 @@ class _PosterRow extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Home v2 rails: compact cards, or ranked cards with a numeral behind each
+/// poster. Both scale with [PosterSize] (and so with tablets).
+class _HomeRail extends StatelessWidget {
+  const _HomeRail({
+    required this.items,
+    required this.size,
+    required this.ranked,
+    required this.badge,
+    required this.railIsTv,
+    required this.source,
+    required this.onTap,
+  });
+
+  final List<Result> items;
+  final PosterSize size;
+  final bool ranked;
+  final String? badge;
+  final bool railIsTv;
+  final String source;
+  final ValueChanged<Result> onTap;
+
+  /// Poster width of a compact card, relative to a standard card.
+  static const double compactScale = 0.78;
+
+  /// Poster width of a ranked card, relative to a standard card.
+  static const double rankedScale = 0.62;
+
+  /// How far a ranked poster sits from the start of its card (the numeral).
+  static const double rankInset = 52;
+
+  @override
+  Widget build(BuildContext context) {
+    final text = Theme.of(context).textTheme;
+    final scaler = MediaQuery.textScalerOf(context);
+    double line(TextStyle? s) =>
+        scaler.scale(s?.fontSize ?? 14) * (s?.height ?? 1.2);
+    final posterW = size.width * (ranked ? rankedScale : compactScale);
+    final posterH = posterW / PosterSize.posterAspect;
+    final caption = ranked
+        ? line(text.labelLarge)
+        : line(text.labelLarge) + MNSpace.xxs + line(text.labelSmall);
+    final itemW = ranked ? posterW + rankInset : posterW;
+    final height = posterH + MNSpace.sm + caption + 2;
+
+    return SizedBox(
+      height: height,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsetsDirectional.symmetric(
+          horizontal: ranked ? MNSpace.sm : MNSpace.lg,
+        ),
+        itemCount: items.length,
+        separatorBuilder: (_, __) =>
+            SizedBox(width: ranked ? MNSpace.xs : MNSpace.md),
+        itemBuilder: (context, index) {
+          final item = items[index];
+          final isTv = isTvResult(item, railIsTv: railIsTv);
+          final tag = heroTagFor(source: source, isTv: isTv, id: item.id!);
+          return SizedBox(
+            width: itemW,
+            child: ranked
+                ? _RankedCard(
+                    rank: index + 1,
+                    item: item,
+                    posterW: posterW,
+                    posterH: posterH,
+                    heroTag: tag,
+                    onTap: () => onTap(item),
+                  )
+                : _CompactCard(
+                    item: item,
+                    posterW: posterW,
+                    posterH: posterH,
+                    badge: badge,
+                    heroTag: tag,
+                    onTap: () => onTap(item),
+                  ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+/// A poster image for the Home v2 cards: radius 16 and a faint edge.
+class _HomePoster extends StatelessWidget {
+  const _HomePoster({
+    required this.path,
+    required this.width,
+    required this.height,
+    required this.heroTag,
+    this.radius = 16,
+  });
+
+  final String? path;
+  final double width;
+  final double height;
+  final String heroTag;
+  final double radius;
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    final r = BorderRadius.circular(radius);
+    final image = path == null
+        ? ClipRRect(
+            borderRadius: r,
+            child: ColoredBox(
+              color: cs.surfaceContainer,
+              child: Center(
+                child: Icon(IconsaxOutline.video, color: cs.onSurfaceVariant),
+              ),
+            ),
+          )
+        : CachedImageCustom(
+            tmdbImage(path!, width * MediaQuery.devicePixelRatioOf(context)),
+            width: width,
+            height: height,
+            borderRadius: r,
+          );
+    return SizedBox(
+      width: width,
+      height: height,
+      child: DecoratedBox(
+        position: DecorationPosition.foreground,
+        decoration: BoxDecoration(
+          borderRadius: r,
+          border: Border.all(color: cs.onSurface.withValues(alpha: 0.08)),
+        ),
+        child: Hero(
+          tag: heroTag,
+          flightShuttleBuilder: railHeroShuttle,
+          child: image,
+        ),
+      ),
+    );
+  }
+}
+
+/// A small pill on a poster. Always dark, as it sits on artwork.
+class _Chip extends StatelessWidget {
+  const _Chip({required this.child, this.color = MNHome.chipOnArt});
+
+  final Widget child;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) => DecoratedBox(
+        decoration: ShapeDecoration(color: color, shape: const StadiumBorder()),
+        child: Padding(
+          padding: const EdgeInsetsDirectional.symmetric(
+            horizontal: MNSpace.sm,
+            vertical: MNSpace.xxs,
+          ),
+          child: child,
+        ),
+      );
+}
+
+class _CompactCard extends StatelessWidget {
+  const _CompactCard({
+    required this.item,
+    required this.posterW,
+    required this.posterH,
+    required this.badge,
+    required this.heroTag,
+    required this.onTap,
+  });
+
+  final Result item;
+  final double posterW;
+  final double posterH;
+  final String? badge;
+  final String heroTag;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+    final text = theme.textTheme;
+    final title = item.title ?? item.name ?? '';
+    final genres = getGenres(item.genreIds ?? const []);
+    final score = item.voteAverage ?? 0;
+    final label = [
+      title,
+      if (genres.isNotEmpty) genres,
+      if (score > 0) S.of(context).ratingOutOf10(score.toStringAsFixed(1)),
+      if (badge != null) badge!,
+    ].join(', ');
+    return Semantics(
+      container: true,
+      button: true,
+      label: label,
+      excludeSemantics: true,
+      onTap: onTap,
+      child: PressableScale(
+        onTap: onTap,
+        borderRadius: MNRadius.mdAll,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              children: [
+                _HomePoster(
+                  path: item.posterPath,
+                  width: posterW,
+                  height: posterH,
+                  heroTag: heroTag,
+                ),
+                if (score > 0)
+                  PositionedDirectional(
+                    top: MNSpace.sm,
+                    start: MNSpace.sm,
+                    child: _Chip(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            IconsaxBold.star_1,
+                            size: 12,
+                            color: MNColors.of(context).rating,
+                          ),
+                          const SizedBox(width: MNSpace.xxs),
+                          Text(
+                            score.toStringAsFixed(1),
+                            style: text.labelSmall!.copyWith(
+                              color: MNHome.onChipOnArt,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                if (badge != null)
+                  PositionedDirectional(
+                    bottom: MNSpace.sm,
+                    start: MNSpace.sm,
+                    end: MNSpace.sm,
+                    child: Align(
+                      alignment: AlignmentDirectional.centerStart,
+                      child: _Chip(
+                        color: cs.primary,
+                        child: Text(
+                          badge!,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: text.labelSmall!.copyWith(color: cs.onPrimary),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            const SizedBox(height: MNSpace.sm),
+            Text(
+              title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: text.labelLarge,
+            ),
+            const SizedBox(height: MNSpace.xxs),
+            if (genres.isNotEmpty)
+              Text(
+                genres,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: text.labelSmall!.copyWith(color: cs.onSurfaceVariant),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _RankedCard extends StatelessWidget {
+  const _RankedCard({
+    required this.rank,
+    required this.item,
+    required this.posterW,
+    required this.posterH,
+    required this.heroTag,
+    required this.onTap,
+  });
+
+  final int rank;
+  final Result item;
+  final double posterW;
+  final double posterH;
+  final String heroTag;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+    final text = theme.textTheme;
+    final title = item.title ?? item.name ?? '';
+    return Semantics(
+      container: true,
+      button: true,
+      label: S.of(context).rankedTitle(rank, title),
+      excludeSemantics: true,
+      onTap: onTap,
+      child: PressableScale(
+        onTap: onTap,
+        borderRadius: MNRadius.mdAll,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            PositionedDirectional(
+              start: 0,
+              top: posterH * 0.28,
+              child: Text(
+                '$rank',
+                textScaler: TextScaler.noScaling,
+                style: text.displayLarge!
+                    .apply(
+                      fontSizeFactor: posterW *
+                          MNHome.rankScale /
+                          text.displayLarge!.fontSize!,
+                    )
+                    .copyWith(
+                      height: 1,
+                      fontWeight: FontWeight.w800,
+                      color: cs.onSurface.withValues(alpha: 0.14),
+                    ),
+              ),
+            ),
+            PositionedDirectional(
+              start: _HomeRail.rankInset,
+              top: 0,
+              child: _HomePoster(
+                path: item.posterPath,
+                width: posterW,
+                height: posterH,
+                heroTag: heroTag,
+                radius: 14,
+              ),
+            ),
+            PositionedDirectional(
+              start: _HomeRail.rankInset,
+              end: 0,
+              top: posterH + MNSpace.sm,
+              child: Text(
+                title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: text.labelLarge,
+              ),
+            ),
+          ],
         ),
       ),
     );

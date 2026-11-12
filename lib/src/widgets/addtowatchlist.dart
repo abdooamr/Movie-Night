@@ -9,12 +9,17 @@ import 'package:ficonsax/ficonsax.dart';
 /// Signed-in Watchlist toggle tile on Detail. Bookmark outline at rest, bold
 /// when saved. Optimistic: flips at once (light haptic) and rolls back with a
 /// heavy haptic and an error snackbar if the write fails.
+///
+/// [builder] draws something else with the same state and toggle (the Home
+/// featured title's button).
 class Watchlistwidget extends StatefulWidget {
   final int movieid;
   final bool istvshow;
+  final Widget Function(
+      BuildContext context, bool inWatchlist, VoidCallback toggle)? builder;
 
   const Watchlistwidget(
-      {super.key, required this.movieid, required this.istvshow});
+      {super.key, required this.movieid, required this.istvshow, this.builder});
 
   @override
   State<Watchlistwidget> createState() => _WatchlistwidgetState();
@@ -74,6 +79,10 @@ class _WatchlistwidgetState extends State<Watchlistwidget> {
 
   @override
   Widget build(BuildContext context) {
+    final builder = widget.builder;
+    if (builder != null) {
+      return builder(context, isInWatchlist, _toggleWatchlist);
+    }
     return ActionTile(
       icon: IconsaxOutline.bookmark,
       selectedIcon: IconsaxBold.bookmark,

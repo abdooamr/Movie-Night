@@ -85,7 +85,8 @@ void main() {
         .setMockMethodCallHandler(_localeChannel, (_) async => 'en_US');
   });
 
-  testWidgets('four destinations, signed-out Profile shows the log-in card and settings',
+  testWidgets(
+      'four destinations, signed-out Profile shows the log-in card and settings',
       (tester) async {
     await tester.pumpWidget(shellApp(isSignedIn: false, pagesBuilder: _pages));
     expect(find.byType(NavigationDestination), findsNWidgets(4));
@@ -214,22 +215,26 @@ void main() {
     expect(find.text('LibraryRoot'), findsOneWidget);
   });
 
-  testWidgets('Android bar is opaque; iOS floats on glass unless High Contrast',
+  testWidgets('the bar floats everywhere: blur on iOS, a tint on Android',
       (tester) async {
-    await tester.pumpWidget(shellApp(isSignedIn: true, pagesBuilder: _pages));
-    expect(find.byType(BackdropFilter), findsNothing);
-
     addTearDown(() {
       debugDefaultTargetPlatformOverride = null;
       tester.platformDispatcher.clearAccessibilityFeaturesTestValue();
     });
-    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
-    await tester.pumpWidget(shellApp(isSignedIn: true, pagesBuilder: _pages));
-    await tester.pumpAndSettle();
-    expect(find.byType(BackdropFilter), findsOneWidget);
-    expect(tester.widget<Scaffold>(find.byType(Scaffold).first).extendBody,
-        isTrue);
+    for (final (platform, blurs) in [
+      (TargetPlatform.android, false),
+      (TargetPlatform.iOS, true),
+    ]) {
+      debugDefaultTargetPlatformOverride = platform;
+      await tester.pumpWidget(shellApp(isSignedIn: true, pagesBuilder: _pages));
+      await tester.pumpAndSettle();
+      expect(find.byType(BackdropFilter), blurs ? findsOneWidget : findsNothing,
+          reason: '$platform');
+      expect(tester.widget<Scaffold>(find.byType(Scaffold).first).extendBody,
+          isTrue);
+    }
 
+    // iOS under High Contrast: opaque, no blur.
     tester.platformDispatcher.accessibilityFeaturesTestValue =
         const FakeAccessibilityFeatures(highContrast: true);
     await tester.pumpAndSettle();

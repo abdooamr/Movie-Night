@@ -38,6 +38,25 @@ class MNSize {
   static const double hairline = 0.5;
 }
 
+/// Home v2 values that are not theme roles.
+class MNHome {
+  const MNHome._();
+
+  /// A chip on artwork (the rating on a poster): dark in both themes.
+  static const Color chipOnArt = Color(0xCC0B0A10);
+
+  /// Text and icons on [chipOnArt].
+  static const Color onChipOnArt = Color(0xFFFFFFFF);
+
+  /// The scrim under the status bar and the type switch over the featured
+  /// image (black 65% to 0%).
+  static const List<Color> topScrim = [Color(0xA6000000), Color(0x00000000)];
+
+
+  /// A rank numeral's font size, relative to its poster's width.
+  static const double rankScale = 1.2;
+}
+
 /// Motion durations (spec section 9).
 class MNDuration {
   const MNDuration._();

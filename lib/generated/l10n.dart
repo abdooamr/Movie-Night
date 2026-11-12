@@ -2760,6 +2760,21 @@ class S {
   String get adminStatus {
     return Intl.message('Status', name: 'adminStatus', desc: '', args: []);
   }
+
+  /// `New episode`
+  String get newEpisode {
+    return Intl.message('New episode', name: 'newEpisode', desc: '', args: []);
+  }
+
+  /// `Rank {rank}: {title}`
+  String rankedTitle(int rank, String title) {
+    return Intl.message(
+      'Rank $rank: $title',
+      name: 'rankedTitle',
+      desc: '',
+      args: [rank, title],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

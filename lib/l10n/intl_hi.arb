@@ -326,5 +326,7 @@
     "adminMakeAdminHint": "यह पैनल खोल सकता है और उपयोगकर्ताओं को प्रबंधित कर सकता है",
     "adminNowAdmin": "{name} अब एडमिन है",
     "adminReportCleared": "रिपोर्ट हटा दी गई",
-    "adminStatus": "स्थिति"
+    "adminStatus": "स्थिति",
+    "newEpisode": "नया एपिसोड",
+    "rankedTitle": "रैंक {rank}: {title}"
 }

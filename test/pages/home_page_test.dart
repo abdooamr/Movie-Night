@@ -3,7 +3,7 @@ import 'package:Movie_Night/src/models/movie_model.dart';
 import 'package:Movie_Night/src/pages/UI/home_page.dart';
 import 'package:Movie_Night/src/widgets/Home_page_listview.dart';
 import 'package:Movie_Night/src/widgets/movies_listview.dart';
-import 'package:Movie_Night/src/widgets/upcoming.dart';
+import 'package:Movie_Night/src/widgets/featured_hero.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -32,7 +32,10 @@ Widget _home({
   ScrollController? controller,
   DropdownProvider? lang,
 }) {
-  Widget home = HomePage(fetch: fetch ?? (feed, _) async => _model(feed, 10));
+  Widget home = HomePage(
+    fetch: fetch ?? (feed, _) async => _model(feed, 10),
+    signedIn: false,
+  );
   if (controller != null) {
     home = PrimaryScrollController(controller: controller, child: home);
   }
@@ -121,7 +124,7 @@ void main() {
     expect(controller.offset, 0);
     expect(fetched, contains(HomeFeed.airingToday));
     // One hero section, not two cross-fading trees.
-    expect(find.byType(UpcomingMovies, skipOffstage: false), findsOneWidget);
+    expect(find.byType(FeaturedHero, skipOffstage: false), findsOneWidget);
   });
 
   test('series: Trending is the carousel, Airing Today the first rail', () {
@@ -131,6 +134,62 @@ void main() {
       HomeFeed.popularTv,
       HomeFeed.egyptianTv,
     ]);
+  });
+
+  testWidgets('featured title: at most five, with its actions', (tester) async {
+    await tester.pumpWidget(_home());
+    await _load(tester);
+    final pages = tester.widget<PageView>(find.byType(PageView).first);
+    expect(pages.childrenDelegate.estimatedChildCount, FeaturedHero.maxCount);
+    expect(find.text('upcoming 0'), findsOneWidget);
+    expect(find.text('Watch Trailers'), findsOneWidget);
+    // Signed out, the Watchlist button is still there (it asks to sign in).
+    expect(find.text('Add to Watchlist'), findsOneWidget);
+  });
+
+  testWidgets('Trending Movies is ranked; Airing Today tags new episodes',
+      (tester) async {
+    final handle = tester.ensureSemantics();
+    await tester.pumpWidget(_home());
+    await _load(tester);
+    await tester.scrollUntilVisible(
+      find.text('Trending Movies'),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.pump(const Duration(seconds: 1));
+    expect(find.bySemanticsLabel(RegExp(r'^Rank 1: trending 0$')),
+        findsOneWidget);
+
+    await tester.tap(find.text('Series'));
+    await _load(tester);
+    await tester.scrollUntilVisible(
+      find.text('Airing Today'),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.pump(const Duration(seconds: 1));
+    expect(find.text('New episode'), findsWidgets);
+    handle.dispose();
+  });
+
+  testWidgets('2x text: the featured title and rails lay out without overflow',
+      (tester) async {
+    tester.view.physicalSize = const Size(1080, 2340);
+    tester.view.devicePixelRatio = 2.625;
+    addTearDown(tester.view.reset);
+    await tester.pumpWidget(MediaQuery(
+      data: const MediaQueryData(
+        size: Size(411, 891),
+        textScaler: TextScaler.linear(2),
+      ),
+      child: _home(),
+    ));
+    await _load(tester);
+    expect(tester.takeException(), isNull);
+    await tester.drag(find.byType(CustomScrollView), const Offset(0, -900));
+    await tester.pump(const Duration(seconds: 1));
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets('a language change reloads the feeds in the new language',

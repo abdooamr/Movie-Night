@@ -326,5 +326,7 @@
     "adminMakeAdminHint": "Kann dieses Panel öffnen und Nutzer verwalten",
     "adminNowAdmin": "{name} ist jetzt Admin",
     "adminReportCleared": "Meldung entfernt",
-    "adminStatus": "Status"
+    "adminStatus": "Status",
+    "newEpisode": "Neue Folge",
+    "rankedTitle": "Platz {rank}: {title}"
 }

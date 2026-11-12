@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../generated/l10n.dart';
 import '../models/movie_model.dart';
+import 'featured_hero.dart';
 import 'movies_listview.dart';
-import 'upcoming.dart';
 
 /// The Home feeds. [name] doubles as the section's Hero source key.
 enum HomeFeed {
@@ -17,22 +17,23 @@ enum HomeFeed {
   egyptianTv;
 
   static const movieFeeds = [upcoming, trending, popular, egyptian];
+
   /// Series: Trending is the carousel, then Airing Today first among rails.
   static const tvFeeds = [trendingTv, airingToday, popularTv, egyptianTv];
 
   bool get isTv => tvFeeds.contains(this);
 }
 
-/// Home's sections for one mode (Movies or TV): the hero carousel, then
-/// three poster rails, as a sliver. The rails sit in a lazy [SliverList], so
-/// only the ones near the viewport are built.
+/// Home's sections for one mode (Movies or Series): the featured title
+/// (Home v2), then three poster rails, as a sliver. The rails sit in a lazy
+/// [SliverList], so only the ones near the viewport are built.
 class Home_page_listview extends StatelessWidget {
   const Home_page_listview({
     super.key,
     required this.movie,
     required this.futureOf,
     required this.onRetry,
-    required this.wrapHero,
+    required this.signedIn,
     this.onFocusChanged,
   });
 
@@ -45,11 +46,10 @@ class Home_page_listview extends StatelessWidget {
   /// Reloads one feed.
   final ValueChanged<HomeFeed> onRetry;
 
-  /// Wraps the hero section (Home puts the spill glow behind it, so the glow
-  /// covers the hero only and never the rails).
-  final Widget Function(Widget hero) wrapHero;
+  /// Signed in (the featured title's Watchlist button).
+  final bool signedIn;
 
-  /// The centred carousel item (spill-glow source).
+  /// The featured item (Home's ambient-light source).
   final ValueChanged<Result>? onFocusChanged;
 
   @override
@@ -71,15 +71,14 @@ class Home_page_listview extends StatelessWidget {
     return SliverMainAxisGroup(
       slivers: [
         SliverToBoxAdapter(
-          child: wrapHero(
-            UpcomingMovies(
-              future: futureOf(hero),
-              headlineText: title(hero),
-              istvshow: hero.isTv,
-              heroSource: hero.name,
-              onRetry: () => onRetry(hero),
-              onFocusChanged: onFocusChanged,
-            ),
+          child: FeaturedHero(
+            future: futureOf(hero),
+            headlineText: title(hero),
+            istvshow: hero.isTv,
+            heroSource: hero.name,
+            signedIn: signedIn,
+            onRetry: () => onRetry(hero),
+            onFocusChanged: onFocusChanged,
           ),
         ),
         SliverList.list(
@@ -91,6 +90,10 @@ class Home_page_listview extends StatelessWidget {
                 istvshow: feed.isTv,
                 heroSource: feed.name,
                 onRetry: () => onRetry(feed),
+                style: feed == HomeFeed.trending
+                    ? RailStyle.ranked
+                    : RailStyle.compact,
+                badge: feed == HomeFeed.airingToday ? s.newEpisode : null,
               ),
           ],
         ),

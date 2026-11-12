@@ -39,25 +39,27 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m7(title) => "${title} चलाएँ";
 
-  static String m8(score) => "10 में से ${score}";
+  static String m8(rank, title) => "रैंक ${rank}: ${title}";
 
-  static String m9(email) =>
+  static String m9(score) => "10 में से ${score}";
+
+  static String m10(email) =>
       "अपना ईमेल देखें। हमने ${email} पर रीसेट लिंक भेजा है।";
 
-  static String m10(hours, minutes) => "${hours} घं ${minutes} मि";
+  static String m11(hours, minutes) => "${hours} घं ${minutes} मि";
 
-  static String m11(hours) => "${hours} घं";
+  static String m12(hours) => "${hours} घं";
 
-  static String m12(minutes) => "${minutes} मि";
+  static String m13(minutes) => "${minutes} मि";
 
-  static String m13(count) =>
+  static String m14(count) =>
       "${Intl.plural(count, one: '1 सीज़न', other: '${count} सीज़न')}";
 
-  static String m14(count) => "सभी समीक्षाएँ देखें (${count})";
+  static String m15(count) => "सभी समीक्षाएँ देखें (${count})";
 
-  static String m15(title, url) => "Movie Night पर ${title} देखें\n${url}";
+  static String m16(title, url) => "Movie Night पर ${title} देखें\n${url}";
 
-  static String m16(count) =>
+  static String m17(count) =>
       "${Intl.plural(count, one: '1 शीर्षक', other: '${count} शीर्षक')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -371,6 +373,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "musicmovielabel": MessageLookupByLibrary.simpleMessage("संगीत फ़िल्में"),
     "mysterymovielabel": MessageLookupByLibrary.simpleMessage("रहस्य फ़िल्में"),
     "name": MessageLookupByLibrary.simpleMessage("नाम"),
+    "newEpisode": MessageLookupByLibrary.simpleMessage("नया एपिसोड"),
     "newPasswordLabel": MessageLookupByLibrary.simpleMessage("नया पासवर्ड"),
     "newstvlabel": MessageLookupByLibrary.simpleMessage("समाचार टीवी शो"),
     "noBirthdayFound": MessageLookupByLibrary.simpleMessage(
@@ -472,10 +475,11 @@ class MessageLookup extends MessageLookupByLibrary {
       "Movie Night में लॉग इन करें",
     ),
     "profilenavbar": MessageLookupByLibrary.simpleMessage("प्रोफ़ाइल"),
+    "rankedTitle": m8,
     "rateMovieNight": MessageLookupByLibrary.simpleMessage(
       "Movie Night को रेट करें",
     ),
-    "ratingOutOf10": m8,
+    "ratingOutOf10": m9,
     "readLess": MessageLookupByLibrary.simpleMessage("कम पढ़ें"),
     "readmorelabel": MessageLookupByLibrary.simpleMessage("और पढ़ें"),
     "realitytvlabel": MessageLookupByLibrary.simpleMessage(
@@ -513,7 +517,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "reportpagelabel": MessageLookupByLibrary.simpleMessage(
       "कृपया हमें यदि आपको ऐप में कोई बग मिलता है या कोई सुझाव हो, तो हमें रिपोर्ट भेजें।",
     ),
-    "resetLinkSent": m9,
+    "resetLinkSent": m10,
     "resetPassword": MessageLookupByLibrary.simpleMessage("पासवर्ड रीसेट करें"),
     "resetPasswordSubtitle": MessageLookupByLibrary.simpleMessage(
       "हम आपको रीसेट लिंक ईमेल करेंगे",
@@ -523,9 +527,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "romancemovielabel": MessageLookupByLibrary.simpleMessage(
       "रोमांस फ़िल्में",
     ),
-    "runtimeHoursMinutes": m10,
-    "runtimeHoursOnly": m11,
-    "runtimeMinutesOnly": m12,
+    "runtimeHoursMinutes": m11,
+    "runtimeHoursOnly": m12,
+    "runtimeMinutesOnly": m13,
     "savePasswordLabel": MessageLookupByLibrary.simpleMessage("पासवर्ड सहेजें"),
     "savelabel": MessageLookupByLibrary.simpleMessage("सहेजें"),
     "sciencefictionmovielabel": MessageLookupByLibrary.simpleMessage(
@@ -535,8 +539,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "विज्ञान-कल्पना और काल्पनिकता टीवी शो",
     ),
     "searchhint": MessageLookupByLibrary.simpleMessage("फ़िल्में, सीरीज़, लोग"),
-    "seasonsCount": m13,
-    "seeAllReviews": m14,
+    "seasonsCount": m14,
+    "seeAllReviews": m15,
     "sendEmail": MessageLookupByLibrary.simpleMessage("ईमेल भेजें"),
     "sendReviewTooltip": MessageLookupByLibrary.simpleMessage("समीक्षा भेजें"),
     "sendfeedbacklabel": MessageLookupByLibrary.simpleMessage(
@@ -550,7 +554,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "नया पासवर्ड सेट करें",
     ),
     "share": MessageLookupByLibrary.simpleMessage("साझा करें"),
-    "shareText": m15,
+    "shareText": m16,
     "showAll": MessageLookupByLibrary.simpleMessage("सभी दिखाएँ"),
     "showPassword": MessageLookupByLibrary.simpleMessage("पासवर्ड दिखाएं"),
     "signInPromptBody": MessageLookupByLibrary.simpleMessage(
@@ -579,7 +583,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "thrillermovielabel": MessageLookupByLibrary.simpleMessage(
       "थ्रिलर फ़िल्में",
     ),
-    "titlesCount": m16,
+    "titlesCount": m17,
     "tmdbLabel": MessageLookupByLibrary.simpleMessage("TMDB"),
     "trendingmovieswidget_title": MessageLookupByLibrary.simpleMessage(
       "लोकप्रिय फ़िल्में",

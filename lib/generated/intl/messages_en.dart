@@ -39,25 +39,27 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m7(title) => "Play ${title}";
 
-  static String m8(score) => "${score} out of 10";
+  static String m8(rank, title) => "Rank ${rank}: ${title}";
 
-  static String m9(email) =>
+  static String m9(score) => "${score} out of 10";
+
+  static String m10(email) =>
       "Check your email. We sent a reset link to ${email}.";
 
-  static String m10(hours, minutes) => "${hours}h ${minutes}m";
+  static String m11(hours, minutes) => "${hours}h ${minutes}m";
 
-  static String m11(hours) => "${hours}h";
+  static String m12(hours) => "${hours}h";
 
-  static String m12(minutes) => "${minutes}m";
+  static String m13(minutes) => "${minutes}m";
 
-  static String m13(count) =>
+  static String m14(count) =>
       "${Intl.plural(count, one: '1 season', other: '${count} seasons')}";
 
-  static String m14(count) => "See All Reviews (${count})";
+  static String m15(count) => "See All Reviews (${count})";
 
-  static String m15(title, url) => "Check out ${title} on Movie Night\n${url}";
+  static String m16(title, url) => "Check out ${title} on Movie Night\n${url}";
 
-  static String m16(count) =>
+  static String m17(count) =>
       "${Intl.plural(count, one: '1 title', other: '${count} titles')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -355,6 +357,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "musicmovielabel": MessageLookupByLibrary.simpleMessage("Music Movies"),
     "mysterymovielabel": MessageLookupByLibrary.simpleMessage("Mystery Movies"),
     "name": MessageLookupByLibrary.simpleMessage("Name"),
+    "newEpisode": MessageLookupByLibrary.simpleMessage("New episode"),
     "newPasswordLabel": MessageLookupByLibrary.simpleMessage("New Password"),
     "newstvlabel": MessageLookupByLibrary.simpleMessage("News TV Shows"),
     "noBirthdayFound": MessageLookupByLibrary.simpleMessage(
@@ -456,8 +459,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Log In to Movie Night",
     ),
     "profilenavbar": MessageLookupByLibrary.simpleMessage("Profile"),
+    "rankedTitle": m8,
     "rateMovieNight": MessageLookupByLibrary.simpleMessage("Rate Movie Night"),
-    "ratingOutOf10": m8,
+    "ratingOutOf10": m9,
     "readLess": MessageLookupByLibrary.simpleMessage("Read less"),
     "readmorelabel": MessageLookupByLibrary.simpleMessage("Read more"),
     "realitytvlabel": MessageLookupByLibrary.simpleMessage("Reality TV Shows"),
@@ -493,7 +497,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "reportpagelabel": MessageLookupByLibrary.simpleMessage(
       "Please send us a report if you find any bugs or have any suggestions for the app.",
     ),
-    "resetLinkSent": m9,
+    "resetLinkSent": m10,
     "resetPassword": MessageLookupByLibrary.simpleMessage("Reset Password"),
     "resetPasswordSubtitle": MessageLookupByLibrary.simpleMessage(
       "We\'ll email you a reset link",
@@ -501,9 +505,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "reviewsTitle": MessageLookupByLibrary.simpleMessage("Reviews"),
     "role": MessageLookupByLibrary.simpleMessage("Role"),
     "romancemovielabel": MessageLookupByLibrary.simpleMessage("Romance Movies"),
-    "runtimeHoursMinutes": m10,
-    "runtimeHoursOnly": m11,
-    "runtimeMinutesOnly": m12,
+    "runtimeHoursMinutes": m11,
+    "runtimeHoursOnly": m12,
+    "runtimeMinutesOnly": m13,
     "savePasswordLabel": MessageLookupByLibrary.simpleMessage("Save Password"),
     "savelabel": MessageLookupByLibrary.simpleMessage("Save"),
     "sciencefictionmovielabel": MessageLookupByLibrary.simpleMessage(
@@ -515,8 +519,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "searchhint": MessageLookupByLibrary.simpleMessage(
       "Movies, series, people",
     ),
-    "seasonsCount": m13,
-    "seeAllReviews": m14,
+    "seasonsCount": m14,
+    "seeAllReviews": m15,
     "sendEmail": MessageLookupByLibrary.simpleMessage("Send Email"),
     "sendReviewTooltip": MessageLookupByLibrary.simpleMessage("Send review"),
     "sendfeedbacklabel": MessageLookupByLibrary.simpleMessage("Send Feedback"),
@@ -528,7 +532,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Set a New Password",
     ),
     "share": MessageLookupByLibrary.simpleMessage("Share"),
-    "shareText": m15,
+    "shareText": m16,
     "showAll": MessageLookupByLibrary.simpleMessage("Show All"),
     "showPassword": MessageLookupByLibrary.simpleMessage("Show password"),
     "signInPromptBody": MessageLookupByLibrary.simpleMessage(
@@ -557,7 +561,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "thrillermovielabel": MessageLookupByLibrary.simpleMessage(
       "Thriller Movies",
     ),
-    "titlesCount": m16,
+    "titlesCount": m17,
     "tmdbLabel": MessageLookupByLibrary.simpleMessage("TMDB"),
     "trendingmovieswidget_title": MessageLookupByLibrary.simpleMessage(
       "Trending Movies",

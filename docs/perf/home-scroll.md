@@ -113,3 +113,109 @@ Same device (A50, 60 Hz, Impeller GLES) and script, 3 runs each, median.
   flight at all, because the detail page builds its poster Hero only after
   its data loads (skeleton first). This predates this plan; see the
   handoff follow-ups.
+
+## Home v2 (branch feat/home-v2, 2026-11-12)
+
+Home v2 replaces the carousel with an edge-to-edge featured title, adds an
+ambient light behind the page, a glass type switch, and a floating glass tab
+bar on Android too. The script now takes `--dart-define=WITH_TAB_BAR=true`
+(Home inside a Scaffold with the floating `ChromeBar`, as in the app) and
+`--dart-define=NO_BLUR=true` (glass drawn opaque). **Always pass
+`--keep-app-running`:** without it `flutter drive` uninstalls the app when it
+finishes, which wiped the owner's on-phone data on 2026-11-12. Profile builds
+are debug-signed, so installing one over a release build also uninstalls it
+first; sign the profile build type like release for the run, or warn first.
+
+Same device (A50, 60 Hz, Impeller GLES), with the tab bar, medians:
+
+| Configuration | Runs | raster avg | raster p90 | raster p99 | frames over budget |
+| --- | --- | --- | --- | --- | --- |
+| Home v2 as first built (real blur on Android) | 1 | 17.84 | 20.00 | 20.19 | 55 of 71 |
+| Home v2, glass drawn opaque (`NO_BLUR`) | 1 | 7.54 | 11.08 | 13.77 | 0 of 77 |
+| Home v2 final (tint on Android, cheap light and fades) | 5 | 7.48 | 11.59 | 16.12 | 2 of ~105 |
+| Old Home from main, same script, same day | 5 | 7.11 | 10.30 | 13.79 | 0 of ~80 |
+
+- The backdrop blur was almost all of the cost: Android now draws glass as a
+  denser tint without blur (`GlassSurface`); iOS keeps the blur.
+- Also changed, for cost not looks: the ambient light fades by painting the
+  page colour over its ends and moves by translation (no mask, no relayout);
+  the top fade is one gradient with interpolated colours (no Opacity layers);
+  the featured image fades with a gradient overlay instead of a ShaderMask,
+  decodes at most 780 px wide, and the next title is built ahead
+  (`allowImplicitScrolling`).
+- What remains is fill: a full-screen poster plus the light. The two slow
+  frames per run fall where new posters upload while scrolling. The old Home
+  issued far more save layers (its animated dots) and still drew faster.
+- Run-to-run spread is large (raster avg 6.3 to 8.7 ms across the five final
+  runs) because posters arrive from the network during the trace.
+
+## Correction: what the numbers above cover (2026-11-12, later)
+
+Every table above this line was computed from the timeline, which is a ring
+buffer of about 32,000 events: it held only the **last ~4 s** of the 16 s
+script (the last upward fling and the two rail flings, 70 to 105 frames out
+of about 480). The featured flings and the page-down flings were never in
+those numbers, for the old Home either.
+
+The script now reports complete frame times per phase
+(`build/home_scroll.phases.json`), and takes two more defines:
+
+- `LIVE_FRAMES=true`: the engine draws every frame of a settling scroll.
+  Without it the test draws one settle frame every ~117 ms, each carrying
+  about seven frames' worth of new content.
+- `TRACE=true`, with `flutter drive --endless-trace-buffer`: the whole
+  timeline instead of the per-phase numbers (the two cannot be combined).
+
+Safe way to run on the owner's phone (app data kept across six runs):
+add a `profile` build type signed with the release config, `flutter build apk
+--profile ... --target=integration_test/home_scroll_perf_test.dart`, confirm
+with `apksigner verify --print-certs` that it has the release certificate,
+then `flutter drive --use-application-binary=<apk> --keep-app-running ...`.
+Afterwards remove the build type and `adb install -r` the release APK.
+
+Home v2 with the tab bar, A50, frames over 16.7 ms of raster time:
+
+| Phase | Old pacing (2 runs) | `LIVE_FRAMES` (2 runs) |
+| --- | --- | --- |
+| Featured flings | 0 of 83, 0 of 83 | 1 of 180, 0 of 181 |
+| Page down | 0 of 157, 1 of 157 | 1 of 251, 2 of 253 |
+| Page up | 13 of 170, 11 of 175 | 41 of 324, 37 of 276 |
+| Rail flings | 1 of 70, 1 of 70 | 0 of 126, 0 of 126 |
+
+- **The "2 slow frames" of the table above** are in the settle of the first
+  rail fling. They are frames the test draws 117 ms apart, each adding a
+  batch of new text to the glyph atlas (4 to 8 ms) on top of new posters.
+  Drawn at the real frame rate the rail phase has none over budget (worst
+  14.4 and 14.8 ms).
+- **Page up** is the new finding. In every run, frames 2 and 3 of the first
+  upward fling (starting from the bottom of the page) take 17 to 19 ms, each
+  inside a single GL render pass, with no build, text, texture or layer work
+  in them. The 30 to 140 frames that follow each measure almost exactly one
+  refresh interval (16.2 to 16.9 ms): their drawing takes 5 to 8 ms and the
+  rest is the raster thread waiting to hand the frame to the display, which
+  is one frame behind. Those are counted as over budget but are not dropped
+  frames.
+
+### Old Home, same full run (main at 2e4f8fd, with the tab bar, `LIVE_FRAMES`)
+
+Frames over 16.7 ms of raster time, two runs each:
+
+| Phase | Old Home | Home v2 |
+| --- | --- | --- |
+| Featured flings | 62 of 185, 40 of 184 | 1 of 180, 0 of 181 |
+| Page down | 3 of 260, 6 of 259 | 1 of 251, 2 of 253 |
+| Page up | 0 of 414, 1 of 295 | 41 of 324, 37 of 276 |
+| Rail flings | 24 of 135, 0 of 140 | 0 of 126, 0 of 126 |
+| Whole run | 89 of 994, 47 of 878 | 43 of 881, 39 of 836 |
+
+- The old Home shows the same pattern (one or two slow frames, then a long
+  run of frames at exactly one refresh interval), so it is not something
+  Home v2 introduced. It lands elsewhere: at the start of the carousel
+  flings in both runs, and once each in the rails and in page down.
+- The old carousel also has frames of 20 to 23 ms at its start, slower than
+  anything in Home v2.
+- Still not determined: what the one or two slow frames that start each run
+  are waiting on. The count of frames over budget mostly measures how long
+  the display stays one frame behind afterwards, so it overstates what is
+  seen. Presented-frame times from SurfaceFlinger would give the number of
+  frames actually shown late.

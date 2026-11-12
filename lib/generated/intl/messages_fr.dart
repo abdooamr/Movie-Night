@@ -39,25 +39,27 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m7(title) => "Lire ${title}";
 
-  static String m8(score) => "${score} sur 10";
+  static String m8(rank, title) => "Rang ${rank} : ${title}";
 
-  static String m9(email) =>
+  static String m9(score) => "${score} sur 10";
+
+  static String m10(email) =>
       "Vérifiez vos e-mails. Nous avons envoyé un lien de réinitialisation à ${email}.";
 
-  static String m10(hours, minutes) => "${hours} h ${minutes} min";
+  static String m11(hours, minutes) => "${hours} h ${minutes} min";
 
-  static String m11(hours) => "${hours} h";
+  static String m12(hours) => "${hours} h";
 
-  static String m12(minutes) => "${minutes} min";
+  static String m13(minutes) => "${minutes} min";
 
-  static String m13(count) =>
+  static String m14(count) =>
       "${Intl.plural(count, one: '1 saison', other: '${count} saisons')}";
 
-  static String m14(count) => "Voir tous les avis (${count})";
+  static String m15(count) => "Voir tous les avis (${count})";
 
-  static String m15(title, url) => "Découvrez ${title} sur Movie Night\n${url}";
+  static String m16(title, url) => "Découvrez ${title} sur Movie Night\n${url}";
 
-  static String m16(count) =>
+  static String m17(count) =>
       "${Intl.plural(count, one: '1 titre', other: '${count} titres')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -405,6 +407,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Films de Mystère",
     ),
     "name": MessageLookupByLibrary.simpleMessage("Nom"),
+    "newEpisode": MessageLookupByLibrary.simpleMessage("Nouvel épisode"),
     "newPasswordLabel": MessageLookupByLibrary.simpleMessage(
       "Nouveau mot de passe",
     ),
@@ -512,8 +515,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Connectez-vous à Movie Night",
     ),
     "profilenavbar": MessageLookupByLibrary.simpleMessage("Profil"),
+    "rankedTitle": m8,
     "rateMovieNight": MessageLookupByLibrary.simpleMessage("Noter Movie Night"),
-    "ratingOutOf10": m8,
+    "ratingOutOf10": m9,
     "readLess": MessageLookupByLibrary.simpleMessage("Lire moins"),
     "readmorelabel": MessageLookupByLibrary.simpleMessage("Lire la suite"),
     "realitytvlabel": MessageLookupByLibrary.simpleMessage(
@@ -553,7 +557,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "reportpagelabel": MessageLookupByLibrary.simpleMessage(
       "Veuillez nous envoyer un rapport si vous trouvez des bugs ou avez des suggestions pour l\'application.",
     ),
-    "resetLinkSent": m9,
+    "resetLinkSent": m10,
     "resetPassword": MessageLookupByLibrary.simpleMessage(
       "Réinitialiser le mot de passe",
     ),
@@ -565,9 +569,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "romancemovielabel": MessageLookupByLibrary.simpleMessage(
       "Films Romantiques",
     ),
-    "runtimeHoursMinutes": m10,
-    "runtimeHoursOnly": m11,
-    "runtimeMinutesOnly": m12,
+    "runtimeHoursMinutes": m11,
+    "runtimeHoursOnly": m12,
+    "runtimeMinutesOnly": m13,
     "savePasswordLabel": MessageLookupByLibrary.simpleMessage(
       "Enregistrer le mot de passe",
     ),
@@ -581,8 +585,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "searchhint": MessageLookupByLibrary.simpleMessage(
       "Films, séries, personnes",
     ),
-    "seasonsCount": m13,
-    "seeAllReviews": m14,
+    "seasonsCount": m14,
+    "seeAllReviews": m15,
     "sendEmail": MessageLookupByLibrary.simpleMessage("Envoyer l’e-mail"),
     "sendReviewTooltip": MessageLookupByLibrary.simpleMessage(
       "Envoyer l\'avis",
@@ -600,7 +604,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Définir un nouveau mot de passe",
     ),
     "share": MessageLookupByLibrary.simpleMessage("Partager"),
-    "shareText": m15,
+    "shareText": m16,
     "showAll": MessageLookupByLibrary.simpleMessage("Tout afficher"),
     "showPassword": MessageLookupByLibrary.simpleMessage(
       "Afficher le mot de passe",
@@ -637,7 +641,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "thrillermovielabel": MessageLookupByLibrary.simpleMessage(
       "Films à Suspense",
     ),
-    "titlesCount": m16,
+    "titlesCount": m17,
     "tmdbLabel": MessageLookupByLibrary.simpleMessage("TMDB"),
     "trendingmovieswidget_title": MessageLookupByLibrary.simpleMessage(
       "Films Tendances",

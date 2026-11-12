@@ -326,5 +326,7 @@
     "adminMakeAdminHint": "يمكنه فتح هذه اللوحة وإدارة المستخدمين",
     "adminNowAdmin": "أصبح {name} مشرفًا",
     "adminReportCleared": "تم مسح البلاغ",
-    "adminStatus": "الحالة"
+    "adminStatus": "الحالة",
+    "newEpisode": "حلقة جديدة",
+    "rankedTitle": "المرتبة {rank}: {title}"
 }

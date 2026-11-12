@@ -39,25 +39,27 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m7(title) => "Riproduci ${title}";
 
-  static String m8(score) => "${score} su 10";
+  static String m8(rank, title) => "Posizione ${rank}: ${title}";
 
-  static String m9(email) =>
+  static String m9(score) => "${score} su 10";
+
+  static String m10(email) =>
       "Controlla la tua email. Abbiamo inviato un link di reimpostazione a ${email}.";
 
-  static String m10(hours, minutes) => "${hours} h ${minutes} min";
+  static String m11(hours, minutes) => "${hours} h ${minutes} min";
 
-  static String m11(hours) => "${hours} h";
+  static String m12(hours) => "${hours} h";
 
-  static String m12(minutes) => "${minutes} min";
+  static String m13(minutes) => "${minutes} min";
 
-  static String m13(count) =>
+  static String m14(count) =>
       "${Intl.plural(count, one: '1 stagione', other: '${count} stagioni')}";
 
-  static String m14(count) => "Vedi tutte le recensioni (${count})";
+  static String m15(count) => "Vedi tutte le recensioni (${count})";
 
-  static String m15(title, url) => "Guarda ${title} su Movie Night\n${url}";
+  static String m16(title, url) => "Guarda ${title} su Movie Night\n${url}";
 
-  static String m16(count) =>
+  static String m17(count) =>
       "${Intl.plural(count, one: '1 titolo', other: '${count} titoli')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -379,6 +381,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "musicmovielabel": MessageLookupByLibrary.simpleMessage("Film Musica"),
     "mysterymovielabel": MessageLookupByLibrary.simpleMessage("Film Mistero"),
     "name": MessageLookupByLibrary.simpleMessage("Nome"),
+    "newEpisode": MessageLookupByLibrary.simpleMessage("Nuovo episodio"),
     "newPasswordLabel": MessageLookupByLibrary.simpleMessage("Nuova Password"),
     "newstvlabel": MessageLookupByLibrary.simpleMessage("Serie TV Notizie"),
     "noBirthdayFound": MessageLookupByLibrary.simpleMessage(
@@ -482,10 +485,11 @@ class MessageLookup extends MessageLookupByLibrary {
       "Accedi a Movie Night",
     ),
     "profilenavbar": MessageLookupByLibrary.simpleMessage("Profilo"),
+    "rankedTitle": m8,
     "rateMovieNight": MessageLookupByLibrary.simpleMessage(
       "Valuta Movie Night",
     ),
-    "ratingOutOf10": m8,
+    "ratingOutOf10": m9,
     "readLess": MessageLookupByLibrary.simpleMessage("Mostra meno"),
     "readmorelabel": MessageLookupByLibrary.simpleMessage("Leggi tutto"),
     "realitytvlabel": MessageLookupByLibrary.simpleMessage("Serie TV Reality"),
@@ -521,7 +525,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "reportpagelabel": MessageLookupByLibrary.simpleMessage(
       "Per favore inviaci un report se trovi dei bug o hai suggerimenti per l\'app.",
     ),
-    "resetLinkSent": m9,
+    "resetLinkSent": m10,
     "resetPassword": MessageLookupByLibrary.simpleMessage("Reimposta Password"),
     "resetPasswordSubtitle": MessageLookupByLibrary.simpleMessage(
       "Ti invieremo un link di reimpostazione via email",
@@ -529,9 +533,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "reviewsTitle": MessageLookupByLibrary.simpleMessage("Recensioni"),
     "role": MessageLookupByLibrary.simpleMessage("Ruolo"),
     "romancemovielabel": MessageLookupByLibrary.simpleMessage("Film Romance"),
-    "runtimeHoursMinutes": m10,
-    "runtimeHoursOnly": m11,
-    "runtimeMinutesOnly": m12,
+    "runtimeHoursMinutes": m11,
+    "runtimeHoursOnly": m12,
+    "runtimeMinutesOnly": m13,
     "savePasswordLabel": MessageLookupByLibrary.simpleMessage("Salva Password"),
     "savelabel": MessageLookupByLibrary.simpleMessage("Salva"),
     "sciencefictionmovielabel": MessageLookupByLibrary.simpleMessage(
@@ -541,8 +545,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "Serie TV Fantascienza e Fantasy",
     ),
     "searchhint": MessageLookupByLibrary.simpleMessage("Film, serie, persone"),
-    "seasonsCount": m13,
-    "seeAllReviews": m14,
+    "seasonsCount": m14,
+    "seeAllReviews": m15,
     "sendEmail": MessageLookupByLibrary.simpleMessage("Invia email"),
     "sendReviewTooltip": MessageLookupByLibrary.simpleMessage(
       "Invia recensione",
@@ -556,7 +560,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Imposta una Nuova Password",
     ),
     "share": MessageLookupByLibrary.simpleMessage("Condividi"),
-    "shareText": m15,
+    "shareText": m16,
     "showAll": MessageLookupByLibrary.simpleMessage("Mostra Tutti"),
     "showPassword": MessageLookupByLibrary.simpleMessage("Mostra password"),
     "signInPromptBody": MessageLookupByLibrary.simpleMessage(
@@ -585,7 +589,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "talktvlabel": MessageLookupByLibrary.simpleMessage("Serie TV Talk show"),
     "thecast": MessageLookupByLibrary.simpleMessage("Il Cast"),
     "thrillermovielabel": MessageLookupByLibrary.simpleMessage("Film Thriller"),
-    "titlesCount": m16,
+    "titlesCount": m17,
     "tmdbLabel": MessageLookupByLibrary.simpleMessage("TMDB"),
     "trendingmovieswidget_title": MessageLookupByLibrary.simpleMessage(
       "Film in Tendenza",
